@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
-import { Red_Hat_Display, Geist_Mono, Geist } from "next/font/google";
+import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Providers from "@/components/Providers";
 
-const geist = Geist({
-  variable: "--font-geist-sans",
+const redHatDisplay = Red_Hat_Display({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-red-hat-display",
 });
 
 export const metadata: Metadata = {
@@ -25,15 +21,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body
-        className={`${geist.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+    <html lang="ko" suppressHydrationWarning>
+      <body className={`${redHatDisplay.variable} antialiased`}>
+        <Providers>
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

@@ -5,6 +5,8 @@ import MapCard from "../components/MapCard";
 import ClockCard from "../components/ClockCard";
 import WeOwnItCard from "../components/WeOwnItCard";
 import WorkWithUsCard from "../components/WorkWithUsCard";
+import CustomerCarousel from "../components/CustomerCarousel";
+import DarkModeCard from "../components/DarkModeCard";
 
 export default function HomePage() {
   return (
@@ -68,24 +70,11 @@ export default function HomePage() {
               {/* we own it 카드 */}
               <WeOwnItCard style={{ gridArea: 'weownit' }} />
 
-              {/* 고객사 카드 */}
-              <div
-                className="card !items-start !pl-6 sm:!pl-8 flex-col"
-                style={{ gridArea: 'customer' }}
-              >
-                <div className="text-base sm:text-lg font-medium">
-                  TOSS NAVER Coupang KAKAO KREAM MUSINSA
-                </div>
-                <div className="text-sm text-gray-600 mt-1">Customer</div>
-              </div>
+              {/* 고객사 카드 - 무한 슬라이드 */}
+              <CustomerCarousel />
 
               {/* 다크모드 카드 */}
-              <div
-                className="card bg-black text-white text-sm sm:text-base font-semibold"
-                style={{ gridArea: 'darkmode' }}
-              >
-                Dark Mode
-              </div>
+              <DarkModeCard style={{ gridArea: 'darkmode' }} />
             </section>
           </div>
 
