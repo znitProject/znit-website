@@ -1,67 +1,121 @@
+'use client';
+
+import { useState } from 'react';
+import WorkLayout from './components/WorkLayout';
+import ProjectGrid from './components/ProjectGrid';
+
+interface Project {
+  id: number;
+  name: string;
+  description: string;
+  year: string;
+  category: string;
+  image?: string;
+}
+
 export default function WorkPage() {
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [visibleProjects, setVisibleProjects] = useState(4);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const categories = [
+    { value: 'ALL', label: 'ALL' },
+    { value: 'UI/UX', label: 'UI/UX DESIGN' },
+    { value: 'BRANDING', label: 'BRANDING' },
+    { value: 'WEB', label: 'WEB DEVELOPMENT' },
+    { value: 'MOBILE', label: 'MOBILE APP' },
+    { value: 'STRATEGY', label: 'STRATEGY' }
+  ];
+
+  const projects: Project[] = [
+    {
+      id: 1,
+      name: "Toss Banking App",
+      description: "모바일 뱅킹 서비스의 UX/UI 리뉴얼 프로젝트",
+      year: "2024",
+      category: "UI/UX"
+    },
+    {
+      id: 2,
+      name: "Coupang Fresh",
+      description: "신선식품 배송 서비스 브랜딩 및 디자인",
+      year: "2024",
+      category: "BRANDING"
+    },
+    {
+      id: 3,
+      name: "KakaoTalk Plus",
+      description: "카카오톡 플러스 기능 개발 및 디자인",
+      year: "2023",
+      category: "MOBILE"
+    },
+    {
+      id: 4,
+      name: "Musinsa Platform",
+      description: "패션 커머스 플랫폼 웹사이트 개발",
+      year: "2023",
+      category: "WEB"
+    },
+    {
+      id: 5,
+      name: "Kream Authentication",
+      description: "스니커즈 커머스 인증 시스템 UX 개선",
+      year: "2023",
+      category: "UI/UX"
+    },
+    {
+      id: 6,
+      name: "Toss Insurance",
+      description: "보험 상품 추천 알고리즘 및 UI 개발",
+      year: "2023",
+      category: "STRATEGY"
+    },
+    {
+      id: 7,
+      name: "Coupang Pay",
+      description: "결제 시스템 UX/UI 디자인",
+      year: "2022",
+      category: "UI/UX"
+    },
+    {
+      id: 8,
+      name: "Kakao Mobility",
+      description: "모빌리티 서비스 브랜딩 및 앱 디자인",
+      year: "2022",
+      category: "MOBILE"
+    }
+  ];
+
+  const filteredProjects = selectedCategory === 'ALL' 
+    ? projects 
+    : projects.filter(project => project.category === selectedCategory);
+
+  const handleLoadMore = () => {
+    setVisibleProjects(prev => Math.min(prev + 4, filteredProjects.length));
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setVisibleProjects(4);
+  };
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center">
-      {/* 상단바 */}
-      <div className="w-full max-w-md flex items-center justify-between px-4 py-2 border-b border-gray-200">
-        <span className="font-bold text-lg tracking-widest">ZNIT</span>
-        <button className="w-7 h-7 flex flex-col justify-between items-center">
-          {/* 햄버거 메뉴 */}
-          <span className="block w-7 h-0.5 bg-black"></span>
-          <span className="block w-7 h-0.5 bg-black"></span>
-          <span className="block w-7 h-0.5 bg-black"></span>
-        </button>
-      </div>
-
-      {/* 메인 컨텐츠 */}
-      <div className="w-full max-w-md px-4 flex flex-col gap-6 mt-6">
-        {/* 좌측 타이포 + 우측 대표 이미지 */}
-        <div className="flex flex-row gap-4">
-          <div className="flex-1 flex flex-col justify-start">
-            <span className="text-2xl font-bold leading-tight">글씨</span>
-            <span className="text-2xl font-bold leading-tight">글글씨</span>
-            <span className="text-2xl font-bold leading-tight">글글글씨_</span>
-          </div>
-          <div className="flex-1 flex justify-end">
-            {/* 대표 이미지 플레이스홀더 */}
-            <div className="w-28 h-28 bg-gray-200 rounded-md" />
-          </div>
-        </div>
-
-        {/* 중간 그리드 영역 */}
-        <div className="grid grid-cols-4 grid-rows-3 gap-2 h-64">
-          {/* 각 사각형은 와이어프레임 비율에 맞춰 col-span, row-span 조정 */}
-          <div className="col-span-1 row-span-1 bg-gray-200 flex items-center justify-center text-xs font-bold">Contact</div>
-          <div className="col-span-2 row-span-1 bg-gray-200 flex items-center justify-center text-xs font-bold">WORK</div>
-          <div className="col-span-1 row-span-1 bg-gray-200 flex flex-col items-center justify-center text-xs font-bold">
-            <span>July</span>
-            <span className="text-[10px] mt-1">22일</span>
-            <span className="text-[10px]">월</span>
-            <span className="text-[10px] mt-2">12:12</span>
-          </div>
-          <div className="col-span-1 row-span-2 bg-gray-200 flex items-center justify-center text-xs font-bold">Contact1</div>
-          <div className="col-span-2 row-span-2 bg-gray-200 flex items-center justify-center text-xs font-bold">WE OWN IT !</div>
-          <div className="col-span-1 row-span-2 bg-gray-200 flex flex-col items-center justify-center text-xs font-bold">
-            <span>Work with us</span>
-            {/* 지도 플레이스홀더 */}
-            <div className="w-16 h-12 bg-white border border-gray-300 mt-1" />
-          </div>
-          <div className="col-span-4 row-span-1 bg-gray-100 flex items-center px-2 text-[10px] justify-between">
-            <span>TOSS HAVER Coupang KAKAO KREAM MUSINSA</span>
-            <button className="bg-black text-white text-[10px] px-2 py-1 rounded-full">Dark Mode</button>
-          </div>
-        </div>
-
-        {/* 하단 WORK 리스트 */}
-        <div className="mt-6">
-          <span className="font-bold text-lg">WORK</span>
-          <div className="flex flex-row gap-2 mt-2">
-            {/* 5개의 동일한 비율의 박스 */}
-            {[1,2,3,4,5].map((i) => (
-              <div key={i} className="flex-1 aspect-square bg-blue-100 rounded-md" />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <WorkLayout
+      selectedCategory={selectedCategory}
+      isDropdownOpen={isDropdownOpen}
+      onCategoryChange={handleCategoryChange}
+      onDropdownToggle={handleDropdownToggle}
+      categories={categories}
+    >
+      <ProjectGrid
+        projects={filteredProjects}
+        visibleProjects={visibleProjects}
+        onLoadMore={handleLoadMore}
+      />
+    </WorkLayout>
   );
 } 

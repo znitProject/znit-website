@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const menuItems = [
     { name: 'HOME', path: '/' },
@@ -24,6 +25,23 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
+  // 화면 다른 곳 클릭 시 메뉴 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-transparent z-50">
       <div className="container mx-auto px-4">
@@ -34,7 +52,7 @@ export default function Header() {
           </Link>
 
           {/* 햄버거 메뉴 버튼 - 오른쪽 */}
-          <div className="relative">
+          <div className="relative" ref={menuRef}>
             <button
               onClick={toggleMenu}
               className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors duration-200"
