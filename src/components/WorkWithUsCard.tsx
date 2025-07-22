@@ -10,6 +10,11 @@ const WorkWithUsCard = () => {
   const textRef = useRef<HTMLSpanElement>(null);
 
   const handleMouseEnter = () => {
+    // 이전 애니메이션 정리
+    gsap.killTweensOf(cardRef.current);
+    gsap.killTweensOf(bgRef.current);
+    gsap.killTweensOf(textRef.current);
+
     // 카드 스케일 애니메이션
     gsap.to(cardRef.current, {
       scale: 1.05,
@@ -40,6 +45,11 @@ const WorkWithUsCard = () => {
   };
 
   const handleMouseLeave = () => {
+    // 이전 애니메이션 정리
+    gsap.killTweensOf(cardRef.current);
+    gsap.killTweensOf(bgRef.current);
+    gsap.killTweensOf(textRef.current);
+
     // 카드 원래 크기로
     gsap.to(cardRef.current, {
       scale: 1,
@@ -57,11 +67,17 @@ const WorkWithUsCard = () => {
       }
     });
 
-    // 텍스트 색상 원래대로
+    // 텍스트 색상 원래대로 (기본값과 동일하게 #1a1a1a로 복원)
     gsap.to(textRef.current, {
-      color: '#000000',
+      color: '#1a1a1a',
       duration: 0.3,
       ease: 'power2.inOut',
+      // 애니메이션이 끝난 후 혹시 꼬임 방지용으로 한 번 더 명시적으로 지정
+      onComplete: () => {
+        if (textRef.current) {
+          (textRef.current as HTMLElement).style.color = '#1a1a1a';
+        }
+      }
     });
   };
 
