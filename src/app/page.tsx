@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import ClockCard from "../components/ClockCard";
 
 export default function HomePage() {
   return (
@@ -14,7 +18,7 @@ export default function HomePage() {
         </div>
         {/* 오른쪽: 대형 카드(다크모드/썸네일 등) */}
         <div className="flex-1 flex justify-end items-end">
-          <div className="w-full max-w-lg h-[700px] bg-[#D9D9D9] rounded-[30px] flex flex-col items-center justify-center">
+          <div className="w-[700px] h-[700px] bg-[#D9D9D9] rounded-[30px] flex flex-col items-center justify-center">
             <span className="text-black text-2xl font-bold">다크모드 카드</span>
           </div>
         </div>
@@ -47,11 +51,7 @@ export default function HomePage() {
               </div>
 
               {/* clock+달력 카드 */}
-              <div className="card" style={{ gridArea: 'clock' }}>
-                <div className="text-2xl font-semibold">July</div>
-                <div className="text-base">21</div>
-                <div className="text-lg mt-1">12 : 12</div>
-              </div>
+              <ClockCard />
 
               {/* work with us 카드 */}
               <div className="card text-xl font-medium" style={{ gridArea: 'workus' }}>
