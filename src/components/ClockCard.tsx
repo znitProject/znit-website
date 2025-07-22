@@ -89,7 +89,7 @@ const ClockCard = () => {
         }
 
         .date-number {
-          font-size: 7rem;
+          font-size: 5rem;
           font-weight: 700;
           color: white;
           line-height: 1;

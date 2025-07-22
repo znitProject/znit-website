@@ -4,6 +4,7 @@
 import MapCard from "../components/MapCard";
 import ClockCard from "../components/ClockCard";
 import WeOwnItCard from "../components/WeOwnItCard";
+import WorkWithUsCard from "../components/WorkWithUsCard";
 
 export default function HomePage() {
   return (
@@ -31,7 +32,7 @@ export default function HomePage() {
           style={{
             gridTemplateAreas: `
               'keyword work clock workus'
-              'contact work clock workus'
+              'keyword work clock workus'
               'contact work clock map'
               'contact weownit weownit map'
               'contact weownit weownit map'
@@ -54,9 +55,7 @@ export default function HomePage() {
               <ClockCard />
 
               {/* work with us 카드 */}
-              <div className="card text-xl font-medium" style={{ gridArea: 'workus' }}>
-                Work with us
-              </div>
+              <WorkWithUsCard />
 
               {/* contact 카드 */}
               <div className="card" style={{ gridArea: 'contact' }}>
