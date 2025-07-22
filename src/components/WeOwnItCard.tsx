@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 
 export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -23,6 +24,18 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
     }
   }, []);
 
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!glowRef.current || !containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    glowRef.current.style.background = `
+      radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.25), transparent 40%)
+    `;
+  };
+
   const handleMouseEnter = () => {
     if (containerRef.current) {
       gsap.to(containerRef.current, {
@@ -35,13 +48,15 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
   };
 
   const handleMouseLeave = () => {
-    if (containerRef.current) {
+    if (containerRef.current && glowRef.current) {
       gsap.to(containerRef.current, {
         scale: 1,
         boxShadow: '0px 0px 0px rgba(0, 0, 0, 0)',
         duration: 0.4,
         ease: 'power3.out',
       });
+
+      glowRef.current.style.background = 'transparent';
     }
   };
 
@@ -52,15 +67,22 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
     >
       <div
         ref={containerRef}
-        className="relative w-full h-full flex justify-center items-center px-6 py-16 bg-black overflow-hidden rounded-[30px] border border-gray-200/20 cursor-pointer"
+        className="relative w-full h-full flex justify-center items-center px-6 py-16 bg-black overflow-hidden rounded-[30px] border border-gray-200/20 cursor-pointer group"
       >
-        {/* 배경 텍스처 (흑색 배경에 텍스처 유지) */}
+        {/* Glow Layer */}
+        <div
+          ref={glowRef}
+          className="absolute inset-0 z-0 pointer-events-none transition duration-300 ease-out"
+        />
+
+        {/* Texture Overlay */}
         <div className="absolute inset-0 bg-[url('/texture/noise.png')] opacity-10 z-0 pointer-events-none" />
 
-        {/* 메인 콘텐츠 */}
+        {/* Main Content */}
         <div className="z-10 text-center max-w-4xl">
           <h1
             className="line text-5xl md:text-7xl font-extrabold leading-tight tracking-tight text-white mb-8"
