@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+
 import MapCard from "../components/MapCard";
 import ClockCard from "../components/ClockCard";
+import WeOwnItCard from "../components/WeOwnItCard";
 
 export default function HomePage() {
   return (
@@ -68,9 +67,7 @@ export default function HomePage() {
               <MapCard />
 
               {/* we own it 카드 */}
-              <div className="card text-center" style={{ gridArea: 'weownit' }}>
-                <span className="text-3xl font-bold">WE OWN IT!</span>
-              </div>
+              <WeOwnItCard style={{ gridArea: 'weownit' }} />
 
               {/* 고객사 카드 */}
               <div

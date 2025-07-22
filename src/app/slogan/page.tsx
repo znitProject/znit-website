@@ -8,7 +8,7 @@ export default function SloganPage() {
         </p>
         <div className="bg-gray-100 p-8 rounded-lg">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            "We Own It"
+            &quot;We Own It&quot;
           </h2>
           <p className="text-gray-700">
             우리는 우리가 하는 모든 일에 책임을 지고, 
