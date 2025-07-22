@@ -29,3 +29,4 @@ body {
 .card {
   @apply bg-[#F5F5F5] rounded-2xl flex items-center justify-center text-black text-base font-medium min-h-[100px] h-full;
 }
+
