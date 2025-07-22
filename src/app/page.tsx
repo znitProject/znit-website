@@ -5,6 +5,12 @@ import MapCard from "../components/MapCard";
 import ClockCard from "../components/ClockCard";
 import WeOwnItCard from "../components/WeOwnItCard";
 import WorkWithUsCard from "../components/WorkWithUsCard";
+import CustomerCarousel from "../components/CustomerCarousel";
+import DarkModeCard from "../components/DarkModeCard";
+import ContactCard from "../components/ContactCard";
+import KeywordCard from "../components/KeywordCard";
+import WorkCard from "../components/WorkCard";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -14,7 +20,7 @@ export default function HomePage() {
         {/* 왼쪽: 큰 타이포 */}
         <div className="flex-1 flex flex-col justify-center items-start">
           <h1 className="font-normal text-5xl md:text-7xl leading-tight text-black whitespace-pre-line mb-4" style={{fontFamily:'Istok Web'}}>
-            글씨{"\n"}글글씨{"\n"}글글글씨_
+            ZNIT{"\n"}당신과 우리의{"\n"}열정이 피어나는 곳 
           </h1>
         </div>
         {/* 오른쪽: 대형 카드(다크모드/썸네일 등) */}
@@ -42,25 +48,19 @@ export default function HomePage() {
           }}
         >
           {/* keyword 카드 */}
-          <div className="card" style={{ gridArea: 'keyword' }}>
-            <span className="text-lg font-semibold">Keyword</span>
-          </div>
+          <KeywordCard />
 
           {/* work 카드 */}
-              <div className="card !text-3xl !font-bold" style={{ gridArea: 'work' }}>
-                WORK
-              </div>
+          <WorkCard />
 
-              {/* clock+달력 카드 */}
-              <ClockCard />
+          {/* clock+달력 카드 */}
+          <ClockCard />
 
               {/* work with us 카드 */}
               <WorkWithUsCard />
 
               {/* contact 카드 */}
-              <div className="card" style={{ gridArea: 'contact' }}>
-                <span className="text-2xl font-semibold">Contact</span>
-              </div>
+              <ContactCard />
 
               {/* map 카드 */}
               <MapCard />
@@ -68,24 +68,11 @@ export default function HomePage() {
               {/* we own it 카드 */}
               <WeOwnItCard style={{ gridArea: 'weownit' }} />
 
-              {/* 고객사 카드 */}
-              <div
-                className="card !items-start !pl-6 sm:!pl-8 flex-col"
-                style={{ gridArea: 'customer' }}
-              >
-                <div className="text-base sm:text-lg font-medium">
-                  TOSS NAVER Coupang KAKAO KREAM MUSINSA
-                </div>
-                <div className="text-sm text-gray-600 mt-1">Customer</div>
-              </div>
+              {/* 고객사 카드 - 무한 슬라이드 */}
+              <CustomerCarousel />
 
               {/* 다크모드 카드 */}
-              <div
-                className="card bg-black text-white text-sm sm:text-base font-semibold"
-                style={{ gridArea: 'darkmode' }}
-              >
-                Dark Mode
-              </div>
+              <DarkModeCard style={{ gridArea: 'darkmode' }} />
             </section>
           </div>
 

@@ -10,14 +10,19 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",
+    "matter-js": "^0.20.0",
     "next": "15.4.2",
+    "next-themes": "^0.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/matter-js": "^0.19.8",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
