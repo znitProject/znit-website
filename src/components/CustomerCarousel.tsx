@@ -27,14 +27,8 @@ export default function CustomerCarousel() {
 
     const ctx = gsap.context(() => {
       gsap.to(items, {
-        x: `-=${itemWidth}`,
-        modifiers: {
-          x: (x) => {
-            const mod = parseFloat(x) % totalWidth;
-            return `${mod}px`;
-          },
-        },
-        duration: 1,
+        x: -totalWidth,
+        duration: 30,
         ease: "linear",
         repeat: -1,
       });

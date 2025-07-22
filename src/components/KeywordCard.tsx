@@ -4,12 +4,12 @@ import Matter from "matter-js";
 
 // 키워드 배열 예시
 const keywords = [
-  "혁신",
-  "연결",
-  "성장",
-  "신뢰",
-  "창의",
-  "도전",
+  "협동심",
+  "책임감",
+  "꼼꼼함",
+  "전문성",
+  "맥락",
+  "전략적",
 ];
 
 // KeywordCard 컴포넌트: matter.js 기반 3D bubble + 중력 + 마우스 인터랙션
@@ -113,7 +113,7 @@ export default function KeywordCard() {
     width: 88,
     height: 88,
     borderRadius: "50%",
-    background: "radial-gradient(circle at 30% 30%, #fff 0%, #e0e7ef 40%, #60a5fa 100%)",
+    background: "radial-gradient(circle at 30% 30%, #fff 0%, #e0e7ef 40%,rgb(178, 231, 225) 100%)",
     boxShadow: "0 8px 32px 0 rgba(30,64,175,0.18), 0 1.5px 0 0 #fff inset",
     border: "2.5px solid #fff",
     position: "absolute",
@@ -134,7 +134,7 @@ export default function KeywordCard() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-2xl mx-auto h-[310px] bg-gradient-to-b from-blue-100 to-white rounded-2xl overflow-hidden pt-2 pb-4"
+      className="relative w-full max-w-2xl mx-auto h-[310px] bg-gradient-to-b from-yellow-50 to-blue-100 rounded-2xl overflow-hidden pt-2 pb-4"
       style={{ gridArea: "keyword" }}
     >
       {/* 키워드 버블들 */}
