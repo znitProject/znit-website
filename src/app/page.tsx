@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import MapCard from "../components/MapCard";
 import ClockCard from "../components/ClockCard";
 
 export default function HomePage() {
@@ -64,9 +65,7 @@ export default function HomePage() {
               </div>
 
               {/* map 카드 */}
-              <div className="card bg-gray-200" style={{ gridArea: 'map' }}>
-                <span className="text-xl font-medium">Map</span>
-              </div>
+              <MapCard />
 
               {/* we own it 카드 */}
               <div className="card text-center" style={{ gridArea: 'weownit' }}>

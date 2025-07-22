@@ -2,16 +2,26 @@
 import React, { useEffect, useState } from "react";
 
 const ClockCard = () => {
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState<Date | null>(null);
 
   useEffect(() => {
+    setTime(new Date()); // Set initial time on client
     const timerId = setInterval(() => {
       setTime(new Date());
     }, 1000);
     return () => clearInterval(timerId);
   }, []);
 
-  const formatTime = (date: Date) => {
+  const formatTime = (date: Date | null) => {
+    if (!date) {
+      return {
+        month: '',
+        dayName: '',
+        dateNumber: '',
+        timeString: '',
+        seconds: '',
+      };
+    }
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
