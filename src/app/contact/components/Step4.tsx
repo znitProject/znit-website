@@ -4,7 +4,7 @@ interface Step4Props {
   formData: FormData;
 }
 
-export default function Step4({ formData }: Step4Props) {
+export default function Step4({ formData: _ }: Step4Props) {
   return (
     <div className="text-center py-16">
       <div className="w-24 h-24 bg-gray-900 text-white rounded-full flex items-center justify-center mx-auto mb-8 text-3xl font-bold">

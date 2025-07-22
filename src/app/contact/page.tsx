@@ -1,22 +1,64 @@
+'use client';
+
+import { useState } from 'react';
+import ContactLayout from './components/ContactLayout';
+import Step1 from './components/Step1';
+import Step2 from './components/Step2';
+import Step3 from './components/Step3';
+import Step4 from './components/Step4';
+import { FormData } from '../../types/contact';
+
 export default function ContactPage() {
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [formData, setFormData] = useState<FormData>({
+    projectType: [],
+    projectTitle: '',
+    projectDescription: '',
+    companyName: '',
+    name: '',
+    position: '',
+    email: '',
+    phone: ''
+  });
+
+  const updateFormData = (data: Partial<FormData>) => {
+    setFormData(prev => ({ ...prev, ...data }));
+  };
+
+  const nextStep = () => {
+    if (currentStep < 4) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const previousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <Step1 formData={formData} updateFormData={updateFormData} />;
+      case 2:
+        return <Step2 formData={formData} updateFormData={updateFormData} />;
+      case 3:
+        return <Step3 formData={formData} updateFormData={updateFormData} />;
+      case 4:
+        return <Step4 formData={formData} />;
+      default:
+        return <Step1 formData={formData} updateFormData={updateFormData} />;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Contact Us</h1>
-        <p className="text-lg text-gray-600 mb-6">
-          ZNIT에 문의하거나 연락하고 싶으시면 언제든지 연락주세요.
-        </p>
-        <div className="bg-gray-100 p-8 rounded-lg">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            연락처 정보
-          </h2>
-          <div className="space-y-2 text-gray-700">
-            <p>이메일: contact@znit.com</p>
-            <p>전화번호: 02-1234-5678</p>
-            <p>주소: 서울특별시 강남구 테헤란로 123</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ContactLayout
+      currentStep={currentStep}
+      nextStep={nextStep}
+      previousStep={previousStep}
+    >
+      {renderStep()}
+    </ContactLayout>
   );
 } 
