@@ -12,7 +12,7 @@ export default function Header() {
     { name: 'HOME', path: '/' },
     { name: 'PROJECTS', path: '/work' },
     { name: 'ABOUT', path: '/slogan' },
-    { name: 'STORY', path: '/recruit' },
+    { name: 'CAREERS', path: '/recruit' },
     { name: 'CONTACT', path: '/contact' },
   ];
 
@@ -77,9 +77,9 @@ export default function Header() {
                 {menuItems.map((item, index) => (
                   <div
                     key={item.path}
-                    className="overflow-hidden"
+                    className="overflow-visible"
                     style={{
-                      maxHeight: isMenuOpen ? '100px' : '0',
+                      maxHeight: isMenuOpen ? '300px' : '0',
                       opacity: isMenuOpen ? 1 : 0,
                       transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
                       transition: `all 0.2s ease-out ${isMenuOpen ? index * 0.05 : (4 - index) * 0.05}s`
