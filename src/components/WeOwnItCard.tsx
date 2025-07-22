@@ -79,9 +79,6 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
           className="absolute inset-0 z-0 pointer-events-none transition duration-300 ease-out"
         />
 
-        {/* Texture Overlay */}
-        <div className="absolute inset-0 bg-[url('/texture/noise.png')] opacity-10 z-0 pointer-events-none" />
-
         {/* Main Content */}
         <div className="z-10 text-center max-w-4xl">
           <h1

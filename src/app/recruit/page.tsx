@@ -73,7 +73,7 @@ export default function WorkWithUsPage() {
           message: result.error
         });
       }
-    } catch (_e) {
+    } catch (_) {
       setSubmitStatus({
         type: 'error',
         message: '지원 접수 중 오류가 발생했습니다.'
