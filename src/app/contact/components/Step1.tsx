@@ -1,4 +1,5 @@
 import { FormData, ProjectType } from '../../../types/contact';
+import { motion } from 'framer-motion';
 
 interface Step1Props {
   formData: FormData;
@@ -35,8 +36,8 @@ export default function Step1({ formData, updateFormData }: Step1Props) {
     <div className="py-8">
       <h2 className="text-4xl font-bold text-gray-900 mb-12">어떤 종류 프로젝트 궁시랭?</h2>
       <div className="flex flex-wrap gap-4">
-        {projectTypes.map((type) => (
-          <div
+        {projectTypes.map((type, index) => (
+          <motion.div
             key={type.value}
             className={`px-8 py-4 border-2 rounded-full cursor-pointer transition-all duration-200 text-lg font-medium ${
               formData.projectType.includes(type.value)
@@ -44,9 +45,19 @@ export default function Step1({ formData, updateFormData }: Step1Props) {
                 : 'bg-white text-gray-700 border-gray-300 hover:border-gray-900'
             }`}
             onClick={() => handleTagClick(type.value)}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              delay: index * 0.1,
+              type: "spring", 
+              stiffness: 300, 
+              damping: 20 
+            }}
           >
             {type.label}
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

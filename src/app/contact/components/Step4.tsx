@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { FormData } from '../../../types/contact';
 
 interface Step4Props {
@@ -7,11 +8,35 @@ interface Step4Props {
 export default function Step4({ formData }: Step4Props) {
   return (
     <div className="text-center py-16">
-      <div className="w-24 h-24 bg-gray-900 text-white rounded-full flex items-center justify-center mx-auto mb-8 text-3xl font-bold">
+      <motion.div 
+        className="w-24 h-24 bg-gray-900 text-white rounded-full flex items-center justify-center mx-auto mb-8 text-3xl font-bold"
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 200, 
+          damping: 20,
+          duration: 0.8 
+        }}
+      >
         ✓
-      </div>
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">제출완료 !</h2>
-      <p className="text-xl text-gray-600">곧 연락드릴께~</p>
+      </motion.div>
+      <motion.h2 
+        className="text-3xl font-bold text-gray-900 mb-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
+        제출완료 !
+      </motion.h2>
+      <motion.p 
+        className="text-xl text-gray-600"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+      >
+        곧 연락드릴께~
+      </motion.p>
     </div>
   );
 } 
