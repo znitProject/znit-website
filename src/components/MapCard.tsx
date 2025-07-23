@@ -28,6 +28,7 @@ const MapCard = () => {
           attribution=""
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <Marker position={position} />
         <ZoomControl position="bottomright" />
       </MapContainer>
     </div>
