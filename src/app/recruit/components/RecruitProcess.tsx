@@ -90,7 +90,7 @@ const ProcessStep = ({
 
       {/* 설명 */}
       <motion.p 
-        className="text-gray-600 max-w-xs leading-relaxed"
+        className="text-gray-600 max-w-xs leading-relaxed whitespace-pre-line"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.6, delay: index * 0.2 + 0.5 }}
@@ -115,22 +115,22 @@ const RecruitProcess = () => {
     {
       number: "01",
       title: "지원서 제출",
-      description: "온라인 지원서를 통해 본인의 경력과 역량을 소개해주세요."
+      description: "온라인 지원서를 통해\n본인의 경력과 역량을\n소개해주세요."
     },
     {
       number: "02", 
       title: "서류 심사",
-      description: "제출된 지원서와 포트폴리오를 바탕으로 1차 심사를 진행합니다."
+      description: "제출된 지원서와\n포트폴리오를 바탕으로\n1차 심사를 진행합니다."
     },
     {
       number: "03",
       title: "면접 진행", 
-      description: "실무진과의 면접을 통해 서로의 가치관과 역량을 확인합니다."
+      description: "실무진과의 면접을 통해\n서로의 가치관과 역량을\n확인합니다."
     },
     {
       number: "04",
       title: "최종 합격",
-      description: "모든 과정을 통과하시면 ZNIT의 새로운 멤버가 됩니다!"
+      description: "모든 과정을 통과하시면\nZNIT의 새로운 멤버가\n됩니다!"
     }
   ];
 
@@ -140,47 +140,50 @@ const RecruitProcess = () => {
       className="w-full relative overflow-hidden"
       style={{ y }}
     >
-      <div className="relative z-10">
+      <div className="relative z-10 mt-20">
         <div className="py-32">
-          <div className="max-w-7xl mx-auto px-6">
-            {/* 타이틀 */}
-            <div className="mb-20">
-              <TypingTitle text="Process." />
-            </div>
+          <div className="w-full px-6">
+            {/* 전체 배경색 영역 */}
+            <div className="bg-gray-50 rounded-2xl p-12">
+              {/* 타이틀 */}
+              <div className="mb-20">
+                <TypingTitle text="Process." />
+              </div>
 
-            {/* 스텝 리스트 */}
-            <div className="relative hidden lg:flex justify-between items-start">
-              {processSteps.map((step, index) => {
-                const isLast = index === processSteps.length - 1;
-                return (
-                  <div key={index} className="relative flex flex-col items-center w-1/4">
-                  <ProcessStep 
-                    number={step.number}
-                    title={step.title}
-                    description={step.description}
-                    index={index}
-                  />
-                
-                  {!isLast && (
-                    <div className="absolute top-10 right-[-5rem] transform -translate-y-1/2 w-40 h-px border-t-2 border-dashed border-gray-300 z-0" />
-                  )}
-                </div>
-                );
-              })}
-            </div>
+              {/* 스텝 리스트 */}
+              <div className="relative hidden lg:flex justify-between items-start">
+                {processSteps.map((step, index) => {
+                  const isLast = index === processSteps.length - 1;
+                  return (
+                    <div key={index} className="relative flex flex-col items-center w-1/4">
+                    <ProcessStep 
+                      number={step.number}
+                      title={step.title}
+                      description={step.description}
+                      index={index}
+                    />
+                  
+                    {!isLast && (
+                      <div className="absolute top-10 right-[-5rem] transform -translate-y-1/2 w-40 h-px border-t-2 border-dashed border-gray-300 z-0" />
+                    )}
+                  </div>
+                  );
+                })}
+              </div>
 
-            {/* 모바일: 스택 방식 */}
-            <div className="flex flex-col gap-16 lg:hidden">
-              {processSteps.map((step, index) => (
-                <div key={index} className="relative">
-                  <ProcessStep 
-                    number={step.number}
-                    title={step.title}
-                    description={step.description}
-                    index={index}
-                  />
-                </div>
-              ))}
+              {/* 모바일: 스택 방식 */}
+              <div className="flex flex-col gap-16 lg:hidden">
+                {processSteps.map((step, index) => (
+                  <div key={index} className="relative">
+                    <ProcessStep 
+                      number={step.number}
+                      title={step.title}
+                      description={step.description}
+                      index={index}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
             
           </div>
