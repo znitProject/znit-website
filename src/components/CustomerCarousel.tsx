@@ -3,7 +3,6 @@
 import React, { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 
-// 고객사 리스트
 const CUSTOMERS = [
   "TOSS",
   "NAVER",
@@ -31,6 +30,9 @@ export default function CustomerCarousel() {
         duration: 30,
         ease: "linear",
         repeat: -1,
+        modifiers: {
+          x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth),
+        },
       });
     }, trackRef);
 
@@ -39,31 +41,30 @@ export default function CustomerCarousel() {
 
   return (
     <div
-      className="overflow-hidden w-full bg-white border border-black/10 rounded-[20px] h-30 flex items-center relative"
+      className="relative w-full overflow-hidden h-24 rounded-2xl border border-neutral-500 shadow-[inset_0_0_0.5px_rgba(0,0,0,0.08)] bg-gradient-to-r from-white via-slate-50 to-white"
       style={{ gridArea: "customer" }}
     >
-      {/* 슬라이드 트랙 */}
+      {/* 고객사 슬라이드 트랙 */}
       <div
         ref={trackRef}
-        className="flex whitespace-nowrap gap-8 px-4"
+        className="flex whitespace-nowrap gap-8 px-6 h-full items-center"
         style={{ willChange: "transform" }}
       >
-        {/* 고객사 이름 반복 */}
         {Array(10)
           .fill(null)
           .flatMap(() => CUSTOMERS)
           .map((name, idx) => (
             <span
               key={idx}
-              className="carousel-item text-base sm:text-lg font-medium text-blue-900 px-2 select-none"
+              className="carousel-item text-lg sm:text-4xl font-semibold tracking-tight text-neutral-800 dark:text-gray/90 px-2 select-none [text-shadow:0_1px_2px_rgba(0,0,0,0.05)]"
             >
               {name}
             </span>
           ))}
       </div>
 
-      {/* 좌측 하단 텍스트 */}
-      <div className="absolute left-6 bottom-2 text-xs text-gray-500 hidden sm:block">
+      {/* 좌측 하단 라벨 */}
+      <div className="absolute left-3 top-1.5  text-gray-300 text-[10px] font-mono uppercase tracking-widest ">
         customer
       </div>
     </div>

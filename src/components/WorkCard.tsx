@@ -70,7 +70,7 @@ export default function WorkCard() {
         <span>
           <span 
             ref={itRef} 
-            className="inline-block text-white text-5xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
+            className="inline-block text-white text-4xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
           >
             IT
           </span>
@@ -79,7 +79,7 @@ export default function WorkCard() {
         <span>
           <span 
             ref={andRef} 
-            className="inline-block text-white text-4xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
+            className="inline-block text-white text-3xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
           >
             &
           </span>
@@ -88,7 +88,7 @@ export default function WorkCard() {
         <span>
           <span 
             ref={designRef} 
-            className="inline-block text-white text-5xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
+            className="inline-block text-white text-4xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
           >
             Design
           </span>

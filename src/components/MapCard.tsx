@@ -1,6 +1,6 @@
 "use client";
 // 타입 에러 방지용 import
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L, { LatLngExpression } from "leaflet";
 import React, { useEffect } from "react";
@@ -22,13 +22,13 @@ const MapCard = () => {
   }, []);
 
   return (
-    <div className="card bg-gray-200 h-full" style={{ gridArea: 'map', padding: 0, overflow: 'hidden' }}>
-      <MapContainer center={position} zoom={17} style={{ height: "100%", width: "100%" }} scrollWheelZoom={false}>
+    <div className="card bg-gray-200 h-full transition-transform duration-300 hover:scale-105" style={{ gridArea: 'map', padding: 0, overflow: 'hidden' }}>
+      <MapContainer center={position} zoom={17} style={{ height: "100%", width: "100%" }} scrollWheelZoom={false} zoomControl={false}>
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution=""
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={position} />
+        <ZoomControl position="bottomright" />
       </MapContainer>
     </div>
   );

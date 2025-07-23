@@ -47,7 +47,7 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
   return (
     <div
       ref={cardRef}
-      className="h-30 flex flex-col items-center justify-center cursor-pointer border rounded-[20px]"
+      className="h-24 flex flex-col items-center justify-center cursor-pointer border rounded-[20px]"
       style={{ backgroundColor: 'black', color: 'white', ...style }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
