@@ -23,8 +23,8 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     const [mouseX, setMouseX] = useState(0);
     const [mouseY, setMouseY] = useState(0);
   
-    // 반응형 반지름과 카드 크기
-    const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 250 : 420;
+    // 반응형 반지름과 카드 크기 (더 작게)
+    const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 200 : 280;
     const angleStep = 360 / items.length; // 카드 하나당 각도
   
 
@@ -109,8 +109,8 @@ export default function Carousel3D({ items }: Carousel3DProps) {
       >
         {/* 3D 캐러셀 컨테이너 */}
         <div 
-          className="relative h-[300px] sm:h-[400px] lg:h-[500px] mb-4 sm:mb-6 lg:mb-8 cursor-grab active:cursor-grabbing" 
-          style={{ perspective: typeof window !== 'undefined' && window.innerWidth < 768 ? '800px' : '1200px' }}
+          className="relative h-[200px] sm:h-[250px] lg:h-[300px] mb-2 sm:mb-2 lg:mb-4  cursor-grab active:cursor-grabbing" 
+          style={{ perspective: typeof window !== 'undefined' && window.innerWidth < 768 ? '600px' : '800px' }}
           onMouseDown={handleMouseDown}
         >
           <div 
@@ -127,20 +127,19 @@ export default function Carousel3D({ items }: Carousel3DProps) {
               return (
                 <div
                   key={item.id}
-                  className="absolute w-64 sm:w-80 lg:w-96 h-48 sm:h-60 lg:h-72 flex flex-col justify-center items-center cursor-pointer border-2 sm:border-4 border-gray-400 shadow-lg rounded-lg"
+                  className="absolute w-48 sm:w-56 lg:w-64 h-36 sm:h-40 lg:h-48 flex flex-col justify-center items-center cursor-pointer border-2 sm:border-4 border-gray-300 shadow-lg rounded-lg bg-white"
                   style={{
-                    backgroundColor: item.color,
                     transform: `rotateY(${rotateY}deg) translateZ(${radius}px)`,
                     transformOrigin: 'center center',
                     left: '50%',
                     top: '50%',
-                    marginLeft: typeof window !== 'undefined' && window.innerWidth < 768 ? '-128px' : typeof window !== 'undefined' && window.innerWidth < 1024 ? '-160px' : '-192px',
-                    marginTop: typeof window !== 'undefined' && window.innerWidth < 768 ? '-96px' : typeof window !== 'undefined' && window.innerWidth < 1024 ? '-120px' : '-144px',
+                    marginLeft: typeof window !== 'undefined' && window.innerWidth < 768 ? '-96px' : typeof window !== 'undefined' && window.innerWidth < 1024 ? '-112px' : '-128px',
+                    marginTop: typeof window !== 'undefined' && window.innerWidth < 768 ? '-72px' : typeof window !== 'undefined' && window.innerWidth < 1024 ? '-80px' : '-96px',
                   }}
                   onClick={() => {}} // 카드 클릭 이벤트
                 >
-                  <div className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white mb-2 sm:mb-4">{item.id}</div>
-                  <div className="text-sm sm:text-base text-white text-center px-4 sm:px-6 lg:px-8 opacity-90 font-medium">{item.title}</div>
+                  <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-1 sm:mb-2">{item.id}</div>
+                  <div className="text-xs sm:text-sm text-gray-600 text-center px-2 sm:px-3 lg:px-4 opacity-90 font-medium">{item.title}</div>
                 </div>
               );
             })}

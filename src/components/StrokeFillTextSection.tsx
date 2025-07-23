@@ -177,9 +177,9 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className
       filter: "blur(16px)",
       zIndex: 0,
     },
-    // 추가 원들은 랜덤 색상/위치/크기로 생성
+    // 추가 원들은 고정된 색상/위치/크기로 생성
     ...Array.from({ length: NUM_BG_CIRCLES - 8 }).map((_, i) => {
-      // 랜덤 색상 팔레트
+      // 고정된 색상 팔레트
       const palette = [
         ["#fde68a88", "#facc1533"], // 노랑
         ["#fdba7488", "#f59e4233"], // 주황
@@ -190,15 +190,15 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className
         ["#fef9c388", "#fde68a33"], // 연노랑
         ["#99f6e488", "#22d3ee33"], // 연청록
       ];
-      const [c1, c2] = palette[Math.floor(Math.random() * palette.length)];
+      const [c1, c2] = palette[i % palette.length];
       return {
-        width: 120 + Math.random() * 400,
-        height: 120 + Math.random() * 400,
-        left: `${10 + Math.random() * 80}%`,
-        top: `${10 + Math.random() * 80}%`,
+        width: 120 + (i * 47) % 400,
+        height: 120 + (i * 53) % 400,
+        left: `${10 + (i * 17) % 80}%`,
+        top: `${10 + (i * 23) % 80}%`,
         background: `radial-gradient(circle, ${c1} 0%, ${c2} 70%, transparent 100%)`,
-        opacity: 0.10 + Math.random() * 0.25,
-        filter: `blur(${12 + Math.random() * 32}px)`,
+        opacity: 0.10 + (i * 0.03) % 0.25,
+        filter: `blur(${12 + (i * 2) % 32}px)`,
         zIndex: 0,
       };
     })
@@ -208,6 +208,7 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className
     <div
       className={`relative w-full flex flex-col justify-center items-start py-24 px-8 md:px-32 cursor-pointer transition-all duration-700 overflow-hidden ${className || ""}`}
       style={{ minHeight: 420 }}
+      suppressHydrationWarning
     >
       {/* 여러 개의 흐릿한 원형 그라디언트 배경 */}
       {bgStyles.map((style, i) => (
