@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Red_Hat_Display } from "next/font/google";
+import { Red_Hat_Display, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -9,6 +9,12 @@ import Providers from "@/components/Providers";
 const redHatDisplay = Red_Hat_Display({
   subsets: ["latin"],
   variable: "--font-red-hat-display",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["900"],
+  variable: "--font-montserrat",
 });
 
 const nanumSquareNeo = localFont({
@@ -28,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${redHatDisplay.variable} ${nanumSquareNeo.variable} antialiased`}>
+      <body className={`${redHatDisplay.variable} ${montserrat.variable} ${nanumSquareNeo.variable} antialiased`}>
         <Providers>
           <Header />
           <main className="min-h-screen">
