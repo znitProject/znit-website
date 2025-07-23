@@ -109,7 +109,7 @@ const WorkWithUsCard = () => {
           ref={textRef}
           className="block text-center"
           style={{
-            fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+            fontSize: 'clamp(1.8rem, 4vw, 3rem)',
             fontWeight: '800',
             letterSpacing: '-0.03em',
             lineHeight: '0.9',

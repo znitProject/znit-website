@@ -12,79 +12,28 @@ export default function WorkCard() {
 
   useEffect(() => {
     if (isHovered) {
-      // 핸드라이팅 효과를 위한 애니메이션
       gsap.fromTo(
         [itRef.current, andRef.current, designRef.current],
-        { 
-          opacity: 0, 
-          scale: 0.8,
-          rotation: -15,
-          y: 30,
-          x: -20,
-          transformOrigin: "left bottom"
+        {
+          opacity: 0,
+          y: 20,
         },
         {
           opacity: 1,
-          scale: 1,
-          rotation: () => gsap.utils.random(-3, 3), // 각각 다른 약간의 기울기
           y: 0,
-          x: 0,
-          stagger: 0.15, // 순차적으로 나타나는 효과
-          duration: 0.8,
-          ease: "back.out(1.7)", // 탄성있는 이징
-          onComplete: function() {
-            // 쓰는 듯한 살짝의 흔들림 효과
-            gsap.to(this.targets(), {
-              rotation: () => gsap.utils.random(-1, 1),
-              duration: 0.1,
-              yoyo: true,
-              repeat: 3,
-              ease: "power2.inOut"
-            });
-          }
+          stagger: 0.1,
+          duration: 0.5,
+          ease: "power2.out",
         }
       );
-
-      // 글자별로 약간의 지연된 떨림 효과 추가
-      gsap.to(itRef.current, {
-        delay: 0.9,
-        rotation: () => gsap.utils.random(-2, 2),
-        duration: 0.1,
-        repeat: 2,
-        yoyo: true,
-        ease: "power1.inOut"
-      });
-
-      gsap.to(andRef.current, {
-        delay: 1.1,
-        rotation: () => gsap.utils.random(-2, 2),
-        duration: 0.1,
-        repeat: 2,
-        yoyo: true,
-        ease: "power1.inOut"
-      });
-
-      gsap.to(designRef.current, {
-        delay: 1.3,
-        rotation: () => gsap.utils.random(-2, 2),
-        duration: 0.1,
-        repeat: 2,
-        yoyo: true,
-        ease: "power1.inOut"
-      });
-
     } else {
-      // 사라질 때는 빠르게 페이드아웃
       gsap.to(
         [itRef.current, andRef.current, designRef.current],
         {
           opacity: 0,
-          scale: 0.9,
-          rotation: () => gsap.utils.random(10, 20),
           y: -20,
-          x: 30,
           stagger: 0.05,
-          duration: 0.4,
+          duration: 0.3,
           ease: "power2.in",
         }
       );
@@ -117,44 +66,29 @@ export default function WorkCard() {
       </span>
 
       {/* 핸드라이팅 스타일 Hover text */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none gap-2">
-        <span className="overflow-hidden">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none py-4">
+        <span>
           <span 
             ref={itRef} 
-            className="inline-block text-white text-5xl font-extrabold opacity-0 drop-shadow-2xl select-none"
-            style={{
-            
-              textShadow: '3px 3px 6px rgba(0,0,0,0.7), 0 0 20px rgba(255,255,255,0.3)',
-              filter: 'contrast(1.2) brightness(1.1)',
-            }}
+            className="inline-block text-white text-5xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
           >
             IT
           </span>
         </span>
         
-        <span className="overflow-hidden">
+        <span>
           <span 
             ref={andRef} 
-            className="inline-block text-white text-4xl font-extrabold opacity-0 drop-shadow-2xl select-none"
-            style={{
-            
-              textShadow: '3px 3px 6px rgba(0,0,0,0.7), 0 0 20px rgba(255,255,255,0.3)',
-              filter: 'contrast(1.2) brightness(1.1)',
-            }}
+            className="inline-block text-white text-4xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
           >
             &
           </span>
         </span>
         
-        <span className="overflow-hidden">
+        <span>
           <span 
             ref={designRef} 
-            className="inline-block text-white text-5xl font-extrabold opacity-0 drop-shadow-2xl select-none"
-            style={{
-          
-              textShadow: '3px 3px 6px rgba(0,0,0,0.7), 0 0 20px rgba(255,255,255,0.3)',
-              filter: 'contrast(1.2) brightness(1.1)',
-            }}
+            className="inline-block text-white text-5xl font-nanumSquareNeo font-extrabold opacity-0 drop-shadow-2xl select-none"
           >
             Design
           </span>
