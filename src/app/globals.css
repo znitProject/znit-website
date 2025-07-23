@@ -18,12 +18,24 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+  
+  body {
+    background: #0a0a0a !important;
+  }
+  
+  html {
+    background: #0a0a0a !important;
+  }
 }
 
 body {
-  background: var(--background);
+  background: #ffffff !important;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  background: #ffffff !important;
 }
 
 

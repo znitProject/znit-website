@@ -60,39 +60,47 @@ export default function FileUpload({ onSubmit }: FileUploadProps) {
         </div>
       )}
 
-      {/* 파일 선택 영역 */}
-      <div className="flex items-center space-x-4">
-        <div className="flex-1">
-          <input
-            type="file"
-            id="resume"
-            onChange={handleFileChange}
-            accept=".pdf,.hwp,.doc,.docx"
-            className="hidden"
-          />
-          <label
-            htmlFor="resume"
-            className="block w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-full text-gray-600 cursor-pointer hover:border-gray-400 transition-colors"
-          >
-            {selectedFile ? selectedFile.name : '파일명.pdf'}
-          </label>
-        </div>
-        <button
-          onClick={() => document.getElementById('resume')?.click()}
-          className="px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
-        >
-          이력서 첨부하기
-        </button>
-      </div>
+      {/* 숨겨진 파일 input - 항상 렌더링 */}
+      <input
+        type="file"
+        id="resume"
+        onChange={handleFileChange}
+        accept=".pdf,.hwp,.doc,.docx"
+        className="hidden"
+      />
 
-      {/* 제출 버튼 */}
-      <button
-        onClick={handleSubmit}
-        disabled={!selectedFile || isSubmitting}
-        className="w-full px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isSubmitting ? '제출 중...' : '보내기'}
-      </button>
+      {/* 파일 선택 영역 */}
+      {!selectedFile && (
+        <div className="flex justify-end">
+          <button
+            onClick={() => document.getElementById('resume')?.click()}
+            className="px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
+          >
+            이력서 첨부하기
+          </button>
+        </div>
+      )}
+
+      {/* 파일이 선택되었을 때만 보이는 영역 */}
+      {selectedFile && (
+        <div className="flex justify-end items-center space-x-4">
+          <div className="w-64">
+            <label
+              htmlFor="resume"
+              className="block w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-full text-gray-600 cursor-pointer hover:border-gray-400 transition-colors"
+            >
+              {selectedFile.name}
+            </label>
+          </div>
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? '제출 중...' : '보내기'}
+          </button>
+        </div>
+      )}
     </div>
   );
 } 
