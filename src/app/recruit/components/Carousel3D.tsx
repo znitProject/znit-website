@@ -63,7 +63,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
       if (!isDragging) return;
       
       const deltaX = e.clientX - lastMouseX;
-      setRotation(prev => prev - deltaX * 0.5); // 왼쪽으로 회전 (음수)
+      setRotation(prev => prev + deltaX * 0.5); // 마우스 방향과 일치하도록 양수로 변경
       setLastMouseX(e.clientX);
       setLastInteraction(Date.now()); // 상호작용 시간 업데이트
     };
