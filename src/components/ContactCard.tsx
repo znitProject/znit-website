@@ -26,7 +26,7 @@ export default function ContactCard() {
         aria-hidden="true"
       />
       {/* Contact 아이콘 및 텍스트 */}
-      <div className="relative flex flex-col items-center justify-center z-10">
+      <div className="absolute top-0 right-0 p-4 z-10">
         <span className="text-3xl font-semibold text-white" style={{ fontFamily: 'Red Hat Display' }}>Contact Us</span>
       </div>
     </Link>

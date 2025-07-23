@@ -1,16 +1,34 @@
 "use client";
-import React from 'react';
+// 타입 에러 방지용 import
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L, { LatLngExpression } from "leaflet";
+import React, { useEffect } from "react";
+
+const position: LatLngExpression = [37.6034, 126.7694];
 
 const MapCard = () => {
+  useEffect(() => {
+    // 클라이언트 환경에서만 leaflet 마커 아이콘 경로 수정
+    if (typeof window !== "undefined") {
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+      });
+    }
+  }, []);
+
   return (
-    <div className="card bg-gray-200" style={{ gridArea: 'map', padding: 0, overflow: 'hidden' }}>
-      <iframe
-        width="100%"
-        height="100%"
-        
-        src="https://www.openstreetmap.org/export/embed.html?bbox=126.76933274952,37.6033444827267,126.76938274952,37.6033944827267&layer=mapnik&marker=37.6033694827267,126.76935774952"
-        style={{ border: 0 }}
-      ></iframe>
+    <div className="card bg-gray-200 h-full" style={{ gridArea: 'map', padding: 0, overflow: 'hidden' }}>
+      <MapContainer center={position} zoom={17} style={{ height: "100%", width: "100%" }} scrollWheelZoom={false}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={position} />
+      </MapContainer>
     </div>
   );
 };
