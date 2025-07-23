@@ -1,7 +1,7 @@
 "use client";
 
 
-import MapCard from "../components/MapCard";
+import dynamic from "next/dynamic";
 import ClockCard from "../components/ClockCard";
 import WeOwnItCard from "../components/WeOwnItCard";
 import WorkWithUsCard from "../components/WorkWithUsCard";
@@ -11,6 +11,8 @@ import ContactCard from "../components/ContactCard";
 import KeywordCard from "../components/KeywordCard";
 import WorkCard from "../components/WorkCard";
 import Link from "next/link";
+
+const MapCard = dynamic(() => import("../components/MapCard"), { ssr: false });
 
 export default function HomePage() {
   return (

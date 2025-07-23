@@ -21,7 +21,9 @@ export default function WorkCard() {
       {/* 어두운 오버레이 (호버 시 더 진해짐) */}
       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/35 transition-colors duration-300" aria-hidden="true" />
       {/* 텍스트 */}
-      <span className="relative z-10">WORK</span>
+      <span className="absolute left-0 bottom-0 z-10 text-white text-5xl font-extrabold p-6 drop-shadow-lg select-none">
+        WORK
+      </span>
     </Link>
   );
 } 
