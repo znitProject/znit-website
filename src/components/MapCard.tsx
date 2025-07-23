@@ -11,6 +11,7 @@ const MapCard = () => {
   useEffect(() => {
     // 클라이언트 환경에서만 leaflet 마커 아이콘 경로 수정
     if (typeof window !== "undefined") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (L.Icon.Default.prototype as any)._getIconUrl;
       L.Icon.Default.mergeOptions({
         iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",

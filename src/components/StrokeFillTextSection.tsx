@@ -211,6 +211,7 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className
     <div
       className={`relative w-full flex flex-col justify-center items-start py-24 px-8 md:px-32 cursor-pointer transition-all duration-700 overflow-hidden ${className || ""}`}
       style={{ minHeight: 420 }}
+      suppressHydrationWarning
     >
       {/* 여러 개의 흐릿한 원형 그라디언트 배경 */}
       {bgStyles.map((style, i) => (

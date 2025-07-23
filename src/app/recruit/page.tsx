@@ -2,8 +2,8 @@
 
 import FileUpload from './components/FileUpload';
 import Benefits from './components/Benefits';
+import RecruitProcess from './components/RecruitProcess';
 import TitleAnimation from './components/TitleAnimation';
-import CarouselSection from './components/CarouselSection';
 
 export default function RecruitPage() {
   const handleFileSubmit = async (file: File) => {
@@ -29,19 +29,15 @@ export default function RecruitPage() {
       {/* Work with us 타이틀 애니메이션 - 풀스크린 */}
       <TitleAnimation />
 
-
-
-      {/* 3D 캐러셀 섹션 - 전용 애니메이션 구간 */}
-      <CarouselSection />
-
       {/* 풀스크린 섹션 */}
       <div className="w-full bg-white">
         <div className="w-full px-4 sm:px-6 lg:px-8">
-          {/* TO JOIN US! 제목 */}
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-6 sm:mb-8 mt-6 sm:mt-8 text-center sm:text-right">TO JOIN US!</h2>
 
           {/* 8개 카드 그리드 */}
           <Benefits />
+
+          {/* 채용 프로세스 */}
+          <RecruitProcess />
 
           {/* 지원 섹션 */}
           <div className="mt-12 sm:mt-16 lg:mt-20 mb-12 sm:mb-16 lg:mb-20">
