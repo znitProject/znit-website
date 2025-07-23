@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,6 +9,11 @@ import Providers from "@/components/Providers";
 const redHatDisplay = Red_Hat_Display({
   subsets: ["latin"],
   variable: "--font-red-hat-display",
+});
+
+const nanumSquareNeo = localFont({
+  src: "../../public/fonts/NanumSquareNeo-Variable.ttf",
+  variable: "--font-nanum-square-neo",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${redHatDisplay.variable} antialiased bg-white`}>
+      <body className={`${redHatDisplay.variable} ${nanumSquareNeo.variable} antialiased bg-white`}>
         <Providers>
           <Header />
           <main className="min-h-screen">

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 
 // 텍스트 섹션 Props 타입 정의
@@ -22,6 +22,7 @@ const NUM_BG_CIRCLES = 16; // 원형 그라디언트 개수
 const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className }) => {
   const textRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const bgRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [bgStyles, setBgStyles] = useState<React.CSSProperties[]>([]);
 
   // 마우스가 올라간 줄만 텍스트 내부에 그라디언트 채우고, 튀거나 흔들리는 애니메이션
   const handleMouseEnter = (idx: number) => {
@@ -70,6 +71,125 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className
         });
       }
     });
+
+    // 다양한 색상의 원형 그라디언트 스타일 배열 생성
+    const generatedBgStyles = [
+      // 노랑
+      {
+        width: 520,
+        height: 520,
+        left: "40%",
+        top: "55%",
+        background: "radial-gradient(circle, #fde68a88 0%, #facc1533 70%, transparent 100%)",
+        opacity: 0.38,
+        filter: "blur(32px)",
+        zIndex: 0,
+      },
+      // 주황
+      {
+        width: 340,
+        height: 340,
+        left: "65%",
+        top: "35%",
+        background: "radial-gradient(circle, #fdba7488 0%, #f59e4233 70%, transparent 100%)",
+        opacity: 0.32,
+        filter: "blur(24px)",
+        zIndex: 0,
+      },
+      // 연보라
+      {
+        width: 420,
+        height: 420,
+        left: "20%",
+        top: "70%",
+        background: "radial-gradient(circle, #c4b5fd88 0%, #a78bfa33 70%, transparent 100%)",
+        opacity: 0.28,
+        filter: "blur(40px)",
+        zIndex: 0,
+      },
+      // 연파랑
+      {
+        width: 380,
+        height: 380,
+        left: "60%",
+        top: "80%",
+        background: "radial-gradient(circle, #7dd3fc88 0%, #38bdf833 70%, transparent 100%)",
+        opacity: 0.22,
+        filter: "blur(36px)",
+        zIndex: 0,
+      },
+      // 연초록
+      {
+        width: 300,
+        height: 300,
+        left: "30%",
+        top: "30%",
+        background: "radial-gradient(circle, #bbf7d088 0%, #34d39933 70%, transparent 100%)",
+        opacity: 0.19,
+        filter: "blur(28px)",
+        zIndex: 0,
+      },
+      // 연분홍
+      {
+        width: 260,
+        height: 260,
+        left: "80%",
+        top: "60%",
+        background: "radial-gradient(circle, #fbcfe888 0%, #f472b633 70%, transparent 100%)",
+        opacity: 0.18,
+        filter: "blur(24px)",
+        zIndex: 0,
+      },
+      // 연노랑
+      {
+        width: 200,
+        height: 200,
+        left: "50%",
+        top: "25%",
+        background: "radial-gradient(circle, #fef9c388 0%, #fde68a33 70%, transparent 100%)",
+        opacity: 0.15,
+        filter: "blur(18px)",
+        zIndex: 0,
+      },
+      // 연청록
+      {
+        width: 180,
+        height: 180,
+        left: "15%",
+        top: "50%",
+        background: "radial-gradient(circle, #99f6e488 0%, #22d3ee33 70%, transparent 100%)",
+        opacity: 0.13,
+        filter: "blur(16px)",
+        zIndex: 0,
+      },
+      // 추가 원들은 랜덤 색상/위치/크기로 생성
+      ...Array.from({ length: NUM_BG_CIRCLES - 8 }).map((_, i) => {
+        // 랜덤 색상 팔레트
+        const palette = [
+          ["#fde68a88", "#facc1533"], // 노랑
+          ["#fdba7488", "#f59e4233"], // 주황
+          ["#c4b5fd88", "#a78bfa33"], // 연보라
+          ["#7dd3fc88", "#38bdf833"], // 연파랑
+          ["#bbf7d088", "#34d39933"], // 연초록
+          ["#fbcfe888", "#f472b633"], // 연분홍
+          ["#fef9c388", "#fde68a33"], // 연노랑
+          ["#99f6e488", "#22d3ee33"], // 연청록
+        ];
+        const [c1, c2] = palette[Math.floor(Math.random() * palette.length)];
+        return {
+          width: 120 + Math.random() * 400,
+          height: 120 + Math.random() * 400,
+          left: `${10 + Math.random() * 80}%`,
+          top: `${10 + Math.random() * 80}%`,
+          background: `radial-gradient(circle, ${c1} 0%, ${c2} 70%, transparent 100%)`,
+          opacity: 0.10 + Math.random() * 0.25,
+          filter: `blur(${12 + Math.random() * 32}px)`,
+          zIndex: 0,
+        };
+      })
+    ];
+    setBgStyles(generatedBgStyles);
+
     // 여러 개의 원형 그라디언트 slow move 애니메이션
     bgRefs.current.forEach((bg, i) => {
       if (bg) {
@@ -86,123 +206,6 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className
       }
     });
   }, []);
-
-  // 다양한 색상의 원형 그라디언트 스타일 배열
-  const bgStyles = [
-    // 노랑
-    {
-      width: 520,
-      height: 520,
-      left: "40%",
-      top: "55%",
-      background: "radial-gradient(circle, #fde68a88 0%, #facc1533 70%, transparent 100%)",
-      opacity: 0.38,
-      filter: "blur(32px)",
-      zIndex: 0,
-    },
-    // 주황
-    {
-      width: 340,
-      height: 340,
-      left: "65%",
-      top: "35%",
-      background: "radial-gradient(circle, #fdba7488 0%, #f59e4233 70%, transparent 100%)",
-      opacity: 0.32,
-      filter: "blur(24px)",
-      zIndex: 0,
-    },
-    // 연보라
-    {
-      width: 420,
-      height: 420,
-      left: "20%",
-      top: "70%",
-      background: "radial-gradient(circle, #c4b5fd88 0%, #a78bfa33 70%, transparent 100%)",
-      opacity: 0.28,
-      filter: "blur(40px)",
-      zIndex: 0,
-    },
-    // 연파랑
-    {
-      width: 380,
-      height: 380,
-      left: "60%",
-      top: "80%",
-      background: "radial-gradient(circle, #7dd3fc88 0%, #38bdf833 70%, transparent 100%)",
-      opacity: 0.22,
-      filter: "blur(36px)",
-      zIndex: 0,
-    },
-    // 연초록
-    {
-      width: 300,
-      height: 300,
-      left: "30%",
-      top: "30%",
-      background: "radial-gradient(circle, #bbf7d088 0%, #34d39933 70%, transparent 100%)",
-      opacity: 0.19,
-      filter: "blur(28px)",
-      zIndex: 0,
-    },
-    // 연분홍
-    {
-      width: 260,
-      height: 260,
-      left: "80%",
-      top: "60%",
-      background: "radial-gradient(circle, #fbcfe888 0%, #f472b633 70%, transparent 100%)",
-      opacity: 0.18,
-      filter: "blur(24px)",
-      zIndex: 0,
-    },
-    // 연노랑
-    {
-      width: 200,
-      height: 200,
-      left: "50%",
-      top: "25%",
-      background: "radial-gradient(circle, #fef9c388 0%, #fde68a33 70%, transparent 100%)",
-      opacity: 0.15,
-      filter: "blur(18px)",
-      zIndex: 0,
-    },
-    // 연청록
-    {
-      width: 180,
-      height: 180,
-      left: "15%",
-      top: "50%",
-      background: "radial-gradient(circle, #99f6e488 0%, #22d3ee33 70%, transparent 100%)",
-      opacity: 0.13,
-      filter: "blur(16px)",
-      zIndex: 0,
-    },
-    // 추가 원들은 고정된 색상/위치/크기로 생성
-    ...Array.from({ length: NUM_BG_CIRCLES - 8 }).map((_, i) => {
-      // 고정된 색상 팔레트
-      const palette = [
-        ["#fde68a88", "#facc1533"], // 노랑
-        ["#fdba7488", "#f59e4233"], // 주황
-        ["#c4b5fd88", "#a78bfa33"], // 연보라
-        ["#7dd3fc88", "#38bdf833"], // 연파랑
-        ["#bbf7d088", "#34d39933"], // 연초록
-        ["#fbcfe888", "#f472b633"], // 연분홍
-        ["#fef9c388", "#fde68a33"], // 연노랑
-        ["#99f6e488", "#22d3ee33"], // 연청록
-      ];
-      const [c1, c2] = palette[i % palette.length];
-      return {
-        width: 120 + (i * 47) % 400,
-        height: 120 + (i * 53) % 400,
-        left: `${10 + (i * 17) % 80}%`,
-        top: `${10 + (i * 23) % 80}%`,
-        background: `radial-gradient(circle, ${c1} 0%, ${c2} 70%, transparent 100%)`,
-        opacity: 0.10 + (i * 0.03) % 0.25,
-        filter: `blur(${12 + (i * 2) % 32}px)`,
-        zIndex: 0,
-      };
-    })
-  ];
 
   return (
     <div

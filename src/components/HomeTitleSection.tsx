@@ -53,7 +53,7 @@ const HomeTitleSection: React.FC = () => {
     <div className="flex-1 flex flex-col justify-center items-start">
       {/* 메인 타이틀 */}
       <h1
-        className="font-bold text-6xl md:text-8xl leading-tight text-black whitespace-pre-line mb-4"
+        className="font-extrabold text-6xl md:text-8xl leading-tight text-black whitespace-pre-line mb-4"
         style={{ fontFamily: 'Istok Web' }}
       >
         {/* 타이핑 텍스트 */}

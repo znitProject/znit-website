@@ -8,7 +8,12 @@ export default {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-red-hat-display)", "sans-serif"],
+        nanumSquareNeo: ["var(--font-nanum-square)", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
