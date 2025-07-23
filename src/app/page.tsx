@@ -14,6 +14,7 @@ import Link from "next/link";
 import WorkCardList from "../components/WorkCardList";
 import HomeTitleSection from "../components/HomeTitleSection";
 import HomeDarkModeCardSection from "../components/HomeDarkModeCardSection";
+import StrokeFillTextSection from "../components/StrokeFillTextSection";
 
 const MapCard = dynamic(() => import("../components/MapCard"), { ssr: false });
 
@@ -73,6 +74,8 @@ export default function HomePage() {
             </section>
           </div>
 
+      {/* 텍스트 stroke-fill 애니메이션 섹션 */}
+      <StrokeFillTextSection />
 
       {/* 하단: WORK 카드 리스트 */}
       <WorkCardList />
