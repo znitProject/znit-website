@@ -11,6 +11,7 @@ export default function WaveMaskText() {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const maskRef = useRef<SVGMaskElement>(null);
+  const textRef = useRef<SVGUseElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -67,6 +68,29 @@ export default function WaveMaskText() {
       .from('.txt1', { opacity: 0, ease: 'power2.inOut' }, 0)
       .to(window, { scrollTo: ch/2 }, 0);
 
+    // 스크롤에 따른 텍스트 페이드아웃
+    const handleScroll = () => {
+      const scrollY = window.pageYOffset;
+      const fadeStart = ch * 0.3; // 더 일찍 시작 (화면 높이의 30%부터)
+      const fadeEnd = ch * 1.8;   // 더 늦게 완료 (화면 높이의 1.8배에서 완전히 사라짐)
+      
+      if (scrollY >= fadeStart) {
+        const progress = Math.min(1, (scrollY - fadeStart) / (fadeEnd - fadeStart));
+        const opacity = Math.max(0, 1 - progress);
+        const y = -progress * 30; // 위로 이동 (더 작게)
+        
+        if (textRef.current) {
+          gsap.set(textRef.current, { 
+            opacity: opacity,
+            y: y,
+            transform: `translate(-375px, ${y}px)`
+          });
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
     // 웨이브 그리기 함수
     function drawWave(t: number) { 
       if (waveY !== -window.pageYOffset) {
@@ -95,6 +119,7 @@ export default function WaveMaskText() {
 
     return () => {
       gsap.ticker.remove(drawWave);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [dimensions]);
 
@@ -151,12 +176,13 @@ export default function WaveMaskText() {
           </g>
         </defs>
         
-        {/* 배경 텍스트 (항상 보임) */}
+        {/* 배경 텍스트 (스크롤에 따라 사라짐) */}
         <use 
+          ref={textRef}
           href="#txt2" 
           x="50%" 
           y="50%" 
-          transform="translate(-375 0)" 
+          transform="translate(-375 0)"
         />
         
         {/* 마스크된 텍스트 (웨이브로 채워짐) */}
