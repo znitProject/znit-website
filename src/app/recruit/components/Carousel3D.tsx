@@ -43,9 +43,9 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     // 마우스 위치 추적
     useEffect(() => {
       const handleMouseMove = (e: Event) => {
+        const mouseEvent = e as MouseEvent;
+        
         if (!isDragging) {
-          const mouseEvent = e as MouseEvent;
-          
           // 전체 화면 기준으로 마우스 위치 계산
           const centerX = window.innerWidth / 2;
           const centerY = window.innerHeight / 2;
@@ -70,6 +70,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
       setIsDragging(true);
       setLastMouseX(e.clientX);
       setLastMouseY(e.clientY);
+      document.body.style.cursor = 'crosshair';
     };
   
     // 마우스 드래그 중 (3D 회전)
@@ -98,6 +99,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
       // 드래그 종료 시 자연스럽게 정지 (스냅 없음)
       // X축은 중앙으로 부드럽게 복귀
       setRotationX(0);
+      document.body.style.cursor = 'default';
     };
   
     return (
@@ -105,11 +107,18 @@ export default function Carousel3D({ items }: Carousel3DProps) {
         className="flex flex-col items-center select-none carousel-container"
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onMouseEnter={() => {
+          document.body.style.cursor = 'crosshair';
+        }}
+        onMouseLeave={() => {
+          handleMouseUp();
+          document.body.style.cursor = 'default';
+        }}
       >
+
         {/* 3D 캐러셀 컨테이너 */}
         <div 
-          className="relative h-[200px] sm:h-[250px] lg:h-[300px] mb-2 sm:mb-2 lg:mb-4  cursor-grab active:cursor-grabbing" 
+          className="relative h-[200px] sm:h-[250px] lg:h-[300px] mb-2 sm:mb-2 lg:mb-4" 
           style={{ perspective: typeof window !== 'undefined' && window.innerWidth < 768 ? '600px' : '800px' }}
           onMouseDown={handleMouseDown}
         >
@@ -127,7 +136,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
               return (
                 <div
                   key={item.id}
-                  className="absolute w-48 sm:w-56 lg:w-64 h-36 sm:h-40 lg:h-48 flex flex-col justify-center items-center cursor-pointer border-2 sm:border-4 border-gray-300 shadow-lg rounded-lg bg-white"
+                  className="absolute w-48 sm:w-56 lg:w-64 h-36 sm:h-40 lg:h-48 flex flex-col justify-center items-center border-2 sm:border-4 border-gray-300 shadow-lg rounded-lg bg-white"
                   style={{
                     transform: `rotateY(${rotateY}deg) translateZ(${radius}px)`,
                     transformOrigin: 'center center',

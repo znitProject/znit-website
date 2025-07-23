@@ -1,8 +1,56 @@
 'use client';
 
 import { useRef, useEffect, useState, useLayoutEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import BenefitCard from './BenefitCard';
+
+// 타이핑 효과 컴포넌트
+function TypewriterText({ text, speed = 100, className = "" }: { text: string; speed?: number; className?: string }) {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const containerRef = useRef<HTMLSpanElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  // 스크롤이 50% 도달했을 때 타이핑 시작
+  const shouldStartTyping = useTransform(scrollYProgress, [0.3, 0.5], [false, true]);
+
+  useEffect(() => {
+    const unsubscribe = shouldStartTyping.on("change", (latest) => {
+      if (latest && !hasStarted) {
+        setHasStarted(true);
+        setIsTyping(true);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [shouldStartTyping, hasStarted]);
+
+  useEffect(() => {
+    if (currentIndex < text.length && isTyping) {
+      const timeout = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+
+      return () => clearTimeout(timeout);
+    } else if (currentIndex >= text.length) {
+      setIsTyping(false);
+    }
+  }, [currentIndex, text, speed, isTyping]);
+
+  return (
+    <span ref={containerRef} className={className}>
+      {displayText}
+      {isTyping && <span className="animate-pulse text-blue-600">|</span>}
+    </span>
+  );
+}
 
 interface Benefit {
   id: number;
@@ -190,7 +238,7 @@ export default function Benefits() {
         transition={{ duration: 1 }}
       >
         <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-          Benefits.
+          <TypewriterText text="Benefits." speed={150} />
         </h2>
         <p className="text-xl text-gray-600 max-w-3xl">
           함께 성장하는 즐거운 환경을 만들어갑니다

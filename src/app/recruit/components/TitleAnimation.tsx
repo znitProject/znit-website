@@ -26,8 +26,6 @@ export default function TitleAnimation() {
   const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.9, 1, 1, 0.9]);
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -50]);
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [20, 0, -20]);
-  
-
 
   // 각 글자별 애니메이션
   const letters = "Work with us.".split('');
