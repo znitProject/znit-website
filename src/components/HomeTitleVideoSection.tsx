@@ -1,7 +1,7 @@
 import React from "react";
 
 // 상단 오른쪽의 다크모드 카드 영역 컴포넌트
-const HomeDarkModeCardSection: React.FC = () => {
+const HomeTitleVideoSection: React.FC = () => {
   return (
     <div className="flex-1 flex justify-end items-end">
       <div className="w-[700px] h-[700px] bg-[#D9D9D9] rounded-[30px] flex flex-col items-center justify-center relative overflow-hidden">
@@ -20,4 +20,4 @@ const HomeDarkModeCardSection: React.FC = () => {
   );
 };
 
-export default HomeDarkModeCardSection; 
+export default HomeTitleVideoSection; 

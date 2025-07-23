@@ -2,7 +2,17 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 
-const keywords = ["협동심", "책임감", "꼼꼼함", "전문성", "맥락", "전략적", "행복함"];
+const keywords = [
+  "Detail",
+  "Technology",
+  "주도성",
+  "전략적 사고",
+  "Empathy",
+  "성장",
+  "진정성",
+  "유연성",
+  "Big-picture"
+];
 
 export default function KeywordCard() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -15,11 +25,16 @@ export default function KeywordCard() {
 
   // 키워드 순차 렌더링
   useEffect(() => {
-    keywords.forEach((keyword, index) => {
-      setTimeout(() => {
-        setVisibleKeywords((prev) => [...prev, keyword]);
-      }, index * 200); // 0.2초 간격으로 하나씩 추가
-    });
+    let mounted = true;
+    const addKeyword = (index: number) => {
+      if (index >= keywords.length || !mounted) return;
+      setVisibleKeywords((prev) => [...prev, keywords[index]]);
+      setTimeout(() => addKeyword(index + 1), 200);
+    };
+    addKeyword(0);
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   // Matter.js 초기화 및 바디 생성
@@ -115,14 +130,15 @@ export default function KeywordCard() {
     const width = rect.width;
 
     const index = visibleKeywords.length - 1;
-    const bubbleEl = bubbleRefs.current[index];
+    if (index < 0) return;
 
+    const bubbleEl = bubbleRefs.current[index];
     if (!bubbleEl) return;
 
     const bubbleWidth = bubbleEl.offsetWidth || 100;
     const bubbleHeight = 44;
     const x = Math.random() * (width - bubbleWidth - 40) + bubbleWidth / 2 + 20;
-    const y = Math.random() * 50 + 20;
+    const y = Math.random() * 20 + 20;
 
     const body = Bodies.rectangle(x, y, bubbleWidth, bubbleHeight, {
       restitution: 0.6,
@@ -158,27 +174,43 @@ export default function KeywordCard() {
     return () => ctx.revert();
   }, []);
 
-  const bubbleStyle: React.CSSProperties = {
-    height: 44,
-    padding: "0 20px",
-    borderRadius: "22px",
-    background: "radial-gradient(circle at 30% 30%, #f0f0f0 0%, #ccc 40%, #999 100%)",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.1), 0 1.5px 0 0 #fff inset",
-    border: "2px solid #fff",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: 800,
-    fontSize: 20,
-    color: "#111",
-    fontFamily: "system-ui, sans-serif",
-    userSelect: "none",
-    cursor: "grab",
-    zIndex: 10,
-    whiteSpace: "nowrap",
-    pointerEvents: "auto",
-    transformOrigin: "center center",
+  const bubbleColors = [
+    "#FF6B6B", // Red
+    "#4ECDC4", // Teal
+    "#45B7D1", // Blue
+    "#FFA07A", // Light Salmon
+    "#98D8AA", // Green
+    "#FFD700", // Gold
+    "#BA55D3", // Medium Orchid
+    "#6A5ACD", // Slate Blue
+    "#FF6347", // Tomato
+    "#20B2AA", // Light Sea Green
+  ];
+
+  const getBubbleStyle = (index: number): React.CSSProperties => {
+    const color = bubbleColors[index % bubbleColors.length];
+    return {
+      height: 44,
+      padding: "0 20px",
+      borderRadius: "22px",
+      background: color,
+      boxShadow: `0 8px 20px ${color}80, 0 1.5px 0 0 #fff inset`,
+      border: "2px solid #fff",
+      position: "absolute",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 800,
+      fontSize: 20,
+      color: "#fff", // Changed text color to white for better contrast
+      fontFamily: "system-ui, sans-serif",
+      userSelect: "none",
+      cursor: "grab",
+      zIndex: 10,
+      whiteSpace: "nowrap",
+      pointerEvents: "auto",
+      transformOrigin: "center center",
+    };
   };
 
   return (
@@ -191,7 +223,7 @@ export default function KeywordCard() {
       <div className="absolute top-0 left-0 w-full overflow-hidden z-20 py-2">
         <div
           ref={scrollTextRef}
-          className="flex whitespace-nowrap text-[4rem] font-extrabold text-neutral-800"
+          className="flex whitespace-nowrap text-[4rem] font-extrabold text-stroke text-transparent"
         >
           {Array(20)
             .fill("The Values That Define Who We Are")
@@ -206,9 +238,9 @@ export default function KeywordCard() {
       {/* 키워드 버블 */}
       {visibleKeywords.map((word, i) => (
         <div
-          key={word}
+          key={`${word}-${i}`}
           ref={(el) => (bubbleRefs.current[i] = el)}
-          style={bubbleStyle}
+          style={getBubbleStyle(i)}
         >
           <span style={{ pointerEvents: "none" }}>{word}</span>
         </div>

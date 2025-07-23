@@ -43,15 +43,7 @@ html {
   @apply bg-[#F5F5F5] rounded-2xl flex items-center justify-center text-black text-base font-medium min-h-[100px] h-full;
 }
 
-@keyframes scroll-left {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.animate-scroll-left {
-  animation: scroll-left 15s linear infinite;
+.text-stroke {
+  -webkit-text-stroke: 1.5px #000000; /* Adjust stroke width and color as needed */
+  text-stroke: 1px #fff;
 }

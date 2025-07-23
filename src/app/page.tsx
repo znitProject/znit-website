@@ -13,7 +13,7 @@ import WorkCard from "../components/WorkCard";
 import Link from "next/link";
 import WorkCardList from "../components/WorkCardList";
 import HomeTitleSection from "../components/HomeTitleSection";
-import HomeDarkModeCardSection from "../components/HomeDarkModeCardSection";
+import HomeTitleVideoSection from "../components/HomeTitleVideoSection";
 import StrokeFillTextSection from "../components/StrokeFillTextSection";
 
 const MapCard = dynamic(() => import("../components/MapCard"), { ssr: false });
@@ -26,7 +26,7 @@ export default function HomePage() {
         {/* 왼쪽: 큰 타이포 */}
         <HomeTitleSection />
         {/* 오른쪽: 대형 카드(다크모드/썸네일 등) */}
-        <HomeDarkModeCardSection />
+        <HomeTitleVideoSection />
       </section>
 
       {/* 중간: Figma 1:1 정보 그리드 */}
