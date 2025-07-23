@@ -38,7 +38,7 @@ export default function FileUpload({ onSubmit }: FileUploadProps) {
         message: '이력서가 성공적으로 제출되었습니다!'
       });
       setSelectedFile(null);
-    } catch (error) {
+    } catch {
       setSubmitStatus({
         type: 'error',
         message: '제출 중 오류가 발생했습니다.'

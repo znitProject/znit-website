@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
+
   const menuRef = useRef<HTMLDivElement>(null);
 
   const menuItems = [

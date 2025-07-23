@@ -232,7 +232,7 @@ export default function Benefits() {
   return (
     <div className="py-12">
       <motion.div 
-        className="text-left mb-12"
+        className="text-center mb-12"
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 1 }}
@@ -240,7 +240,7 @@ export default function Benefits() {
         <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
           <TypewriterText text="Benefits." speed={150} />
         </h2>
-        <p className="text-xl text-gray-600 max-w-3xl">
+        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           함께 성장하는 즐거운 환경을 만들어갑니다
         </p>
       </motion.div>

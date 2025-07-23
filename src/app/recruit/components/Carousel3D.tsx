@@ -19,7 +19,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     const [isDragging, setIsDragging] = useState(false);
     const [lastMouseX, setLastMouseX] = useState(0);
     const [lastMouseY, setLastMouseY] = useState(0);
-    const [lastInteraction, setLastInteraction] = useState(Date.now());
+
     const [mouseX, setMouseX] = useState(0);
     const [mouseY, setMouseY] = useState(0);
   

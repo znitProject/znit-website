@@ -1,157 +1,210 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
-const RecruitProcess = () => {
+// 타이핑 효과 컴포넌트
+const TypingTitle = ({ text }: { text: string }) => {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, text]);
+
+  return (
+    <motion.h2 
+      className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-16 text-gray-900"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      {displayText}
+    </motion.h2>
+  );
+};
+
+// 개별 스텝 컴포넌트
+const ProcessStep = ({ 
+  number, 
+  title, 
+  description, 
+  index 
+}: { 
+  number: string; 
+  title: string; 
+  description: string; 
+  index: number; 
+}) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
+  return (
+    <motion.div
+      ref={ref}
+      className="flex flex-col items-center text-center"
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ 
+        duration: 0.6, 
+        delay: index * 0.2,
+        ease: "easeOut" as const
+      }}
+    >
+      {/* 스텝 원형 */}
+      <motion.div
+        className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold mb-6 relative z-10"
+        style={{
+          background: index === 0 ? '#ffffff' :
+                    index === 1 ? '#cccccc' :
+                    index === 2 ? '#666666' :
+                    '#000000',
+          color: index === 0 ? '#000000' : '#ffffff',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+        }}
+        whileHover={{ 
+          scale: 1.1,
+          boxShadow: '0 12px 40px rgba(0,0,0,0.3)'
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        {number}
+      </motion.div>
+
+      {/* 제목 */}
+      <motion.h3 
+        className="text-xl md:text-2xl font-semibold mb-4 text-gray-900"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
+      >
+        {title}
+      </motion.h3>
+
+      {/* 설명 */}
+      <motion.p 
+        className="text-gray-600 max-w-xs leading-relaxed"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.6, delay: index * 0.2 + 0.5 }}
+      >
+        {description}
+      </motion.p>
+    </motion.div>
+  );
+};
+
+// 점선 연결 컴포넌트
+const DashedLine = ({ index }: { index: number }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      className="absolute h-0.5"
+      style={{ 
+        top: '40px',
+        left: `${10 + index * 25}%`,
+        width: '30%',
+        background: 'repeating-linear-gradient(to right, #9CA3AF 0px, #9CA3AF 6px, transparent 6px, transparent 12px)'
+      }}
+      initial={{ scaleX: 0 }}
+      animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+      transition={{ 
+        duration: 0.8, 
+        delay: index * 0.2 + 0.4,
+        ease: "easeOut" as const
+      }}
+    />
+  );
+};
+
+// 메인 Process 컴포넌트
+const RecruitProcess = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+
   const processSteps = [
     {
-      step: "01",
-      title: "서류전형",
-      subtitle: "Document Screening",
-      description: "지원 자격 및 경력 확인과\n입사지원서를 통한 역량 평가",
-      detail: "실무진"
+      number: "01",
+      title: "지원서 제출",
+      description: "온라인 지원서를 통해 본인의 경력과 역량을 소개해주세요."
     },
     {
-      step: "02", 
-      title: "1차 면접",
-      subtitle: "1st Interview",
-      description: "실무 관련 질문을 통한\n직무 적합성 평가",
-      detail: "실무진"
+      number: "02", 
+      title: "서류 심사",
+      description: "제출된 지원서와 포트폴리오를 바탕으로 1차 심사를 진행합니다."
     },
     {
-      step: "03",
-      title: "2차 면접", 
-      subtitle: "2nd Interview",
-      description: "지원자의 역량, 인성, 태도 등의\n종합 평가",
-      detail: "임원진"
+      number: "03",
+      title: "면접 진행", 
+      description: "실무진과의 면접을 통해 서로의 가치관과 역량을 확인합니다."
     },
     {
-      step: "04",
-      title: "최종합격 및 입사",
-      subtitle: "Final Acceptance & Onboarding",
-      description: "합격자 발표 및\n입사 절차 진행",
-      detail: "인사팀"
+      number: "04",
+      title: "최종 합격",
+      description: "모든 과정을 통과하시면 ZNIT의 새로운 멤버가 됩니다!"
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 30
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    }
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 15 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: 0.2
-      }
-    }
-  };
-
   return (
-    <div className="py-20 bg-gradient-to-br from-white햣 -50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 제목 섹션 */}
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-            채용 프로세스
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            투명하고 체계적인 채용 과정을 통해<br />
-            최고의 인재를 찾아갑니다
-          </p>
-        </motion.div>
+    <motion.div 
+      ref={containerRef}
+      className="w-full relative overflow-hidden"
+      style={{ y }}
+    >
 
-        {/* 프로세스 스텝들 */}
-        <motion.div
-          ref={ref}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {processSteps.map((step, index) => (
-            <motion.div
-              key={step.step}
-              className="text-center"
-              variants={itemVariants}
-              custom={index}
-            >
-              {/* 스텝 번호 */}
-              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">{step.step}</span>
+
+      {/* 컨텐츠 영역 */}
+      <div className="relative z-10">
+        <div className="py-24">
+          <div className="max-w-6xl mx-auto px-4">
+            {/* 제목 */}
+            <div className="mb-16">
+              <TypingTitle text="Process." />
+            </div>
+            
+            {/* 프로세스 스텝들 */}
+            <div className="relative">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
+                {processSteps.map((step, index) => (
+                  <div key={index} className="relative">
+                    <ProcessStep 
+                      number={step.number}
+                      title={step.title}
+                      description={step.description}
+                      index={index}
+                    />
+                  </div>
+                ))}
               </div>
-
-              {/* 제목 */}
-              <motion.div variants={textVariants}>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-blue-600 font-medium mb-3">
-                  {step.subtitle}
-                </p>
-              </motion.div>
-
-              {/* 설명 */}
-              <motion.div variants={textVariants}>
-                <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-                  {step.description}
-                </p>
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* 하단 설명 */}
-        <motion.div 
-          className="text-center mt-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            각 단계별로 투명하고 공정한 평가를 통해<br />
-            본인에게 가장 적합한 포지션을 찾을 수 있도록 도와드립니다
-          </p>
-        </motion.div>
+              
+              {/* 점선 연결을 별도로 배치 */}
+              <div className="absolute top-0 left-0 right-0">
+                {processSteps.map((step, index) => (
+                  index < processSteps.length - 1 && (
+                    <DashedLine key={`line-${index}`} index={index} />
+                  )
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
