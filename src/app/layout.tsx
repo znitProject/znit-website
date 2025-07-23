@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${redHatDisplay.variable} antialiased`}>
+      <body className={`${redHatDisplay.variable} antialiased bg-white`}>
         <Providers>
           <Header />
           <main className="min-h-screen">
