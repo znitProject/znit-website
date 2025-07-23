@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 
-// 타이핑 효과 컴포넌트
+// 🔸 타이핑 효과
 const TypingTitle = ({ text }: { text: string }) => {
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,7 +21,7 @@ const TypingTitle = ({ text }: { text: string }) => {
 
   return (
     <motion.h2 
-      className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-16 text-gray-900"
+      className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 text-gray-900"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -31,12 +31,12 @@ const TypingTitle = ({ text }: { text: string }) => {
   );
 };
 
-// 개별 스텝 컴포넌트
+// 🔸 개별 스텝
 const ProcessStep = ({ 
   number, 
   title, 
   description, 
-  index 
+  index
 }: { 
   number: string; 
   title: string; 
@@ -49,7 +49,7 @@ const ProcessStep = ({
   return (
     <motion.div
       ref={ref}
-      className="flex flex-col items-center text-center"
+      className="flex flex-col items-center text-center relative"
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ 
@@ -58,14 +58,14 @@ const ProcessStep = ({
         ease: "easeOut" as const
       }}
     >
-      {/* 스텝 원형 */}
+      {/* 원형 숫자 */}
       <motion.div
         className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold mb-6 relative z-10"
         style={{
           background: index === 0 ? '#ffffff' :
-                    index === 1 ? '#cccccc' :
-                    index === 2 ? '#666666' :
-                    '#000000',
+                      index === 1 ? '#cccccc' :
+                      index === 2 ? '#666666' :
+                      '#000000',
           color: index === 0 ? '#000000' : '#ffffff',
           boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
         }}
@@ -101,33 +101,7 @@ const ProcessStep = ({
   );
 };
 
-// 점선 연결 컴포넌트
-const DashedLine = ({ index }: { index: number }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      className="absolute h-0.5"
-      style={{ 
-        top: '40px',
-        left: `${10 + index * 25}%`,
-        width: '30%',
-        background: 'repeating-linear-gradient(to right, #9CA3AF 0px, #9CA3AF 6px, transparent 6px, transparent 12px)'
-      }}
-      initial={{ scaleX: 0 }}
-      animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-      transition={{ 
-        duration: 0.8, 
-        delay: index * 0.2 + 0.4,
-        ease: "easeOut" as const
-      }}
-    />
-  );
-};
-
-// 메인 Process 컴포넌트
+// 🔸 메인 컴포넌트
 const RecruitProcess = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -166,41 +140,49 @@ const RecruitProcess = () => {
       className="w-full relative overflow-hidden"
       style={{ y }}
     >
-
-
-      {/* 컨텐츠 영역 */}
       <div className="relative z-10">
-        <div className="py-24">
-          <div className="max-w-6xl mx-auto px-4">
-            {/* 제목 */}
-            <div className="mb-16">
+        <div className="py-32">
+          <div className="max-w-7xl mx-auto px-6">
+            {/* 타이틀 */}
+            <div className="mb-20">
               <TypingTitle text="Process." />
             </div>
-            
-            {/* 프로세스 스텝들 */}
-            <div className="relative">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
-                {processSteps.map((step, index) => (
-                  <div key={index} className="relative">
-                    <ProcessStep 
-                      number={step.number}
-                      title={step.title}
-                      description={step.description}
-                      index={index}
-                    />
-                  </div>
-                ))}
-              </div>
-              
-              {/* 점선 연결을 별도로 배치 */}
-              <div className="absolute top-0 left-0 right-0">
-                {processSteps.map((step, index) => (
-                  index < processSteps.length - 1 && (
-                    <DashedLine key={`line-${index}`} index={index} />
-                  )
-                ))}
-              </div>
+
+            {/* 스텝 리스트 */}
+            <div className="relative hidden lg:flex justify-between items-start">
+              {processSteps.map((step, index) => {
+                const isLast = index === processSteps.length - 1;
+                return (
+                  <div key={index} className="relative flex flex-col items-center w-1/4">
+                  <ProcessStep 
+                    number={step.number}
+                    title={step.title}
+                    description={step.description}
+                    index={index}
+                  />
+                
+                  {!isLast && (
+                    <div className="absolute top-10 right-[-5rem] transform -translate-y-1/2 w-40 h-px border-t-2 border-dashed border-gray-300 z-0" />
+                  )}
+                </div>
+                );
+              })}
             </div>
+
+            {/* 모바일: 스택 방식 */}
+            <div className="flex flex-col gap-16 lg:hidden">
+              {processSteps.map((step, index) => (
+                <div key={index} className="relative">
+                  <ProcessStep 
+                    number={step.number}
+                    title={step.title}
+                    description={step.description}
+                    index={index}
+                  />
+                </div>
+              ))}
+            </div>
+            
           </div>
         </div>
       </div>
@@ -208,4 +190,4 @@ const RecruitProcess = () => {
   );
 };
 
-export default RecruitProcess; 
+export default RecruitProcess;
