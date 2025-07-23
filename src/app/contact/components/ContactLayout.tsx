@@ -23,7 +23,7 @@ export default function ContactLayout({
             {[1, 2, 3, 4].map((step, index) => (
               <div key={step} className="flex flex-col items-center">
                 <div 
-                  className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl border-2 ${
+                  className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl border ${
                     step <= currentStep 
                       ? 'bg-gray-900 text-white border-gray-900' 
                       : 'bg-white text-gray-900 border-gray-900'
@@ -32,7 +32,7 @@ export default function ContactLayout({
                   {step}
                 </div>
                 {index < 3 && (
-                  <div className="w-1 h-24" style={{ 
+                  <div className="w-px h-24" style={{ 
                     background: 'repeating-linear-gradient(to bottom, #1F2937 0px, #1F2937 6px, transparent 6px, transparent 12px)' 
                   }}></div>
                 )}
