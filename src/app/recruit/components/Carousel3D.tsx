@@ -14,106 +14,111 @@ interface Carousel3DProps {
 }
 
 export default function Carousel3D({ items }: Carousel3DProps) {
-    const [rotation, setRotation] = useState(0);
+    const [rotationY, setRotationY] = useState(0);
+    const [rotationX, setRotationX] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [lastMouseX, setLastMouseX] = useState(0);
+    const [lastMouseY, setLastMouseY] = useState(0);
     const [lastInteraction, setLastInteraction] = useState(Date.now());
-    const [autoRotating, setAutoRotating] = useState(false);
+    const [mouseX, setMouseX] = useState(0);
+    const [mouseY, setMouseY] = useState(0);
   
-    const radius = 500; // 카드가 커져서 반지름 증가
+    // 반응형 반지름과 카드 크기
+    const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 250 : 420;
     const angleStep = 360 / items.length; // 카드 하나당 각도
   
-    // 가장 가까운 카드 위치로 스냅하는 함수
-    const snapToNearestCard = (currentRotation: number) => {
-      const normalizedRotation = ((currentRotation % 360) + 360) % 360;
-      const nearestCardIndex = Math.round(normalizedRotation / angleStep);
-      const targetRotation = nearestCardIndex * angleStep;
-      
-      // 최단 경로 계산 (빙글빙글 도는 것을 방지)
-      let shortestRotation = targetRotation;
-      const currentNormalized = ((currentRotation % 360) + 360) % 360;
-      const diff = targetRotation - currentNormalized;
-      
-      // 180도 이상 차이나면 반대 방향으로 가는 것이 더 짧음
-      if (Math.abs(diff) > 180) {
-        if (diff > 0) {
-          shortestRotation = targetRotation - 360;
-        } else {
-          shortestRotation = targetRotation + 360;
-        }
-      }
-      
-      return currentRotation + (shortestRotation - currentNormalized);
-    };
+
   
-    // 3초마다 정확히 한 카드씩 자동 회전 (왼쪽으로)
+    // 지속적인 자동 회전
     useEffect(() => {
       const interval = setInterval(() => {
-        const timeSinceLastInteraction = Date.now() - lastInteraction;
-        
-        if (timeSinceLastInteraction > 3000 && !isDragging && !autoRotating) { // 3초 후 자동 회전 시작
-          setAutoRotating(true);
-          const nextRotation = rotation - angleStep; // 왼쪽으로 회전 (음수)
-          const snappedRotation = snapToNearestCard(nextRotation);
-          setRotation(snappedRotation);
-          
-          // 자동 회전 완료 후 플래그 리셋
-          setTimeout(() => {
-            setAutoRotating(false);
-          }, 800); // 애니메이션 시간과 동일
+        if (!isDragging) {
+          setRotationY((prev: number) => prev - 0.2); // 더 느리게 회전
         }
-      }, 3000); // 3초마다 실행
+      }, 16); // 60fps로 부드러운 애니메이션
   
       return () => clearInterval(interval);
-    }, [lastInteraction, isDragging, angleStep, rotation, autoRotating]);
+    }, [isDragging]);
+
+    // 마우스 위치 추적
+    useEffect(() => {
+      const handleMouseMove = (e: Event) => {
+        if (!isDragging) {
+          const mouseEvent = e as MouseEvent;
+          
+          // 전체 화면 기준으로 마우스 위치 계산
+          const centerX = window.innerWidth / 2;
+          const centerY = window.innerHeight / 2;
+          
+          // 마우스 위치를 -1에서 1 사이의 값으로 정규화 (전체 화면 기준)
+          const normalizedX = (mouseEvent.clientX - centerX) / centerX;
+          const normalizedY = (mouseEvent.clientY - centerY) / centerY;
+          
+          // 부드러운 마우스 추적을 위한 보간
+          setMouseX(prev => prev * 0.7 + normalizedX * 0.3);
+          setMouseY(prev => prev * 0.7 + normalizedY * 0.3);
+        }
+      };
+
+      // 전체 문서에 마우스 이벤트 리스너 추가
+      document.addEventListener('mousemove', handleMouseMove);
+      return () => document.removeEventListener('mousemove', handleMouseMove);
+    }, [isDragging]);
   
     // 마우스 드래그 시작
     const handleMouseDown = (e: React.MouseEvent) => {
       setIsDragging(true);
       setLastMouseX(e.clientX);
-      setLastInteraction(Date.now()); // 상호작용 시간 업데이트
+      setLastMouseY(e.clientY);
     };
   
-    // 마우스 드래그 중 (왼쪽으로 회전)
+    // 마우스 드래그 중 (3D 회전)
     const handleMouseMove = (e: React.MouseEvent) => {
       if (!isDragging) return;
       
       const deltaX = e.clientX - lastMouseX;
-      setRotation(prev => prev + deltaX * 0.5); // 마우스 방향과 일치하도록 양수로 변경
+      const deltaY = e.clientY - lastMouseY;
+      
+      // Y축 회전 (좌우)
+      setRotationY((prev: number) => prev + deltaX * 0.5);
+      // X축 회전 (상하) - 제한된 범위
+      setRotationX((prev: number) => {
+        const newRotation = prev - deltaY * 0.3;
+        return Math.max(-45, Math.min(45, newRotation)); // -45도에서 45도로 제한
+      });
+      
       setLastMouseX(e.clientX);
-      setLastInteraction(Date.now()); // 상호작용 시간 업데이트
+      setLastMouseY(e.clientY);
     };
   
-    // 마우스 드래그 종료 - 가장 가까운 카드로 스냅
+    // 마우스 드래그 종료 - 자연스럽게 정지
     const handleMouseUp = () => {
       setIsDragging(false);
-      setLastInteraction(Date.now()); // 상호작용 시간 업데이트
       
-      // 드래그 종료 시 가장 가까운 카드 위치로 스냅
-      setTimeout(() => {
-        setRotation(prev => snapToNearestCard(prev));
-      }, 100); // 약간의 지연을 두어 부드러운 전환
+      // 드래그 종료 시 자연스럽게 정지 (스냅 없음)
+      // X축은 중앙으로 부드럽게 복귀
+      setRotationX(0);
     };
   
     return (
       <div 
-        className="flex flex-col items-center select-none"
+        className="flex flex-col items-center select-none carousel-container"
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
         {/* 3D 캐러셀 컨테이너 */}
         <div 
-          className="relative h-[500px] mb-8 cursor-grab active:cursor-grabbing" 
-          style={{ perspective: '1200px' }}
+          className="relative h-[300px] sm:h-[400px] lg:h-[500px] mb-4 sm:mb-6 lg:mb-8 cursor-grab active:cursor-grabbing" 
+          style={{ perspective: typeof window !== 'undefined' && window.innerWidth < 768 ? '800px' : '1200px' }}
           onMouseDown={handleMouseDown}
         >
           <div 
             className="relative w-full h-full"
             style={{
               transformStyle: 'preserve-3d',
-              transform: `rotateY(${rotation}deg)`,
-              transition: isDragging ? 'none' : 'transform 0.8s ease-in-out'
+              transform: `rotateY(${rotationY + mouseX * 8}deg) rotateX(${rotationX + mouseY * 12}deg)`,
+              transition: isDragging ? 'none' : 'transform 0.4s ease-out'
             }}
           >
             {items.map((item, index) => {
@@ -122,20 +127,20 @@ export default function Carousel3D({ items }: Carousel3DProps) {
               return (
                 <div
                   key={item.id}
-                  className="absolute w-96 h-72 flex flex-col justify-center items-center cursor-pointer border-4 border-gray-400 shadow-lg rounded-lg"
+                  className="absolute w-64 sm:w-80 lg:w-96 h-48 sm:h-60 lg:h-72 flex flex-col justify-center items-center cursor-pointer border-2 sm:border-4 border-gray-400 shadow-lg rounded-lg"
                   style={{
                     backgroundColor: item.color,
                     transform: `rotateY(${rotateY}deg) translateZ(${radius}px)`,
                     transformOrigin: 'center center',
                     left: '50%',
                     top: '50%',
-                    marginLeft: '-192px', // w-96의 절반 (384px / 2)
-                    marginTop: '-144px',  // h-72의 절반 (288px / 2)
+                    marginLeft: typeof window !== 'undefined' && window.innerWidth < 768 ? '-128px' : typeof window !== 'undefined' && window.innerWidth < 1024 ? '-160px' : '-192px',
+                    marginTop: typeof window !== 'undefined' && window.innerWidth < 768 ? '-96px' : typeof window !== 'undefined' && window.innerWidth < 1024 ? '-120px' : '-144px',
                   }}
-                  onClick={() => setLastInteraction(Date.now())} // 카드 클릭 시에도 상호작용 시간 업데이트
+                  onClick={() => {}} // 카드 클릭 이벤트
                 >
-                  <div className="text-6xl font-bold text-white mb-4">{item.id}</div>
-                  <div className="text-base text-white text-center px-8 opacity-90 font-medium">{item.title}</div>
+                  <div className="text-3xl sm:text-4xl lg:text-6xl font-bold text-white mb-2 sm:mb-4">{item.id}</div>
+                  <div className="text-sm sm:text-base text-white text-center px-4 sm:px-6 lg:px-8 opacity-90 font-medium">{item.title}</div>
                 </div>
               );
             })}

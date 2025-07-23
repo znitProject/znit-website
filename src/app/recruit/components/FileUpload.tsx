@@ -49,9 +49,9 @@ export default function FileUpload({ onSubmit }: FileUploadProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {submitStatus.type && (
-        <div className={`p-4 rounded-lg ${
+        <div className={`p-3 sm:p-4 rounded-lg text-sm sm:text-base ${
           submitStatus.type === 'success' 
             ? 'bg-green-100 text-green-800 border border-green-200' 
             : 'bg-red-100 text-red-800 border border-red-200'
@@ -71,10 +71,10 @@ export default function FileUpload({ onSubmit }: FileUploadProps) {
 
       {/* 파일 선택 영역 */}
       {!selectedFile && (
-        <div className="flex justify-end">
+        <div className="flex justify-center sm:justify-end">
           <button
             onClick={() => document.getElementById('resume')?.click()}
-            className="px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors text-sm sm:text-base"
           >
             이력서 첨부하기
           </button>
@@ -83,11 +83,11 @@ export default function FileUpload({ onSubmit }: FileUploadProps) {
 
       {/* 파일이 선택되었을 때만 보이는 영역 */}
       {selectedFile && (
-        <div className="flex justify-end items-center space-x-4">
-          <div className="w-64">
+        <div className="flex flex-col sm:flex-row justify-center sm:justify-end items-center space-y-3 sm:space-y-0 sm:space-x-4">
+          <div className="w-full sm:w-64">
             <label
               htmlFor="resume"
-              className="block w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-full text-gray-600 cursor-pointer hover:border-gray-400 transition-colors"
+              className="block w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-300 rounded-full text-gray-600 cursor-pointer hover:border-gray-400 transition-colors text-sm sm:text-base"
             >
               {selectedFile.name}
             </label>
@@ -95,7 +95,7 @@ export default function FileUpload({ onSubmit }: FileUploadProps) {
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
           >
             {isSubmitting ? '제출 중...' : '보내기'}
           </button>
