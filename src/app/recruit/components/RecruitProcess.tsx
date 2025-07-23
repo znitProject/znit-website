@@ -44,8 +44,8 @@ const RecruitProcess = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2
+        staggerChildren: 0.2,
+        delayChildren: 0.1
       }
     }
   };
@@ -53,34 +53,32 @@ const RecruitProcess = () => {
   const itemVariants = {
     hidden: { 
       opacity: 0, 
-      y: 50,
-      x: (index: number) => index % 2 === 0 ? -50 : 50
+      y: 30
     },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      x: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
         duration: 0.6,
-        delay: 0.3
+        ease: "easeOut" as const
+      }
+    }
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        delay: 0.2
       }
     }
   };
 
   return (
-    <div className="py-20 bg-gradient-to-br from-white-50 to-white">
+    <div className="py-20 bg-gradient-to-br from-white햣 -50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 제목 섹션 */}
         <motion.div 
@@ -102,7 +100,7 @@ const RecruitProcess = () => {
         {/* 프로세스 스텝들 */}
         <motion.div
           ref={ref}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -110,58 +108,31 @@ const RecruitProcess = () => {
           {processSteps.map((step, index) => (
             <motion.div
               key={step.step}
-              className={`relative ${
-                index % 2 === 0 ? 'lg:justify-self-start' : 'lg:justify-self-end'
-              }`}
+              className="text-center"
               variants={itemVariants}
               custom={index}
             >
-              {/* 카드 */}
-              <div className="bg-white rounded-2xl p-8 lg:p-10 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group">
-                {/* 스텝 번호 */}
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-6xl lg:text-7xl font-black text-gray-100 group-hover:text-blue-100 transition-colors duration-300">
-                    {step.step}
-                  </span>
-                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">{step.step}</span>
-                  </div>
-                </div>
-
-                {/* 제목 */}
-                <motion.div variants={textVariants}>
-                  <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-lg text-blue-600 font-medium mb-4">
-                    {step.subtitle}
-                  </p>
-                </motion.div>
-
-                {/* 설명 */}
-                <motion.div variants={textVariants}>
-                  <p className="text-gray-600 leading-relaxed mb-4 whitespace-pre-line">
-                    {step.description}
-                  </p>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <span className="bg-gray-100 px-3 py-1 rounded-full">
-                      {step.detail}
-                    </span>
-                  </div>
-                </motion.div>
-
-                {/* 연결선 (마지막 아이템 제외) */}
-                {index < processSteps.length - 1 && (
-                  <div className={`hidden lg:block absolute top-1/2 ${
-                    index % 2 === 0 ? '-right-6' : '-left-6'
-                  } transform -translate-y-1/2`}>
-                    <div className="w-12 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"></div>
-                    <div className={`w-3 h-3 bg-blue-500 rounded-full absolute top-1/2 transform -translate-y-1/2 ${
-                      index % 2 === 0 ? '-right-1.5' : '-left-1.5'
-                    }`}></div>
-                  </div>
-                )}
+              {/* 스텝 번호 */}
+              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold text-xl">{step.step}</span>
               </div>
+
+              {/* 제목 */}
+              <motion.div variants={textVariants}>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-sm text-blue-600 font-medium mb-3">
+                  {step.subtitle}
+                </p>
+              </motion.div>
+
+              {/* 설명 */}
+              <motion.div variants={textVariants}>
+                <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                  {step.description}
+                </p>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>
