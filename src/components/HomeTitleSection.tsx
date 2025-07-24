@@ -5,7 +5,7 @@ const HomeTitleSection: React.FC = () => {
   // 텍스트와 커서를 각각 분리하여 ref 할당
   const textRef = useRef<HTMLSpanElement>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
-  const fullText = "ZNIT\n당신과 우리의\n열정이 피어나는 장소";
+  const fullText = "ZNIT\n당신과 우리의\n열정이 피어나는 장소 처처처";
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
