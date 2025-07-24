@@ -1,181 +1,109 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const CompanyIntroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const pinWrapRef = useRef<HTMLDivElement>(null);
-  const scrollerRef = useRef<any>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
   const sentences = [
     {
       text: "우리는 하나의 일을 깊이 있게, 꾸준히 해온 팀입니다.",
-      color: "bg-blue-600/90"
+      color: "text-blue-300"
     },
     {
       text: "흐름에 휩쓸리지 않고, 방향을 스스로 정하며 주체적으로 움직입니다.",
-      color: "bg-purple-600/90"
+      color: "text-purple-300"
     },
     {
       text: "변화에 앞서 준비하고, 새로움 속에서도 중심을 지킵니다.",
-      color: "bg-green-600/90"
+      color: "text-green-300"
     },
     {
       text: "디자인은 우리의 언어이며, 완성도는 우리의 자존심입니다.",
-      color: "bg-red-600/90"
+      color: "text-red-300"
     },
     {
       text: "오래도록, 멀리 보며, 제대로 만들어가는 팀.",
-      color: "bg-indigo-600/90"
+      color: "text-indigo-300"
     },
     {
       text: "우리는 그렇게 일합니다.",
-      color: "bg-teal-600/90"
+      color: "text-teal-300"
     }
   ];
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    // 동적 import로 클라이언트 사이드에서만 로드
-    const initScrollAnimation = async () => {
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      const LocomotiveScroll = (await import('locomotive-scroll')).default;
-
-      // GSAP 플러그인 등록
-      gsap.registerPlugin(ScrollTrigger);
-
-      const pageContainer = containerRef.current;
-      if (!pageContainer) return;
-
-      // Locomotive Scroll 초기화
-      const scroller = new LocomotiveScroll({
-        el: pageContainer,
-        smooth: true,
-        multiplier: 1,
-        lerp: 0.1
-      });
-
-      scrollerRef.current = scroller;
-
-      scroller.on("scroll", ScrollTrigger.update);
-
-      // ScrollTrigger 프록시 설정
-      ScrollTrigger.scrollerProxy(pageContainer, {
-        scrollTop(value) {
-          return arguments.length
-            ? scroller.scrollTo(value)
-            : scroller.scroll.instance.scroll.y;
-        },
-        getBoundingClientRect() {
-          return {
-            left: 0,
-            top: 0,
-            width: window.innerWidth,
-            height: window.innerHeight
-          };
-        },
-        pinType: pageContainer.style.transform ? "transform" : "fixed"
-      });
-
-      // 애니메이션 설정
-      const initAnimation = () => {
-        const pinWrap = pinWrapRef.current;
-        if (!pinWrap) return;
-
-        const pinWrapWidth = pinWrap.offsetWidth;
-        const horizontalScrollLength = pinWrapWidth - window.innerWidth;
-
-        // 가로 스크롤 애니메이션
-        gsap.to(pinWrap, {
-          scrollTrigger: {
-            scroller: pageContainer,
-            scrub: true,
-            trigger: "#sectionPin",
-            pin: true,
-            start: "top top",
-            end: pinWrapWidth
-          },
-          x: -horizontalScrollLength,
-          ease: "none"
-        });
-
-        ScrollTrigger.addEventListener("refresh", () => scroller.update());
-        ScrollTrigger.refresh();
-      };
-
-      // 페이지 로드 완료 후 애니메이션 초기화
-      window.addEventListener("load", initAnimation);
-      
-      // 컴포넌트 마운트 후에도 실행
-      setTimeout(initAnimation, 100);
-    };
-
-    initScrollAnimation();
-
-    return () => {
-      if (scrollerRef.current) {
-        scrollerRef.current.destroy();
-      }
-      // ScrollTrigger 정리
-      if (typeof window !== 'undefined') {
-        const { ScrollTrigger } = require('gsap/ScrollTrigger');
-        ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill());
-      }
-    };
-  }, []);
-
   return (
-    <div ref={containerRef} className="container">
+    <section 
+      ref={containerRef}
+      className="relative min-h-[200vh] bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900 py-20"
+    >
       {/* 첫 번째 섹션 */}
-      <section className="min-h-screen w-full relative grid place-items-center bg-gradient-to-b from-blue-900 to-blue-800 p-12">
+      <div className="h-screen flex items-center justify-center">
         <div className="text-center text-white">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-blue-300 leading-tight">
-            <span className="block">ZNIT의</span>
-            <span className="block">철학</span>
+            <span className="block">This is our</span>
+            <span className="block">way of working.</span>
           </h1>
-          <p className="text-xl md:text-2xl text-blue-200">
-            아래로 스크롤하여 더 알아보세요
-          </p>
-        </div>
-      </section>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-blue-200 leading-tight">
+            <span className="block">우리는</span>
+            <span className="block">이렇게 일합니다.</span>
+          </h2>
 
-      {/* 가로 스크롤 섹션 */}
-      <section id="sectionPin" className="h-screen overflow-hidden flex left-0 bg-black text-white">
-        <div ref={pinWrapRef} className="pin-wrap h-screen flex justify-start items-center p-12">
-          {sentences.map((sentence, index) => (
-            <div
+        </div>
+      </div>
+
+      {/* 문장들 - 지그재그로 배치 */}
+      <div className="relative">
+        {sentences.map((sentence, index) => {
+          const isEven = index % 2 === 0;
+          
+          return (
+            <motion.div
               key={index}
-              className={`${sentence.color} backdrop-blur-sm min-w-[60vw] p-8 rounded-2xl flex flex-col items-center justify-center text-white border border-white/20 mx-4`}
+              initial={{ 
+                opacity: 0, 
+                x: isEven ? -50 : 50,
+                y: 20
+              }}
+              whileInView={{ 
+                opacity: 1, 
+                x: 0,
+                y: 0
+              }}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+                delay: index * 0.2
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              className={`py-16 flex items-center justify-center px-8 ${
+                isEven ? 'justify-start' : 'justify-end'
+              }`}
             >
-              <div className="text-center max-w-4xl">
+              <div className={`${sentence.color} text-center max-w-4xl`}>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-relaxed">
                   {sentence.text}
                 </h2>
-            </div>
-            
-              {/* 카드 번호 */}
-              <div className="absolute top-6 right-6 text-white/50 text-sm font-mono">
-                {String(index + 1).padStart(2, '0')}
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            </motion.div>
+          );
+        })}
+      </div>
 
-      {/* 마지막 섹션 */}
-      <section className="min-h-screen w-full relative grid place-items-center bg-gradient-to-b from-blue-800 to-blue-900 p-12">
-        <div className="text-center text-white">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-blue-300">
-            다음 섹션으로
-          </h2>
-          <p className="text-xl md:text-2xl text-blue-200">
-            계속 스크롤하세요
-          </p>
+
+
+      {/* 배경 장식 요소들 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-blue-400/10 rounded-full blur-xl" />
+        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-blue-300/10 rounded-full blur-xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-500/5 rounded-full blur-2xl" />
       </div>
     </section>
-    </div>
   );
 };
 
