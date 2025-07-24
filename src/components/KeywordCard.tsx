@@ -96,6 +96,7 @@ export default function KeywordCard() {
               const y = body.position.y - 22;
               const rotation = body.angle;
               bubbleEl.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rotation}rad)`;
+              bubbleEl.style.visibility = "visible";
             }
           });
           renderRef.current = requestAnimationFrame(render);
@@ -218,6 +219,7 @@ export default function KeywordCard() {
       whiteSpace: "nowrap",
       pointerEvents: "auto",
       transformOrigin: "center center",
+      visibility: "hidden", // 초기에 보이지 않도록 설정
     };
   };
 

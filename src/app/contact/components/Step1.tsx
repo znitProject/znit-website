@@ -10,7 +10,7 @@ export default function Step1({ formData, updateFormData }: Step1Props) {
   const projectTypes: ProjectType[] = [
     { value: 'brand', label: '프로젝트 브랜딩' },
     { value: 'strategy', label: '서비전략 & 유저보수' },
-    { value: 'system', label: '시네 시스템 구축' },
+    { value: 'system', label: '사내 시스템 구축' },
     { value: 'uiux', label: 'UI/UX' },
     { value: 'dev', label: '프론트 개발' }
   ];
