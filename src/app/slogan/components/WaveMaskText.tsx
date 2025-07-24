@@ -71,13 +71,13 @@ export default function WaveMaskText() {
     // 스크롤에 따른 텍스트 페이드아웃
     const handleScroll = () => {
       const scrollY = window.pageYOffset;
-      const fadeStart = ch * 0.3; // 더 일찍 시작 (화면 높이의 30%부터)
-      const fadeEnd = ch * 1.8;   // 더 늦게 완료 (화면 높이의 1.8배에서 완전히 사라짐)
+      const fadeStart = ch * 0.5; // 화면 중앙부터 시작
+      const fadeEnd = ch * 1.2;   // 화면 높이의 1.2배에서 완전히 사라짐
       
       if (scrollY >= fadeStart) {
         const progress = Math.min(1, (scrollY - fadeStart) / (fadeEnd - fadeStart));
         const opacity = Math.max(0, 1 - progress);
-        const y = -progress * 30; // 위로 이동 (더 작게)
+        const y = -progress * 50; // 위로 이동
         
         if (textRef.current) {
           gsap.set(textRef.current, { 
