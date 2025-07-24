@@ -34,7 +34,7 @@ export default function Step1({ formData, updateFormData }: Step1Props) {
 
   return (
     <div className="py-8">
-      <h2 className="text-4xl font-bold text-gray-900 mb-12">어떤 종류 프로젝트 궁시랭?</h2>
+      <h2 className="text-4xl font-bold text-gray-900 mb-12">어떤 프로젝트를 진행하실 계획인가요?</h2>
       <div className="flex flex-wrap gap-4">
         {projectTypes.map((type, index) => (
           <motion.div

@@ -50,9 +50,9 @@ export default function AnimatedContactText() {
     hover: {
       textShadow: [
         "0 0 0px rgba(0,0,0,0)",
-        "0 0 20px rgba(0,0,0,0.8)",
-        "0 0 40px rgba(0,0,0,0.6)",
-        "0 0 60px rgba(0,0,0,0.4)"
+        "0 0 4px rgba(220, 220, 220, 0.05)",
+        "0 0 8px rgba(200, 200, 200, 0.03)",
+        "0 0 12px rgba(180, 180, 180, 0.02)"
       ],
       transition: {
         duration: 0.6,
@@ -85,7 +85,7 @@ export default function AnimatedContactText() {
             }}
             initial={{ opacity: 0, scale: 0.8 }}
             whileHover={{ 
-              opacity: 0.8, 
+              opacity: 0.2, 
               scale: 1.2,
               transition: { duration: 0.3 }
             }}
@@ -99,7 +99,8 @@ export default function AnimatedContactText() {
             variants={hoverVariants}
             style={{
               transformStyle: "preserve-3d",
-              perspective: "1000px"
+              perspective: "1000px",
+              WebkitTextStroke: '1.5px white'
             }}
           >
             {letter}
@@ -110,11 +111,12 @@ export default function AnimatedContactText() {
             className="absolute inset-0 text-6xl font-bold text-gray-900 leading-none"
             style={{
               transform: "translateZ(-5px)",
-              filter: "blur(2px)"
+              filter: "blur(2px)",
+              WebkitTextStroke: '1px white'
             }}
             variants={textShadowVariants}
             initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
+            whileHover={{ opacity: 0.2 }}
           >
             {letter}
           </motion.div>
@@ -159,4 +161,4 @@ export default function AnimatedContactText() {
       ))}
     </motion.div>
   );
-} 
+}

@@ -35,7 +35,7 @@ export default function Step4({ formData }: Step4Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.6 }}
       >
-        곧 연락드릴께~
+        빠르게 검토후에 연락드리겠습니다.
       </motion.p>
     </div>
   );
