@@ -1,11 +1,7 @@
 import { motion } from 'framer-motion';
-import { FormData } from '../../../types/contact';
 
-interface Step4Props {
-  formData: FormData;
-}
 
-export default function Step4({ formData }: Step4Props) {
+export default function Step4() {
   return (
     <div className="text-center py-16">
       <motion.div 

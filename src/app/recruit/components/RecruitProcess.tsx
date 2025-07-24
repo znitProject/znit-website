@@ -61,7 +61,6 @@ const ProcessStep = ({
   index: number; 
 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
 
   return (
     <motion.div

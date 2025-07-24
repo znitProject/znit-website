@@ -125,7 +125,7 @@ export default function ContactPage() {
       case 3:
         return <Step3 formData={formData} updateFormData={updateFormData} />;
       case 4:
-        return <Step4 formData={formData} />;
+        return <Step4 />;
       default:
         return <Step1 formData={formData} updateFormData={updateFormData} />;
     }

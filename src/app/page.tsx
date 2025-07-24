@@ -2,7 +2,6 @@
 
 
 import dynamic from "next/dynamic";
-import ClockCard from "../components/ClockCard";
 import WeOwnItCard from "../components/WeOwnItCard";
 import WorkWithUsCard from "../components/WorkWithUsCard";
 import CustomerCarousel from "../components/CustomerCarousel";
@@ -17,6 +16,7 @@ import HomeTitleVideoSection from "../components/HomeTitleVideoSection";
 import StrokeFillTextSection from "../components/StrokeFillTextSection";
 
 const MapCard = dynamic(() => import("../components/MapCard"), { ssr: false });
+import NixieClock from "../components/nixieClock";
 
 export default function HomePage() {
   return (
@@ -52,7 +52,7 @@ export default function HomePage() {
           <WorkCard />
 
           {/* clock+달력 카드 */}
-          <ClockCard />
+          <NixieClock />
 
               {/* work with us 카드 */}
               <WorkWithUsCard />
