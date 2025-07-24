@@ -68,16 +68,25 @@ export default function WaveMaskText() {
       .from('.txt1', { opacity: 0, ease: 'power2.inOut' }, 0)
       .to(window, { scrollTo: ch/2 }, 0);
 
+    // 컴포넌트가 화면에 보이는지 확인하는 함수
+    const isComponentVisible = () => {
+      if (!containerRef.current) return false;
+      const rect = containerRef.current.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    };
+
     // 스크롤에 따른 텍스트 페이드아웃
     const handleScroll = () => {
       const scrollY = window.pageYOffset;
       const fadeStart = ch * 0.5; // 화면 중앙부터 시작
-      const fadeEnd = ch * 1.2;   // 화면 높이의 1.2배에서 완전히 사라짐
+      const fadeEnd = ch * 1.1;   // 화면 높이의 1.1배에서 완전히 사라짐
       
       if (scrollY >= fadeStart) {
         const progress = Math.min(1, (scrollY - fadeStart) / (fadeEnd - fadeStart));
-        const opacity = Math.max(0, 1 - progress);
-        const y = -progress * 50; // 위로 이동
+        // 비선형 애니메이션: 처음에는 천천히, 마지막에 빠르게
+        const easeProgress = Math.pow(progress, 2); // 제곱 함수로 마지막에 가속
+        const opacity = Math.max(0, 1 - easeProgress);
+        const y = -easeProgress * 80; // 더 큰 이동 거리
         
         if (textRef.current) {
           gsap.set(textRef.current, { 
@@ -144,7 +153,7 @@ export default function WaveMaskText() {
             <rect width="750" height="120" fill="none" />
             <text 
               className="txt2" 
-              x="0" 
+              x="100" 
               y="0" 
               stroke="#fff"
               style={{
@@ -161,7 +170,7 @@ export default function WaveMaskText() {
             <rect width="750" height="120" fill="none" />    
             <text 
               className="txt1" 
-              x="107" 
+              x="-40" 
               y="0" 
               fill="#000" 
               style={{
@@ -171,7 +180,8 @@ export default function WaveMaskText() {
                 letterSpacing: '0.15em'
               }}
             >
-              WE OWN IT!
+              ZNIT IDENTITY
+
             </text>
           </g>
         </defs>

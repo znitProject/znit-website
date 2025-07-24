@@ -232,7 +232,7 @@ export default function Benefits() {
   return (
     <div className="py-12">
       {/* 타이틀 부분 - 컨테이너 제한 */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 mb-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 mb-12 mt-20">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center"

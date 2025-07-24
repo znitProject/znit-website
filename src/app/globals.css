@@ -32,6 +32,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.font-red-hat-display {
+  font-family: var(--font-red-hat-display), system-ui, sans-serif;
+}
+
+.font-roboto-flex {
+  font-family: var(--font-roboto-flex), system-ui, sans-serif;
+}
+
 html {
   background: #ffffff !important;
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Red_Hat_Display, Montserrat } from "next/font/google";
+import { Red_Hat_Display, Montserrat, Roboto_Flex } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -15,6 +15,11 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["900"],
   variable: "--font-montserrat",
+});
+
+const robotoFlex = Roboto_Flex({
+  subsets: ["latin"],
+  variable: "--font-roboto-flex",
 });
 
 const nanumSquareNeo = localFont({
@@ -34,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${redHatDisplay.variable} ${montserrat.variable} ${nanumSquareNeo.variable} antialiased`}>
+      <body className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} antialiased`}>
         <Providers>
           <Header />
           <main className="min-h-screen">
