@@ -19,7 +19,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     const [isDragging, setIsDragging] = useState(false);
     const [lastMouseX, setLastMouseX] = useState(0);
     const [lastMouseY, setLastMouseY] = useState(0);
-    const [lastInteraction, setLastInteraction] = useState(Date.now());
+
     const [mouseX, setMouseX] = useState(0);
     const [mouseY, setMouseY] = useState(0);
   
@@ -118,7 +118,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
         {/* 3D 캐러셀 컨테이너 */}
         <div 
-          className="relative h-[200px] sm:h-[250px] lg:h-[300px] mb-2 sm:mb-2 lg:mb-4" 
+          className="relative h-[190px] sm:h-[240px] lg:h-[280px] mb-1 sm:mb-1 lg:mb-2" 
           style={{ perspective: typeof window !== 'undefined' && window.innerWidth < 768 ? '600px' : '800px' }}
           onMouseDown={handleMouseDown}
         >

@@ -88,3 +88,11 @@ src/
 ## 라이선스
 
 ZNIT © 2024
+
+## 크레딧
+
+### 웨이브 마스크 애니메이션
+Copyright (c) 2020 by Tom Miller (https://codepen.io/creativeocean/pen/poyNVbo)
+Fork of an original work Waves (https://codepen.io/Mamboleoo/pen/JjojgWw)
+
+Slogan 페이지의 웨이브 마스크 텍스트 애니메이션은 위의 원작자들의 작업을 기반으로 구현되었습니다.

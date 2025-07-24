@@ -18,9 +18,9 @@ export default function KeywordCard() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bubbleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollTextRef = useRef<HTMLDivElement | null>(null);
-  const engineRef = useRef<any>(null);
-  const renderRef = useRef<any>(null);
-  const bodiesRef = useRef<any[]>([]);
+  const engineRef = useRef<Matter.Engine | null>(null);
+  const renderRef = useRef<number | null>(null);
+  const bodiesRef = useRef<Matter.Body[]>([]);
   const [visibleKeywords, setVisibleKeywords] = useState<string[]>([]);
 
   // 키워드 순차 렌더링
@@ -122,34 +122,42 @@ export default function KeywordCard() {
   useEffect(() => {
     if (!containerRef.current || !engineRef.current) return;
 
-    const Matter = require("matter-js");
-    const { World, Bodies } = Matter;
+    const createBody = async () => {
+      const Matter = await import("matter-js");
+      const { World, Bodies } = Matter;
 
-    const container = containerRef.current;
-    const rect = container.getBoundingClientRect();
-    const width = rect.width;
+      const container = containerRef.current;
+      if (!container) return;
+      
+      const rect = container.getBoundingClientRect();
+      const width = rect.width;
 
-    const index = visibleKeywords.length - 1;
-    if (index < 0) return;
+      const index = visibleKeywords.length - 1;
+      if (index < 0) return;
 
-    const bubbleEl = bubbleRefs.current[index];
-    if (!bubbleEl) return;
+      const bubbleEl = bubbleRefs.current[index];
+      if (!bubbleEl) return;
 
-    const bubbleWidth = bubbleEl.offsetWidth || 100;
-    const bubbleHeight = 44;
-    const x = Math.random() * (width - bubbleWidth - 40) + bubbleWidth / 2 + 20;
-    const y = Math.random() * 20 + 20;
+      const bubbleWidth = bubbleEl.offsetWidth || 100;
+      const bubbleHeight = 44;
+      const x = Math.random() * (width - bubbleWidth - 40) + bubbleWidth / 2 + 20;
+      const y = Math.random() * 20 + 20;
 
-    const body = Bodies.rectangle(x, y, bubbleWidth, bubbleHeight, {
-      restitution: 0.6,
-      friction: 0.3,
-      frictionAir: 0.01,
-      density: 0.001,
-      render: { visible: false },
-    });
+      const body = Bodies.rectangle(x, y, bubbleWidth, bubbleHeight, {
+        restitution: 0.6,
+        friction: 0.3,
+        frictionAir: 0.01,
+        density: 0.001,
+        render: { visible: false },
+      });
 
-    bodiesRef.current.push(body);
-    World.add(engineRef.current.world, body);
+      bodiesRef.current.push(body);
+      if (engineRef.current) {
+        World.add(engineRef.current.world, body);
+      }
+    };
+
+    createBody();
   }, [visibleKeywords]);
 
   // GSAP 무한 스크롤
@@ -239,7 +247,9 @@ export default function KeywordCard() {
       {visibleKeywords.map((word, i) => (
         <div
           key={`${word}-${i}`}
-          ref={(el) => (bubbleRefs.current[i] = el)}
+          ref={(el) => {
+            bubbleRefs.current[i] = el;
+          }}
           style={getBubbleStyle(i)}
         >
           <span style={{ pointerEvents: "none" }}>{word}</span>

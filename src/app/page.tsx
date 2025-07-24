@@ -10,7 +10,7 @@ import DarkModeCard from "../components/DarkModeCard";
 import ContactCard from "../components/ContactCard";
 import KeywordCard from "../components/KeywordCard";
 import WorkCard from "../components/WorkCard";
-import Link from "next/link";
+
 import WorkCardList from "../components/WorkCardList";
 import HomeTitleSection from "../components/HomeTitleSection";
 import HomeTitleVideoSection from "../components/HomeTitleVideoSection";

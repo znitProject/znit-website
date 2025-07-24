@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react';
+import { motion } from 'framer-motion';
 import { FormData } from '../../../types/contact';
 
 interface Step3Props {
@@ -50,11 +51,27 @@ export default function Step3({ formData, updateFormData }: Step3Props) {
 
   return (
     <div className="py-8">
-      <h2 className="text-4xl font-bold text-gray-900 mb-12">의뢰하시는 분의 정보 입력</h2>
+      <motion.h2 
+        className="text-4xl font-bold text-gray-900 mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        의뢰하시는 분의 정보 입력
+      </motion.h2>
       
       <div className="space-y-8">
-        <div className="grid grid-cols-2 gap-6">
-          <div>
+        <motion.div 
+          className="grid grid-cols-2 gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
             <label className="block text-lg font-semibold text-gray-900 mb-3">회사명</label>
             <input
               type="text"
@@ -65,8 +82,12 @@ export default function Step3({ formData, updateFormData }: Step3Props) {
                 handleInputChange('companyName', e.target.value)
               }
             />
-          </div>
-          <div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
             <label className="block text-lg font-semibold text-gray-900 mb-3">성함</label>
             <input
               type="text"
@@ -77,11 +98,20 @@ export default function Step3({ formData, updateFormData }: Step3Props) {
                 handleInputChange('name', e.target.value)
               }
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div>
+        <motion.div 
+          className="grid grid-cols-2 gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
             <label className="block text-lg font-semibold text-gray-900 mb-3">직함</label>
             <input
               type="text"
@@ -92,8 +122,13 @@ export default function Step3({ formData, updateFormData }: Step3Props) {
                 handleInputChange('position', e.target.value)
               }
             />
-          </div>
-          <div className="relative">
+          </motion.div>
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+          >
             <label className="block text-lg font-semibold text-gray-900 mb-3">연락처</label>
             <input
               type="tel"
@@ -107,14 +142,24 @@ export default function Step3({ formData, updateFormData }: Step3Props) {
               }
             />
             {showPhoneValidation && (
-              <div className="mt-2 text-red-600 text-sm">
+              <motion.div 
+                className="mt-2 text-red-600 text-sm"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
                 {phoneError}
-              </div>
+              </motion.div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="relative">
+        <motion.div 
+          className="relative"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
           <label className="block text-lg font-semibold text-gray-900 mb-3">이메일</label>
           <input
             type="email"
@@ -128,11 +173,16 @@ export default function Step3({ formData, updateFormData }: Step3Props) {
             }
           />
           {showEmailValidation && (
-            <div className="mt-2 text-red-600 text-sm">
+            <motion.div 
+              className="mt-2 text-red-600 text-sm"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               {emailError}
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
