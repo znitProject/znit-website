@@ -208,7 +208,7 @@ function InfiniteMarquee({ direction = 'left', speed = 60, children }: { directi
 
   return (
     <div 
-      className="relative overflow-hidden w-full"
+      className="relative overflow-hidden w-full max-w-full"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -231,48 +231,70 @@ function InfiniteMarquee({ direction = 'left', speed = 60, children }: { directi
 export default function Benefits() {
   return (
     <div className="py-12">
-      <motion.div 
-        className="text-center mb-12"
-        initial={{ y: 50, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-          <TypewriterText text="Benefits." speed={150} />
-        </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          함께 성장하는 즐거운 환경을 만들어갑니다
-        </p>
-      </motion.div>
-      <div className="space-y-8">
+      {/* 타이틀 부분 - 컨테이너 제한 */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center"
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 1 }}
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              <TypewriterText text="Benefits." speed={150} />
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              함께 성장하는 즐거운 환경을 만들어갑니다
+            </p>
+          </motion.div>
+        </div>
+      </div>
+      
+      {/* 캐러셀 부분 - 화면에 맞춤 */}
+      <div className="space-y-8 overflow-hidden">
         {/* 첫 번째 줄 - 왼쪽 무한 루프 */}
-        <InfiniteMarquee direction="left" speed={100}>
-          {benefits.map((benefit) => (
-            <div key={`row1-${benefit.id}`} className="flex-shrink-0 w-72 lg:w-80">
-              <BenefitCard 
-                icon={benefit.icon}
-                title={benefit.title}
-                description={benefit.description}
-                backDescription={benefit.backDescription}
-                backImage={benefit.backImage}
-              />
-            </div>
-          ))}
-        </InfiniteMarquee>
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <InfiniteMarquee direction="left" speed={100}>
+            {benefits.map((benefit) => (
+              <div key={`row1-${benefit.id}`} className="flex-shrink-0 w-72 lg:w-80">
+                <BenefitCard 
+                  icon={benefit.icon}
+                  title={benefit.title}
+                  description={benefit.description}
+                  backDescription={benefit.backDescription}
+                  backImage={benefit.backImage}
+                />
+              </div>
+            ))}
+          </InfiniteMarquee>
+        </motion.div>
         {/* 두 번째 줄 - 오른쪽 무한 루프 */}
-        <InfiniteMarquee direction="right" speed={120}>
-          {benefits.map((benefit) => (
-            <div key={`row2-${benefit.id}`} className="flex-shrink-0 w-72 lg:w-80">
-              <BenefitCard 
-                icon={benefit.icon}
-                title={benefit.title}
-                description={benefit.description}
-                backDescription={benefit.backDescription}
-                backImage={benefit.backImage}
-              />
-            </div>
-          ))}
-        </InfiniteMarquee>
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <InfiniteMarquee direction="right" speed={120}>
+            {benefits.map((benefit) => (
+              <div key={`row2-${benefit.id}`} className="flex-shrink-0 w-72 lg:w-80">
+                <BenefitCard 
+                  icon={benefit.icon}
+                  title={benefit.title}
+                  description={benefit.description}
+                  backDescription={benefit.backDescription}
+                  backImage={benefit.backImage}
+                />
+              </div>
+            ))}
+          </InfiniteMarquee>
+        </motion.div>
       </div>
     </div>
   );

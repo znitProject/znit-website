@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface CarouselItem {
   id: number;
@@ -19,26 +20,51 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     const [isDragging, setIsDragging] = useState(false);
     const [lastMouseX, setLastMouseX] = useState(0);
     const [lastMouseY, setLastMouseY] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
 
     const [mouseX, setMouseX] = useState(0);
     const [mouseY, setMouseY] = useState(0);
+    
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+      target: containerRef,
+      offset: ["start end", "end start"]
+    });
+
+    // 스크롤에 따른 애니메이션
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+    const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
   
     // 반응형 반지름과 카드 크기 (더 작게)
     const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 200 : 280;
     const angleStep = 360 / items.length; // 카드 하나당 각도
   
+    // 스크롤 위치에 따른 가시성 제어
+    useEffect(() => {
+      const handleScroll = () => {
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+          setIsVisible(isInView);
+        }
+      };
 
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // 초기 체크
+      
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
   
-    // 지속적인 자동 회전
+    // 지속적인 자동 회전 (가시성에 따라 제어)
     useEffect(() => {
       const interval = setInterval(() => {
-        if (!isDragging) {
+        if (!isDragging && isVisible) {
           setRotationY((prev: number) => prev - 0.2); // 더 느리게 회전
         }
       }, 16); // 60fps로 부드러운 애니메이션
   
       return () => clearInterval(interval);
-    }, [isDragging]);
+    }, [isDragging, isVisible]);
 
     // 마우스 위치 추적
     useEffect(() => {
@@ -103,8 +129,10 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     };
   
     return (
-      <div 
+      <motion.div 
+        ref={containerRef}
         className="flex flex-col items-center select-none carousel-container"
+        style={{ opacity, scale }}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseEnter={() => {
@@ -154,6 +182,6 @@ export default function Carousel3D({ items }: Carousel3DProps) {
             })}
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   }

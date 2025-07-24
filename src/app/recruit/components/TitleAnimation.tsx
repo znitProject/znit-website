@@ -27,7 +27,7 @@ export default function TitleAnimation() {
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -50]);
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [20, 0, -20]);
 
-  // 각 글자별 애니메이션
+  // 각 글자별 애니메이션 - 스크롤 기반
   const letters = "Work with us.".split('');
 
   return (
@@ -52,11 +52,12 @@ export default function TitleAnimation() {
                 y: 20, 
                 scale: 0.95
               }}
-              animate={{ 
+              whileInView={{ 
                 opacity: 1, 
                 y: 0, 
                 scale: 1
               }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ 
                 duration: 0.4, 
                 delay: index * 0.05,
@@ -72,27 +73,29 @@ export default function TitleAnimation() {
           ))}
         </div>
 
-                 {/* 서브 타이틀 */}
-         <motion.div
-           className="mt-6 sm:mt-8 lg:mt-10"
-           initial={{ opacity: 0, y: 20, scale: 0.9 }}
-           animate={{ opacity: 1, y: 0, scale: 1 }}
-           transition={{ duration: 0.6, delay: 1.2 }}
-         >
-           <motion.p 
-             className="text-base sm:text-lg lg:text-xl text-black font-bold"
-             style={{fontFamily:'Istok Web'}}
-             initial={{ opacity: 0, x: -20 }}
-             animate={{ opacity: 1, x: 0 }}
-             transition={{ duration: 0.8, delay: 1.5 }}
-             whileHover={{
-               scale: 1.05,
-               color: "#3B82F6",
-               transition: { duration: 0.3 }
-             }}
-           >
-           </motion.p>
-         </motion.div>
+        {/* 서브 타이틀 */}
+        <motion.div
+          className="mt-6 sm:mt-8 lg:mt-10"
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <motion.p 
+            className="text-base sm:text-lg lg:text-xl text-black font-bold"
+            style={{fontFamily:'Istok Web'}}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            whileHover={{
+              scale: 1.05,
+              color: "#3B82F6",
+              transition: { duration: 0.3 }
+            }}
+          >
+          </motion.p>
+        </motion.div>
       </motion.div>
 
       {/* 3D 캐러셀 - 타이틀 바로 아래 */}
@@ -100,13 +103,11 @@ export default function TitleAnimation() {
         className="mt-32 sm:mt-40 lg:mt-48 mb-10 sm:mb-30 lg:mb-38"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.8 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
       >
         <Carousel3D items={carouselItems} />
       </motion.div>
-
-
-
 
     </div>
   );

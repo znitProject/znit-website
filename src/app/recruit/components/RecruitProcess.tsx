@@ -8,22 +8,39 @@ import { useRef, useEffect, useState } from 'react';
 const TypingTitle = ({ text }: { text: string }) => {
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
 
   useEffect(() => {
-    if (currentIndex < text.length) {
+    if (isInView && !hasStarted) {
+      setHasStarted(true);
+      setDisplayText('');
+      setCurrentIndex(0);
+    } else if (!isInView) {
+      setHasStarted(false);
+      setDisplayText('');
+      setCurrentIndex(0);
+    }
+  }, [isInView, hasStarted]);
+
+  useEffect(() => {
+    if (currentIndex < text.length && hasStarted) {
       const timer = setTimeout(() => {
         setDisplayText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [currentIndex, text]);
+  }, [currentIndex, text, hasStarted]);
 
   return (
     <motion.h2 
+      ref={ref}
       className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 text-gray-900"
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.3 }}
       transition={{ duration: 0.6 }}
     >
       {displayText}
@@ -44,14 +61,15 @@ const ProcessStep = ({
   index: number; 
 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
 
   return (
     <motion.div
       ref={ref}
       className="flex flex-col items-center text-center relative"
       initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.3 }}
       transition={{ 
         duration: 0.6, 
         delay: index * 0.2,
@@ -82,7 +100,8 @@ const ProcessStep = ({
       <motion.h3 
         className="text-xl md:text-2xl font-semibold mb-4 text-gray-900"
         initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: false, amount: 0.3 }}
         transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
       >
         {title}
@@ -92,7 +111,8 @@ const ProcessStep = ({
       <motion.p 
         className="text-gray-600 max-w-xs leading-relaxed whitespace-pre-line"
         initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: false, amount: 0.3 }}
         transition={{ duration: 0.6, delay: index * 0.2 + 0.5 }}
       >
         {description}
@@ -140,55 +160,52 @@ const RecruitProcess = () => {
       className="w-full relative overflow-hidden"
       style={{ y }}
     >
-      <div className="relative z-10 mt-20">
-        <div className="py-32">
-          <div className="w-full px-6">
-            {/* 전체 배경색 영역 */}
-            <div className="bg-gray-50 rounded-2xl p-12">
-              {/* 타이틀 */}
-              <div className="mb-20">
-                <TypingTitle text="Process." />
-              </div>
+      <div className="py-32">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          {/* 전체 배경색 영역 */}
+          <div className="bg-gray-50 rounded-2xl p-12">
+                {/* 타이틀 */}
+                <div className="mb-20">
+                  <TypingTitle text="Process." />
+                </div>
 
-              {/* 스텝 리스트 */}
-              <div className="relative hidden lg:flex justify-between items-start">
-                {processSteps.map((step, index) => {
-                  const isLast = index === processSteps.length - 1;
-                  return (
-                    <div key={index} className="relative flex flex-col items-center w-1/4">
-                    <ProcessStep 
-                      number={step.number}
-                      title={step.title}
-                      description={step.description}
-                      index={index}
-                    />
-                  
-                    {!isLast && (
-                      <div className="absolute top-10 right-[-5rem] transform -translate-y-1/2 w-40 h-px border-t-2 border-dashed border-gray-300 z-0" />
-                    )}
-                  </div>
-                  );
-                })}
-              </div>
+                {/* 스텝 리스트 */}
+                <div className="relative hidden lg:flex justify-between items-start">
+                  {processSteps.map((step, index) => {
+                    const isLast = index === processSteps.length - 1;
+                    return (
+                      <div key={index} className="relative flex flex-col items-center w-1/4">
+                      <ProcessStep 
+                        number={step.number}
+                        title={step.title}
+                        description={step.description}
+                        index={index}
+                      />
+                    
+                      {!isLast && (
+                        <div className="absolute top-10 right-[-5rem] transform -translate-y-1/2 w-40 h-px border-t-2 border-dashed border-gray-300 z-0" />
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
 
-              {/* 모바일: 스택 방식 */}
-              <div className="flex flex-col gap-16 lg:hidden">
-                {processSteps.map((step, index) => (
-                  <div key={index} className="relative">
-                    <ProcessStep 
-                      number={step.number}
-                      title={step.title}
-                      description={step.description}
-                      index={index}
-                    />
-                  </div>
-                ))}
+                {/* 모바일: 스택 방식 */}
+                <div className="flex flex-col gap-16 lg:hidden">
+                  {processSteps.map((step, index) => (
+                    <div key={index} className="relative">
+                      <ProcessStep 
+                        number={step.number}
+                        title={step.title}
+                        description={step.description}
+                        index={index}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            
           </div>
         </div>
-      </div>
     </motion.div>
   );
 };

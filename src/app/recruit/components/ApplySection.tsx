@@ -59,10 +59,9 @@ export default function ApplySection({ onSubmit }: ApplySectionProps) {
   const isImageInView = useInView(imageRef, { once: true, margin: "-100px" });
 
   return (
-    <div className="mt-12 sm:mt-16 lg:mt-20 mb-12 sm:mb-16 lg:mb-20">
+    <div className="py-12">
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12">
             {/* 왼쪽 영역 - 2/3 */}
             <div className="flex flex-col order-2 lg:order-1 lg:col-span-2">
               {/* 글귀 */}
@@ -122,7 +121,6 @@ export default function ApplySection({ onSubmit }: ApplySectionProps) {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 } 
