@@ -227,7 +227,7 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({ className
         />
       ))}
       {/* 여러 줄 텍스트에 stroke와 fill 효과 적용, 좌측 정렬 및 큰 글씨 */}
-      <div className="relative z-10 w-full">
+      <div className="relative z-10 w-full mb-20">
         {TEXT_LINES.map((line, idx) => (
           <span
             key={idx}

@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import WaveMaskText from './components/WaveMaskText';
 import ValuesSection from './components/ValuesSection';
 import CompanyIntroSection from './components/CompanyIntroSection';

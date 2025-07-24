@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import FileUpload from './FileUpload';
+import Image from 'next/image';
 
 interface ApplySectionProps {
-  onSubmit: (file: File) => Promise<any>;
+  onSubmit: (file: File) => Promise<void>;
 }
 
 // 텍스트 Block Reveal 효과 애니메이션 컴포넌트
@@ -107,15 +108,11 @@ export default function ApplySection({ onSubmit }: ApplySectionProps) {
                   ease: "easeOut"
                 }}
               >
-                <img
+                <Image
                   src="/Image_fx (1).jpg"
                   alt="ZNIT 채용 - 미래지향적인 성장과 혁신"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // 이미지 로드 실패시 기본 이미지로 대체
-                    const target = e.target as HTMLImageElement;
-                    target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f3f4f6'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='24' fill='%236b7280'%3EZNIT 채용%3C/text%3E%3C/svg%3E";
-                  }}
+                  fill
+                  style={{ objectFit: 'cover' }}
                 />
               </motion.div>
             </div>

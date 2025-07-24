@@ -35,7 +35,7 @@ export default function Step2({ formData, updateFormData }: Step2Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        프로젝트에 대해 자세히 알려줘
+        프로젝트 세부 내용을 작성해 주십시오.
       </motion.h2>
       
       <div className="space-y-8">
