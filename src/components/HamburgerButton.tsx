@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface HamburgerButtonProps {
   toggleMenu: () => void;
@@ -6,6 +7,41 @@ interface HamburgerButtonProps {
 }
 
 const HamburgerButton: React.FC<HamburgerButtonProps> = ({ toggleMenu, isMenuOpen }) => {
+  const pathname = usePathname();
+  const [buttonColor, setButtonColor] = useState('#000');
+
+  useEffect(() => {
+    const updateButtonColor = () => {
+      // 현재 스크롤 위치에 따라 배경색 감지
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      
+      // /slogan 페이지에서 스크롤 위치에 따라 색상 결정
+      if (pathname === '/slogan') {
+        if (scrollY < windowHeight) {
+          // 첫 번째 섹션 (화이트 배경)
+          setButtonColor('#000');
+        } else {
+          // 나머지 섹션 (블랙 배경)
+          setButtonColor('#fff');
+        }
+      } else {
+        // 다른 페이지는 기본 검정색
+        setButtonColor('#000');
+      }
+    };
+
+    // 초기 색상 설정
+    updateButtonColor();
+
+    // 스크롤 이벤트 리스너 추가
+    window.addEventListener('scroll', updateButtonColor);
+    
+    return () => {
+      window.removeEventListener('scroll', updateButtonColor);
+    };
+  }, [pathname]);
+
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -20,11 +56,11 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({ toggleMenu, isMenuOpe
       }
       .toggle span {
         display: block;
-        background: #000;
+        background: ${buttonColor};
         width: 32px; /* Adjusted for better visual */
         height: 4px;
         border-radius: 3px;
-        transition: 0.25s margin 0.25s, 0.25s transform;
+        transition: 0.25s margin 0.25s, 0.25s transform, 0.3s background;
       }
       .toggle span:nth-child(1) {
         margin-bottom: 6px; /* Adjusted for better visual */
@@ -53,7 +89,7 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({ toggleMenu, isMenuOpe
     return () => {
       document.head.removeChild(style);
     };
-  }, []);
+  }, [buttonColor]);
 
   return (
     <div className={`toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>

@@ -7,8 +7,15 @@ import ApplySection from './components/ApplySection';
 
 export default function RecruitPage() {
   const handleFileSubmit = async (file: File) => {
+    // 간단한 폼 데이터 추가 (실제로는 사용자가 입력해야 함)
     const formData = new FormData();
     formData.append('resume', file);
+    formData.append('name', '지원자'); // 실제로는 사용자 입력
+    formData.append('email', 'test@example.com'); // 실제로는 사용자 입력
+    formData.append('phone', '010-1234-5678'); // 실제로는 사용자 입력
+    formData.append('position', '개발자'); // 실제로는 사용자 입력
+    formData.append('experience', '3년'); // 실제로는 사용자 입력
+    formData.append('message', '지원합니다.'); // 실제로는 사용자 입력
 
     const response = await fetch('/api/recruit', {
       method: 'POST',

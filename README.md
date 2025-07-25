@@ -13,7 +13,7 @@ ZNIT의 공식 웹사이트입니다. Next.js와 TypeScript를 사용하여 구�
 ## 기술 스택
 
 - **Frontend**: Next.js 14, TypeScript, Tailwind CSS
-- **Email Service**: SendGrid
+- **Email Service**: Resend
 - **Deployment**: Vercel (권장)
 
 ## 설치 및 실행
@@ -37,8 +37,8 @@ npm start
 프로젝트 루트에 `.env.local` 파일을 생성하고 다음 환경변수를 설정하세요:
 
 ```env
-# SendGrid 설정
-SENDGRID_API_KEY=your_sendgrid_api_key_here
+# Resend 설정
+RESEND_API_KEY=your_resend_api_key_here
 FROM_EMAIL=noreply@yourdomain.com
 CONTACT_EMAIL=contact@znit.com
 HR_EMAIL=hr@znit.com
@@ -47,12 +47,20 @@ HR_EMAIL=hr@znit.com
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-### SendGrid 설정 방법
+### Resend 설정 방법
 
-1. [SendGrid](https://sendgrid.com) 계정을 생성합니다.
+1. [Resend](https://resend.com) 계정을 생성합니다.
 2. API 키를 생성합니다.
 3. 도메인 인증을 완료합니다.
 4. 환경변수에 API 키와 인증된 이메일 주소를 설정합니다.
+
+### 보안 기능
+
+- Rate Limiting: 15분당 최대 5회 요청 제한
+- 입력 검증 및 정제: XSS 방지
+- 이메일 형식 검증 강화
+- IP 기반 스팸 방지
+- 에러 로깅 (민감한 정보 제외)
 
 ## 폴더 구조
 
@@ -75,11 +83,12 @@ src/
 ## 기능
 
 - 반응형 디자인
-- 문의 폼 (SendGrid 이메일 전송)
-- 채용 지원 폼 (SendGrid 이메일 전송)
+- 문의 폼 (Resend 이메일 전송)
+- 채용 지원 폼 (Resend 이메일 전송)
 - SEO 최적화
 - TypeScript 지원
 - Tailwind CSS 스타일링
+- 보안 강화된 API (Rate Limiting, XSS 방지)
 
 ## 배포
 

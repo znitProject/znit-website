@@ -13,6 +13,8 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "leaflet": "^1.9.4",
     "locomotive-scroll": "^4.1.4",
     "matter": "^0.2.0",
@@ -22,6 +24,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-leaflet": "^5.0.0",
+    "resend": "^4.7.0",
     "three": "^0.178.0",
     "turbopack": "^0.0.1"
   },
