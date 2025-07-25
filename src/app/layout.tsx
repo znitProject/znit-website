@@ -42,6 +42,7 @@ export default function RootLayout({
       <body className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} antialiased`}>
         <Providers>
           <Header />
+          <div style={{ height: '10px' }} />
           <main className="min-h-screen">
             {children}
           </main>
