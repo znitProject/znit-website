@@ -62,7 +62,7 @@ export default function WorkCard() {
       
       {/* 텍스트 */}
       <span className="absolute left-0 bottom-0 z-10 text-white text-5xl font-extrabold p-6 drop-shadow-lg select-none">
-        WORK
+        WORKS
       </span>
 
       {/* 핸드라이팅 스타일 Hover text */}

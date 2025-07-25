@@ -84,7 +84,7 @@ const WorkWithUsCard = () => {
   return (
     <Link
       ref={cardRef}
-      href="/recruit"
+      href="/career"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{ 

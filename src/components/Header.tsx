@@ -14,7 +14,7 @@ export default function Header() {
     { name: 'HOME', path: '/' },
     { name: 'WORKS', path: '/work' },
     { name: 'ABOUT', path: '/slogan' },
-    { name: 'CAREERS', path: '/recruit' },
+    { name: 'CAREERS', path: '/career' },
     { name: 'CONTACT US', path: '/contact' },
   ];
 
@@ -44,7 +44,7 @@ export default function Header() {
   }, [isMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-transparent z-50 mb-[10px]">
+    <header className="fixed top-0 left-0 right-0 bg-transparent z-[500] mb-[10px]">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 relative">
           {/* 로고 - 왼쪽 */}
