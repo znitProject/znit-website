@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import HamburgerButton from './HamburgerButton';
 
 export default function Header() {
@@ -48,7 +49,13 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 relative">
           {/* 로고 - 왼쪽 */}
           <Link href="/" className="flex items-center space-x-2" onClick={closeMenu}>
-            <div className="text-2xl font-bold text-gray-900">ZNIT</div>
+            <Image 
+              src="/logo/ZNLogo.png" 
+              alt="ZNIT Logo" 
+              width={80} 
+              height={40} 
+              className="h-8 w-auto"
+            />
           </Link>
 
           {/* 햄버거 메뉴 버튼 - 오른쪽 */}
@@ -79,7 +86,7 @@ export default function Header() {
                     <Link
                       href={item.path}
                       onClick={closeMenu}
-                      className="bg-blue-500 text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 block"
+                      className="bg-[#5051A2] text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 block"
                     >
                       {item.name}
                     </Link>
