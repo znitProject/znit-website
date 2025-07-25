@@ -3,8 +3,8 @@ import React from "react";
 // WorkCardList 컴포넌트: 하단 WORK 카드 리스트를 렌더링합니다.
 const WorkCardList: React.FC = () => {
   return (
-    <section className="w-full max-w-full px-10 mb-12">
-      <h2 className="text-3xl font-bold mb-4 text-black">WORK</h2>
+    <section className="w-full max-w-full px-10 mb-20">
+      <h2 className="text-3xl font-bold mb-4 text-black">WORKS</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {[1,2,3,4,5].map((i) => (
           <div

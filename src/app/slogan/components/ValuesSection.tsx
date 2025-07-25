@@ -215,7 +215,7 @@ export default function ValuesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-40 font-red-hat-display">
-            {"Core Values".split('').map((char, index) => (
+            {"We own what defines us.".split('').map((char, index) => (
               <motion.span
                 key={index}
                 initial={{ opacity: 0 }}

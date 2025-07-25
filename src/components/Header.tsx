@@ -12,10 +12,10 @@ export default function Header() {
 
   const menuItems = [
     { name: 'HOME', path: '/' },
-    { name: 'PROJECTS', path: '/work' },
+    { name: 'WORKS', path: '/work' },
     { name: 'ABOUT', path: '/slogan' },
-    { name: 'CAREERS', path: '/recruit' },
-    { name: 'CONTACT', path: '/contact' },
+    { name: 'CAREERS', path: '/career' },
+    { name: 'CONTACT US', path: '/contact' },
   ];
 
   const toggleMenu = () => {
@@ -44,7 +44,7 @@ export default function Header() {
   }, [isMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-transparent z-50 mb-[10px]">
+    <header className="fixed top-0 left-0 right-0 bg-transparent z-[500] mb-[10px]">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 relative">
           {/* 로고 - 왼쪽 */}
@@ -86,7 +86,7 @@ export default function Header() {
                     <Link
                       href={item.path}
                       onClick={closeMenu}
-                      className="bg-[#5051A2] text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 block"
+                      className="bg-[#5051A2] text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 block whitespace-nowrap"
                     >
                       {item.name}
                     </Link>
