@@ -230,7 +230,7 @@ export default function KeywordCard() {
       style={{ gridArea: "keyword" }}
     >
       {/* 무한 스크롤 문장 */}
-      <div className="absolute top-0 left-0 w-full overflow-hidden z-20 py-2">
+      <div className="absolute top-0 left-0 w-full overflow-hidden z-20 ">
         <div
           ref={scrollTextRef}
           className="flex whitespace-nowrap text-[4rem] font-extrabold text-stroke text-transparent"

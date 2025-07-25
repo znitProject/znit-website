@@ -23,7 +23,7 @@ const TextAnimation = () => {
   }, [texts.length]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="relative">
         <div className="flex items-center text-4xl font-semibold text-white">
           <span className="mr-4">WE ARE</span>

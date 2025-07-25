@@ -1,16 +1,43 @@
+"use client"
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const footerRef = useRef(null);
+
+  useEffect(() => {
+    gsap.fromTo(footerRef.current, 
+      { opacity: 0, y: 50 }, 
+      { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.5 }
+    );
+
+    // gsap utils.toArray 반환값을 HTMLElement[]로 명시적으로 캐스팅 (linter 에러 방지)
+    (gsap.utils.toArray('.footer-link') as HTMLElement[]).forEach((link) => {
+      gsap.fromTo(link, 
+        { opacity: 0, x: -20 }, 
+        { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: link, start: 'top 90%' } }
+      );
+    });
+
+    (gsap.utils.toArray('.footer-icon') as HTMLElement[]).forEach((icon) => {
+      gsap.fromTo(icon, 
+        { opacity: 0, scale: 0.5 }, 
+        { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.7)', scrollTrigger: { trigger: icon, start: 'top 90%' } }
+      );
+    });
+
+  }, []);
 
   return (
-    <footer className="bg-gray-100 text-gray-900 border-t border-gray-200">
+    <footer ref={footerRef} className="bg-zinc-900 text-zinc-600 rounded-[20px] m-4 border border-zinc-700 shadow-xl backdrop-glass bg-opacity-20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* 회사 정보 */}
           <div className="col-span-1 md:col-span-2">
             <div className="text-2xl font-bold mb-4">ZNIT</div>
-            <p className="text-gray-600 mb-4 max-w-md">
+            <p className="text-zinc-500 mb-4 max-w-md">
               혁신적인 솔루션으로 미래를 만들어갑니다. 
               우리는 우리가 하는 모든 일에 책임을 지고, 
               최고의 결과물을 만들어내는 것을 약속합니다.
@@ -18,7 +45,7 @@ export default function Footer() {
             <div className="flex space-x-4">
               <a
                 href="mailto:contact@znit.com"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-zinc-400 hover:text-white transition-colors footer-icon"
                 aria-label="이메일"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -28,7 +55,7 @@ export default function Footer() {
               </a>
               <a
                 href="tel:02-1234-5678"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-zinc-400 hover:text-white transition-colors footer-icon"
                 aria-label="전화번호"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -43,22 +70,22 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">빠른 링크</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-gray-600 hover:text-gray-900 transition-colors">
+                <Link href="/" className="text-zinc-500 hover:text-white transition-colors footer-link">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/work" className="text-gray-600 hover:text-gray-900 transition-colors">
+                <Link href="/work" className="text-zinc-500 hover:text-white transition-colors footer-link">
                   Work
                 </Link>
               </li>
               <li>
-                <Link href="/recruit" className="text-gray-600 hover:text-gray-900 transition-colors">
+                <Link href="/recruit" className="text-zinc-500 hover:text-white transition-colors footer-link">
                   Recruit
                 </Link>
               </li>
               <li>
-                <Link href="/slogan" className="text-gray-600 hover:text-gray-900 transition-colors">
+                <Link href="/slogan" className="text-zinc-500 hover:text-white transition-colors footer-link">
                   We Own It
                 </Link>
               </li>
@@ -68,14 +95,14 @@ export default function Footer() {
           {/* 연락처 */}
           <div>
             <h3 className="text-lg font-semibold mb-4">연락처</h3>
-            <ul className="space-y-2 text-gray-600">
+            <ul className="space-y-2 text-zinc-500">
               <li>
-                <a href="mailto:contact@znit.com" className="hover:text-gray-900 transition-colors">
+                <a href="mailto:contact@znit.com" className="hover:text-white transition-colors footer-link">
                   contact@znit.com
                 </a>
               </li>
               <li>
-                <a href="tel:02-1234-5678" className="hover:text-gray-900 transition-colors">
+                <a href="tel:02-1234-5678" className="hover:text-white transition-colors footer-link">
                   02-1234-5678
                 </a>
               </li>
@@ -88,16 +115,16 @@ export default function Footer() {
         </div>
 
         {/* 하단 구분선 */}
-        <div className="border-t border-gray-300 mt-8 pt-8">
+        <div className="border-t border-zinc-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-500 text-sm">
+            <p className="text-zinc-500 text-sm">
               © {currentYear} ZNIT. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privacy" className="text-gray-500 hover:text-gray-900 text-sm transition-colors">
+              <Link href="/privacy" className="text-zinc-500 hover:text-white text-sm transition-colors footer-link">
                 개인정보처리방침
               </Link>
-              <Link href="/terms" className="text-gray-500 hover:text-gray-900 text-sm transition-colors">
+              <Link href="/terms" className="text-zinc-500 hover:text-white text-sm transition-colors footer-link">
                 이용약관
               </Link>
             </div>

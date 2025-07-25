@@ -157,7 +157,7 @@ export default function WaveMaskText() {
               y="0" 
               stroke="#fff"
               style={{
-                fontSize: '90px',
+                fontSize: '100px',
                 fontFamily: 'var(--font-montserrat), sans-serif',
                 fontWeight: 900
               }}
@@ -174,7 +174,7 @@ export default function WaveMaskText() {
               y="0" 
               fill="#000" 
               style={{
-                fontSize: '90px',
+                fontSize: '100px',
                 fontFamily: 'var(--font-montserrat), sans-serif',
                 fontWeight: 900,
                 letterSpacing: '0.15em'

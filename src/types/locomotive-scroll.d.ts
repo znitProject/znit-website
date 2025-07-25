@@ -15,7 +15,7 @@ declare module 'locomotive-scroll' {
         };
       };
     };
-    scrollTo: (target: any, options?: any) => void;
+    scrollTo: (target: string | number | HTMLElement, options?: object) => void;
     on: (event: string, callback: () => void) => void;
     destroy: () => void;
     update: () => void;

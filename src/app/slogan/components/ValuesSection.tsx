@@ -22,12 +22,12 @@ const values: ValueCardData[] = [
   {
     id: 1,
     title: "주체성",
-    description: "Subjectivity\nAutonomy\nProactiveness",
+    description: "Independence\nProactiveness",
     color: "bg-blue-500",
-    image: "/recruit-abstract.jpg",
+    image: "/values/independence.png",
     detailContent: {
       subtitle: "자신의 생각과 판단으로 행동하는 능력",
-      explanation: "주체성은 자신의 생각과 판단을 바탕으로 독립적으로 행동하고 결정하는 능력을 의미합니다. 타인의 의견에 좌우되지 않고 \n자신만의 가치관과 원칙을 가지고 살아가는 것을 말합니다.",
+      explanation: "주체성은 우리가 만들어내는 혁신과 창의성의 핵심 동력입니다.\n 모든 팀원이 스스로 사고하고, 능동적으로 문제를 해결하며,\n 자신의 아이디어를 실현해 나갈 때\n 비로소 최고의 결과물이 탄생한다고 믿습니다.",
       examples: [
         "자신의 목표를 스스로 설정하고 추진하기",
         "의견이 다를 때 자신의 생각을 명확히 표현하기",
@@ -38,14 +38,14 @@ const values: ValueCardData[] = [
   {
     id: 2,
     title: "공동체 의식",
-    description: "Community spirit\nSense of community",
-    color: "bg-green-500",
-    image: "/recruit-handshake.jpg",
+    description: "Community spirit\nTogetherness",
+    color: "bg-red-500",
+    image: "/values/community.png",
     detailContent: {
       subtitle: "함께 살아가는 공동체를 위한 마음가짐",
-      explanation: "공동체 의식은 개인이 속한 집단이나 사회의 구성원으로서 \n공동의 이익과 발전을 위해 협력하고 기여하려는 마음가짐을 의미합니다. 개인의 이익보다 공동체의 발전을 우선시하는 \n태도를 말합니다.",
+      explanation: "우리는 공동체 의식을 바탕으로 함께 나아갑니다.\n 긴밀한 협력과 활발한 소통을 통해 서로의 성장을 돕고,\n 동반자로서 더 나은 미래를 함께 만들어 나갑니다.",
       examples: [
-        "팀 프로젝트에서 개인보다 팀 성과를 우선시하기",
+        "협력과 상생이 더 빨리 성장하는 방법임을 이해하기",
         "지역사회 문제에 관심을 가지고 참여하기",
         "동료들과 정보를 공유하고 서로 돕기"
       ]
@@ -53,33 +53,33 @@ const values: ValueCardData[] = [
   },
   {
     id: 3,
-    title: "능동성",
-    description: "Activeness\nProactiveness",
+    title: "전문성",
+    description: "Professionalism\nExpertise",
     color: "bg-purple-500",
-    image: "/work_image.jpg",
+    image: "/values/professionalism.png",
     detailContent: {
-      subtitle: "적극적이고 주도적으로 행동하는 자세",
-      explanation: "능동성은 상황을 기다리지 않고 적극적으로 행동하며, \n문제를 미리 예측하고 해결책을 준비하는 능동적인 자세를 \n의미합니다. 수동적이 아닌 주도적으로 상황을 이끌어가는 \n태도를 말합니다.",
+      subtitle: "자신이 맡은 분야에 대한 전문적인 지식과 경험",
+      explanation: "우리는 끊임없는 배움과 도전을 통해 전문성을 갈고닦습니다.\n 각자의 분야에서 최고가 되기 위한 노력을 멈추지 않으며,\n 이러한 전문성이 모여 혁신적인 결과물을 만들어냅니다.",
       examples: [
-        "새로운 기술을 배우기 위해 스스로 학습 계획을 세우기",
-        "업무 개선 아이디어를 제안하고 실행하기",
-        "문제가 발생하기 전에 예방 조치를 취하기"
+        "새로운 프로그래밍 언어나 프레임워크를 학습하여 기술 스택 확장하기",
+        "디자인 트렌드를 연구하고 이를 실제 프로젝트에 적용하여 시각적 완성도 높이기",
+        "자신이 담당하는 솔루션의 깊이 있는 이해를 바탕으로 기술적인 문제 해결 능력 강화하기"
       ]
     }
   },
   {
     id: 4,
     title: "책임감",
-    description: "Sense of responsibility",
+    description: "Responsibility",
     color: "bg-orange-500",
-    image: "/recruit-image.jpg",
+    image: "/values/responsibility.png",
     detailContent: {
       subtitle: "자신의 행동과 결정에 대한 책임을 지는 태도",
-      explanation: "책임감은 자신이 맡은 일이나 행동에 대해 끝까지 책임을 지고 완수하려는 의지와 태도를 의미합니다. 결과에 대한 책임을 \n회피하지 않고 적극적으로 해결하려는 마음가짐을 말합니다.",
+      explanation: "우리는 맡은 업무에 대한 책임감을 바탕으로 신뢰를 구축합니다.\n 약속을 지키고, 최고의 결과물을 위해 끊임없이 노력하며,\n 우리의 행동이 가져올 영향에 대해 깊이 생각합니다.",
       examples: [
         "맡은 프로젝트를 기한 내에 완료하기",
-        "실수를 했을 때 인정하고 수정하기",
-        "팀원들의 업무를 지원하고 도움을 주기"
+        "주어진 업무를 '내 일'처럼 여기고 능동적으로 문제 해결에 참여하기",
+        "어려움에 직면했을 때 회피하지 않고 끝까지 해결 방안을 모색하기"
       ]
     }
   },
@@ -87,15 +87,15 @@ const values: ValueCardData[] = [
     id: 5,
     title: "전략적 사고",
     description: "Strategic thinking",
-    color: "bg-red-500",
-    image: "/contact_us_image.jpg",
+    color: "bg-green-500",
+    image: "/values/stratigic.png",
     detailContent: {
-      subtitle: "장기적 관점에서 목표를 달성하는 사고방식",
-      explanation: "전략적 사고는 현재의 상황을 분석하고 미래의 목표를 설정한 후, 그 목표를 달성하기 위한 체계적이고 장기적인 계획을 세우는 사고방식을 의미합니다. 단기적 이익보다는 장기적 성과를 고려하는 능력을 말합니다.",
+      subtitle: "나무가 아니라 숲을 보고, 더 나은 방법을 모색하는 태도",
+      explanation: "우리는 전략적 사고를 통해 눈앞의 문제뿐만 아니라\n 그 이면에 있는 근본 원인까지 깊이 파고듭니다.\n 다양한 이해관계자들의 복합적인 요구사항을 면밀히 분석하여,\n미래를 선도할 혁신적이고 지속 가능한 해결책을 제시합니다.",
       examples: [
-        "업무 개선을 위한 단계별 계획 수립하기",
-        "경쟁사 분석을 통한 차별화 전략 수립하기",
-        "자원을 효율적으로 배분하여 목표 달성하기"
+        "당면한 문제의 표면적인 현상보다 근본적인 원인을 다각도로 분석하기",
+        "단순히 고객의 요구사항을 수용하는 것을 넘어, 숨겨진 니즈와 가치를 발굴하기",
+        "기술, 시장, 사용자 등 다양한 요소를 종합적으로 고려하여 장기적인 로드맵을\n 수립하기"
       ]
     }
   }
@@ -211,7 +211,7 @@ export default function ValuesSection() {
   const selectedValue = values.find(v => v.id === hoveredId);
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-blue-900 py-20">
+    <section className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-40 font-red-hat-display">
@@ -286,7 +286,7 @@ export default function ValuesSection() {
                 style={{ perspective: '1000px' }}
               >
                 <motion.div
-                  className="w-80 h-96 rounded-xl cursor-pointer relative"
+                  className="w-80 h-120 rounded-xl cursor-pointer relative"
                   style={{ transformStyle: 'preserve-3d' }}
                   animate={{ rotateY: hoveredId === value.id ? 180 : 0 }}
                   transition={{ duration: 0.7, ease: 'easeInOut' }}
