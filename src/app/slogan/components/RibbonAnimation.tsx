@@ -73,12 +73,14 @@ const RibbonAnimation: React.FC = () => {
       <style jsx>{`
         .ribbon-container {
           width: 100%;
-          height: 100vh; /* Make it full height */
+          min-height: 100vh; /* Make it at least full height */
           display: flex;
           align-items: center;
           justify-content: center;
+          padding-top: 100px;
+          padding-bottom: 100px;
           /* background: black; */ /* From :root background */
-          overflow: hidden; /* To prevent scrollbars from SVG */
+          /* overflow: hidden; */ /* To prevent scrollbars from SVG */
         }
         .ribbon {
           stroke: #006fa1;

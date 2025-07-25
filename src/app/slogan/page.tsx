@@ -7,7 +7,7 @@ import TextAnimation from './components/TextAnimation';
 
 export default function SloganPage() {
   return (
-    <div className="bg-gradient-to-b from-black via-gray-900 to-blue-900 min-h-screen">
+    <div className="bg-gradient-to-b from-black via-blue-900 to-white min-h-screen">
       {/* 첫 번째 섹션 - 웨이브 마스크 (180vh) */}
       <div className="h-[180vh] relative">
         <WaveMaskText />
@@ -16,8 +16,10 @@ export default function SloganPage() {
       {/* 두 번째 섹션 - 핵심 가치 */}
       <ValuesSection />
       
-      {/* 세 번째 섹션 - 회사 소개 */}
-      <RibbonAnimation />
+      {/* 세 번째 섹션 - 리본 애니메이션 */}
+      <div className="mt-[100px]">
+        <RibbonAnimation />
+      </div>
       
       {/* 네 번째 섹션 - ZNIT 브랜딩 */}
       <TextAnimation />

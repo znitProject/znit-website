@@ -25,7 +25,7 @@ const TextAnimation = () => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="relative">
-        <div className="flex items-center text-4xl font-semibold text-white">
+        <div className="flex items-center text-4xl font-semibold text-gray-700">
           <span className="mr-4">WE ARE</span>
           
           <div className="relative w-48 h-12 overflow-hidden">
@@ -50,10 +50,10 @@ const TextAnimation = () => {
         </div>
         
         {/* 괄호 애니메이션 */}
-        <div className="absolute -left-8 top-0 text-5xl text-green-400 animate-pulse">
+        <div className="absolute -left-8 top-0 text-5xl text-blue-400 animate-pulse">
           [
         </div>
-        <div className="absolute -right-8 top-0 text-5xl text-green-400 animate-pulse">
+        <div className="absolute -right-8 top-0 text-5xl text-blue-400 animate-pulse">
           ]
         </div>
       </div>
