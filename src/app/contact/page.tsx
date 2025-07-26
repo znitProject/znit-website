@@ -39,18 +39,25 @@ export default function ContactPage() {
 
     // --- 꽃 애니메이션 로직 ---
     const animateFlower = (index: number, show: boolean) => {
-      const flowerElement = flowerRefs.current[index];
-      if (flowerElement) {
-        gsap.to(flowerElement, {
-          opacity: show ? 1 : 0,
-          scale: show ? 1 : 0.5,
-          duration: show ? 0.8 : 0.5,
-          ease: show ? "power3.out" : "power3.in",
-        });
-      }
+      // 반응형 이미지들을 모두 찾아서 애니메이션 적용
+      const flowerElements = flowerRefs.current.filter(
+        (_, i) => i === index || i === index + 4 || i === index + 8
+      );
+
+      flowerElements.forEach((flowerElement) => {
+        if (flowerElement) {
+          gsap.to(flowerElement, {
+            opacity: show ? 1 : 0,
+            scale: show ? 1 : 0.5,
+            duration: show ? 0.8 : 0.5,
+            ease: show ? "power3.out" : "power3.in",
+          });
+        }
+      });
     };
 
-    if (currentStep > prevStep) { // 앞으로 이동
+    if (currentStep > prevStep) {
+      // 앞으로 이동
       if (currentStep === 2) {
         animateFlower(0, true);
         animateFlower(1, true);
@@ -59,7 +66,8 @@ export default function ContactPage() {
       } else if (currentStep === 4) {
         animateFlower(3, true);
       }
-    } else if (currentStep < prevStep) { // 뒤로 이동
+    } else if (currentStep < prevStep) {
+      // 뒤로 이동
       if (prevStep === 2) {
         animateFlower(0, false);
         animateFlower(1, false);
@@ -72,7 +80,6 @@ export default function ContactPage() {
 
     prevStepRef.current = currentStep;
   }, [currentStep]);
-
 
   const updateFormData = (data: Partial<FormData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
