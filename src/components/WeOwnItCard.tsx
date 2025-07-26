@@ -1,24 +1,28 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import Link from "next/link";
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
-export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) {
+export default function WeOwnItCard({
+  style,
+}: {
+  style?: React.CSSProperties;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (containerRef.current) {
       gsap.fromTo(
-        containerRef.current.querySelectorAll('.line'),
+        containerRef.current.querySelectorAll(".line"),
         { y: 50, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           stagger: 0.2,
           duration: 1.2,
-          ease: 'power3.out',
+          ease: "power3.out",
         }
       );
     }
@@ -40,9 +44,9 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
     if (containerRef.current) {
       gsap.to(containerRef.current, {
         scale: 1.03,
-        boxShadow: '0px 20px 40px rgba(0, 0, 0, 0.2)',
+        boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.2)",
         duration: 0.4,
-        ease: 'power3.out',
+        ease: "power3.out",
       });
     }
   };
@@ -51,12 +55,12 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
     if (containerRef.current && glowRef.current) {
       gsap.to(containerRef.current, {
         scale: 1,
-        boxShadow: '0px 0px 0px rgba(0, 0, 0, 0)',
+        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
         duration: 0.4,
-        ease: 'power3.out',
+        ease: "power3.out",
       });
 
-      glowRef.current.style.background = 'transparent';
+      glowRef.current.style.background = "transparent";
     }
   };
 
@@ -68,10 +72,14 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
+      className="block w-full h-full"
     >
       <div
         ref={containerRef}
-        className="relative w-full h-full flex justify-center items-center px-6 py-16 bg-black overflow-hidden rounded-[30px] border border-gray-200/20 cursor-pointer group"
+        className="relative w-full h-full flex justify-center items-center px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 lg:py-12 xl:py-16 bg-black overflow-hidden rounded-2xl sm:rounded-[24px] md:rounded-[30px] border border-gray-200/20 cursor-pointer group"
+        style={{
+          containerType: "inline-size", // 컨테이너 쿼리 지원
+        }}
       >
         {/* Glow Layer */}
         <div
@@ -80,25 +88,47 @@ export default function WeOwnItCard({ style }: { style?: React.CSSProperties }) 
         />
 
         {/* Main Content */}
-        <div className="z-10 text-center max-w-4xl">
+        <div className="z-10 text-center w-full h-full flex flex-col justify-center items-center px-2">
           <h1
-            className="line text-5xl md:text-7xl font-extrabold leading-tight tracking-tight text-white mb-8"
-            style={{ fontFamily: 'Playfair Display, serif' }}
+            className="line font-extrabold leading-tight tracking-tight text-white"
+            style={{
+              fontFamily: "Playfair Display, serif",
+              fontSize: "clamp(1rem, 4.5vw, 2.5rem)",
+              marginBottom: "clamp(0.25rem, 1.5vw, 1rem)",
+              maxWidth: "100%",
+              wordWrap: "break-word",
+            }}
           >
             We Own It.
           </h1>
 
           <p
-            className="line text-lg md:text-2xl font-light text-white leading-relaxed mb-6"
-            style={{ fontFamily: 'Inter, sans-serif' }}
+            className="line font-light text-white leading-relaxed text-center"
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "clamp(0.6rem, 2.2vw, 1rem)",
+              marginBottom: "clamp(0.25rem, 1vw, 0.75rem)",
+              maxWidth: "100%",
+              lineHeight: "1.4",
+            }}
           >
-            기술로 설계하고,{' '}
-            <span className="font-medium text-white">디자인으로 설득합니다.</span>
+            기술로 설계하고,{" "}
+            <span className="font-medium text-white">
+              디자인으로 설득합니다.
+            </span>
             <br />
-            숨겨진 맥락까지 <span className="font-medium text-white">온전히 간직합니다.</span>
+            숨겨진 맥락까지{" "}
+            <span className="font-medium text-white">온전히 간직합니다.</span>
           </p>
 
-          <p className="line text-base md:text-xl text-gray-300 italic">
+          <p
+            className="line text-gray-300 italic text-center"
+            style={{
+              fontSize: "clamp(0.5rem, 1.8vw, 0.875rem)",
+              maxWidth: "100%",
+              lineHeight: "1.3",
+            }}
+          >
             이 과정이 우리가 자부하는 방식입니다.
           </p>
         </div>

@@ -11,7 +11,7 @@ const keywords = [
   "성장",
   "진정성",
   "유연성",
-  "Big-picture"
+  "Big-picture",
 ];
 
 export default function KeywordCard() {
@@ -129,7 +129,7 @@ export default function KeywordCard() {
 
       const container = containerRef.current;
       if (!container) return;
-      
+
       const rect = container.getBoundingClientRect();
       const width = rect.width;
 
@@ -141,7 +141,8 @@ export default function KeywordCard() {
 
       const bubbleWidth = bubbleEl.offsetWidth || 100;
       const bubbleHeight = 44;
-      const x = Math.random() * (width - bubbleWidth - 40) + bubbleWidth / 2 + 20;
+      const x =
+        Math.random() * (width - bubbleWidth - 40) + bubbleWidth / 2 + 20;
       const y = Math.random() * 20 + 20;
 
       const body = Bodies.rectangle(x, y, bubbleWidth, bubbleHeight, {

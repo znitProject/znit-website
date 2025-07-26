@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { gsap } from 'gsap';
-import { useTheme } from 'next-themes';
+import React, { useRef, useEffect, useState } from "react";
+import { gsap } from "gsap";
+import { useTheme } from "next-themes";
 
 /**
  * 다크 모드 토글 버튼으로 사용될 카드 컴포넌트입니다.
@@ -21,25 +21,25 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
 
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {
-      backgroundColor: '#1a1a1a', // 더 어두운 검정
-      color: '#cccccc', // 약간 어두운 흰색
+      backgroundColor: "#1a1a1a", // 더 어두운 검정
+      color: "#cccccc", // 약간 어두운 흰색
       duration: 0.3,
-      ease: 'power2.out',
+      ease: "power2.out",
     });
   };
 
   const handleMouseLeave = () => {
     gsap.to(cardRef.current, {
-      backgroundColor: 'black', // 원래 검정
-      color: 'white', // 원래 흰색
+      backgroundColor: "black", // 원래 검정
+      color: "white", // 원래 흰색
       duration: 0.3,
-      ease: 'power2.inOut',
+      ease: "power2.inOut",
     });
   };
 
   const handleClick = () => {
     if (!mounted) return;
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   if (!mounted) return null;
@@ -48,19 +48,25 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
     <div
       ref={cardRef}
       className="h-24 flex flex-col items-center justify-center cursor-pointer border rounded-[20px]"
-      style={{ backgroundColor: 'black', color: 'white', ...style }}
+      style={{ backgroundColor: "black", color: "white", ...style }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      <span className="text-xl font-bold tracking-widest" style={{ fontFamily: 'Istok Web' }}>
+      <span
+        className="text-xl font-bold tracking-widest"
+        style={{ fontFamily: "Istok Web" }}
+      >
         DARK
       </span>
-      <span className="text-xl font-bold tracking-widest" style={{ fontFamily: 'Istok Web' }}>
+      <span
+        className="text-xl font-bold tracking-widest"
+        style={{ fontFamily: "Istok Web" }}
+      >
         MODE
       </span>
     </div>
   );
 };
 
-export default DarkModeCard; 
+export default DarkModeCard;

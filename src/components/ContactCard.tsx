@@ -7,7 +7,7 @@ export default function ContactCard() {
     <Link
       href="/contact"
       className="card relative overflow-hidden group transition-transform duration-300 hover:scale-105"
-      style={{ gridArea: 'contact' }}
+      style={{ gridArea: "contact" }}
     >
       {/* 기본 배경 이미지 */}
       <Image
@@ -27,8 +27,13 @@ export default function ContactCard() {
       />
       {/* Contact 아이콘 및 텍스트 */}
       <div className="absolute top-0 right-0 p-4 z-10">
-        <span className="text-3xl font-semibold text-white" style={{ fontFamily: 'Red Hat Display' }}>Contact Us</span>
+        <span
+          className="text-3xl font-semibold text-white"
+          style={{ fontFamily: "Red Hat Display" }}
+        >
+          Contact Us
+        </span>
       </div>
     </Link>
   );
-} 
+}

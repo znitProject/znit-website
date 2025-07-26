@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useRef, useLayoutEffect } from "react";
@@ -14,7 +13,10 @@ const CUSTOMERS = [
   { src: "/customerLogo/MyoungJIUniLogo.jpg", alt: "Myongji University" },
   { src: "/customerLogo/SeoulCityLogo.png", alt: "Seoul City" },
   { src: "/customerLogo/skLogo.png", alt: "SK" },
-  { src: "/customerLogo/TheSeoulInstituteLogo.svg", alt: "The Seoul Institute" },  
+  {
+    src: "/customerLogo/TheSeoulInstituteLogo.svg",
+    alt: "The Seoul Institute",
+  },
 ];
 
 export default function CustomerCarousel() {

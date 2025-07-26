@@ -1,13 +1,12 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
-
 body {
-    font-family: 'LCD', sans-serif;
-    font-family: 'LCD2', sans-serif;
-    font-family: 'LCDMono2', sans-serif;
-    font-family: 'LCDMono', sans-serif;
-    font-family: 'Digitalism', sans-serif;
+  font-family: "LCD", sans-serif;
+  font-family: "LCD2", sans-serif;
+  font-family: "LCDMono2", sans-serif;
+  font-family: "LCDMono", sans-serif;
+  font-family: "Digitalism", sans-serif;
 }
 
 :root {
@@ -53,7 +52,6 @@ html {
   background: #ffffff !important;
 }
 
-
 .card {
   @apply bg-[#F5F5F5] rounded-2xl flex items-center justify-center text-black text-base font-medium min-h-[100px] h-full;
 }
@@ -66,4 +64,157 @@ html {
 .backdrop-glass {
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 모바일 퍼스트 최적화 */
+@media (max-width: 768px) {
+  /* 터치 친화적인 최소 크기 */
+  .card {
+    @apply min-h-[120px] text-sm;
+    /* 터치 영역 최소 44px 보장 */
+    min-height: 120px;
+  }
+
+  /* 모바일에서 부드러운 스크롤 */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 터치 최적화 */
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    -webkit-touch-callout: none;
+  }
+
+  /* 터치 가능한 요소들의 최소 크기 보장 */
+  button,
+  a,
+  [role="button"],
+  .cursor-pointer {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 모바일에서 폰트 크기 자동 조정 방지 */
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* iOS 줌 방지 */
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    @apply text-xs min-h-[100px];
+  }
+
+  /* 매우 작은 화면에서 패딩 조정 */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* 터치 디바이스 감지 및 최적화 */
+@media (hover: none) and (pointer: coarse) {
+  /* 터치 디바이스에서 호버 효과 제거 */
+  .hover\:scale-105:hover,
+  .group:hover .group-hover\:scale-105 {
+    transform: none;
+  }
+
+  /* 터치 디바이스에서 active 상태 강조 */
+  .active\:scale-95:active,
+  .group:active .group-active\:scale-95 {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+
+  /* 터치 시 피드백 효과 */
+  .touch-feedback:active {
+    background-color: rgba(0, 0, 0, 0.05);
+    transition: background-color 0.1s ease;
+  }
+}
+
+/* 고해상도 디스플레이 최적화 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .text-stroke {
+    -webkit-text-stroke: 1px #000000;
+  }
+}
+
+/* 접근성 개선 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 다크 모드에서 터치 피드백 색상 조정 */
+@media (prefers-color-scheme: dark) {
+  .touch-feedback:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* 포커스 스타일 개선 (키보드 네비게이션) */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 버튼 및 인터랙티브 요소 스타일 */
+.btn-mobile {
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn-mobile:active {
+  transform: scale(0.98);
+}
+
+/* 카드 컴포넌트 터치 최적화 */
+.card-touch {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.card-touch:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 스와이프 제스처 지원 */
+.swipeable {
+  touch-action: pan-x;
+  -ms-touch-action: pan-x;
+}
+
+/* 로딩 스피너 최적화 */
+@keyframes mobile-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-mobile {
+  animation: mobile-spin 1s linear infinite;
+  will-change: transform;
 }

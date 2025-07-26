@@ -14,16 +14,27 @@ const MapCard = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (L.Icon.Default.prototype as any)._getIconUrl;
       L.Icon.Default.mergeOptions({
-        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        iconRetinaUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
         iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
       });
     }
   }, []);
 
   return (
-    <div className="card bg-gray-200 h-full transition-transform duration-300 hover:scale-105" style={{ gridArea: 'map', padding: 0, overflow: 'hidden' }}>
-      <MapContainer center={position} zoom={17} style={{ height: "100%", width: "100%" }} scrollWheelZoom={false} zoomControl={false}>
+    <div
+      className="card bg-gray-200 h-full transition-transform duration-300 hover:scale-105"
+      style={{ gridArea: "map", padding: 0, overflow: "hidden" }}
+    >
+      <MapContainer
+        center={position}
+        zoom={17}
+        style={{ height: "100%", width: "100%" }}
+        scrollWheelZoom={false}
+        zoomControl={false}
+      >
         <TileLayer
           attribution=""
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
