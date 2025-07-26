@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import WeOwnItCard from "../components/WeOwnItCard";
 import WorkWithUsCard from "../components/WorkWithUsCard";
 import CustomerCarousel from "../components/CustomerCarousel";
@@ -18,10 +20,25 @@ const MapCard = dynamic(() => import("../components/MapCard"), { ssr: false });
 import NixieClock from "../components/nixieClock";
 
 export default function HomePage() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 다크모드 여부에 따른 배경색 결정
+  const backgroundColor =
+    mounted && theme === "dark" ? "bg-[#1F1F1F]" : "bg-white";
+
   return (
-    <div className="min-h-screen w-full bg-white flex flex-col justify-center items-center mx-auto">
+    <div
+      className={`min-h-screen w-full flex flex-col justify-center items-center mx-auto ${backgroundColor} transition-colors duration-300`}
+    >
       {/* Hero Section - 모바일 최적화된 비율과 레이아웃 */}
-      <section className="w-full flex flex-col xl:flex-row items-center gap-6 sm:gap-8 lg:gap-10 xl:gap-12 pt-6 sm:pt-10 md:pt-14 lg:pt-18 xl:pt-20 pb-6 sm:pb-8 md:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 xl:justify-between">
+      <section
+        className={`w-full flex flex-col xl:flex-row items-center gap-6 sm:gap-8 lg:gap-10 xl:gap-12 pt-6 sm:pt-10 md:pt-14 lg:pt-18 xl:pt-20 pb-6 sm:pb-8 md:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 xl:justify-between ${backgroundColor}`}
+      >
         {/* 타이틀 섹션 - 모바일에서 더 임팩트 있게 */}
         <div className="w-full xl:flex-1 flex justify-center xl:justify-start order-1">
           <HomeTitleSection />
@@ -33,7 +50,9 @@ export default function HomePage() {
       </section>
 
       {/* Main Content Grid - 모바일 퍼스트 정보 위계 적용 */}
-      <div className="w-full flex justify-center bg-white px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20">
+      <div
+        className={`w-full flex justify-center px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 transition-colors duration-300 ${backgroundColor}`}
+      >
         {/* 데스크톱 (xl 이상): 기존 복합 grid 레이아웃 유지 */}
         <section
           className="w-full max-w-full hidden xl:grid gap-6 grid-cols-4 grid-rows-[repeat(7,minmax(140px,1fr))]"
@@ -133,12 +152,16 @@ export default function HomePage() {
       </div>
 
       {/* CTA Section - 모바일에서 더 강력한 임팩트 */}
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20">
+      <div
+        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
+      >
         <StrokeFillTextSection />
       </div>
 
       {/* Work Showcase - 모바일 최적화된 그리드 */}
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20">
+      <div
+        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
+      >
         <WorkCardList />
       </div>
     </div>

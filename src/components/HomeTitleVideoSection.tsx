@@ -3,19 +3,22 @@ import React from "react";
 // 상단 오른쪽의 비디오 영역 컴포넌트 - 모바일 퍼스트 최적화
 const HomeTitleVideoSection: React.FC = () => {
   return (
-    <div className="w-full flex justify-center xl:justify-end items-center xl:items-end">
+    <div className="w-full flex justify-center xl:justify-end items-center xl:items-end relative z-50">
       {/* 모바일 퍼스트 비디오 컨테이너 - 화면 비율에 맞는 적응형 크기 */}
-      <div className="w-full max-w-[320px] xs:max-w-[380px] sm:max-w-[480px] md:max-w-[580px] lg:max-w-[680px] xl:max-w-[750px] aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <div
+        className="w-full max-w-[320px] xs:max-w-[380px] sm:max-w-[480px] md:max-w-[580px] lg:max-w-[680px] xl:max-w-[750px] aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+        style={{ zIndex: 9999 }}
+      >
         {/* 반복 재생되는 비디오 - 모바일 성능 최적화 */}
         <video
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full object-cover z-50"
           src="/TitleSectionVideo.mp4"
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata" // 모바일에서 데이터 절약을 위해 metadata만 미리 로드
-          poster="/video-poster.jpg" // 포스터 이미지 추가 (실제 파일이 있다면)
+          preload="metadata"
+          style={{ zIndex: 9999, position: "absolute" }}
           onLoadStart={() => {
             // 모바일에서 비디오 로딩 최적화
             if (typeof window !== "undefined" && window.innerWidth < 768) {
