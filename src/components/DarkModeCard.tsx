@@ -21,7 +21,7 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
     if (!localStorage.getItem("theme")) {
       setTheme("light");
     }
-  }, []);
+  }, [setTheme]);
 
   const handleMouseEnter = () => {
     if (theme === "dark") {

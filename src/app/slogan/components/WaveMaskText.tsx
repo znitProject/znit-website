@@ -77,12 +77,12 @@ export default function WaveMaskText() {
       .timeline({ defaults: { duration: 1 }, delay: 0.9 })
       .to(window, { scrollTo: ch / 2 }, 0);
 
-    // 컴포넌트가 화면에 보이는지 확인하는 함수
-    const isComponentVisible = () => {
-      if (!containerRef.current) return false;
-      const rect = containerRef.current.getBoundingClientRect();
-      return rect.top < window.innerHeight && rect.bottom > 0;
-    };
+    // 컴포넌트가 화면에 보이는지 확인하는 함수 (사용하지 않음)
+    // const isComponentVisible = () => {
+    //   if (!containerRef.current) return false;
+    //   const rect = containerRef.current.getBoundingClientRect();
+    //   return rect.top < window.innerHeight && rect.bottom > 0;
+    // };
 
     // 스크롤에 따른 텍스트 페이드아웃
     const handleScroll = () => {

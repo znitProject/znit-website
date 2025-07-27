@@ -56,45 +56,8 @@ const carouselItems = [
   },
 ];
 
-// 별 컴포넌트
-const Star = ({
-  x,
-  y,
-  size,
-  delay,
-}: {
-  x: number;
-  y: number;
-  size: number;
-  delay: number;
-}) => (
-  <motion.div
-    className="absolute rounded-full"
-    style={{
-      left: `${x}%`,
-      top: `${y}%`,
-      width: `${size}px`,
-      height: `${size}px`,
-      background:
-        "radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
-      boxShadow: "0 0 10px rgba(0,0,0,0.3), inset 0 0 5px rgba(0,0,0,0.2)",
-    }}
-    initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-    animate={{
-      opacity: [0, 1, 0.8, 1],
-      scale: [0, 1, 0.8, 1],
-      x: [0, Math.random() * 20 - 10, Math.random() * 15 - 7.5, 0],
-      y: [0, Math.random() * 20 - 10, Math.random() * 15 - 7.5, 0],
-    }}
-    transition={{
-      duration: 8 + Math.random() * 4,
-      delay: delay,
-      repeat: Infinity,
-      repeatType: "reverse",
-      ease: "easeInOut",
-    }}
-  />
-);
+// 별 컴포넌트 (사용하지 않음)
+// const Star = () => null;
 
 // 십자 빛나는 별 컴포넌트
 const CrossStar = ({
@@ -178,10 +141,10 @@ const CrossStar = ({
 
 // 우주 배경 컴포넌트
 const SpaceBackground = () => {
-  const [stars, setStars] = useState<
+  const [stars] = useState<
     Array<{ x: number; y: number; size: number; delay: number }>
   >([]);
-  const [crossStars, setCrossStars] = useState<
+  const [crossStars] = useState<
     Array<{ x: number; y: number; size: number; delay: number }>
   >([]);
 
@@ -209,7 +172,7 @@ const SpaceBackground = () => {
           delay: Math.random() * 2,
         });
       }
-      setCrossStars(newCrossStars);
+      // setCrossStars(newCrossStars); // 사용하지 않음
     };
 
     generateStars();

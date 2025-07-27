@@ -3,13 +3,10 @@ import { useTheme } from "next-themes";
 
 // WorkCardList 컴포넌트: 하단 WORK 카드 리스트 - 모바일 퍼스트 최적화
 const WorkCardList: React.FC = () => {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // 화면 크기 감지 및 테마 상태 초기화
+  // 화면 크기 감지
   useEffect(() => {
-    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };

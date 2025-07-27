@@ -134,8 +134,10 @@ export default function ContactPage() {
         selectedFile: null,
       });
       setCurrentStep(1);
-    } catch (e: any) {
-      alert("전송 실패: " + e.message);
+    } catch (e: unknown) {
+      const errorMessage =
+        e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다";
+      alert("전송 실패: " + errorMessage);
     } finally {
       setLoading(false);
     }
