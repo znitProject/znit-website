@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import HamburgerButton from './HamburgerButton';
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import HamburgerButton from "./HamburgerButton";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,11 +11,11 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const menuItems = [
-    { name: 'HOME', path: '/' },
-    { name: 'WORKS', path: '/work' },
-    { name: 'ABOUT', path: '/slogan' },
-    { name: 'CAREERS', path: '/career' },
-    { name: 'CONTACT US', path: '/contact' },
+    { name: "HOME", path: "/" },
+    { name: "WORKS", path: "/work" },
+    { name: "ABOUT", path: "/slogan" },
+    { name: "CAREERS", path: "/career" },
+    { name: "CONTACT US", path: "/contact" },
   ];
 
   const toggleMenu = () => {
@@ -35,11 +35,11 @@ export default function Header() {
     };
 
     if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
 
@@ -48,13 +48,17 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 relative">
           {/* 로고 - 왼쪽 */}
-          <Link href="/" className="flex items-center space-x-2" onClick={closeMenu}>
-            <Image 
-              src="/logo/ZNLogo.png" 
-              alt="ZNIT Logo" 
-              width={80} 
-              height={40} 
-              className="h-8 w-auto"
+          <Link
+            href="/"
+            className="flex items-center space-x-2"
+            onClick={closeMenu}
+          >
+            <Image
+              src="/logo/ZNLogo.png"
+              alt="ZNIT Logo"
+              width={80}
+              height={40}
+              className="h-6 w-auto"
             />
           </Link>
 
@@ -63,12 +67,12 @@ export default function Header() {
             <HamburgerButton toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
 
             {/* 촤라락 메뉴 드롭다운 */}
-            <div 
+            <div
               className="absolute top-full right-0 mt-2 bg-transparent"
               style={{
                 opacity: isMenuOpen ? 1 : 0,
-                pointerEvents: isMenuOpen ? 'auto' : 'none',
-                transition: 'opacity 0.2s ease-out'
+                pointerEvents: isMenuOpen ? "auto" : "none",
+                transition: "opacity 0.2s ease-out",
               }}
             >
               <div className="flex flex-col items-end space-y-2">
@@ -77,10 +81,12 @@ export default function Header() {
                     key={item.path}
                     className="overflow-visible"
                     style={{
-                      maxHeight: isMenuOpen ? '300px' : '0',
+                      maxHeight: isMenuOpen ? "300px" : "0",
                       opacity: isMenuOpen ? 1 : 0,
-                      transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
-                      transition: `all 0.2s ease-out ${isMenuOpen ? index * 0.05 : (4 - index) * 0.05}s`
+                      transform: isMenuOpen
+                        ? "translateY(0)"
+                        : "translateY(30px)",
+                      transition: `all 0.2s ease-out ${isMenuOpen ? index * 0.05 : (4 - index) * 0.05}s`,
                     }}
                   >
                     <Link
@@ -99,4 +105,4 @@ export default function Header() {
       </div>
     </header>
   );
-} 
+}
