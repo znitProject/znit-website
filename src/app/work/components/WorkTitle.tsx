@@ -33,7 +33,6 @@ const WorkTitle = () => {
         display: inline-block;
         width: 40px;
         height: 50px;
-        margin: 0 2px;
         z-index: 2;
         text-align: center;
         color: #fff;
@@ -87,7 +86,7 @@ const WorkTitle = () => {
       }
 
       .skew-title span.flat {
-        transform: skewY(0) scale(1.05);
+        transform: skewY(0);
         color: #fff;
         box-shadow: 0 4px 8px rgba(0,0,0,0.4);
       }
@@ -99,7 +98,7 @@ const WorkTitle = () => {
 
       .skew-title span:nth-child(even).flat {
         background-color: #1f2937;
-        transform: skewY(0) scale(1.05);
+        transform: skewY(0);
       }
 
       .skew-title span:nth-child(even).flat:after {
@@ -107,7 +106,7 @@ const WorkTitle = () => {
       }
 
       .skew-title span:hover {
-        transform: skewY(0) scale(1.1);
+        transform: skewY(0);
         box-shadow: 0 6px 12px rgba(0,0,0,0.5);
         z-index: 10;
       }
@@ -122,6 +121,7 @@ const WorkTitle = () => {
           height: 40px;
           font-size: 28px;
           line-height: 40px;
+          margin: 0 1px;
           box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
         .skew-title span:after,
@@ -130,11 +130,11 @@ const WorkTitle = () => {
           height: 40px;
         }
         .skew-title span.flat {
-          transform: skewY(0) scale(1.05);
+          transform: skewY(0);
           box-shadow: 0 3px 6px rgba(0,0,0,0.4);
         }
         .skew-title span:hover {
-          transform: skewY(0) scale(1.08);
+          transform: skewY(0);
           box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
       }
@@ -149,6 +149,7 @@ const WorkTitle = () => {
           height: 36px;
           font-size: 24px;
           line-height: 36px;
+          margin: 0 1px;
           box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
         .skew-title span:after,
@@ -157,11 +158,11 @@ const WorkTitle = () => {
           height: 36px;
         }
         .skew-title span.flat {
-          transform: skewY(0) scale(1.05);
+          transform: skewY(0);
           box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
         .skew-title span:hover {
-          transform: skewY(0) scale(1.06);
+          transform: skewY(0);
           box-shadow: 0 3px 6px rgba(0,0,0,0.5);
         }
       }
