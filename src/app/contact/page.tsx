@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import ContactLayout from "./components/ContactLayout";
@@ -8,7 +8,7 @@ import Step1 from "./components/Step1";
 import Step2 from "./components/Step2";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
-import { FormData } from "../../types/contact";
+import type { FormData } from "../../types/contact";
 
 const flowerImages = [
   "/flower/fleur1.png",
@@ -20,6 +20,8 @@ const flowerImages = [
 export default function ContactPage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [direction, setDirection] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [formData, setFormData] = useState<FormData>({
     projectType: [],
     projectTitle: "",
@@ -29,24 +31,22 @@ export default function ContactPage() {
     position: "",
     email: "",
     phone: "",
+    selectedFile: undefined,
   });
 
   const flowerRefs = useRef<(HTMLImageElement | null)[]>([]);
   const prevStepRef = useRef(currentStep);
 
+  // 꽃 애니메이션
   useEffect(() => {
-    const prevStep = prevStepRef.current;
-
-    // --- 꽃 애니메이션 로직 ---
-    const animateFlower = (index: number, show: boolean) => {
-      // 반응형 이미지들을 모두 찾아서 애니메이션 적용
-      const flowerElements = flowerRefs.current.filter(
-        (_, i) => i === index || i === index + 4 || i === index + 8
+    const prev = prevStepRef.current;
+    const animateFlower = (idx: number, show: boolean) => {
+      const els = flowerRefs.current.filter(
+        (_, i) => i === idx || i === idx + 4 || i === idx + 8
       );
-
-      flowerElements.forEach((flowerElement) => {
-        if (flowerElement) {
-          gsap.to(flowerElement, {
+      els.forEach((el) => {
+        if (el) {
+          gsap.to(el, {
             opacity: show ? 1 : 0,
             scale: show ? 1 : 0.5,
             duration: show ? 0.8 : 0.5,
@@ -55,68 +55,83 @@ export default function ContactPage() {
         }
       });
     };
-
-    if (currentStep > prevStep) {
-      // 앞으로 이동
+    if (currentStep > prev) {
       if (currentStep === 2) {
         animateFlower(0, true);
         animateFlower(1, true);
-      } else if (currentStep === 3) {
-        animateFlower(2, true);
-      } else if (currentStep === 4) {
-        animateFlower(3, true);
       }
-    } else if (currentStep < prevStep) {
-      // 뒤로 이동
-      if (prevStep === 2) {
+      if (currentStep === 3) animateFlower(2, true);
+      if (currentStep === 4) animateFlower(3, true);
+    } else if (currentStep < prev) {
+      if (prev === 2) {
         animateFlower(0, false);
         animateFlower(1, false);
-      } else if (prevStep === 3) {
-        animateFlower(2, false);
-      } else if (prevStep === 4) {
-        animateFlower(3, false);
       }
+      if (prev === 3) animateFlower(2, false);
+      if (prev === 4) animateFlower(3, false);
     }
-
     prevStepRef.current = currentStep;
   }, [currentStep]);
 
-  const updateFormData = (data: Partial<FormData>) => {
+  const updateFormData = (data: Partial<FormData>) =>
     setFormData((prev) => ({ ...prev, ...data }));
-  };
 
   const nextStep = () => {
     if (currentStep < 4) {
       setDirection(1);
-      setCurrentStep(currentStep + 1);
+      setCurrentStep((s) => s + 1);
     }
   };
-
   const previousStep = () => {
     if (currentStep > 1) {
       setDirection(-1);
-      setCurrentStep(currentStep - 1);
+      setCurrentStep((s) => s - 1);
+    }
+  };
+
+  // 제출 핸들러
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const payload = new FormData();
+      // 일반 필드
+      Object.entries(formData).forEach(([key, val]) => {
+        if (key === "projectType") {
+          payload.append(key, JSON.stringify(val));
+        } else if (key === "selectedFile") {
+          if (val) payload.append("resume", val);
+        } else {
+          payload.append(key, val as string);
+        }
+      });
+      const res = await fetch("/api/recruit", {
+        method: "POST",
+        body: payload,
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || res.statusText);
+      alert("지원서가 성공적으로 전송되었습니다!");
+      // 필요 시 초기화 또는 리디렉트...
+    } catch (e: any) {
+      alert("전송 실패: " + e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const pageVariants = {
-    initial: (direction: number) => ({
+    initial: (dir: number) => ({
       opacity: 0,
-      y: direction > 0 ? 50 : -50,
+      y: dir > 0 ? 50 : -50,
       scale: 0.95,
     }),
-    in: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-    },
-    out: (direction: number) => ({
+    in: { opacity: 1, y: 0, scale: 1 },
+    out: (dir: number) => ({
       opacity: 0,
-      y: direction < 0 ? 50 : -50,
+      y: dir < 0 ? 50 : -50,
       scale: 0.95,
     }),
   };
-
   const pageTransition = {
     type: "tween" as const,
     ease: "anticipate" as const,
@@ -132,9 +147,15 @@ export default function ContactPage() {
       case 3:
         return <Step3 formData={formData} updateFormData={updateFormData} />;
       case 4:
-        return <Step4 />;
+        return (
+          <Step4
+            formData={formData}
+            onSubmit={handleSubmit}
+            loading={loading}
+          />
+        );
       default:
-        return <Step1 formData={formData} updateFormData={updateFormData} />;
+        return null;
     }
   };
 

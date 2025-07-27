@@ -7,9 +7,10 @@ export interface FormData {
   position: string;
   email: string;
   phone: string;
+  selectedFile: File | null;
 }
 
 export interface ProjectType {
   value: string;
   label: string;
-} 
+}
