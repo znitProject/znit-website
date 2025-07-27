@@ -21,19 +21,21 @@ export default function WorkLayout({
   return (
     <div className="min-h-screen bg-white">
       {/* 메인 컨텐츠 */}
-      <div className="max-w-6xl mx-auto px-8 py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
         {/* 타이틀 영역 - 전체 너비 */}
         <div className="relative mb-12">
           <WorkTitle />
-          {/* 분류 드롭다운 - 카드 쪽으로 붙임 */}
+          {/* 분류 드롭다운 - 우측 상단 */}
           <div className="absolute top-0 right-0 z-20">
             <button
               onClick={onDropdownToggle}
-              className="flex items-center space-x-2 px-4 py-2 text-gray-900 hover:text-gray-700 transition-colors"
+              className="flex items-center space-x-2 px-2 sm:px-4 py-2 text-gray-900 hover:text-gray-700 transition-colors"
             >
-              <span className="font-bold text-lg">{selectedCategory}</span>
+              <span className="font-bold text-sm sm:text-lg">
+                {selectedCategory}
+              </span>
               <svg
-                className={`w-5 h-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+                className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -48,7 +50,7 @@ export default function WorkLayout({
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute top-full right-0 mt-2 bg-transparent z-10 min-w-48">
+              <div className="absolute top-full right-0 mt-2 bg-transparent z-10 min-w-32 sm:min-w-48">
                 {categories.map((category) => (
                   <button
                     key={category.value}
@@ -56,7 +58,7 @@ export default function WorkLayout({
                       onCategoryChange(category.value);
                       onDropdownToggle();
                     }}
-                    className={`w-full text-left px-6 py-3 mb-2 rounded-full border-2 transition-all duration-200 ${
+                    className={`w-full text-left px-4 sm:px-6 py-2 sm:py-3 mb-2 rounded-full border-2 transition-all duration-200 text-sm sm:text-base ${
                       selectedCategory === category.value
                         ? "bg-gray-900 text-white border-gray-900 font-bold"
                         : "bg-white text-gray-900 border-gray-900 hover:bg-gray-900 hover:text-white font-medium"

@@ -17,6 +17,10 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
 
   useEffect(() => {
     setMounted(true);
+    // 기본값을 라이트모드로 설정
+    if (!localStorage.getItem("theme")) {
+      setTheme("light");
+    }
   }, []);
 
   const handleMouseEnter = () => {
