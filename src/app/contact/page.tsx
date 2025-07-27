@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
+
 import ContactLayout from "./components/ContactLayout";
 import Step1 from "./components/Step1";
 import Step2 from "./components/Step2";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
+
 import type { FormData } from "../../types/contact";
 
 const flowerImages = [
@@ -31,11 +33,11 @@ export default function ContactPage() {
     position: "",
     email: "",
     phone: "",
-    selectedFile: undefined,
+    selectedFile: null,
   });
 
   const flowerRefs = useRef<(HTMLImageElement | null)[]>([]);
-  const prevStepRef = useRef(currentStep);
+  const prevStepRef = useRef<number>(currentStep);
 
   // 꽃 애니메이션
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function ContactPage() {
         }
       });
     };
+
     if (currentStep > prev) {
       if (currentStep === 2) {
         animateFlower(0, true);
@@ -70,6 +73,7 @@ export default function ContactPage() {
       if (prev === 3) animateFlower(2, false);
       if (prev === 4) animateFlower(3, false);
     }
+
     prevStepRef.current = currentStep;
   }, [currentStep]);
 
@@ -89,29 +93,47 @@ export default function ContactPage() {
     }
   };
 
-  // 제출 핸들러
+  // 제출 핸들러 (채용 지원 API)
   const handleSubmit = async () => {
     setLoading(true);
     try {
       const payload = new FormData();
-      // 일반 필드
-      Object.entries(formData).forEach(([key, val]) => {
-        if (key === "projectType") {
-          payload.append(key, JSON.stringify(val));
-        } else if (key === "selectedFile") {
-          if (val) payload.append("resume", val);
-        } else {
-          payload.append(key, val as string);
-        }
-      });
-      const res = await fetch("/api/recruit", {
+      // JSON 타입 필드
+      payload.append("projectType", JSON.stringify(formData.projectType));
+      // 기타 텍스트 필드
+      payload.append("projectTitle", formData.projectTitle);
+      payload.append("projectDescription", formData.projectDescription);
+      payload.append("companyName", formData.companyName);
+      payload.append("name", formData.name);
+      payload.append("position", formData.position);
+      payload.append("email", formData.email);
+      payload.append("phone", formData.phone);
+      // 파일 첨부
+      if (formData.selectedFile) {
+        payload.append("projectFile", formData.selectedFile);
+      }
+
+      const res = await fetch("/api/contact", {
         method: "POST",
         body: payload,
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || res.statusText);
-      alert("지원서가 성공적으로 전송되었습니다!");
-      // 필요 시 초기화 또는 리디렉트...
+
+      alert("문의가 성공적으로 전송되었습니다!");
+      // 초기화
+      setFormData({
+        projectType: [],
+        projectTitle: "",
+        projectDescription: "",
+        companyName: "",
+        name: "",
+        position: "",
+        email: "",
+        phone: "",
+        selectedFile: null,
+      });
+      setCurrentStep(1);
     } catch (e: any) {
       alert("전송 실패: " + e.message);
     } finally {
