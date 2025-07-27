@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import WorkTitle from './WorkTitle';
+import { ReactNode } from "react";
+import WorkTitle from "./WorkTitle";
 
 interface WorkLayoutProps {
   children: ReactNode;
@@ -22,23 +22,28 @@ export default function WorkLayout({
     <div className="min-h-screen bg-white">
       {/* 메인 컨텐츠 */}
       <div className="max-w-6xl mx-auto px-8 py-16">
-        {/* 헤더 영역 */}
-        <div className="flex justify-between items-end mb-12">
+        {/* 타이틀 영역 - 전체 너비 */}
+        <div className="relative mb-12">
           <WorkTitle />
-          {/* 분류 드롭다운 */}
-          <div className="relative">
+          {/* 분류 드롭다운 - 카드 쪽으로 붙임 */}
+          <div className="absolute top-0 right-0 z-20">
             <button
               onClick={onDropdownToggle}
               className="flex items-center space-x-2 px-4 py-2 text-gray-900 hover:text-gray-700 transition-colors"
             >
               <span className="font-bold text-lg">{selectedCategory}</span>
               <svg
-                className={`w-5 h-5 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
 
@@ -53,8 +58,8 @@ export default function WorkLayout({
                     }}
                     className={`w-full text-left px-6 py-3 mb-2 rounded-full border-2 transition-all duration-200 ${
                       selectedCategory === category.value
-                        ? 'bg-gray-900 text-white border-gray-900 font-bold'
-                        : 'bg-white text-gray-900 border-gray-900 hover:bg-gray-900 hover:text-white font-medium'
+                        ? "bg-gray-900 text-white border-gray-900 font-bold"
+                        : "bg-white text-gray-900 border-gray-900 hover:bg-gray-900 hover:text-white font-medium"
                     }`}
                   >
                     {category.label}

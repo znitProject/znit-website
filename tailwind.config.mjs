@@ -20,6 +20,7 @@ export default {
       fontFamily: {
         sans: ["var(--font-red-hat-display)", "sans-serif"],
         nanumSquareNeo: ["var(--font-nanum-square)", "sans-serif"],
+        stylish: ["var(--font-stylish)", "sans-serif"],
         serif: ["Georgia", "serif"], // Added a generic serif font
       },
     },

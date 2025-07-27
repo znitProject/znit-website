@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Red_Hat_Display, Montserrat, Roboto_Flex } from "next/font/google";
+import {
+  Red_Hat_Display,
+  Montserrat,
+  Roboto_Flex,
+  Stylish,
+} from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -27,9 +32,15 @@ const nanumSquareNeo = localFont({
   variable: "--font-nanum-square-neo",
 });
 
+const stylish = Stylish({
+  weight: ["400"],
+  variable: "--font-stylish",
+});
+
 export const metadata: Metadata = {
   title: "ZNIT - 혁신적인 솔루션으로 미래를 만들어갑니다",
-  description: "ZNIT는 혁신적인 솔루션으로 미래를 만들어갑니다. 우리는 우리가 하는 모든 일에 책임을 지고, 최고의 결과물을 만들어내는 것을 약속합니다.",
+  description:
+    "ZNIT는 혁신적인 솔루션으로 미래를 만들어갑니다. 우리는 우리가 하는 모든 일에 책임을 지고, 최고의 결과물을 만들어내는 것을 약속합니다.",
 };
 
 export default function RootLayout({
@@ -39,13 +50,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} antialiased`}>
+      <body
+        className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} ${stylish.variable} antialiased`}
+      >
         <Providers>
           <Header />
-          <div style={{ height: '10px' }} />
-          <main className="min-h-screen">
-            {children}
-          </main>
+          <div style={{ height: "10px" }} />
+          <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
       </body>

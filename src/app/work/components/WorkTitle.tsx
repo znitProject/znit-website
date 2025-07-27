@@ -1,85 +1,227 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 const WorkTitle = () => {
   const titleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
-      @import url(https://fonts.googleapis.com/css?family=Righteous);
+      @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap');
 
-      .the-goods {
-        font-size: 100px;
-        text-align: left;
-        margin: 0px auto 0px 0px;
-        text-transform: uppercase;
+      .skew-title {
+        font-size: 35px;
+        text-align: center;
+        margin: 0 auto;
+        font-family: 'Roboto Condensed', sans-serif;
         font-weight: 700;
-        font-family: Righteous;
-        color:rgb(255, 255, 255);
-        max-width: 1150px;
-      }
-
-      .the-goods span {
-        text-shadow: -1px 0 0px #87CEEB, 0 1px 0px #6495ED, -2px 1px 0px #87CEEB, -1px 2px 0px #6495ED, -3px 2px 0px #87CEEB, -2px 3px 0px #6495ED, -4px 3px 0px #87CEEB, -3px 4px 0px #6495ED, -5px 4px 0px #87CEEB, -4px 5px 0px #6495ED, -6px 5px 15px #000000;
-        display: inline-block;
+        color: #fff;
         position: relative;
-        padding: 0px 6px;
-        transition: 0.8s;
-        transform: rotateX( 0deg ) rotateY( 0deg ) rotateZ( 0deg );
+        height: 50px;
+        z-index: 1;
+        clear: both;
+        margin-bottom: 30px;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
-      .the-goods:hover {
-        cursor: pointer;
+      .skew-title span {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 50px;
+        margin: 0 2px;
+        z-index: 2;
+        text-align: center;
+        color: #fff;
+        font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 700;
+        font-size: 35px;
+        line-height: 50px;
+        transform: skewY(-15deg);
+        transform-origin: 0 100%;
+        transition: all 0.3s ease;
+        cursor: default;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       }
 
-      .the-goods:hover span:nth-child(odd) {
-        transform: rotateX( 10deg ) rotateY( 10deg ) rotateZ( -370deg );
+      .skew-title span:after,
+      .skew-title span:before {
+        display: block;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 50px;
+        position: absolute;
+        background: #1f2937;
+        content: ' ';
+        z-index: -1;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.1);
       }
 
-      .the-goods:hover span:nth-child(even) {
-        transform: rotateX( 10deg ) rotateY( 10deg ) rotateZ( 370deg );
+      .skew-title span:before {
+        background: rgba(0,0,0,0.2);
+        transform: skewY(15deg);
+        transform-origin: 0 0;
+        box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
       }
 
-      @media screen and (max-width: 1300px) {
-        .the-goods {
-          font-size: 140px;
+      .skew-title span:nth-child(even) {
+        background-color: #374151;
+        transform: skewY(15deg);
+        transform-origin: 100% 100%;
+        color: #e5e7eb;
+      }
+
+      .skew-title span:nth-child(even):after {
+        background-color: #374151;
+      }
+
+      .skew-title span:nth-child(even):before {
+        transform-origin: 100% 0;
+        transform: skewY(-15deg);
+      }
+
+      .skew-title span.flat {
+        transform: skewY(0) scale(1.05);
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+      }
+
+      .skew-title span.flat:before {
+        transform: skewY(0);
+        box-shadow: none;
+      }
+
+      .skew-title span:nth-child(even).flat {
+        background-color: #1f2937;
+        transform: skewY(0) scale(1.05);
+      }
+
+      .skew-title span:nth-child(even).flat:after {
+        background-color: #1f2937;
+      }
+
+      .skew-title span:hover {
+        transform: skewY(0) scale(1.1);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+        z-index: 10;
+      }
+
+      @media screen and (max-width: 768px) {
+        .skew-title {
+          font-size: 28px;
+          height: 40px;
+        }
+        .skew-title span {
+          width: 32px;
+          height: 40px;
+          font-size: 28px;
+          line-height: 40px;
+          box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        .skew-title span:after,
+        .skew-title span:before {
+          width: 32px;
+          height: 40px;
+        }
+        .skew-title span.flat {
+          transform: skewY(0) scale(1.05);
+          box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+        }
+        .skew-title span:hover {
+          transform: skewY(0) scale(1.08);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
       }
-      @media screen and (max-width: 1100px) {
-        .the-goods {
-          font-size: 120px;
+
+      @media screen and (max-width: 480px) {
+        .skew-title {
+          font-size: 24px;
+          height: 36px;
         }
-      }
-      @media screen and (max-width: 900px) {
-        .the-goods {
-          font-size: 100px;
+        .skew-title span {
+          width: 28px;
+          height: 36px;
+          font-size: 24px;
+          line-height: 36px;
+          box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
-      }
-      @media screen and (max-width: 749px) {
-        .the-goods {
-          font-size: 76px;
+        .skew-title span:after,
+        .skew-title span:before {
+          width: 28px;
+          height: 36px;
         }
-      }
-      @media screen and (max-width: 600px) {
-        .the-goods {
-          font-size: 58px;
+        .skew-title span.flat {
+          transform: skewY(0) scale(1.05);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
-      }
-      @media screen and (max-width: 500px) {
-        .the-goods {
-          font-size: 42px;
+        .skew-title span:hover {
+          transform: skewY(0) scale(1.06);
+          box-shadow: 0 3px 6px rgba(0,0,0,0.5);
         }
       }
     `;
     document.head.appendChild(style);
 
-    const spanLetters = (element: HTMLElement) => {
-      const words = element.innerText.split('');
-      element.innerHTML = words.map((word, i) => `<span class="sl${i + 1} span-letter">${word}</span>`).join('');
+    const createSkewedSpans = (element: HTMLElement) => {
+      const text = element.innerText;
+      const letters = text.split("");
+      element.innerHTML = letters
+        .map(
+          (letter, i) =>
+            `<span class="${i === letters.length - 1 ? "last" : ""}">${letter}</span>`
+        )
+        .join("");
+    };
+
+    const addHoverEffects = () => {
+      const spans = document.querySelectorAll(".skew-title span");
+
+      spans.forEach((span) => {
+        span.addEventListener("mouseenter", () => {
+          const $el = span as HTMLElement;
+          const n = Array.from(spans).indexOf($el) + 1;
+
+          $el.classList.add("flat");
+
+          if (n % 2 === 0) {
+            const prev = $el.previousElementSibling as HTMLElement;
+            if (prev) prev.classList.add("flat");
+          } else {
+            if (!$el.classList.contains("last")) {
+              const next = $el.nextElementSibling as HTMLElement;
+              if (next) next.classList.add("flat");
+            }
+          }
+        });
+
+        span.addEventListener("mouseleave", () => {
+          const $el = span as HTMLElement;
+          const n = Array.from(spans).indexOf($el) + 1;
+
+          $el.classList.remove("flat");
+
+          if (n % 2 === 0) {
+            const prev = $el.previousElementSibling as HTMLElement;
+            if (prev) prev.classList.remove("flat");
+          } else {
+            if (!$el.classList.contains("last")) {
+              const next = $el.nextElementSibling as HTMLElement;
+              if (next) next.classList.remove("flat");
+            }
+          }
+        });
+      });
     };
 
     if (titleRef.current) {
-      spanLetters(titleRef.current);
+      createSkewedSpans(titleRef.current);
+      addHoverEffects();
     }
 
     return () => {
@@ -88,7 +230,9 @@ const WorkTitle = () => {
   }, []);
 
   return (
-    <div className="the-goods" ref={titleRef}>WORKS</div>
+    <h1 className="skew-title" ref={titleRef}>
+      WORKS
+    </h1>
   );
 };
 
