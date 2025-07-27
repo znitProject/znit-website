@@ -20,7 +20,7 @@ const WorkTitle = () => {
         z-index: 1;
         clear: both;
         margin-bottom: 30px;
-        width: 100vw;
+        width: calc(100vw - 120px);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -115,6 +115,7 @@ const WorkTitle = () => {
         .skew-title {
           font-size: 28px;
           height: 40px;
+          width: calc(100vw - 100px);
         }
         .skew-title span {
           width: 32px;
@@ -143,6 +144,7 @@ const WorkTitle = () => {
         .skew-title {
           font-size: 24px;
           height: 36px;
+          width: calc(100vw - 120px);
         }
         .skew-title span {
           width: 28px;

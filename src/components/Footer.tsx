@@ -1,9 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { useTheme } from "next-themes";
 import gsap from "gsap";
 
 export default function Footer() {
+  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
   const footerRef = useRef(null);
 
@@ -47,7 +49,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="bg-zinc-900 text-zinc-600 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass bg-opacity-20"
+      className="bg-zinc-900 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 dark:border-zinc-600 shadow-xl backdrop-glass bg-opacity-20 transition-colors duration-300"
     >
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
