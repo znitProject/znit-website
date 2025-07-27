@@ -93,7 +93,7 @@ export default function WeOwnItCard({
             className="line font-extrabold leading-tight tracking-tight text-white"
             style={{
               fontFamily: "Playfair Display, serif",
-              fontSize: "clamp(1rem, 4.5vw, 2.5rem)",
+              fontSize: "clamp(1rem, 4.5vw, 4rem)",
               marginBottom: "clamp(0.25rem, 1.5vw, 1rem)",
               maxWidth: "100%",
               wordWrap: "break-word",
@@ -106,7 +106,7 @@ export default function WeOwnItCard({
             className="line font-light text-white leading-relaxed text-center"
             style={{
               fontFamily: "Inter, sans-serif",
-              fontSize: "clamp(0.6rem, 2.2vw, 1rem)",
+              fontSize: "clamp(0.6rem, 2.2vw, 1.5rem)",
               marginBottom: "clamp(0.25rem, 1vw, 0.75rem)",
               maxWidth: "100%",
               lineHeight: "1.4",
@@ -124,7 +124,7 @@ export default function WeOwnItCard({
           <p
             className="line text-gray-300 italic text-center"
             style={{
-              fontSize: "clamp(0.5rem, 1.8vw, 0.875rem)",
+              fontSize: "clamp(0.5rem, 1.8vw, 1.125rem)",
               maxWidth: "100%",
               lineHeight: "1.3",
             }}

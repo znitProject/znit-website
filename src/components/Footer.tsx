@@ -78,7 +78,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="tel:02-1234-5678"
+                href="tel:031-1234-5678"
                 className="text-zinc-400 hover:text-white transition-colors footer-icon p-2"
                 aria-label="전화번호"
               >
@@ -153,13 +153,13 @@ export default function Footer() {
                   href="tel:02-1234-5678"
                   className="hover:text-white transition-colors footer-link text-sm sm:text-base block py-0.5"
                 >
-                  02-1234-5678
+                  031-1234-5678
                 </a>
               </li>
               <li className="text-sm sm:text-base py-0.5">
-                서울특별시 강남구
+                경기 김포시 고촌읍
                 <br />
-                테헤란로 123
+                장차로5번길 20
               </li>
             </ul>
           </div>
