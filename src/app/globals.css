@@ -26,16 +26,7 @@ html.dark {
   --foreground: #ededed;
 }
 
-html.dark body {
-  background: #0a0a0a !important;
-}
-
-html.dark {
-  background: #0a0a0a !important;
-}
-
 body {
-  background: #ffffff !important;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -46,10 +37,6 @@ body {
 
 .font-roboto-flex {
   font-family: var(--font-roboto-flex), system-ui, sans-serif;
-}
-
-html {
-  background: #ffffff !important;
 }
 
 .card {

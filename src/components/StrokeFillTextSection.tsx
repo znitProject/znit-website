@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
+import { useTheme } from "next-themes";
 
 // 텍스트 섹션 Props 타입 정의
 interface StrokeFillTextSectionProps {
@@ -30,13 +31,16 @@ const NUM_BG_CIRCLES = 16; // 원형 그라디언트 개수
 const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({
   className,
 }) => {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const textRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const bgRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [bgStyles, setBgStyles] = useState<React.CSSProperties[]>([]);
   const [isMobile, setIsMobile] = useState(false);
 
-  // 화면 크기 감지
+  // 화면 크기 감지 & 테마 상태 초기화
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -45,6 +49,9 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // 다크모드 여부에 따른 스트로크 색상 결정
+  const strokeColor = mounted && theme === "dark" ? "#ffffff" : "#111827";
 
   // 터치 디바이스에서는 탭으로, 데스크톱에서는 호버로 작동
   const handleInteractionStart = (idx: number) => {
@@ -287,7 +294,9 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({
             }}
             className="block w-fit text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-black select-none leading-tight text-left tracking-tighter cursor-pointer active:scale-95 transition-transform duration-150"
             style={{
-              WebkitTextStroke: isMobile ? "1px #111827" : "1.5px #111827", // 모바일에서 더 얇은 스트로크
+              WebkitTextStroke: isMobile
+                ? `1px ${strokeColor}`
+                : `1.5px ${strokeColor}`, // 다크모드에 따라 스트로크 색상 변경
               color: "transparent",
               background: gradient,
               backgroundSize: "0% 100%",
@@ -297,6 +306,7 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               touchAction: "manipulation", // 터치 최적화
+              transition: "text-stroke 0.3s ease", // 스트로크 색상 변화 애니메이션
             }}
             onMouseEnter={() => !isMobile && handleInteractionStart(idx)}
             onMouseLeave={() => !isMobile && handleInteractionEnd(idx)}

@@ -20,21 +20,39 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
   }, []);
 
   const handleMouseEnter = () => {
-    gsap.to(cardRef.current, {
-      backgroundColor: "#1a1a1a", // 더 어두운 검정
-      color: "#cccccc", // 약간 어두운 흰색
-      duration: 0.3,
-      ease: "power2.out",
-    });
+    if (theme === "dark") {
+      gsap.to(cardRef.current, {
+        backgroundColor: "#f0f0f0", // 밝은 회색
+        color: "#333333", // 어두운 회색
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    } else {
+      gsap.to(cardRef.current, {
+        backgroundColor: "#1a1a1a", // 더 어두운 검정
+        color: "#cccccc", // 약간 어두운 흰색
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    }
   };
 
   const handleMouseLeave = () => {
-    gsap.to(cardRef.current, {
-      backgroundColor: "black", // 원래 검정
-      color: "white", // 원래 흰색
-      duration: 0.3,
-      ease: "power2.inOut",
-    });
+    if (theme === "dark") {
+      gsap.to(cardRef.current, {
+        backgroundColor: "white", // 원래 흰색
+        color: "black", // 원래 검정
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
+    } else {
+      gsap.to(cardRef.current, {
+        backgroundColor: "black", // 원래 검정
+        color: "white", // 원래 흰색
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
+    }
   };
 
   const handleClick = () => {
@@ -48,7 +66,11 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
     <div
       ref={cardRef}
       className="h-24 flex flex-col items-center justify-center cursor-pointer border rounded-[20px]"
-      style={{ backgroundColor: "black", color: "white", ...style }}
+      style={{
+        backgroundColor: theme === "dark" ? "white" : "black",
+        color: theme === "dark" ? "black" : "white",
+        ...style,
+      }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
@@ -57,7 +79,7 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
         className="text-xl font-bold tracking-widest"
         style={{ fontFamily: "Istok Web" }}
       >
-        DARK
+        {theme === "dark" ? "LIGHT" : "DARK"}
       </span>
       <span
         className="text-xl font-bold tracking-widest"
