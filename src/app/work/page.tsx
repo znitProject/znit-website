@@ -62,8 +62,8 @@ export default function WorkPage() {
         name: "정보공개 시스템 유지보수",
         description: "통합 정보공개 시스템 유지보수 및 운영",
         year: "2016",
-        mainCategory: "PUBLIC",
-        subCategory: "OPEN_INFO_MAINT",
+        mainCategory: "IT",
+        subCategory: "PUBLIC",
         image: "/works/openGoKrImg.png",
       },
       {
@@ -140,8 +140,8 @@ export default function WorkPage() {
       },
       {
         id: 10,
-        name: "UI 컴포넌트 라이브러리",
-        description: "재사용 가능한 UI 컴포넌트 라이브러리 디자인 및 개발",
+        name: "차세대 지능형 교통시스템 실증사업",
+        description: "운영단말 UI 및 각종 보고자료,발표자료 디자인",
         year: "2024",
         mainCategory: "DESIGN",
         subCategory: "UIUX",
