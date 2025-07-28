@@ -47,7 +47,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="bg-zinc-900 text-zinc-600 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass bg-opacity-20 transition-colors duration-300"
+      className="bg-zinc-900 text-zinc-300 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass bg-opacity-20 transition-colors duration-300"
     >
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -56,7 +56,7 @@ export default function Footer() {
             <div className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 tracking-tight">
               ZNIT
             </div>
-            <p className="text-zinc-500 mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
+            <p className="text-zinc-400 mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
               혁신적인 솔루션으로 미래를 만들어갑니다. 우리는 우리가 하는 모든
               일에 책임을 지고, 최고의 결과물을 만들어내는 것을 약속합니다.
             </p>
@@ -93,7 +93,7 @@ export default function Footer() {
 
           {/* 빠른 링크 */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-200">
               빠른 링크
             </h3>
             <ul className="space-y-1">
@@ -134,10 +134,10 @@ export default function Footer() {
 
           {/* 연락처 */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-200">
               연락처
             </h3>
-            <ul className="space-y-1 text-zinc-500">
+            <ul className="space-y-1 text-zinc-400">
               <li>
                 <a
                   href="mailto:contact@znit.com"
@@ -154,7 +154,7 @@ export default function Footer() {
                   031-1234-5678
                 </a>
               </li>
-              <li className="text-sm sm:text-base py-0.5">
+              <li className="text-sm sm:text-base py-0.5 text-zinc-400">
                 경기 김포시 고촌읍
                 <br />
                 장차로5번길 20
@@ -166,7 +166,7 @@ export default function Footer() {
         {/* 하단 구분선 */}
         <div className="border-t border-zinc-700 mt-6 sm:mt-8 pt-6 sm:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <p className="text-zinc-500 text-xs sm:text-sm text-center sm:text-left tracking-tight">
+            <p className="text-zinc-400 text-xs sm:text-sm text-center sm:text-left tracking-tight">
               © {currentYear} ZNIT. All rights reserved.
             </p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
