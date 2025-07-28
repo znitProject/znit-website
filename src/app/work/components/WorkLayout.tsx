@@ -37,70 +37,103 @@ export default function WorkLayout({
     <div className="min-h-screen bg-white">
       {/* 메인 컨텐츠 */}
       <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16">
-        {/* 타이틀 영역 - 전체 너비 */}
+        {/* 타이틀 영역 */}
         <div className="relative mb-12">
           <WorkTitle />
-          {/* 분류 드롭다운 - 우측 상단 */}
-          <div className="absolute top-0 right-0 z-20 mt-2 mr-2">
-            <button
-              onClick={onDropdownToggle}
-              className="flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-gray-900 hover:text-gray-700 transition-colors bg-white/80 backdrop-blur-sm rounded-lg"
-            >
-              <span className="font-bold text-xs sm:text-sm md:text-lg">
-                {selectedMainCategory === "ALL" ? "ALL" : 
-                 categories.find(cat => cat.value === selectedMainCategory)?.label || selectedMainCategory}
-              </span>
-              <svg
-                className={`w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
 
-            {isDropdownOpen && (
-              <div className="absolute top-full right-0 mt-2 bg-transparent z-10 min-w-24 sm:min-w-32 md:min-w-48">
-                {/* 전체 카테고리 */}
+          {/* 드롭다운 버튼 */}
+          <div className="absolute top-0 right-0 z-20 mt-2 mr-2">
+          <button
+  onClick={onDropdownToggle}
+  className="flex items-center space-x-2 px-6 py-3 text-gray-900 hover:text-gray-700 transition-colors bg-white/80 backdrop-blur-sm "
+>
+  <span className="font-bold text-2xl">
+    {selectedMainCategory === "ALL"
+      ? "ALL"
+      : categories.find((cat) => cat.value === selectedMainCategory)?.label || selectedMainCategory}
+  </span>
+  <svg
+    className={`w-5 h-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+  </svg>
+</button>
+
+            {/* 드롭다운 영역 */}
+            <div className={`absolute top-full right-0 mt-2 bg-transparent z-10 w-fit flex flex-col items-end gap-2 transition-all duration-400 ease-in-out ${
+              isDropdownOpen 
+                ? "opacity-100 transform translate-y-0" 
+                : "opacity-0 transform -translate-y-2 pointer-events-none"
+            }`}>
+                {/* ALL 버튼 */}
                 <button
                   onClick={() => {
                     onMainCategoryChange("ALL");
+                    onSubCategoryChange("ALL");
                     onDropdownToggle();
                   }}
-                  className={`w-full text-left px-2 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 mb-1 sm:mb-2 rounded-full border-2 transition-all duration-200 text-xs sm:text-sm md:text-base ${
+                  className={`inline-block px-5 py-1.5 rounded-full text-xl font-bold transition ${
                     selectedMainCategory === "ALL"
-                      ? "bg-gray-900 text-white border-gray-900 font-bold"
-                      : "bg-white text-gray-900 border-gray-900 hover:bg-gray-900 hover:text-white font-medium"
+                      ? "bg-gray-900 text-white"
+                      : "bg-white text-gray-900 hover:bg-gray-900 hover:text-white"
                   }`}
                 >
-                  전체
+                  ALL
                 </button>
-                
-                {/* 메인 카테고리들 */}
+
+                {/* 메인 카테고리 + 서브카테고리 */}
                 {categories.map((category) => (
-                  <button
-                    key={category.value}
-                    onClick={() => {
-                      onMainCategoryChange(category.value);
-                      onDropdownToggle();
-                    }}
-                    className={`w-full text-left px-2 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 mb-1 sm:mb-2 rounded-full border-2 transition-all duration-200 text-xs sm:text-sm md:text-base ${
+                  <div key={category.value} className="flex flex-col items-end gap-1">
+                    <button
+                      onClick={() => {
+                        // 같은 카테고리를 다시 클릭하면 해당 카테고리 유지
+                        if (selectedMainCategory === category.value) {
+                          // 이미 선택된 카테고리면 그대로 유지 (서브카테고리만 토글)
+                          onMainCategoryChange(category.value);
+                          onSubCategoryChange("ALL");
+                        } else {
+                          // 다른 카테고리면 새로 선택
+                          onMainCategoryChange(category.value);
+                          onSubCategoryChange("ALL");
+                        }
+                      }}
+                      className={`inline-block px-5 py-1.5 rounded-full text-xl font-bold transition ${
+                        selectedMainCategory === category.value
+                          ? "bg-gray-900 text-white"
+                          : "bg-white text-gray-900 hover:bg-gray-900 hover:text-white"
+                      }`}
+                    >
+                      {category.label}
+                    </button>
+
+                    <div className={`flex flex-col items-end gap-1 transition-all duration-400 ease-in-out ${
                       selectedMainCategory === category.value
-                        ? "bg-gray-900 text-white border-gray-900 font-bold"
-                        : "bg-white text-gray-900 border-gray-900 hover:bg-gray-900 hover:text-white font-medium"
-                    }`}
-                  >
-                    {category.label}
-                  </button>
+                        ? "opacity-100 transform translate-y-0 max-h-96"
+                        : "opacity-0 transform -translate-y-2 max-h-0 overflow-hidden"
+                    }`}>
+                      {category.subcategories.map((sub) => (
+                        <button
+                          key={sub.value}
+                          onClick={() => {
+                            onSubCategoryChange(sub.value);
+                            onDropdownToggle();
+                          }}
+                          className={`inline-block w-fit px-5 py-1 text-sm rounded-full transition ${
+                            selectedSubCategory === sub.value
+                              ? "bg-gray-800 text-white font-bold"
+                              : "bg-white text-gray-700 hover:bg-gray-100"
+                          }`}
+                        >
+                          {sub.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
-            )}
           </div>
         </div>
 
