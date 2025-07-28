@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useEffect } from "react";
 import WorkLayout from "./components/WorkLayout";
 import ProjectGrid from "./components/ProjectGrid";
 

@@ -179,7 +179,7 @@ export async function POST(request: NextRequest) {
           line-height: 1.6;
         ">
           <h2 style="
-            color: #fff;
+            color: #000;
             padding: 12px;
             border-radius: 6px;
             text-align: center;

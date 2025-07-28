@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Benefits from "./components/Benefits";
 import RecruitProcess from "./components/RecruitProcess";
 import TitleAnimation from "./components/TitleAnimation";
