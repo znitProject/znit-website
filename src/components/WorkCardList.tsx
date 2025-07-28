@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 // GSAP 플러그인 등록
 if (typeof window !== "undefined") {
@@ -22,8 +22,6 @@ const WorkCardList: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { theme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -111,14 +109,9 @@ const WorkCardList: React.FC = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // Hydration 문제 해결 및 초기 상태 설정
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // GSAP 애니메이션 설정
   useEffect(() => {
-    if (!mounted || !carouselRef.current || !cardsRef.current) return;
+    if (!carouselRef.current || !cardsRef.current) return;
 
     // 기존 ScrollTrigger 정리
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -164,7 +157,7 @@ const WorkCardList: React.FC = () => {
       };
 
       carouselElement.addEventListener("wheel", handleWheel, { passive: false });
-      (carouselElement as any)._wheelListener = handleWheel;
+      (carouselElement as HTMLElement & { _wheelListener?: (e: WheelEvent) => void })._wheelListener = handleWheel;
     }
 
     // 호버 효과 추가
@@ -192,7 +185,8 @@ const WorkCardList: React.FC = () => {
       cardElement.addEventListener("mouseenter", handleMouseEnter);
       cardElement.addEventListener("mouseleave", handleMouseLeave);
 
-      (cardElement as any)._hoverListeners = {
+      const cardWithListeners = cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } };
+      cardWithListeners._hoverListeners = {
         mouseenter: handleMouseEnter,
         mouseleave: handleMouseLeave
       };
@@ -202,16 +196,20 @@ const WorkCardList: React.FC = () => {
     return () => {
       if (carouselElement) {
         carouselElement.removeEventListener("scroll", handleScroll);
-        if ((carouselElement as any)._wheelListener) {
-          carouselElement.removeEventListener("wheel", (carouselElement as any)._wheelListener);
+        const carouselWithListener = carouselElement as HTMLElement & { _wheelListener?: (e: WheelEvent) => void };
+        const wheelListener = carouselWithListener._wheelListener;
+        if (wheelListener) {
+          carouselElement.removeEventListener("wheel", wheelListener);
         }
       }
 
-      if (cardsRef.current) {
-        const cards = cardsRef.current.children;
+      const currentCardsRef = cardsRef.current;
+      if (currentCardsRef) {
+        const cards = currentCardsRef.children;
         Array.from(cards).forEach((card) => {
           const cardElement = card as HTMLElement;
-          const listeners = (cardElement as any)._hoverListeners;
+          const cardWithListeners = cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } };
+          const listeners = cardWithListeners._hoverListeners;
           if (listeners) {
             cardElement.removeEventListener("mouseenter", listeners.mouseenter);
             cardElement.removeEventListener("mouseleave", listeners.mouseleave);
@@ -221,14 +219,7 @@ const WorkCardList: React.FC = () => {
       
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [mounted, isMobile, isTablet]);
-
-  // 테마 변화 감지 및 ScrollTrigger 갱신
-  useEffect(() => {
-    if (mounted) {
-      ScrollTrigger.refresh();
-    }
-  }, [resolvedTheme, mounted]);
+  }, [isMobile, isTablet, getCardDimensions, updateActiveIndex]);
 
   // 인디케이터 클릭 핸들러
   const handleIndicatorClick = (index: number) => {
@@ -245,17 +236,6 @@ const WorkCardList: React.FC = () => {
     });
   };
 
-  if (!mounted) {
-    return (
-      <section className="w-full max-w-full mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-50">
-        <div className="animate-pulse">
-          <div className="h-12 bg-gray-300 rounded mb-4"></div>
-          <div className="h-96 bg-gray-200 rounded"></div>
-        </div>
-      </section>
-    );
-  }
-
   const { width: cardWidth, height: cardHeight } = getCardDimensions();
 
   return (
@@ -263,15 +243,11 @@ const WorkCardList: React.FC = () => {
       {/* 섹션 헤더 */}
       <div className="mb-6 sm:mb-8 md:mb-10">
         <h2 
-          className={`text-3xl sm:text-4xl md:text-5xl font-bold transition-colors duration-300 ${
-            resolvedTheme === 'dark' ? 'text-white' : 'text-black'
-          }`}
+          className="text-3xl sm:text-4xl md:text-5xl font-bold transition-colors duration-300 text-black"
         >
           WORKS
         </h2>
-        <p className={`text-lg mt-2 transition-colors duration-300 ${
-          resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-        }`}>
+        <p className="text-lg mt-2 transition-colors duration-300 text-gray-600">
           {isMobile ? '좌우로 스와이프하여 프로젝트를 탐색해보세요' : '스크롤하여 프로젝트를 탐색해보세요'}
         </p>
       </div>
@@ -296,11 +272,7 @@ const WorkCardList: React.FC = () => {
             {projects.map((project) => (
               <div
                 key={project.id}
-                className={`group relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer flex-shrink-0 ${
-                  resolvedTheme === 'dark' 
-                    ? 'bg-gray-800 shadow-gray-900/25' 
-                    : 'bg-white shadow-gray-200/50'
-                }`}
+                className="group relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer flex-shrink-0 bg-white shadow-gray-200/50"
                 style={{
                   width: `${cardWidth}px`,
                   height: `${cardHeight}px`,
@@ -310,20 +282,18 @@ const WorkCardList: React.FC = () => {
               >
                 {/* 이미지 컨테이너 - 3:4 비율에서 상단 55% */}
                 <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.55}px` }}>
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.title}
+                    width={cardWidth}
+                    height={cardHeight * 0.55}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     style={{ 
                       width: `${cardWidth}px`, 
                       height: `${cardHeight * 0.55}px`,
                       objectFit: 'cover'
                     }}
-                    loading="lazy"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMzUgOTBIMTY1VjEyMEgxMzVWOTBaIiBmaWxsPSIjOUI5Qjk4Ii8+CjxwYXRoIGQ9Ik0xMjAgMTA1SDEzNVYxMjBIMTIwVjEwNVoiIGZpbGw9IiM5QjlCOTgiLz4KPHN2Zz4K";
-                    }}
+                    priority={false}
                   />
                   
                   {/* 이미지 오버레이 */}
@@ -334,14 +304,10 @@ const WorkCardList: React.FC = () => {
                 <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.45}px` }}>
                   {/* 기본 정보 */}
                   <div className="absolute inset-0 p-4 flex flex-col justify-start transition-all duration-300 group-hover:opacity-0">
-                    <span className={`text-xs font-semibold uppercase tracking-wide mb-2 block ${
-                      resolvedTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'
-                    }`}>
+                    <span className="text-xs font-semibold uppercase tracking-wide mb-2 block text-blue-600">
                       {project.category}
                     </span>
-                    <h3 className={`font-bold text-lg leading-tight ${
-                      resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    <h3 className="font-bold text-lg leading-tight text-gray-900">
                       {project.title}
                     </h3>
                   </div>
@@ -358,8 +324,8 @@ const WorkCardList: React.FC = () => {
                        style={{ 
                          display: '-webkit-box',
                          WebkitLineClamp: isMobile ? 3 : 4,
-                         WebkitBoxOrient: 'vertical' as any
-                       }}>
+                         WebkitBoxOrient: 'vertical'
+                       } as React.CSSProperties}>
                       {project.description}
                     </p>
                   </div>
@@ -381,9 +347,7 @@ const WorkCardList: React.FC = () => {
                   key={index}
                   onClick={() => handleIndicatorClick(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer hover:scale-110 ${
-                    index === activeIndex
-                      ? (resolvedTheme === 'dark' ? 'bg-blue-400' : 'bg-blue-600')
-                      : (resolvedTheme === 'dark' ? 'bg-gray-600' : 'bg-gray-400')
+                    index === activeIndex ? 'bg-blue-600' : 'bg-gray-400'
                   }`}
                   aria-label={`프로젝트 ${index + 1}로 이동`}
                 />

@@ -144,9 +144,7 @@ const SpaceBackground = () => {
   const [stars] = useState<
     Array<{ x: number; y: number; size: number; delay: number }>
   >([]);
-  const [crossStars] = useState<
-    Array<{ x: number; y: number; size: number; delay: number }>
-  >([]);
+
 
   useEffect(() => {
     // 랜덤한 별들 생성
@@ -162,17 +160,7 @@ const SpaceBackground = () => {
         });
       }
 
-      // 십자 별들 생성 (더 특별한 별들)
-      const newCrossStars = [];
-      for (let i = 0; i < 5; i++) {
-        newCrossStars.push({
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size: Math.random() * 3 + 3, // 크기 증가: 2-4에서 3-6으로
-          delay: Math.random() * 2,
-        });
-      }
-      // setCrossStars(newCrossStars); // 사용하지 않음
+
     };
 
     generateStars();

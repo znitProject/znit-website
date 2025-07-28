@@ -1,11 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
 import gsap from "gsap";
 
 export default function Footer() {
-  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
   const footerRef = useRef(null);
 
@@ -49,7 +47,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="bg-zinc-900 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 dark:border-zinc-600 shadow-xl backdrop-glass bg-opacity-20 transition-colors duration-300"
+      className="bg-zinc-900 text-zinc-600 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass bg-opacity-20 transition-colors duration-300"
     >
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -102,7 +100,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="text-zinc-500 hover:text-white transition-colors footer-link text-sm sm:text-base block py-0.5"
+                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   Home
                 </Link>
@@ -110,7 +108,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/work"
-                  className="text-zinc-500 hover:text-white transition-colors footer-link text-sm sm:text-base block py-0.5"
+                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   Work
                 </Link>
@@ -118,7 +116,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/recruit"
-                  className="text-zinc-500 hover:text-white transition-colors footer-link text-sm sm:text-base block py-0.5"
+                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   Recruit
                 </Link>
@@ -126,7 +124,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/slogan"
-                  className="text-zinc-500 hover:text-white transition-colors footer-link text-sm sm:text-base block py-0.5"
+                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   We Own It
                 </Link>
@@ -143,7 +141,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:contact@znit.com"
-                  className="hover:text-white transition-colors footer-link text-sm sm:text-base block py-0.5"
+                  className="hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   contact@znit.com
                 </a>
@@ -151,7 +149,7 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:02-1234-5678"
-                  className="hover:text-white transition-colors footer-link text-sm sm:text-base block py-0.5"
+                  className="hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   031-1234-5678
                 </a>
@@ -174,13 +172,13 @@ export default function Footer() {
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
               <Link
                 href="/privacy"
-                className="text-zinc-500 hover:text-white text-xs sm:text-sm transition-colors footer-link text-center"
+                className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
               >
                 개인정보처리방침
               </Link>
               <Link
                 href="/terms"
-                className="text-zinc-500 hover:text-white text-xs sm:text-sm transition-colors footer-link text-center"
+                className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
               >
                 이용약관
               </Link>
