@@ -21,7 +21,7 @@ interface ProjectData {
 const WorkCardList: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -83,17 +83,22 @@ const WorkCardList: React.FC = () => {
     }
   };
 
-  // 스크롤 위치에 따른 활성 인덱스 계산
-  const updateActiveIndex = () => {
+  // 스크롤 진행률 계산
+  const updateScrollProgress = () => {
     if (!carouselRef.current) return;
     
     const scrollLeft = carouselRef.current.scrollLeft;
-    const { width: cardWidth } = getCardDimensions();
-    const gap = 20;
-    const cardWithGap = cardWidth + gap;
+    const scrollWidth = carouselRef.current.scrollWidth;
+    const clientWidth = carouselRef.current.clientWidth;
+    const maxScroll = scrollWidth - clientWidth;
     
-    const newIndex = Math.round(scrollLeft / cardWithGap);
-    setActiveIndex(Math.min(Math.max(newIndex, 0), projects.length - 1));
+    if (maxScroll <= 0) {
+      setScrollProgress(0);
+      return;
+    }
+    
+    const progress = Math.min(Math.max(scrollLeft / maxScroll, 0), 1);
+    setScrollProgress(progress);
   };
 
   // 화면 크기 감지
@@ -139,7 +144,7 @@ const WorkCardList: React.FC = () => {
 
     // 스크롤 이벤트 리스너 추가
     const handleScroll = () => {
-      updateActiveIndex();
+      updateScrollProgress();
     };
 
     carouselElement.addEventListener("scroll", handleScroll);
@@ -192,6 +197,9 @@ const WorkCardList: React.FC = () => {
       };
     });
 
+    // 초기 스크롤 진행률 설정
+    updateScrollProgress();
+
     // Cleanup function
     return () => {
       if (carouselElement) {
@@ -219,22 +227,7 @@ const WorkCardList: React.FC = () => {
       
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [isMobile, isTablet, getCardDimensions, updateActiveIndex]);
-
-  // 인디케이터 클릭 핸들러
-  const handleIndicatorClick = (index: number) => {
-    if (!carouselRef.current) return;
-    
-    const { width: cardWidth } = getCardDimensions();
-    const gap = 20;
-    const scrollPosition = index * (cardWidth + gap);
-    
-    gsap.to(carouselRef.current, {
-      scrollLeft: scrollPosition,
-      duration: 0.6,
-      ease: "power2.out"
-    });
-  };
+  }, [isMobile, isTablet, getCardDimensions, updateScrollProgress]);
 
   const { width: cardWidth, height: cardHeight } = getCardDimensions();
 
@@ -329,30 +322,33 @@ const WorkCardList: React.FC = () => {
                       {project.description}
                     </p>
                   </div>
-
-                  {/* 호버 시 배경 오버레이 */}
-                 
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 스크롤 인디케이터 - 데스크톱에서만 표시 */}
+        {/* 스크롤 프로그레스 바 - 데스크톱에서만 표시 */}
         {!isMobile && !isTablet && (
           <div className="flex justify-center mt-6">
-            <div className="flex space-x-2">
-              {projects.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleIndicatorClick(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer hover:scale-110 ${
-                    index === activeIndex ? 'bg-blue-600' : 'bg-gray-400'
-                  }`}
-                  aria-label={`프로젝트 ${index + 1}로 이동`}
-                />
-              ))}
+            <div className="w-64 h-1 bg-gray-300 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 ease-out"
+                style={{
+                  width: `${scrollProgress * 100}%`,
+                  transformOrigin: 'left center'
+                }}
+              />
             </div>
+          </div>
+        )}
+
+        {/* 스크롤 힌트 텍스트 - 데스크톱에서만 표시 */}
+        {!isMobile && !isTablet && scrollProgress < 0.1 && (
+          <div className="flex justify-center mt-3">
+            <p className="text-sm text-gray-500 animate-pulse">
+              마우스 휠로 더 많은 프로젝트를 확인해보세요
+            </p>
           </div>
         )}
       </div>
