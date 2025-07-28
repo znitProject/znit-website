@@ -3,7 +3,8 @@ interface Project {
   name: string;
   description: string;
   year: string;
-  category: string;
+  mainCategory: string;
+  subCategory: string;
   image?: string;
 }
 
@@ -67,7 +68,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <div className="flex items-center justify-between transform translate-y-32 group-hover:translate-y-0 transition-transform duration-300 delay-100">
             <span className="text-white text-sm font-medium">{project.year}</span>
             <div className="flex items-center space-x-2">
-              <span className="text-white text-sm font-medium">{project.category}</span>
+              <span className="text-white text-sm font-medium">{project.subCategory}</span>
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

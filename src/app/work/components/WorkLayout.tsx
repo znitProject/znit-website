@@ -1,20 +1,35 @@
 import { ReactNode } from "react";
 import WorkTitle from "./WorkTitle";
 
+interface SubCategory {
+  value: string;
+  label: string;
+}
+
+interface Category {
+  value: string;
+  label: string;
+  subcategories: SubCategory[];
+}
+
 interface WorkLayoutProps {
   children: ReactNode;
-  selectedCategory: string;
+  selectedMainCategory: string;
+  selectedSubCategory: string;
   isDropdownOpen: boolean;
-  onCategoryChange: (category: string) => void;
+  onMainCategoryChange: (mainCategory: string) => void;
+  onSubCategoryChange: (subCategory: string) => void;
   onDropdownToggle: () => void;
-  categories: Array<{ value: string; label: string }>;
+  categories: Category[];
 }
 
 export default function WorkLayout({
   children,
-  selectedCategory,
+  selectedMainCategory,
+  selectedSubCategory,
   isDropdownOpen,
-  onCategoryChange,
+  onMainCategoryChange,
+  onSubCategoryChange,
   onDropdownToggle,
   categories,
 }: WorkLayoutProps) {
@@ -32,7 +47,8 @@ export default function WorkLayout({
               className="flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-gray-900 hover:text-gray-700 transition-colors bg-white/80 backdrop-blur-sm rounded-lg"
             >
               <span className="font-bold text-xs sm:text-sm md:text-lg">
-                {selectedCategory}
+                {selectedMainCategory === "ALL" ? "ALL" : 
+                 categories.find(cat => cat.value === selectedMainCategory)?.label || selectedMainCategory}
               </span>
               <svg
                 className={`w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
@@ -51,15 +67,31 @@ export default function WorkLayout({
 
             {isDropdownOpen && (
               <div className="absolute top-full right-0 mt-2 bg-transparent z-10 min-w-24 sm:min-w-32 md:min-w-48">
+                {/* 전체 카테고리 */}
+                <button
+                  onClick={() => {
+                    onMainCategoryChange("ALL");
+                    onDropdownToggle();
+                  }}
+                  className={`w-full text-left px-2 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 mb-1 sm:mb-2 rounded-full border-2 transition-all duration-200 text-xs sm:text-sm md:text-base ${
+                    selectedMainCategory === "ALL"
+                      ? "bg-gray-900 text-white border-gray-900 font-bold"
+                      : "bg-white text-gray-900 border-gray-900 hover:bg-gray-900 hover:text-white font-medium"
+                  }`}
+                >
+                  전체
+                </button>
+                
+                {/* 메인 카테고리들 */}
                 {categories.map((category) => (
                   <button
                     key={category.value}
                     onClick={() => {
-                      onCategoryChange(category.value);
+                      onMainCategoryChange(category.value);
                       onDropdownToggle();
                     }}
                     className={`w-full text-left px-2 sm:px-4 md:px-6 py-1 sm:py-2 md:py-3 mb-1 sm:mb-2 rounded-full border-2 transition-all duration-200 text-xs sm:text-sm md:text-base ${
-                      selectedCategory === category.value
+                      selectedMainCategory === category.value
                         ? "bg-gray-900 text-white border-gray-900 font-bold"
                         : "bg-white text-gray-900 border-gray-900 hover:bg-gray-900 hover:text-white font-medium"
                     }`}

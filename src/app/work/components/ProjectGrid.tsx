@@ -5,7 +5,8 @@ interface Project {
   name: string;
   description: string;
   year: string;
-  category: string;
+  mainCategory: string;
+  subCategory: string;
   image?: string;
 }
 
