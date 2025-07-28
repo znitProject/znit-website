@@ -4,6 +4,8 @@ import { useTheme } from "next-themes";
 // WorkCardList 컴포넌트: 하단 WORK 카드 리스트 - 모바일 퍼스트 최적화
 const WorkCardList: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   // 화면 크기 감지
   useEffect(() => {
@@ -15,6 +17,19 @@ const WorkCardList: React.FC = () => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Hydration 문제 해결
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // theme 상태 디버깅
+  useEffect(() => {
+    if (mounted) {
+      console.log("Current theme:", theme);
+      console.log("Resolved theme:", resolvedTheme);
+    }
+  }, [theme, resolvedTheme, mounted]);
 
   // 모바일용 더 적은 수의 작품 표시
   const itemCount = isMobile ? 4 : 5;
@@ -35,7 +50,15 @@ const WorkCardList: React.FC = () => {
     <section className="w-full max-w-full mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-50">
       {/* 섹션 헤더 - 간소화 */}
       <div className="mb-6 sm:mb-8 md:mb-10">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black dark:text-white transition-colors duration-300">
+        <h2 
+          className={`text-3xl sm:text-4xl md:text-5xl font-bold transition-colors duration-300 ${
+            mounted && resolvedTheme === 'dark' ? 'text-white' : 'text-black'
+          }`}
+          style={{
+            // hydration 중에도 텍스트가 보이도록 보장
+            color: mounted && resolvedTheme === 'dark' ? '#ffffff' : '#000000'
+          }}
+        >
           WORKS
         </h2>
       </div>
@@ -45,11 +68,15 @@ const WorkCardList: React.FC = () => {
         {Array.from({ length: itemCount }, (_, i) => (
           <div
             key={i}
-            className="group relative rounded-xl sm:rounded-2xl shadow-lg overflow-hidden bg-white dark:bg-gray-800 transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-0 cursor-pointer"
+            className={`group relative rounded-xl sm:rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-0 cursor-pointer ${
+              mounted && resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-white'
+            }`}
             style={{
               // 모바일에서 터치 친화적인 최소 크기 보장
               minHeight: isMobile ? "160px" : "200px",
               zIndex: 9999,
+              // hydration 중에도 배경색 보장
+              backgroundColor: mounted && resolvedTheme === 'dark' ? '#1f2937' : '#ffffff'
             }}
           >
             {/* 세로로 긴 썸네일 (3:4 비율) - 모바일 최적화 */}
