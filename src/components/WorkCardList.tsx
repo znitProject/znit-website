@@ -79,7 +79,7 @@ const WorkCardList: React.FC = () => {
     } else if (isTablet) {
       return { width: 270, height: 360 }; // 태블릿: 3:4 비율
     } else {
-      return { width: 300, height: 400 }; // 데스크톱: 3:4 비율, 5개씩 보이게
+      return { width: 310, height: 400 }; // 데스크톱: 3:4 비율, 5개씩 보이게
     }
   };
 
