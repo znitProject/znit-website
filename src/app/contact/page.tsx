@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
-import { useTheme } from "next-themes";
 
 import ContactLayout from "./components/ContactLayout";
 import Step1 from "./components/Step1";
@@ -21,19 +20,9 @@ const flowerImages = [
 ];
 
 export default function ContactPage() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [direction, setDirection] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // 다크모드 여부에 따른 배경색 결정
-  const backgroundColor =
-    mounted && theme === "dark" ? "bg-[#1F1F1F]" : "bg-white";
 
   const [formData, setFormData] = useState<FormData>({
     projectType: [],
@@ -196,7 +185,7 @@ export default function ContactPage() {
 
   return (
     <div
-      className={`min-h-screen ${backgroundColor} transition-colors duration-300`}
+      className="min-h-screen bg-white transition-colors duration-300"
     >
       <ContactLayout
         currentStep={currentStep}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "next-themes";
 import { useEffect } from "react";
 import WorkLayout from "./components/WorkLayout";
 import ProjectGrid from "./components/ProjectGrid";
@@ -17,20 +16,10 @@ interface Project {
 }
 
 export default function WorkPage() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [selectedMainCategory, setSelectedMainCategory] = useState("ALL");
   const [selectedSubCategory, setSelectedSubCategory] = useState("ALL");
   const [visibleProjects, setVisibleProjects] = useState(4);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // 다크모드 여부에 따른 배경색 결정
-  const backgroundColor =
-    mounted && theme === "dark" ? "bg-[#1F1F1F]" : "bg-white";
 
     const categories = [
       {
@@ -178,7 +167,7 @@ export default function WorkPage() {
 
   return (
     <div
-      className={`min-h-screen ${backgroundColor} transition-colors duration-300`}
+      className="min-h-screen bg-white transition-colors duration-300"
     >
       <WorkLayout
         selectedMainCategory={selectedMainCategory}
