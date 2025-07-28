@@ -30,34 +30,41 @@ const WorkCardList: React.FC = () => {
   const projects: ProjectData[] = [
     {
       id: 1,
+      title: "정보공개 유지보수",
+      description: "종합 정보공개시스템의 유지보수 및 운영을 담당하는 프로젝트입니다.",
+      image: "/works/openGoKrImg.png",
+      category: "IT"
+    },
+    {
+      id: 2,
       title: "공공 디자인",
       description: "사용자 친화적인 버스정류장 인터페이스 디자인으로 일상의 대중교통을 더욱 편리하게 만드는 프로젝트입니다.",
       image: "/works/3_4/busStopImg34.jpeg",
       category: "Public Design"
     },
     {
-      id: 2,
+      id: 3,
       title: "컨셉 아트 디자인",
       description: "창의적인 아이디어를 시각적으로 구현하는 컨셉 아트 작업으로 프로젝트의 비전을 명확하게 전달합니다.",
       image: "/works/3_4/conceptArtImg34.jpeg",
       category: "Concept Art"
     },
     {
-      id: 3,
+      id: 4,
       title: "3D 정보 시각화",
       description: "복잡한 데이터를 직관적인 3D 시각화로 표현하여 정보 전달의 효율성을 극대화한 프로젝트입니다.",
       image: "/works/3_4/Info3DImg34.jpeg",
       category: "3D Visualization"
     },
     {
-      id: 4,
+      id: 5,
       title: "모션그래픽 디자인",
       description: "모바일 환경에 최적화된 사용자 인터페이스로 터치 기반 상호작용을 고려한 직관적인 디자인을 제공합니다.",
       image: "/works/motion2D2.jpeg",
       category: "MotionGraphic Design"
     },
     {
-      id: 5,
+      id: 6,
       title: "UI/UX 디자인",
       description: "사용자 경험을 중심으로 한 인터랙티브 프로토타입으로 실제 사용 시나리오를 미리 검증할 수 있습니다.",
       image: "/works/3_4/KakaoTalk_Photo_2025-07-28-10-00-50 005.jpeg",
