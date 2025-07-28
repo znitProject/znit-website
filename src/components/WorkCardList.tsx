@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 // GSAP 플러그인 등록
 if (typeof window !== "undefined") {
@@ -177,7 +178,8 @@ const WorkCardList: React.FC = () => {
       cardElement.addEventListener("mouseenter", handleMouseEnter);
       cardElement.addEventListener("mouseleave", handleMouseLeave);
 
-      (cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } })._hoverListeners = {
+      const cardWithListeners = cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } };
+      cardWithListeners._hoverListeners = {
         mouseenter: handleMouseEnter,
         mouseleave: handleMouseLeave
       };
@@ -187,17 +189,20 @@ const WorkCardList: React.FC = () => {
     return () => {
       if (carouselElement) {
         carouselElement.removeEventListener("scroll", handleScroll);
-        const wheelListener = (carouselElement as HTMLElement & { _wheelListener?: (e: WheelEvent) => void })._wheelListener;
+        const carouselWithListener = carouselElement as HTMLElement & { _wheelListener?: (e: WheelEvent) => void };
+        const wheelListener = carouselWithListener._wheelListener;
         if (wheelListener) {
           carouselElement.removeEventListener("wheel", wheelListener);
         }
       }
 
-      if (cardsRef.current) {
-        const cards = cardsRef.current.children;
+      const currentCardsRef = cardsRef.current;
+      if (currentCardsRef) {
+        const cards = currentCardsRef.children;
         Array.from(cards).forEach((card) => {
           const cardElement = card as HTMLElement;
-          const listeners = (cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } })._hoverListeners;
+          const cardWithListeners = cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } };
+          const listeners = cardWithListeners._hoverListeners;
           if (listeners) {
             cardElement.removeEventListener("mouseenter", listeners.mouseenter);
             cardElement.removeEventListener("mouseleave", listeners.mouseleave);
@@ -207,7 +212,7 @@ const WorkCardList: React.FC = () => {
       
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [isMobile, isTablet]);
+  }, [isMobile, isTablet, getCardDimensions, updateActiveIndex]);
 
   // 인디케이터 클릭 핸들러
   const handleIndicatorClick = (index: number) => {
@@ -270,20 +275,18 @@ const WorkCardList: React.FC = () => {
               >
                 {/* 이미지 컨테이너 - 3:4 비율에서 상단 55% */}
                 <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.55}px` }}>
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.title}
+                    width={cardWidth}
+                    height={cardHeight * 0.55}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     style={{ 
                       width: `${cardWidth}px`, 
                       height: `${cardHeight * 0.55}px`,
                       objectFit: 'cover'
                     }}
-                    loading="lazy"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMzUgOTBIMTY1VjEyMEgxMzVWOTBaIiBmaWxsPSIjOUI5Qjk4Ii8+CjxwYXRoIGQ9Ik0xMjAgMTA1SDEzNVYxMjBIMTIwVjEwNVoiIGZpbGw9IiM5QjlCOTgiLz4KPHN2Zz4K";
-                    }}
+                    priority={false}
                   />
                   
                   {/* 이미지 오버레이 */}
@@ -314,8 +317,8 @@ const WorkCardList: React.FC = () => {
                        style={{ 
                          display: '-webkit-box',
                          WebkitLineClamp: isMobile ? 3 : 4,
-                         WebkitBoxOrient: 'vertical' as const
-                       }}>
+                         WebkitBoxOrient: 'vertical'
+                       } as React.CSSProperties}>
                       {project.description}
                     </p>
                   </div>
