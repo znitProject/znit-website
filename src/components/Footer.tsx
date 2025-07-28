@@ -14,31 +14,31 @@ export default function Footer() {
       { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.5 }
     );
 
-    // gsap utils.toArray 반환값을 HTMLElement[]로 명시적으로 캐스팅 (linter 에러 방지)
-    (gsap.utils.toArray(".footer-link") as HTMLElement[]).forEach((link) => {
+    // 애니메이션 시작 전에 요소들을 숨기지 않고, transform만 사용
+    (gsap.utils.toArray(".footer-link") as HTMLElement[]).forEach((link, index) => {
       gsap.fromTo(
         link,
-        { opacity: 0, x: -20 },
+        { x: -20, opacity: 0 },
         {
-          opacity: 1,
           x: 0,
+          opacity: 1,
           duration: 0.8,
           ease: "power2.out",
-          scrollTrigger: { trigger: link, start: "top 90%" },
+          delay: index * 0.05,
         }
       );
     });
 
-    (gsap.utils.toArray(".footer-icon") as HTMLElement[]).forEach((icon) => {
+    (gsap.utils.toArray(".footer-icon") as HTMLElement[]).forEach((icon, index) => {
       gsap.fromTo(
         icon,
-        { opacity: 0, scale: 0.5 },
+        { scale: 0.5, opacity: 0 },
         {
-          opacity: 1,
           scale: 1,
+          opacity: 1,
           duration: 0.6,
           ease: "back.out(1.7)",
-          scrollTrigger: { trigger: icon, start: "top 90%" },
+          delay: 0.3 + index * 0.1,
         }
       );
     });
@@ -47,7 +47,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="bg-zinc-900 text-zinc-300 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass bg-opacity-20 transition-colors duration-300"
+      className="bg-white dark:bg-zinc-900 text-zinc-500 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass transition-colors duration-300"
     >
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -56,14 +56,14 @@ export default function Footer() {
             <div className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 tracking-tight">
               ZNIT
             </div>
-            <p className="text-zinc-400 mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
+            <p className="text-zinc-500 mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
               혁신적인 솔루션으로 미래를 만들어갑니다. 우리는 우리가 하는 모든
               일에 책임을 지고, 최고의 결과물을 만들어내는 것을 약속합니다.
             </p>
             <div className="flex space-x-4">
               <a
                 href="mailto:contact@znit.com"
-                className="text-zinc-400 hover:text-white transition-colors footer-icon p-2"
+                className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors footer-icon p-2"
                 aria-label="이메일"
               >
                 <svg
@@ -77,7 +77,7 @@ export default function Footer() {
               </a>
               <a
                 href="tel:031-1234-5678"
-                className="text-zinc-400 hover:text-white transition-colors footer-icon p-2"
+                className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors footer-icon p-2"
                 aria-label="전화번호"
               >
                 <svg
@@ -93,14 +93,14 @@ export default function Footer() {
 
           {/* 빠른 링크 */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-200">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-500">
               빠른 링크
             </h3>
             <ul className="space-y-1">
               <li>
                 <Link
                   href="/"
-                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   Home
                 </Link>
@@ -108,7 +108,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/work"
-                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   Work
                 </Link>
@@ -116,7 +116,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/recruit"
-                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   Recruit
                 </Link>
@@ -124,7 +124,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/slogan"
-                  className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   We Own It
                 </Link>
@@ -134,14 +134,14 @@ export default function Footer() {
 
           {/* 연락처 */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-200">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-500">
               연락처
             </h3>
-            <ul className="space-y-1 text-zinc-400">
+            <ul className="space-y-1 text-zinc-500">
               <li>
                 <a
                   href="mailto:contact@znit.com"
-                  className="hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   contact@znit.com
                 </a>
@@ -149,12 +149,12 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:02-1234-5678"
-                  className="hover:text-white hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
                 >
                   031-1234-5678
                 </a>
               </li>
-              <li className="text-sm sm:text-base py-0.5 text-zinc-400">
+              <li className="text-sm sm:text-base py-0.5 text-zinc-600 dark:text-zinc-500">
                 경기 김포시 고촌읍
                 <br />
                 장차로5번길 20
@@ -166,19 +166,19 @@ export default function Footer() {
         {/* 하단 구분선 */}
         <div className="border-t border-zinc-700 mt-6 sm:mt-8 pt-6 sm:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <p className="text-zinc-400 text-xs sm:text-sm text-center sm:text-left tracking-tight">
+            <p className="text-zinc-500 text-xs sm:text-sm text-center sm:text-left tracking-tight">
               © {currentYear} ZNIT. All rights reserved.
             </p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
               <Link
                 href="/privacy"
-                className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
+                className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
               >
                 개인정보처리방침
               </Link>
               <Link
                 href="/terms"
-                className="text-zinc-500 hover:text-white hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
+                className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
               >
                 이용약관
               </Link>
