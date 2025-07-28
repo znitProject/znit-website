@@ -45,12 +45,12 @@ export default function WorkPage() {
         ],
       },
       {
-        value: "PUBLIC",
-        label: "PUBLIC",
+        value: "IT",
+        label: "IT",
         subcategories: [
           {
-            value: "OPEN_INFO_MAINT",
-            label: "정보공개 시스템 유지보수",
+            value: "public",
+            label: "공공사업",
           },
         ],
       },
