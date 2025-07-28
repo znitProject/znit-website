@@ -31,17 +31,34 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <div className="group relative overflow-hidden rounded-lg aspect-[4/3] cursor-pointer">
       {/* 프로젝트 배경 */}
-      <div 
-        style={{ 
-          backgroundColor: getBackgroundColor(project.id),
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 1
-        }}
-      ></div>
+      {project.image ? (
+        <div 
+          style={{ 
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            backgroundImage: `url(${project.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        ></div>
+      ) : (
+        <div 
+          style={{ 
+            backgroundColor: getBackgroundColor(project.id),
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1
+          }}
+        ></div>
+      )}
 
       {/* 호버 오버레이 */}
       <div 
