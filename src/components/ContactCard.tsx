@@ -1,13 +1,38 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import React, { useRef } from "react";
+import { gsap } from "gsap";
 
 // ContactCard 컴포넌트: 호버 시 배경 이미지가 변경되는 애니메이션 포함
-export default function ContactCard() {
+export default function ContactCard({ style }: { style?: React.CSSProperties }) {
+  const cardRef = useRef<HTMLAnchorElement>(null);
+
+  const handleMouseEnter = () => {
+    gsap.to(cardRef.current, {
+      scale: 1.05,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(cardRef.current, {
+      scale: 1,
+      duration: 0.3,
+      ease: "power2.inOut",
+    });
+  };
+
   return (
     <Link
       href="/contact"
-      className="card relative overflow-hidden group transition-transform duration-300 hover:scale-105"
-      style={{ gridArea: "contact" }}
+      ref={cardRef}
+      className="card relative overflow-hidden group"
+      style={style}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* 기본 배경 이미지 */}
       <Image

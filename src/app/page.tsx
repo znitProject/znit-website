@@ -55,7 +55,7 @@ export default function HomePage() {
       >
         {/* 데스크톱 (xl 이상): 기존 복합 grid 레이아웃 유지 */}
         <section
-          className="w-full max-w-full hidden xl:grid gap-6 grid-cols-4 grid-rows-[repeat(7,minmax(140px,1fr))]"
+          className="w-full max-w-full hidden xl:grid gap-6 grid-cols-4 grid-rows-[repeat(6,minmax(140px,1fr))]"
           style={{
             gridTemplateAreas: `
               'keyword work clock workus'
@@ -63,19 +63,17 @@ export default function HomePage() {
               'contact work clock map'
               'contact weownit weownit map'
               'contact weownit weownit map'
-              'contact weownit weownit map'
-              'customer customer customer darkmode'
+              'contact weownit weownit darkmode'
             `,
           }}
         >
-          <KeywordCard />
-          <WorkCard />
-          <NixieClock />
-          <WorkWithUsCard />
-          <ContactCard />
-          <MapCard />
+          <KeywordCard style={{ gridArea: "keyword" }} />
+          <WorkCard style={{ gridArea: "work" }} />
+          <NixieClock style={{ gridArea: "clock" }} />
+          <WorkWithUsCard style={{ gridArea: "workus" }} />
+          <ContactCard style={{ gridArea: "contact" }} />
+          <MapCard style={{ gridArea: "map" }} />
           <WeOwnItCard style={{ gridArea: "weownit" }} />
-          <CustomerCarousel />
           <DarkModeCard style={{ gridArea: "darkmode" }} />
         </section>
 
@@ -134,16 +132,11 @@ export default function HomePage() {
             </div>
 
             {/* 지도 - 완전히 분리된 컨테이너 */}
-            <div className="w-full h-[220px] sm:h-[240px] relative z-10">
+            <div className="w-full h-[80px] sm:h-[100px] relative z-10">
               <MapCard />
             </div>
 
-            {/* 고객사 캐러셀 - 작게 유지 */}
-            <div className="w-full h-[100px] sm:h-[120px]">
-              <CustomerCarousel />
-            </div>
-
-            {/* 다크모드 토글 - 작게 유지 (맨 마지막) */}
+            {/* 다크모드 토글 - 지도 바로 아래에 배치 */}
             <div className="w-full h-[80px] sm:h-[100px]">
               <DarkModeCard style={{}} />
             </div>

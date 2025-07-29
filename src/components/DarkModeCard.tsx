@@ -24,39 +24,23 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
   }, [setTheme]);
 
   const handleMouseEnter = () => {
-    if (theme === "dark") {
-      gsap.to(cardRef.current, {
-        backgroundColor: "#f0f0f0", // 밝은 회색
-        color: "#333333", // 어두운 회색
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    } else {
-      gsap.to(cardRef.current, {
-        backgroundColor: "#1a1a1a", // 더 어두운 검정
-        color: "#cccccc", // 약간 어두운 흰색
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
+    gsap.to(cardRef.current, {
+      scale: 1.05,
+      backgroundColor: theme === "dark" ? "#f0f0f0" : "#1a1a1a",
+      color: theme === "dark" ? "#333333" : "#cccccc",
+      duration: 0.3,
+      ease: "power2.out",
+    });
   };
 
   const handleMouseLeave = () => {
-    if (theme === "dark") {
-      gsap.to(cardRef.current, {
-        backgroundColor: "white", // 원래 흰색
-        color: "black", // 원래 검정
-        duration: 0.3,
-        ease: "power2.inOut",
-      });
-    } else {
-      gsap.to(cardRef.current, {
-        backgroundColor: "black", // 원래 검정
-        color: "white", // 원래 흰색
-        duration: 0.3,
-        ease: "power2.inOut",
-      });
-    }
+    gsap.to(cardRef.current, {
+      scale: 1,
+      backgroundColor: theme === "dark" ? "white" : "black",
+      color: theme === "dark" ? "black" : "white",
+      duration: 0.3,
+      ease: "power2.inOut",
+    });
   };
 
   const handleClick = () => {
@@ -69,7 +53,7 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
   return (
     <div
       ref={cardRef}
-      className="h-24 flex flex-col items-center justify-center cursor-pointer border rounded-[20px]"
+      className="flex flex-col items-center justify-center cursor-pointer border rounded-[20px]"
       style={{
         backgroundColor: theme === "dark" ? "white" : "black",
         color: theme === "dark" ? "black" : "white",

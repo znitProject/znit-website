@@ -3,11 +3,14 @@
 import { MapContainer, TileLayer, Marker, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L, { LatLngExpression } from "leaflet";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 const position: LatLngExpression = [37.6034, 126.7694];
 
-const MapCard = () => {
+const MapCard: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     // 클라이언트 환경에서만 leaflet 마커 아이콘 경로 수정
     if (typeof window !== "undefined") {
@@ -23,10 +26,29 @@ const MapCard = () => {
     }
   }, []);
 
+  const handleMouseEnter = () => {
+    gsap.to(cardRef.current, {
+      scale: 1.05,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(cardRef.current, {
+      scale: 1,
+      duration: 0.3,
+      ease: "power2.inOut",
+    });
+  };
+
   return (
     <div
-      className="card bg-gray-200 h-full transition-transform duration-300 hover:scale-105"
-      style={{ gridArea: "map", padding: 0, overflow: "hidden" }}
+      ref={cardRef}
+      className="card bg-gray-200 h-full"
+      style={{ padding: 0, overflow: "hidden", ...style }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <MapContainer
         center={position}
