@@ -198,10 +198,50 @@ export default function WorkLayout({
                                     }
                                     onDropdownToggle();
                                   }}
-                                  className={`inline-block px-4 py-0.5 text-xs rounded-full transition whitespace-nowrap ${
+                                  className={`inline-block px-3 py-1 text-xs rounded-full transition whitespace-nowrap ${
                                     selectedSubSubCategory === subSub.value
-                                      ? "bg-gray-700 text-white font-bold"
-                                      : "bg-white text-gray-600 hover:bg-gray-50"
+                                      ? subSub.value === "PPT"
+                                        ? "bg-purple-500 text-white font-bold"
+                                        : subSub.value === "CONCEPT_GRAPHIC"
+                                        ? "bg-pink-500 text-white font-bold"
+                                        : subSub.value === "2D"
+                                        ? "bg-orange-500 text-white font-bold"
+                                        : subSub.value === "3D"
+                                        ? "bg-indigo-500 text-white font-bold"
+                                        : subSub.value === "SKETCH"
+                                        ? "bg-teal-500 text-white font-bold"
+                                        : subSub.value === "AI_SYNTHESIS"
+                                        ? "bg-emerald-500 text-white font-bold"
+                                        : subSub.value === "UIUX"
+                                        ? "bg-cyan-500 text-white font-bold"
+                                        : subSub.value === "WEB"
+                                        ? "bg-lime-500 text-white font-bold"
+                                        : subSub.value === "KIOSK"
+                                        ? "bg-violet-500 text-white font-bold"
+                                        : subSub.value === "TRANSPORTATION"
+                                        ? "bg-rose-500 text-white font-bold"
+                                        : "bg-gray-700 text-white font-bold"
+                                      : subSub.value === "PPT"
+                                      ? "bg-white text-purple-500 hover:bg-purple-500 hover:text-white border border-purple-500"
+                                      : subSub.value === "CONCEPT_GRAPHIC"
+                                      ? "bg-white text-pink-500 hover:bg-pink-500 hover:text-white border border-pink-500"
+                                      : subSub.value === "2D"
+                                      ? "bg-white text-orange-500 hover:bg-orange-500 hover:text-white border border-orange-500"
+                                      : subSub.value === "3D"
+                                      ? "bg-white text-indigo-500 hover:bg-indigo-500 hover:text-white border border-indigo-500"
+                                      : subSub.value === "SKETCH"
+                                      ? "bg-white text-teal-500 hover:bg-teal-500 hover:text-white border border-teal-500"
+                                      : subSub.value === "AI_SYNTHESIS"
+                                      ? "bg-white text-emerald-500 hover:bg-emerald-500 hover:text-white border border-emerald-500"
+                                      : subSub.value === "UIUX"
+                                      ? "bg-white text-cyan-500 hover:bg-cyan-500 hover:text-white border border-cyan-500"
+                                      : subSub.value === "WEB"
+                                      ? "bg-white text-lime-500 hover:bg-lime-500 hover:text-white border border-lime-500"
+                                      : subSub.value === "KIOSK"
+                                      ? "bg-white text-violet-500 hover:bg-violet-500 hover:text-white border border-violet-500"
+                                      : subSub.value === "TRANSPORTATION"
+                                      ? "bg-white text-rose-500 hover:bg-rose-500 hover:text-white border border-rose-500"
+                                      : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
                                   }`}
                                 >
                                   {subSub.label}
