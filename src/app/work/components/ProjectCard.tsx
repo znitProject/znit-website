@@ -109,7 +109,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       >
         <div className="w-full p-6">
           {/* 프로젝트명과 설명 - 하단 오른쪽 정렬 */}
-          <div className="text-right mb-4 transform translate-y-32 group-hover:translate-y-0 transition-transform duration-300">
+          <div className="text-right mb-4 transform translate-y-35 group-hover:translate-y-0 transition-transform duration-300">
             <h3 className="text-3xl font-bold text-white mb-3">{project.name}</h3>
             <p className="text-white text-base">{project.description}</p>
           </div>
