@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 /**
  * 다크 모드 토글 버튼으로 사용될 카드 컴포넌트입니다.
@@ -53,7 +54,7 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
   return (
     <div
       ref={cardRef}
-      className="flex flex-col items-center justify-center cursor-pointer border rounded-[20px]"
+      className="flex items-center justify-center cursor-pointer border rounded-[20px]"
       style={{
         backgroundColor: theme === "dark" ? "white" : "black",
         color: theme === "dark" ? "black" : "white",
@@ -63,18 +64,26 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      <span
-        className="text-xl font-bold tracking-widest"
-        style={{ fontFamily: "Istok Web" }}
-      >
-        {theme === "dark" ? "LIGHT" : "DARK"}
-      </span>
-      <span
-        className="text-xl font-bold tracking-widest"
-        style={{ fontFamily: "Istok Web" }}
-      >
-        MODE
-      </span>
+      <Image
+        src={theme === "dark" ? "/lightmodeIcon.png" : "/darkmodeIcon.png"}
+        alt={theme === "dark" ? "Light Mode" : "Dark Mode"}
+        width={70}
+        height={70}
+      />
+      <div className="flex flex-col items-center ml-4">
+        <span
+          className="text-xl font-bold tracking-widest"
+          style={{ fontFamily: "Istok Web" }}
+        >
+          {theme === "dark" ? "LIGHT" : "DARK"}
+        </span>
+        <span
+          className="text-xl font-bold tracking-widest"
+          style={{ fontFamily: "Istok Web" }}
+        >
+          MODE
+        </span>
+      </div>
     </div>
   );
 };
