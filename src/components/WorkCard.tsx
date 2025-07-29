@@ -1,17 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
+import React from "react";
 
 // WorkCard 컴포넌트: Work 페이지로 이동하는 카드, 핸드라이팅 호버 애니메이션 포함
-export default function WorkCard() {
+export default function WorkCard({ style }: { style?: React.CSSProperties }) {
   const [isHovered, setIsHovered] = useState(false);
   const itRef = useRef<HTMLSpanElement>(null);
   const andRef = useRef<HTMLSpanElement>(null);
   const designRef = useRef<HTMLSpanElement>(null);
+  const cardRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     if (isHovered) {
+      gsap.to(cardRef.current, { scale: 1.05, duration: 0.3, ease: "power2.out" });
       gsap.fromTo(
         [itRef.current, andRef.current, designRef.current],
         {
@@ -27,6 +32,7 @@ export default function WorkCard() {
         }
       );
     } else {
+      gsap.to(cardRef.current, { scale: 1, duration: 0.3, ease: "power2.inOut" });
       gsap.to([itRef.current, andRef.current, designRef.current], {
         opacity: 0,
         y: -20,
@@ -40,8 +46,9 @@ export default function WorkCard() {
   return (
     <Link
       href="/work"
-      className="card !text-3xl !font-bold transition-transform duration-300 hover:scale-105 relative overflow-hidden group"
-      style={{ gridArea: "work" }}
+      ref={cardRef}
+      className="card !text-3xl !font-bold relative overflow-hidden group"
+      style={style}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

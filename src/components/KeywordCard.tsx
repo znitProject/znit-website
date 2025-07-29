@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
+import React from "react";
 
 const keywords = [
   "Detail",
@@ -14,7 +15,7 @@ const keywords = [
   "Big-picture",
 ];
 
-export default function KeywordCard() {
+export default function KeywordCard({ style }: { style?: React.CSSProperties }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const bubbleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollTextRef = useRef<HTMLDivElement | null>(null);
@@ -227,8 +228,8 @@ export default function KeywordCard() {
   return (
     <div
       ref={containerRef}
+      style={style}
       className="relative w-full max-w-2xl mx-auto h-[310px] bg-neutral-100 rounded-2xl overflow-hidden"
-      style={{ gridArea: "keyword" }}
     >
       {/* 무한 스크롤 문장 */}
       <div className="absolute top-0 left-0 w-full overflow-hidden z-20 ">

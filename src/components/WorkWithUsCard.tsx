@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 
-const WorkWithUsCard = () => {
+const WorkWithUsCard: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
   const bgRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLAnchorElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
@@ -88,10 +88,7 @@ const WorkWithUsCard = () => {
       href="/career"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{
-        gridArea: "workus",
-        fontFamily: "Red Hat Display, sans-serif",
-      }}
+      style={style}
       className="relative block overflow-hidden px-6 py-4 rounded-xl bg-[#F5F5F5] cursor-pointer transform transition-transform duration-300 w-full h-full flex items-center justify-center"
     >
       {/* 파도 모양 그라디언트 배경 */}
