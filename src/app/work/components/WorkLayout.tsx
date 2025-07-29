@@ -1,9 +1,15 @@
 import { ReactNode } from "react";
 import WorkTitle from "./WorkTitle";
 
+interface SubSubCategory {
+  value: string;
+  label: string;
+}
+
 interface SubCategory {
   value: string;
   label: string;
+  subSubcategories?: SubSubCategory[];
 }
 
 interface Category {
@@ -16,9 +22,11 @@ interface WorkLayoutProps {
   children: ReactNode;
   selectedMainCategory: string;
   selectedSubCategory: string;
+  selectedSubSubCategory?: string;
   isDropdownOpen: boolean;
   onMainCategoryChange: (mainCategory: string) => void;
   onSubCategoryChange: (subCategory: string) => void;
+  onSubSubCategoryChange?: (subSubCategory: string) => void;
   onDropdownToggle: () => void;
   categories: Category[];
 }
@@ -27,9 +35,11 @@ export default function WorkLayout({
   children,
   selectedMainCategory,
   selectedSubCategory,
+  selectedSubSubCategory,
   isDropdownOpen,
   onMainCategoryChange,
   onSubCategoryChange,
+  onSubSubCategoryChange,
   onDropdownToggle,
   categories,
 }: WorkLayoutProps) {
@@ -100,9 +110,17 @@ export default function WorkLayout({
                           onSubCategoryChange("ALL");
                         }
                       }}
-                      className={`inline-block px-5 py-1.5 rounded-full text-xl font-bold transition ${
+                      className={`inline-block px-6 py-2 rounded-full text-xl font-bold transition whitespace-nowrap ${
                         selectedMainCategory === category.value
-                          ? "bg-gray-900 text-white"
+                          ? category.value === "INFO_DESIGN" 
+                            ? "bg-blue-700 text-white"
+                            : category.value === "IT"
+                            ? "bg-emerald-700 text-white"
+                            : "bg-gray-900 text-white"
+                          : category.value === "INFO_DESIGN"
+                          ? "bg-white text-blue-700 hover:bg-blue-700 hover:text-white border-2 border-blue-700"
+                          : category.value === "IT"
+                          ? "bg-white text-emerald-700 hover:bg-emerald-700 hover:text-white border-2 border-emerald-700"
                           : "bg-white text-gray-900 hover:bg-gray-900 hover:text-white"
                       }`}
                     >
@@ -115,20 +133,83 @@ export default function WorkLayout({
                         : "opacity-0 transform -translate-y-2 max-h-0 overflow-hidden"
                     }`}>
                       {category.subcategories.map((sub) => (
-                        <button
-                          key={sub.value}
-                          onClick={() => {
-                            onSubCategoryChange(sub.value);
-                            onDropdownToggle();
-                          }}
-                          className={`inline-block w-fit px-5 py-1 text-sm rounded-full transition ${
-                            selectedSubCategory === sub.value
-                              ? "bg-gray-800 text-white font-bold"
-                              : "bg-white text-gray-700 hover:bg-gray-100"
-                          }`}
-                        >
-                          {sub.label}
-                        </button>
+                        <div key={sub.value} className="flex flex-col items-end gap-1">
+                          <button
+                            onClick={() => {
+                              onSubCategoryChange(sub.value);
+                              if (onSubSubCategoryChange) {
+                                onSubSubCategoryChange("ALL");
+                              }
+                            }}
+                            className={`inline-block px-5 py-1 text-sm rounded-full transition whitespace-nowrap ${
+                              selectedSubCategory === sub.value
+                                ? sub.value === "INFOGRAPHIC"
+                                  ? "bg-purple-600 text-white font-bold"
+                                  : sub.value === "MOTIONGRAPHIC"
+                                  ? "bg-pink-600 text-white font-bold"
+                                  : sub.value === "CONCEPT_ART"
+                                  ? "bg-orange-600 text-white font-bold"
+                                  : sub.value === "UIUX"
+                                  ? "bg-indigo-600 text-white font-bold"
+                                  : sub.value === "PUBLIC_DESIGN"
+                                  ? "bg-teal-600 text-white font-bold"
+                                  : sub.value === "PUBLIC_SYSTEM"
+                                  ? "bg-emerald-600 text-white font-bold"
+                                  : sub.value === "WEB_DEVELOPMENT"
+                                  ? "bg-cyan-600 text-white font-bold"
+                                  : sub.value === "MOBILE_APP"
+                                  ? "bg-lime-600 text-white font-bold"
+                                  : "bg-gray-800 text-white font-bold"
+                                : sub.value === "INFOGRAPHIC"
+                                ? "bg-white text-purple-600 hover:bg-purple-600 hover:text-white border border-purple-600"
+                                : sub.value === "MOTIONGRAPHIC"
+                                ? "bg-white text-pink-600 hover:bg-pink-600 hover:text-white border border-pink-600"
+                                : sub.value === "CONCEPT_ART"
+                                ? "bg-white text-orange-600 hover:bg-orange-600 hover:text-white border border-orange-600"
+                                : sub.value === "UIUX"
+                                ? "bg-white text-indigo-600 hover:bg-indigo-600 hover:text-white border border-indigo-600"
+                                : sub.value === "PUBLIC_DESIGN"
+                                ? "bg-white text-teal-600 hover:bg-teal-600 hover:text-white border border-teal-600"
+                                : sub.value === "PUBLIC_SYSTEM"
+                                ? "bg-white text-emerald-600 hover:bg-emerald-600 hover:text-white border border-emerald-600"
+                                : sub.value === "WEB_DEVELOPMENT"
+                                ? "bg-white text-cyan-600 hover:bg-cyan-600 hover:text-white border border-cyan-600"
+                                : sub.value === "MOBILE_APP"
+                                ? "bg-white text-lime-600 hover:bg-lime-600 hover:text-white border border-lime-600"
+                                : "bg-white text-gray-700 hover:bg-gray-100"
+                            }`}
+                          >
+                            {sub.label}
+                          </button>
+                          
+                          {/* 서브서브카테고리 */}
+                          {sub.subSubcategories && (
+                            <div className={`flex flex-col items-end gap-1 transition-all duration-400 ease-in-out ${
+                              selectedSubCategory === sub.value
+                                ? "opacity-100 transform translate-y-0 max-h-96"
+                                : "opacity-0 transform -translate-y-2 max-h-0 overflow-hidden"
+                            }`}>
+                              {sub.subSubcategories.map((subSub) => (
+                                <button
+                                  key={subSub.value}
+                                  onClick={() => {
+                                    if (onSubSubCategoryChange) {
+                                      onSubSubCategoryChange(subSub.value);
+                                    }
+                                    onDropdownToggle();
+                                  }}
+                                  className={`inline-block px-4 py-0.5 text-xs rounded-full transition whitespace-nowrap ${
+                                    selectedSubSubCategory === subSub.value
+                                      ? "bg-gray-700 text-white font-bold"
+                                      : "bg-white text-gray-600 hover:bg-gray-50"
+                                  }`}
+                                >
+                                  {subSub.label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       ))}
                     </div>
                   </div>

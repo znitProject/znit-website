@@ -11,35 +11,69 @@ interface Project {
   year: string;
   mainCategory: string;
   subCategory: string;
+  subSubCategory?: string;
   image?: string;
 }
 
 export default function WorkPage() {
   const [selectedMainCategory, setSelectedMainCategory] = useState("ALL");
   const [selectedSubCategory, setSelectedSubCategory] = useState("ALL");
+  const [selectedSubSubCategory, setSelectedSubSubCategory] = useState("ALL");
   const [visibleProjects, setVisibleProjects] = useState(4);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const categories = [
       {
-        value: "DESIGN",
-        label: "DESIGN",
+        value: "INFO_DESIGN",
+        label: "정보디자인",
         subcategories: [
-          { value: "INFOGRAPHIC", label: "인포그래픽" },
-          { value: "MOTIONGRAPHIC", label: "모션그래픽" },
-          { value: "CONCEPT_ART", label: "컨셉아트" },
-          { value: "UIUX", label: "UI/UX" },
-          { value: "PUBLIC_DESIGN", label: "공공디자인" }, // 키오스크 / 교통시설 포함
+          { 
+            value: "INFOGRAPHIC", 
+            label: "인포그래픽",
+            subSubcategories: [
+              { value: "PPT", label: "PPT" },
+              { value: "CONCEPT_GRAPHIC", label: "컨셉그래픽" }
+            ]
+          },
+          { 
+            value: "MOTIONGRAPHIC", 
+            label: "모션그래픽",
+            subSubcategories: [
+              { value: "2D", label: "2D" },
+              { value: "3D", label: "3D" }
+            ]
+          },
+          { 
+            value: "CONCEPT_ART", 
+            label: "컨셉아트",
+            subSubcategories: [
+              { value: "SKETCH", label: "스케치" },
+              { value: "AI_SYNTHESIS", label: "AI/합성" }
+            ]
+          },
+          { 
+            value: "UIUX", 
+            label: "UI/UX",
+            subSubcategories: [
+              { value: "UIUX", label: "UI/UX" },
+              { value: "WEB", label: "WEB" }
+            ]
+          },
+          { 
+            value: "PUBLIC_DESIGN", 
+            label: "공공디자인",
+            subSubcategories: [
+              { value: "KIOSK", label: "키오스크 디자인" },
+              { value: "TRANSPORTATION", label: "교통시설물 디자인" }
+            ]
+          },
         ],
       },
       {
         value: "IT",
         label: "IT",
         subcategories: [
-          {
-            value: "public",
-            label: "공공사업",
-          },
+          { value: "PUBLIC_SYSTEM", label: "공공시스템" },
         ],
       },
     ];
@@ -51,7 +85,7 @@ export default function WorkPage() {
         description: "통합 정보공개 시스템 유지보수 및 운영",
         year: "2016",
         mainCategory: "IT",
-        subCategory: "PUBLIC",
+        subCategory: "PUBLIC_SYSTEM",
         image: "/works/openGoKrImg.png",
       },
       {
@@ -59,8 +93,9 @@ export default function WorkPage() {
         name: "버스정류장 정보 시스템 디자인",
         description: "실시간 버스 정보를 제공하는 디지털 키오스크 UI/UX 디자인",
         year: "2024",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "UIUX",
+        subSubCategory: "UIUX",
         image: "/works/busStationImg.jpeg",
       },
       {
@@ -68,8 +103,9 @@ export default function WorkPage() {
         name: "버스정류장 안내 시스템",
         description: "버스 정류장 내 안내 디스플레이 시스템 디자인 및 개발",
         year: "2024",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "UIUX",
+        subSubCategory: "UIUX",
         image: "/works/busStopImg.jpeg",
       },
       {
@@ -77,8 +113,9 @@ export default function WorkPage() {
         name: "미래도시 시각화",
         description: "핸드 드로잉으로 스마트 미래 도시 컨셉아트 디자인",
         year: "2023",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "CONCEPT_ART",
+        subSubCategory: "SKETCH",
         image: "/works/conceptArtImg.jpeg",
       },
       {
@@ -86,8 +123,9 @@ export default function WorkPage() {
         name: "정보 안내 시스템",
         description: "공공시설 내 2D 정보 안내 시스템 디자인",
         year: "2023",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "INFOGRAPHIC",
+        subSubCategory: "CONCEPT_GRAPHIC",
         image: "/works/info2DImg.jpeg",
       },
       {
@@ -95,8 +133,9 @@ export default function WorkPage() {
         name: "3D 인포그래픽",
         description: "3D 인포그래픽 디자인",
         year: "2023",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "INFOGRAPHIC",
+        subSubCategory: "CONCEPT_GRAPHIC",
         image: "/works/Info3DImg.jpeg",
       },
       {
@@ -104,8 +143,9 @@ export default function WorkPage() {
         name: "모션그래픽 디자인",
         description: "브랜드 홍보를 위한 2D 모션그래픽 애니메이션 제작",
         year: "2023",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "MOTIONGRAPHIC",
+        subSubCategory: "2D",
         image: "/works/motion2D.jpeg",
       },
       {
@@ -113,8 +153,9 @@ export default function WorkPage() {
         name: "융복합물류사업단 홍보영상",
         description: "2D 모션그래픽 애니메이션 및 컨셉 이미지 제작",
         year: "2022",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "MOTIONGRAPHIC",
+        subSubCategory: "2D",
         image: "/works/motion2D2.jpeg",
       },
       {
@@ -122,8 +163,9 @@ export default function WorkPage() {
         name: "서울시 C-ITS 교통시스템 실증사업",
         description: "미래모빌리티센터 내 상황판 및 자율주행 버스/택시 단말기 UI 디자인",
         year: "2022",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "UIUX",
+        subSubCategory: "UIUX",
         image: "/works/UIImg.jpeg",
       },
       {
@@ -131,8 +173,9 @@ export default function WorkPage() {
         name: "차세대 지능형 교통시스템 실증사업",
         description: "운영단말 UI 및 각종 보고자료,발표자료 디자인",
         year: "2024",
-        mainCategory: "DESIGN",
+        mainCategory: "INFO_DESIGN",
         subCategory: "UIUX",
+        subSubCategory: "UIUX",
         image: "/works/UIImg2.jpeg",
       },
     ];
@@ -142,7 +185,9 @@ export default function WorkPage() {
       selectedMainCategory === "ALL" || project.mainCategory === selectedMainCategory;
     const subMatch =
       selectedSubCategory === "ALL" || project.subCategory === selectedSubCategory;
-    return mainMatch && subMatch;
+    const subSubMatch =
+      selectedSubSubCategory === "ALL" || project.subSubCategory === selectedSubSubCategory;
+    return mainMatch && subMatch && subSubMatch;
   });
 
   const handleLoadMore = () => {
@@ -152,11 +197,18 @@ export default function WorkPage() {
   const handleMainCategoryChange = (mainCategory: string) => {
     setSelectedMainCategory(mainCategory);
     setSelectedSubCategory("ALL"); // 메인 바뀌면 서브 초기화
+    setSelectedSubSubCategory("ALL"); // 메인 바뀌면 서브서브 초기화
     setVisibleProjects(4);
   };
   
   const handleSubCategoryChange = (subCategory: string) => {
     setSelectedSubCategory(subCategory);
+    setSelectedSubSubCategory("ALL"); // 서브 바뀌면 서브서브 초기화
+    setVisibleProjects(4);
+  };
+
+  const handleSubSubCategoryChange = (subSubCategory: string) => {
+    setSelectedSubSubCategory(subSubCategory);
     setVisibleProjects(4);
   };
 
@@ -171,9 +223,11 @@ export default function WorkPage() {
       <WorkLayout
         selectedMainCategory={selectedMainCategory}
         selectedSubCategory={selectedSubCategory}
+        selectedSubSubCategory={selectedSubSubCategory}
         isDropdownOpen={isDropdownOpen}
         onMainCategoryChange={handleMainCategoryChange}
         onSubCategoryChange={handleSubCategoryChange}
+        onSubSubCategoryChange={handleSubSubCategoryChange}
         onDropdownToggle={handleDropdownToggle}
         categories={categories}
       >
