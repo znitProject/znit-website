@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
 // GSAP 플러그인 등록
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
 // 프로젝트 데이터 타입 정의
@@ -22,15 +23,15 @@ interface ProjectData {
 const WorkCardList: React.FC = () => {
   const { theme } = useTheme();
   const darkMode = theme === 'dark';
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
+  // 반응형 분기 제거, 고정값 사용
+  const isMobile = false;
+  const isTablet = false;
   const [scrollProgress, setScrollProgress] = useState(0);
-  
-  // 다크모드 상태 디버깅
-  console.log('Theme:', theme, 'DarkMode:', darkMode);
   
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const animationIdRef = useRef<number | null>(null);
+  const isScrollingRef = useRef(false);
 
   // 프로젝트 데이터
   const projects: ProjectData[] = [
@@ -78,20 +79,28 @@ const WorkCardList: React.FC = () => {
     }
   ];
 
-  // 반응형 카드 크기 계산 (3:4 비율 고정)
-  const getCardDimensions = () => {
-    if (isMobile) {
-      return { width: 240, height: 320 }; // 모바일: 3:4 비율
-    } else if (isTablet) {
-      return { width: 270, height: 360 }; // 태블릿: 3:4 비율
-    } else {
-      return { width: 310, height: 400 }; // 데스크톱: 3:4 비율, 5개씩 보이게
-    }
-  };
+  // 카드 5개 고정 (gap 포함 전체 너비 계산)
+  const CARD_COUNT = 5;
+  const CARD_GAP = 24; // px, 적당한 여백
+  const [cardWidth, setCardWidth] = useState(0);
+  const [cardHeight, setCardHeight] = useState(0);
 
-  // 스크롤 진행률 계산
-  const updateScrollProgress = () => {
-    if (!carouselRef.current) return;
+  // 카드 크기 계산 (한 화면에 5개)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const containerPadding = 32 * 2; // px, 좌우 패딩 (px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 중 가장 큰 값)
+      const totalGap = CARD_GAP * (CARD_COUNT - 1);
+      const availableWidth = window.innerWidth - containerPadding - 2; // 여유
+      const width = Math.floor((availableWidth - totalGap) / CARD_COUNT);
+      const height = Math.floor(width * 1.333); // 3:4 비율
+      setCardWidth(width);
+      setCardHeight(height);
+    }
+  }, []);
+
+  // 스크롤 진행률 계산 - throttle 적용
+  const updateScrollProgress = useCallback(() => {
+    if (!carouselRef.current || isScrollingRef.current) return;
     
     const scrollLeft = carouselRef.current.scrollLeft;
     const scrollWidth = carouselRef.current.scrollWidth;
@@ -105,151 +114,112 @@ const WorkCardList: React.FC = () => {
     
     const progress = Math.min(Math.max(scrollLeft / maxScroll, 0), 1);
     setScrollProgress(progress);
-  };
-
-  // 화면 크기 감지
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const width = window.innerWidth;
-      setIsMobile(width < 768);
-      setIsTablet(width >= 768 && width < 1024);
-    };
-
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // GSAP 애니메이션 설정
+  // GSAP 애니메이션 및 휠 이벤트
   useEffect(() => {
     if (!carouselRef.current || !cardsRef.current) return;
-
-    // 기존 ScrollTrigger 정리
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-
     const carouselElement = carouselRef.current;
     const cardsContainer = cardsRef.current;
     const cards = cardsContainer?.children;
-    
     if (!cards || cards.length === 0) return;
-
-    const { width: cardWidth } = getCardDimensions();
-    const gap = 20;
-    const totalCardsWidth = (cards.length * cardWidth) + ((cards.length - 1) * gap);
-
-    // 카드 컨테이너의 너비를 설정하여 가로 스크롤 가능하게 함
-    gsap.set(cardsContainer, { 
-      width: `${totalCardsWidth}px`,
-      x: 0
-    });
-    
-    // 개별 카드에 설정된 GSAP 속성 초기화
-    gsap.set(cards, { 
-      clearProps: "all"
-    });
-
-    // 스크롤 이벤트 리스너 추가
+    // 카드 컨테이너 너비 설정
+    const totalCardsWidth = (cards.length * cardWidth) + ((cards.length - 1) * CARD_GAP);
+    gsap.set(cardsContainer, { width: `${totalCardsWidth}px`, x: 0 });
+    gsap.set(cards, { clearProps: "all" });
+    // 스크롤 이벤트 핸들러
     const handleScroll = () => {
-      updateScrollProgress();
+      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
+      animationIdRef.current = requestAnimationFrame(() => {
+        updateScrollProgress();
+      });
     };
-
-    carouselElement.addEventListener("scroll", handleScroll);
-
-    // 데스크톱에서만 커스텀 스크롤 로직 적용
-    if (!isMobile && !isTablet) {
-      const handleWheel = (e: WheelEvent) => {
-        e.preventDefault();
-        const scrollAmount = e.deltaY * 2;
-        gsap.to(carouselElement, {
-          scrollLeft: carouselElement.scrollLeft + scrollAmount,
-          duration: 0.5,
-          ease: "power2.out"
-        });
-      };
-
-      carouselElement.addEventListener("wheel", handleWheel, { passive: false });
-      (carouselElement as HTMLElement & { _wheelListener?: (e: WheelEvent) => void })._wheelListener = handleWheel;
-    }
-
-    // 호버 효과 추가
-    Array.from(cards).forEach((card) => {
+    carouselElement.addEventListener("scroll", handleScroll, { passive: true });
+    // GSAP 부드러운 가로 스크롤 (캐러셀 위에서만)
+    const handleWheel = (e: WheelEvent) => {
+      // 캐러셀 영역 위에서만 동작
+      if (e.deltaY === 0) return;
+      e.preventDefault();
+      const current = carouselElement.scrollLeft;
+      const maxScroll = carouselElement.scrollWidth - carouselElement.clientWidth;
+      let target = current + e.deltaY * 2.2; // 감도
+      target = Math.max(0, Math.min(target, maxScroll));
+      gsap.to(carouselElement, {
+        scrollTo: { x: target },
+        duration: 0.6,
+        ease: "power2.out"
+      });
+    };
+    carouselElement.addEventListener("wheel", handleWheel, { passive: false });
+    (carouselElement as any)._wheelListener = handleWheel;
+    // 호버 효과 최적화 (기존 코드 유지)
+    Array.from(cards).forEach((card, index) => {
       const cardElement = card as HTMLElement;
-      
-      const handleMouseEnter = () => {
+      cardElement.style.willChange = 'transform';
+      const handleInteractionStart = () => {
         gsap.to(cardElement, {
           scale: 1.03,
           y: -8,
-          duration: 0.4,
-          ease: "power2.out"
+          duration: 0.2,
+          ease: "power1.out",
+          force3D: true
         });
       };
-
-      const handleMouseLeave = () => {
+      const handleInteractionEnd = () => {
         gsap.to(cardElement, {
           scale: 1,
           y: 0,
-          duration: 0.4,
-          ease: "power2.out"
+          duration: 0.2,
+          ease: "power1.out",
+          force3D: true
         });
       };
-
-      cardElement.addEventListener("mouseenter", handleMouseEnter);
-      cardElement.addEventListener("mouseleave", handleMouseLeave);
-
-      const cardWithListeners = cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } };
-      cardWithListeners._hoverListeners = {
-        mouseenter: handleMouseEnter,
-        mouseleave: handleMouseLeave
+      cardElement.addEventListener("mouseenter", handleInteractionStart);
+      cardElement.addEventListener("mouseleave", handleInteractionEnd);
+      (cardElement as any)._hoverListeners = {
+        start: handleInteractionStart,
+        end: handleInteractionEnd,
+        isMobile: false
       };
     });
-
-    // 초기 스크롤 진행률 설정
     updateScrollProgress();
-
-    // Cleanup function
+    // Cleanup
     return () => {
+      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
       if (carouselElement) {
         carouselElement.removeEventListener("scroll", handleScroll);
-        const carouselWithListener = carouselElement as HTMLElement & { _wheelListener?: (e: WheelEvent) => void };
-        const wheelListener = carouselWithListener._wheelListener;
-        if (wheelListener) {
-          carouselElement.removeEventListener("wheel", wheelListener);
-        }
+        const wheelListener = (carouselElement as any)._wheelListener;
+        if (wheelListener) carouselElement.removeEventListener("wheel", wheelListener);
       }
-
-      const currentCardsRef = cardsRef.current;
-      if (currentCardsRef) {
-        const cards = currentCardsRef.children;
+      if (cardsRef.current) {
+        const cards = cardsRef.current.children;
         Array.from(cards).forEach((card) => {
           const cardElement = card as HTMLElement;
-          const cardWithListeners = cardElement as HTMLElement & { _hoverListeners?: { mouseenter: () => void; mouseleave: () => void } };
-          const listeners = cardWithListeners._hoverListeners;
+          const listeners = (cardElement as any)._hoverListeners;
+          cardElement.style.willChange = 'auto';
           if (listeners) {
-            cardElement.removeEventListener("mouseenter", listeners.mouseenter);
-            cardElement.removeEventListener("mouseleave", listeners.mouseleave);
+            cardElement.removeEventListener("mouseenter", listeners.start);
+            cardElement.removeEventListener("mouseleave", listeners.end);
           }
         });
       }
-      
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      gsap.killTweensOf(carouselElement);
+      gsap.killTweensOf(cards);
     };
-  }, [isMobile, isTablet, getCardDimensions, updateScrollProgress]);
-
-  const { width: cardWidth, height: cardHeight } = getCardDimensions();
+  }, [cardWidth, cardHeight, updateScrollProgress]);
 
   return (
-    <section className="w-full max-w-full mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-50">
+    <section className="w-full max-w-full mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-50 mt-10">
       {/* 섹션 헤더 */}
       <div className="mb-6 sm:mb-8 md:mb-10">
         <h2 
-          className={`text-3xl sm:text-4xl md:text-5xl font-bold transition-colors duration-300 ${
+          className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 ${
             darkMode ? 'text-white' : 'text-black'
           }`}
         >
           WORKS
         </h2>       
       </div>
-
       {/* 캐러셀 컨테이너 */}
       <div className="relative">
         <div 
@@ -257,80 +227,126 @@ const WorkCardList: React.FC = () => {
           className="relative w-full overflow-x-auto scrollbar-hide"
           style={{ 
             height: `${cardHeight + 40}px`,
-            scrollBehavior: (isMobile || isTablet) ? "smooth" : "auto"
+            scrollBehavior: "auto"
           }}
         >
           <div 
             ref={cardsRef}
-            className="flex gap-5 pb-4"
+            className="flex pb-4"
             style={{ 
-              height: "100%"
+              height: "100%",
+              gap: `${CARD_GAP}px`
             }}
           >
             {projects.map((project) => (
               <div
                 key={project.id}
-                className={`group relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer flex-shrink-0 ${
+                className={`group relative rounded-xl shadow-lg overflow-hidden transition-all duration-200 cursor-pointer flex-shrink-0 flex flex-col ${
                   darkMode ? 'bg-zinc-700/50 shadow-gray-900/50' : 'bg-gray-100 shadow-gray-200/50'
                 }`}
                 style={{
                   width: `${cardWidth}px`,
                   height: `${cardHeight}px`,
                   minWidth: `${cardWidth}px`,
-                  maxWidth: `${cardWidth}px`
+                  maxWidth: `${cardWidth}px`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transform: 'translateZ(0)'
                 }}
               >
-                {/* 이미지 컨테이너 - 3:4 비율에서 상단 65% */}
-                <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.65}px` }}>
+                {/* 이미지 컨테이너 */}
+                <div 
+                  className="w-full relative overflow-hidden flex-shrink-0" 
+                  style={{ 
+                    height: `${cardHeight * 0.7}px`,
+                    minHeight: `${cardHeight * 0.7}px`,
+                    maxHeight: `${cardHeight * 0.7}px`
+                  }}
+                >
                   <Image
                     src={project.image}
                     alt={project.title}
                     width={cardWidth}
-                    height={cardHeight * 0.65}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    height={cardHeight * 0.7}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 group-active:scale-110"
                     style={{ 
                       width: `${cardWidth}px`, 
-                      height: `${cardHeight * 0.65}px`,
+                      height: `${cardHeight * 0.7}px`,
                       objectFit: 'cover'
                     }}
-                    priority={false}
+                    priority={project.id <= 3}
+                    loading={project.id <= 3 ? "eager" : "lazy"}
                   />
-                  
                   {/* 이미지 오버레이 */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-300"></div>
                 </div>
-
-                {/* 카드 정보 섹션 - 3:4 비율에서 하단 35% */}
-                <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.35}px` }}>
+                {/* 카드 정보 섹션 */}
+                <div 
+                  className="w-full relative overflow-hidden flex flex-col flex-1" 
+                  style={{ 
+                    height: `${cardHeight * 0.3}px`,
+                    minHeight: `${cardHeight * 0.3}px`,
+                    maxHeight: `${cardHeight * 0.3}px`
+                  }}
+                >
                   {/* 기본 정보 */}
-                  <div className="absolute inset-0 p-3 flex flex-col justify-start transition-all duration-300 group-hover:opacity-0">
-                    <span className="text-xs font-semibold uppercase tracking-wide mb-1 block text-sky-600">
+                  <div className="absolute inset-0 flex flex-col justify-start transition-all duration-200 group-hover:opacity-0 group-active:opacity-0"
+                       style={{ 
+                         padding: `${Math.max(8, cardWidth * 0.03)}px ${Math.max(10, cardWidth * 0.04)}px`,
+                         display: 'flex',
+                         flexDirection: 'column',
+                         justifyContent: 'flex-start',
+                         alignItems: 'flex-start'
+                       }}>
+                    <span className={`font-semibold uppercase tracking-wide block text-sky-600 text-sm mb-1`}>
                       {project.category}
                     </span>
-                    <h3 className={`font-bold text-base leading-tight ${
+                    <h3 className={`font-bold leading-tight ${
                       darkMode ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    } text-lg`}
+                        style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          wordBreak: 'keep-all'
+                        } as React.CSSProperties}>
                       {project.title}
                     </h3>
                   </div>
-
-                  {/* 호버 시 상세 정보 */}
-                  <div className="absolute inset-0 p-3 flex flex-col justify-start opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-1 block">
+                  {/* 호버/터치 시 상세 정보 */}
+                  <div className="absolute inset-0 flex flex-col justify-start opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-200"
+                       style={{ 
+                         padding: `${Math.max(8, cardWidth * 0.03)}px ${Math.max(10, cardWidth * 0.04)}px`,
+                         display: 'flex',
+                         flexDirection: 'column',
+                         justifyContent: 'flex-start',
+                         alignItems: 'flex-start'
+                       }}>
+                    <span className={`font-semibold uppercase tracking-wide text-blue-600 block text-sm mb-1`}>
                       {project.category}
                     </span>
-                    <h3 className={`font-bold text-base mb-2 leading-tight ${
+                    <h3 className={`font-bold leading-tight ${
                       darkMode ? 'text-white' : 'text-gray-900'
-                    }`}>
+                    } text-lg mb-2`}
+                        style={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          wordBreak: 'keep-all'
+                        } as React.CSSProperties}>
                       {project.title}
                     </h3>
-                    <p className={`text-xs leading-relaxed overflow-hidden ${
+                    <p className={`leading-tight overflow-hidden ${
                       darkMode ? 'text-gray-300' : 'text-gray-700'
-                    }`}
+                    } text-sm`}
                        style={{ 
                          display: '-webkit-box',
-                         WebkitLineClamp: isMobile ? 2 : 3,
-                         WebkitBoxOrient: 'vertical'
+                         WebkitLineClamp: 2,
+                         WebkitBoxOrient: 'vertical',
+                         overflow: 'hidden',
+                         wordBreak: 'keep-all'
                        } as React.CSSProperties}>
                       {project.description}
                     </p>
@@ -340,41 +356,37 @@ const WorkCardList: React.FC = () => {
             ))}
           </div>
         </div>
-
-        {/* 스크롤 프로그레스 바 - 데스크톱에서만 표시 */}
-        {!isMobile && !isTablet && (
-          <div className="flex justify-center mt-6">
-            <div className={`w-64 h-1 rounded-full overflow-hidden ${
-              darkMode ? 'bg-gray-600' : 'bg-gray-300'
-            }`}>
-              <div 
-                className="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full transition-all duration-300 ease-out"
-                style={{
-                  width: `${scrollProgress * 100}%`,
-                  transformOrigin: 'left center'
-                }}
-              />
-            </div>
+        {/* 스크롤 프로그레스 바 */}
+        <div className="flex justify-center mt-6">
+          <div className={`rounded-full overflow-hidden ${
+            darkMode ? 'bg-gray-600' : 'bg-gray-300'
+          } w-64 h-1`}>
+            <div 
+              className="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full transition-all duration-150 ease-out"
+              style={{
+                width: `${scrollProgress * 100}%`,
+                transformOrigin: 'left center'
+              }}
+            />
           </div>
-        )}
-
-        {/* 스크롤 힌트 텍스트 - 데스크톱에서만 표시 */}
-        {!isMobile && !isTablet && scrollProgress < 0.1 && (
+        </div>
+        {/* 스크롤 힌트 텍스트 */}
+        {scrollProgress < 0.1 && (
           <div className="flex justify-center mt-3">
-            <p className={`text-sm  ${
+            <p className={`text-center ${
               darkMode ? 'text-gray-400' : 'text-gray-500'
-            }`}>
-              마우스 휠로 더 많은 프로젝트를 확인해보세요
+            } text-sm`}>
+              {'마우스 휠로 더 많은 프로젝트를 확인해보세요'}
             </p>
           </div>
         )}
       </div>
-
-      {/* 커스텀 스크롤바 숨김 스타일 */}
+      {/* 커스텀 스크롤바 숨김 스타일 - 성능 최적화 */}
       <style jsx>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
         }
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

@@ -92,74 +92,61 @@ export default function Footer() {
           </div>
 
           {/* 빠른 링크 */}
-          <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-500">
+          <div className="hidden sm:block">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-600">
               빠른 링크
             </h3>
-            <ul className="space-y-1">
-              <li>
-                <Link
-                  href="/"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/work"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  Work
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/recruit"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  Recruit
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/slogan"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  We Own It
-                </Link>
-              </li>
-            </ul>
+            <div className="flex flex-wrap gap-2 sm:block sm:space-y-1">
+              <Link
+                href="/"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
+              >
+                Home
+              </Link>
+              <Link
+                href="/work"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
+              >
+                Work
+              </Link>
+              <Link
+                href="/recruit"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
+              >
+                Recruit
+              </Link>
+              <Link
+                href="/slogan"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
+              >
+                We Own It
+              </Link>
+            </div>
           </div>
 
           {/* 연락처 */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-500">
+            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-600">
               연락처
             </h3>
-            <ul className="space-y-1 text-zinc-500">
-              <li>
-                <a
-                  href="mailto:contact@znit.com"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  contact@znit.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:02-1234-5678"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  031-1234-5678
-                </a>
-              </li>
-              <li className="text-sm sm:text-base py-0.5 text-zinc-600 dark:text-zinc-500">
-                경기 김포시 고촌읍
-                <br />
-                장차로5번길 20
-              </li>
-            </ul>
+            <div className="space-y-0.5 sm:space-y-1 text-zinc-500">
+              <a
+                href="mailto:contact@znit.com"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+              >
+                contact@znit.com
+              </a>
+              <a
+                href="tel:02-1234-5678"
+                className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
+              >
+                031-1234-5678
+              </a>
+              <div className="text-sm sm:text-base py-0.5 text-zinc-600 dark:text-zinc-500">
+                <span className="block flex flex-col items-center sm:block">경기 김포시 고촌읍</span>
+                <span className="block flex flex-col items-center sm:block">장차로5번길 20</span>
+              </div>
+            </div>
           </div>
         </div>
 

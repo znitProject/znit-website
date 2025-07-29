@@ -40,7 +40,7 @@ export default function HomePage() {
         className={`w-full flex flex-col xl:flex-row items-center gap-6 sm:gap-8 lg:gap-10 xl:gap-12 pt-6 sm:pt-10 md:pt-14 lg:pt-18 xl:pt-20 pb-6 sm:pb-8 md:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 xl:justify-between ${backgroundColor}`}
       >
         {/* 타이틀 섹션 - 모바일에서 더 임팩트 있게 */}
-        <div className="w-full xl:flex-1 flex justify-center xl:justify-start order-1">
+        <div className="w-full xl:flex-1 flex justify-center xl:justify-start order-1 mt-[100px] sm:mt-[150px] xl:mt-0">
           <HomeTitleSection />
         </div>
         {/* 비디오 섹션 - 모바일에서 적절한 크기로 */}
