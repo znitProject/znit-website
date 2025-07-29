@@ -5,6 +5,7 @@ interface Project {
   year: string;
   mainCategory: string;
   subCategory: string;
+  subSubCategory?: string;
   image?: string;
 }
 
@@ -13,6 +14,38 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
+  // 카테고리명을 한글로 변환하는 함수
+  const getCategoryLabel = (categoryValue: string) => {
+    const categoryLabels: { [key: string]: string } = {
+      // 메인 카테고리
+      'INFO_DESIGN': '정보디자인',
+      'IT': 'IT',
+      
+      // 서브카테고리
+      'INFOGRAPHIC': '인포그래픽',
+      'MOTIONGRAPHIC': '모션그래픽',
+      'CONCEPT_ART': '컨셉아트',
+      'UIUX': 'UI/UX',
+      'PUBLIC_DESIGN': '공공디자인',
+      'PUBLIC_SYSTEM': '공공시스템',
+      'WEB_DEVELOPMENT': '웹개발',
+      'MOBILE_APP': '모바일앱',
+      
+      // 서브서브카테고리
+      'PPT': 'PPT',
+      'CONCEPT_GRAPHIC': '컨셉그래픽',
+      '2D': '2D',
+      '3D': '3D',
+      'SKETCH': '스케치',
+      'AI_SYNTHESIS': 'AI/합성',
+      'WEB': 'WEB',
+      'KIOSK': '키오스크 디자인',
+      'TRANSPORTATION': '교통시설물 디자인'
+    };
+    
+    return categoryLabels[categoryValue] || categoryValue;
+  };
+
   // 프로젝트별 배경색
   const getBackgroundColor = (projectId: number) => {
     const colors = {
@@ -85,10 +118,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <div className="flex items-center justify-between transform translate-y-32 group-hover:translate-y-0 transition-transform duration-300 delay-100">
             <span className="text-white text-sm font-medium">{project.year}</span>
             <div className="flex items-center space-x-2">
-              <span className="text-white text-sm font-medium">{project.subCategory}</span>
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              {project.subSubCategory && (
+                <span className="text-white text-xs font-medium bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full">
+                  {getCategoryLabel(project.subSubCategory)}
+                </span>
+              )}
+              <span className="text-white text-sm font-medium bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                {getCategoryLabel(project.subCategory)}
+              </span>
             </div>
           </div>
         </div>
