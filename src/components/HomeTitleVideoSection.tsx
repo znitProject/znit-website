@@ -29,7 +29,7 @@ const HomeTitleVideoSection: React.FC = () => {
     <div className="w-full flex justify-center xl:justify-end items-center xl:items-end relative z-50">
       {/* 모바일 퍼스트 비디오 컨테이너 - 화면 비율에 맞는 적응형 크기 */}
       <div
-        className="w-full max-w-[320px] xs:max-w-[380px] sm:max-w-[480px] md:max-w-[580px] lg:max-w-[680px] xl:max-w-[750px] aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+        className="w-full max-w-[400px] xs:max-w-[420px] sm:max-w-[480px] md:max-w-[740px] lg:max-w-[920px] xl:max-w-[950px] aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
         style={{ zIndex: 9999 }}
       >
         {/* 번갈아 재생되는 비디오 - 모바일 성능 최적화 */}
