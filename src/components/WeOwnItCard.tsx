@@ -122,7 +122,7 @@ export default function WeOwnItCard({
           </p>
 
           <p
-            className="line text-gray-300 italic text-center"
+            className="line text-gray-500 italic text-center"
             style={{
               fontSize: "clamp(0.5rem, 1.8vw, 1.125rem)",
               maxWidth: "100%",

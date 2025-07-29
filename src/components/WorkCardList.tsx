@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useDarkMode } from "../context/DarkModeContext";
+import { useTheme } from "next-themes";
 
 // GSAP 플러그인 등록
 if (typeof window !== "undefined") {
@@ -20,10 +20,14 @@ interface ProjectData {
 
 // WorkCardList 컴포넌트: GSAP 스크롤 카드 캐러셀
 const WorkCardList: React.FC = () => {
-  const { darkMode } = useDarkMode();
+  const { theme } = useTheme();
+  const darkMode = theme === 'dark';
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  
+  // 다크모드 상태 디버깅
+  console.log('Theme:', theme, 'DarkMode:', darkMode);
   
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -267,7 +271,7 @@ const WorkCardList: React.FC = () => {
               <div
                 key={project.id}
                 className={`group relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer flex-shrink-0 ${
-                  darkMode ? 'bg-zinc-600/50 shadow-gray-900/50' : 'bg-white shadow-gray-200/50'
+                  darkMode ? 'bg-zinc-700/50 shadow-gray-900/50' : 'bg-gray-100 shadow-gray-200/50'
                 }`}
                 style={{
                   width: `${cardWidth}px`,
@@ -276,17 +280,17 @@ const WorkCardList: React.FC = () => {
                   maxWidth: `${cardWidth}px`
                 }}
               >
-                {/* 이미지 컨테이너 - 3:4 비율에서 상단 55% */}
-                <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.55}px` }}>
+                {/* 이미지 컨테이너 - 3:4 비율에서 상단 65% */}
+                <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.65}px` }}>
                   <Image
                     src={project.image}
                     alt={project.title}
                     width={cardWidth}
-                    height={cardHeight * 0.55}
+                    height={cardHeight * 0.65}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     style={{ 
                       width: `${cardWidth}px`, 
-                      height: `${cardHeight * 0.55}px`,
+                      height: `${cardHeight * 0.65}px`,
                       objectFit: 'cover'
                     }}
                     priority={false}
@@ -296,14 +300,14 @@ const WorkCardList: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                 </div>
 
-                {/* 카드 정보 섹션 - 3:4 비율에서 하단 45% */}
-                <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.45}px` }}>
+                {/* 카드 정보 섹션 - 3:4 비율에서 하단 35% */}
+                <div className="w-full relative overflow-hidden" style={{ height: `${cardHeight * 0.35}px` }}>
                   {/* 기본 정보 */}
-                  <div className="absolute inset-0 p-4 flex flex-col justify-start transition-all duration-300 group-hover:opacity-0">
-                    <span className="text-xs font-semibold uppercase tracking-wide mb-2 block text-blue-600">
+                  <div className="absolute inset-0 p-3 flex flex-col justify-start transition-all duration-300 group-hover:opacity-0">
+                    <span className="text-xs font-semibold uppercase tracking-wide mb-1 block text-sky-600">
                       {project.category}
                     </span>
-                    <h3 className={`font-bold text-lg leading-tight ${
+                    <h3 className={`font-bold text-base leading-tight ${
                       darkMode ? 'text-white' : 'text-gray-900'
                     }`}>
                       {project.title}
@@ -311,21 +315,21 @@ const WorkCardList: React.FC = () => {
                   </div>
 
                   {/* 호버 시 상세 정보 */}
-                  <div className="absolute inset-0 p-4 flex flex-col justify-start opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-2 block">
+                  <div className="absolute inset-0 p-3 flex flex-col justify-start opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-1 block">
                       {project.category}
                     </span>
-                    <h3 className={`font-bold text-lg mb-3 leading-tight ${
+                    <h3 className={`font-bold text-base mb-2 leading-tight ${
                       darkMode ? 'text-white' : 'text-gray-900'
                     }`}>
                       {project.title}
                     </h3>
-                    <p className={`text-sm leading-relaxed overflow-hidden ${
+                    <p className={`text-xs leading-relaxed overflow-hidden ${
                       darkMode ? 'text-gray-300' : 'text-gray-700'
                     }`}
                        style={{ 
                          display: '-webkit-box',
-                         WebkitLineClamp: isMobile ? 3 : 4,
+                         WebkitLineClamp: isMobile ? 2 : 3,
                          WebkitBoxOrient: 'vertical'
                        } as React.CSSProperties}>
                       {project.description}
@@ -344,7 +348,7 @@ const WorkCardList: React.FC = () => {
               darkMode ? 'bg-gray-600' : 'bg-gray-300'
             }`}>
               <div 
-                className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 ease-out"
+                className="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full transition-all duration-300 ease-out"
                 style={{
                   width: `${scrollProgress * 100}%`,
                   transformOrigin: 'left center'

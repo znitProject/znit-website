@@ -215,7 +215,7 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({
         zIndex: 0,
       },
       // 추가 원들은 랜덤 색상/위치/크기로 생성
-      ...Array.from({ length: NUM_BG_CIRCLES - 8 }).map(() => {
+      ...Array.from({ length: NUM_BG_CIRCLES - 4 }).map(() => {
         // 랜덤 색상 팔레트
         const palette = [
           ["#fde68a88", "#facc1533"], // 노랑
