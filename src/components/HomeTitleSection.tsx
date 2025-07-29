@@ -60,7 +60,7 @@ const HomeTitleSection: React.FC = () => {
     <div className="w-full flex flex-col justify-center items-center xl:items-start">
       {/* 메인 타이틀 - 모바일 퍼스트 타이포그래피 최적화 */}
       <h1
-        className={`font-extrabold text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-[0.9] sm:leading-[0.95] ${textColorClass} whitespace-pre-line mb-4 sm:mb-6 md:mb-8 text-center xl:text-left max-w-full px-2 sm:px-0 transition-colors duration-300`}
+        className={`font-extrabold text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl 2xl:text-8xl leading-[0.9] sm:leading-[0.95] ${textColorClass} whitespace-pre-line mb-4 sm:mb-6 md:mb-8 text-center xl:text-left max-w-full px-2 sm:px-0 transition-colors duration-300`}
         style={{
           fontFamily: "Istok Web",
           textShadow: "0 2px 4px rgba(0,0,0,0.1)", // 가독성 향상을 위한 미묘한 그림자

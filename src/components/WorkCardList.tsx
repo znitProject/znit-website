@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { useDarkMode } from "../context/DarkModeContext";
 
 // GSAP 플러그인 등록
 if (typeof window !== "undefined") {
@@ -19,6 +20,7 @@ interface ProjectData {
 
 // WorkCardList 컴포넌트: GSAP 스크롤 카드 캐러셀
 const WorkCardList: React.FC = () => {
+  const { darkMode } = useDarkMode();
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -236,13 +238,12 @@ const WorkCardList: React.FC = () => {
       {/* 섹션 헤더 */}
       <div className="mb-6 sm:mb-8 md:mb-10">
         <h2 
-          className="text-3xl sm:text-4xl md:text-5xl font-bold transition-colors duration-300 text-black"
+          className={`text-3xl sm:text-4xl md:text-5xl font-bold transition-colors duration-300 ${
+            darkMode ? 'text-white' : 'text-black'
+          }`}
         >
           WORKS
-        </h2>
-        <p className="text-lg mt-2 transition-colors duration-300 text-gray-600">
-          {isMobile ? '좌우로 스와이프하여 프로젝트를 탐색해보세요' : '스크롤하여 프로젝트를 탐색해보세요'}
-        </p>
+        </h2>       
       </div>
 
       {/* 캐러셀 컨테이너 */}
@@ -265,7 +266,9 @@ const WorkCardList: React.FC = () => {
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="group relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer flex-shrink-0 bg-white shadow-gray-200/50"
+                className={`group relative rounded-xl shadow-lg overflow-hidden transition-all duration-300 cursor-pointer flex-shrink-0 ${
+                  darkMode ? 'bg-zinc-600/50 shadow-gray-900/50' : 'bg-white shadow-gray-200/50'
+                }`}
                 style={{
                   width: `${cardWidth}px`,
                   height: `${cardHeight}px`,
@@ -300,7 +303,9 @@ const WorkCardList: React.FC = () => {
                     <span className="text-xs font-semibold uppercase tracking-wide mb-2 block text-blue-600">
                       {project.category}
                     </span>
-                    <h3 className="font-bold text-lg leading-tight text-gray-900">
+                    <h3 className={`font-bold text-lg leading-tight ${
+                      darkMode ? 'text-white' : 'text-gray-900'
+                    }`}>
                       {project.title}
                     </h3>
                   </div>
@@ -310,10 +315,14 @@ const WorkCardList: React.FC = () => {
                     <span className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-2 block">
                       {project.category}
                     </span>
-                    <h3 className="font-bold text-lg text-gray-900 mb-3 leading-tight">
+                    <h3 className={`font-bold text-lg mb-3 leading-tight ${
+                      darkMode ? 'text-white' : 'text-gray-900'
+                    }`}>
                       {project.title}
                     </h3>
-                    <p className="text-sm text-gray-700 leading-relaxed overflow-hidden" 
+                    <p className={`text-sm leading-relaxed overflow-hidden ${
+                      darkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}
                        style={{ 
                          display: '-webkit-box',
                          WebkitLineClamp: isMobile ? 3 : 4,
@@ -331,7 +340,9 @@ const WorkCardList: React.FC = () => {
         {/* 스크롤 프로그레스 바 - 데스크톱에서만 표시 */}
         {!isMobile && !isTablet && (
           <div className="flex justify-center mt-6">
-            <div className="w-64 h-1 bg-gray-300 rounded-full overflow-hidden">
+            <div className={`w-64 h-1 rounded-full overflow-hidden ${
+              darkMode ? 'bg-gray-600' : 'bg-gray-300'
+            }`}>
               <div 
                 className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 ease-out"
                 style={{
@@ -346,7 +357,9 @@ const WorkCardList: React.FC = () => {
         {/* 스크롤 힌트 텍스트 - 데스크톱에서만 표시 */}
         {!isMobile && !isTablet && scrollProgress < 0.1 && (
           <div className="flex justify-center mt-3">
-            <p className="text-sm text-gray-500 animate-pulse">
+            <p className={`text-sm  ${
+              darkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
               마우스 휠로 더 많은 프로젝트를 확인해보세요
             </p>
           </div>
