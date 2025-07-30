@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import ImageProtection from "./ImageProtection";
 
 // GSAP 플러그인 등록
 if (typeof window !== "undefined") {
@@ -28,45 +29,7 @@ const WorkCardList: React.FC = () => {
   const isTablet = false;
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // 이미지 보호 기능
-  useEffect(() => {
-    const preventImageProtection = (e: Event) => {
-      e.preventDefault();
-      return false;
-    };
 
-    const preventKeyboardShortcuts = (e: KeyboardEvent) => {
-      // Ctrl+S, Ctrl+Shift+S 방지 (이미지 저장 방지)
-      if (
-        (e.ctrlKey && e.key === 's') ||
-        (e.ctrlKey && e.shiftKey && e.key === 'S')
-        // 개발 시 필요할 수 있는 단축키들 (주석처리)
-        // || e.key === 'F12' ||
-        // || (e.ctrlKey && e.key === 'u') ||
-        // || (e.ctrlKey && e.shiftKey && e.key === 'I')
-      ) {
-        e.preventDefault();
-        return false;
-      }
-    };
-
-    // 우클릭 방지
-    document.addEventListener('contextmenu', preventImageProtection);
-    
-    // 드래그 방지
-    document.addEventListener('dragstart', preventImageProtection);
-    document.addEventListener('selectstart', preventImageProtection);
-    
-    // 키보드 단축키 방지
-    document.addEventListener('keydown', preventKeyboardShortcuts);
-
-    return () => {
-      document.removeEventListener('contextmenu', preventImageProtection);
-      document.removeEventListener('dragstart', preventImageProtection);
-      document.removeEventListener('selectstart', preventImageProtection);
-      document.removeEventListener('keydown', preventKeyboardShortcuts);
-    };
-  }, []);
   
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -295,19 +258,13 @@ const WorkCardList: React.FC = () => {
                 }}
               >
                 {/* 이미지 컨테이너 */}
-                <div 
-                  className="w-full relative overflow-hidden flex-shrink-0 image-protection image-container" 
+                <ImageProtection 
+                  className="w-full relative overflow-hidden flex-shrink-0 image-container" 
                   style={{ 
                     height: `${cardHeight * 0.7}px`,
                     minHeight: `${cardHeight * 0.7}px`,
-                    maxHeight: `${cardHeight * 0.7}px`,
-                    userSelect: 'none',
-                    WebkitUserSelect: 'none',
-                    MozUserSelect: 'none',
-                    msUserSelect: 'none'
+                    maxHeight: `${cardHeight * 0.7}px`
                   }}
-                  onContextMenu={(e) => e.preventDefault()}
-                  onDragStart={(e) => e.preventDefault()}
                 >
                   <Image
                     src={project.image}
@@ -319,21 +276,15 @@ const WorkCardList: React.FC = () => {
                       width: `${cardWidth}px`, 
                       height: `${cardHeight * 0.7}px`,
                       objectFit: 'cover',
-                      userSelect: 'none',
-                      WebkitUserSelect: 'none',
-                      MozUserSelect: 'none',
-                      msUserSelect: 'none',
                       pointerEvents: 'none'
                     }}
                     priority={project.id <= 3}
                     loading={project.id <= 3 ? "eager" : "lazy"}
                     draggable={false}
-                    onContextMenu={(e) => e.preventDefault()}
-                    onDragStart={(e) => e.preventDefault()}
                   />
                   {/* 이미지 오버레이 */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-300"></div>
-                </div>
+                </ImageProtection>
                 {/* 카드 정보 섹션 */}
                 <div 
                   className="w-full relative overflow-hidden flex flex-col flex-1" 
@@ -444,18 +395,6 @@ const WorkCardList: React.FC = () => {
         }
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
-        }
-        
-        /* 이미지 보호 스타일 */
-        .image-protection {
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          -webkit-touch-callout: none;
-          -webkit-user-drag: none;
-          -khtml-user-select: none;
-          -webkit-tap-highlight-color: transparent;
         }
         
         /* 이미지 컨테이너 보호 */

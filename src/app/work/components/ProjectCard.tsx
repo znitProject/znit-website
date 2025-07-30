@@ -1,3 +1,5 @@
+import ImageProtection from '../../../components/ImageProtection';
+
 interface Project {
   id: number;
   name: string;
@@ -65,7 +67,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <div className="group relative overflow-hidden rounded-lg aspect-[4/3] cursor-pointer">
       {/* 프로젝트 배경 */}
       {project.image ? (
-        <div 
+        <ImageProtection
           style={{ 
             width: '100%',
             height: '100%',
@@ -78,9 +80,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
           }}
-        ></div>
+        >
+          <div></div>
+        </ImageProtection>
       ) : (
-        <div 
+        <ImageProtection
           style={{ 
             backgroundColor: getBackgroundColor(project.id),
             width: '100%',
@@ -90,7 +94,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             left: 0,
             zIndex: 1
           }}
-        ></div>
+        >
+          <div></div>
+        </ImageProtection>
       )}
 
       {/* 호버 오버레이 */}
