@@ -13,9 +13,9 @@ export default function Header() {
   const menuItems = [
     { name: "HOME", path: "/" },
     { name: "WORKS", path: "/work" },
-    { name: "ABOUT", path: "/slogan" },
+    { name: "ABOUT", path: "/about" },
     { name: "CAREERS", path: "/career" },
-    { name: "CONTACT US", path: "/contact" },
+   // { name: "CONTACT US", path: "/contact" },
   ];
 
   const toggleMenu = () => {

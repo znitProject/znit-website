@@ -40,13 +40,17 @@ const nextConfig: NextConfig = {
       }
     ];
   },
-  // 이미지 도메인 허용
+  // 이미지 도메인 허용 (새로운 방식)
   images: {
-    domains: ['localhost'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
       },
     ],
   },
