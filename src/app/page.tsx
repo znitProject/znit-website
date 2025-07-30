@@ -67,14 +67,30 @@ export default function HomePage() {
             `,
           }}
         >
-          <KeywordCard style={{ gridArea: "keyword" }} />
-          <WorkCard style={{ gridArea: "work" }} />
-          <NixieClock style={{ gridArea: "clock" }} />
-          <WorkWithUsCard style={{ gridArea: "workus" }} />
-          <ContactCard style={{ gridArea: "contact" }} />
-          <MapCard style={{ gridArea: "map" }} />
-          <WeOwnItCard style={{ gridArea: "weownit" }} />
-          <DarkModeCard style={{ gridArea: "darkmode" }} />
+          <div style={{ gridArea: "keyword" }}>
+            <KeywordCard />
+          </div>
+          <div style={{ gridArea: "work" }}>
+            <WorkCard />
+          </div>
+          <div style={{ gridArea: "clock" }}>
+            <NixieClock />
+          </div>
+          <div style={{ gridArea: "workus" }}>
+            <WorkWithUsCard />
+          </div>
+          <div style={{ gridArea: "contact" }}>
+            <ContactCard />
+          </div>
+          <div style={{ gridArea: "map" }}>
+            <MapCard />
+          </div>
+          <div style={{ gridArea: "weownit" }}>
+            <WeOwnItCard />
+          </div>
+          <div style={{ gridArea: "darkmode" }}>
+            <DarkModeCard />
+          </div>
         </section>
 
         {/* 태블릿 (md ~ lg): 2열 그리드, KeywordCard와 NixieClock 제외 */}
@@ -91,7 +107,7 @@ export default function HomePage() {
             <WorkWithUsCard />
           </div>
           <div className="h-[200px]">
-            <WeOwnItCard style={{}} />
+            <WeOwnItCard />
           </div>
 
           {/* 보조 정보 카드들 */}
@@ -99,7 +115,7 @@ export default function HomePage() {
             <MapCard />
           </div>
           <div className="h-[180px]">
-            <DarkModeCard style={{}} />
+            <DarkModeCard />
           </div>
 
           {/* 기타 요소들 */}
@@ -128,7 +144,7 @@ export default function HomePage() {
 
             {/* 브랜드 스토리 - 겹침 방지를 위한 명확한 컨테이너 */}
             <div className="w-full h-[220px] sm:h-[240px] relative z-10">
-              <WeOwnItCard style={{}} />
+              <WeOwnItCard />
             </div>
 
             {/* 지도 - 완전히 분리된 컨테이너 */}
@@ -138,7 +154,7 @@ export default function HomePage() {
 
             {/* 다크모드 토글 - 지도 바로 아래에 배치 */}
             <div className="w-full h-[80px] sm:h-[100px]">
-              <DarkModeCard style={{}} />
+              <DarkModeCard />
             </div>
           </div>
         </section>

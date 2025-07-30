@@ -20,17 +20,22 @@ interface ProjectData {
   category: string;
 }
 
+// 커스텀 HTMLElement 타입 정의
+interface CustomHTMLElement extends HTMLElement {
+  _wheelListener?: (e: WheelEvent) => void;
+  _hoverListeners?: {
+    start: () => void;
+    end: () => void;
+    isMobile: boolean;
+  };
+}
+
 // WorkCardList 컴포넌트: GSAP 스크롤 카드 캐러셀
 const WorkCardList: React.FC = () => {
   const { theme } = useTheme();
   const darkMode = theme === 'dark';
-  // 반응형 분기 제거, 고정값 사용
-  const isMobile = false;
-  const isTablet = false;
   const [scrollProgress, setScrollProgress] = useState(0);
 
-
-  
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const animationIdRef = useRef<number | null>(null);
@@ -40,43 +45,43 @@ const WorkCardList: React.FC = () => {
   const projects: ProjectData[] = [
     {
       id: 1,
-      title: "정보공개 유지보수",
-      description: "종합 정보공개시스템의 유지보수 및 운영을 담당하는 프로젝트입니다.",
+      title: "정보공개 시스템",
+      description: "-운영\n-유지보수",
       image: "/works/openGoKrImg.png",
       category: "IT"
     },
     {
       id: 2,
       title: "공공 디자인",
-      description: "사용자 친화적인 버스정류장 인터페이스 디자인으로 일상의 대중교통을 더욱 편리하게 만드는 프로젝트입니다.",
+      description: "-키오스크 디자인\n-교통 시설물 디자인",
       image: "/works/3_4/busStopImg34.jpeg",
       category: "Public Design"
     },
     {
       id: 3,
       title: "컨셉 아트 디자인",
-      description: "창의적인 아이디어를 시각적으로 구현하는 컨셉 아트 작업으로 프로젝트의 비전을 명확하게 전달합니다.",
+      description: "-스케치\n-AI/합성",
       image: "/works/3_4/conceptArtImg34.jpeg",
       category: "Concept Art"
     },
     {
       id: 4,
-      title: "3D 정보 시각화",
-      description: "복잡한 데이터를 직관적인 3D 시각화로 표현하여 정보 전달의 효율성을 극대화한 프로젝트입니다.",
+      title: "인포그래픽 디자인",
+      description: "-PPT\n-컨셉 그래픽",
       image: "/works/3_4/Info3DImg34.jpeg",
       category: "3D Visualization"
     },
     {
       id: 5,
       title: "모션그래픽 디자인",
-      description: "모바일 환경에 최적화된 사용자 인터페이스로 터치 기반 상호작용을 고려한 직관적인 디자인을 제공합니다.",
+      description: "-2D\n-3D",
       image: "/works/motion2D2.jpeg",
       category: "MotionGraphic Design"
     },
     {
       id: 6,
       title: "UI/UX 디자인",
-      description: "사용자 경험을 중심으로 한 인터랙티브 프로토타입으로 실제 사용 시나리오를 미리 검증할 수 있습니다.",
+      description: "-WEB\n-APP",
       image: "/works/3_4/KakaoTalk_Photo_2025-07-28-10-00-50 005.jpeg",
       category: "UI/UX Design"
     }
@@ -122,14 +127,18 @@ const WorkCardList: React.FC = () => {
   // GSAP 애니메이션 및 휠 이벤트
   useEffect(() => {
     if (!carouselRef.current || !cardsRef.current) return;
+    
     const carouselElement = carouselRef.current;
     const cardsContainer = cardsRef.current;
     const cards = cardsContainer?.children;
+    
     if (!cards || cards.length === 0) return;
+    
     // 카드 컨테이너 너비 설정
     const totalCardsWidth = (cards.length * cardWidth) + ((cards.length - 1) * CARD_GAP);
     gsap.set(cardsContainer, { width: `${totalCardsWidth}px`, x: 0 });
     gsap.set(cards, { clearProps: "all" });
+    
     // 스크롤 이벤트 핸들러
     const handleScroll = () => {
       if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
@@ -137,7 +146,9 @@ const WorkCardList: React.FC = () => {
         updateScrollProgress();
       });
     };
+    
     carouselElement.addEventListener("scroll", handleScroll, { passive: true });
+    
     // GSAP 부드러운 가로 스크롤 (캐러셀 위에서만)
     const handleWheel = (e: WheelEvent) => {
       // 캐러셀 영역 위에서만 동작
@@ -147,18 +158,22 @@ const WorkCardList: React.FC = () => {
       const maxScroll = carouselElement.scrollWidth - carouselElement.clientWidth;
       let target = current + e.deltaY * 2.2; // 감도
       target = Math.max(0, Math.min(target, maxScroll));
+      
       gsap.to(carouselElement, {
         scrollTo: { x: target },
         duration: 0.6,
         ease: "power2.out"
       });
     };
+    
     carouselElement.addEventListener("wheel", handleWheel, { passive: false });
-    (carouselElement as any)._wheelListener = handleWheel;
-    // 호버 효과 최적화 (기존 코드 유지)
-    Array.from(cards).forEach((card, index) => {
-      const cardElement = card as HTMLElement;
+    (carouselElement as CustomHTMLElement)._wheelListener = handleWheel;
+    
+    // 호버 효과 최적화
+    Array.from(cards).forEach((card) => {
+      const cardElement = card as CustomHTMLElement;
       cardElement.style.willChange = 'transform';
+      
       const handleInteractionStart = () => {
         gsap.to(cardElement, {
           scale: 1.03,
@@ -168,6 +183,7 @@ const WorkCardList: React.FC = () => {
           force3D: true
         });
       };
+      
       const handleInteractionEnd = () => {
         gsap.to(cardElement, {
           scale: 1,
@@ -177,35 +193,45 @@ const WorkCardList: React.FC = () => {
           force3D: true
         });
       };
+      
       cardElement.addEventListener("mouseenter", handleInteractionStart);
       cardElement.addEventListener("mouseleave", handleInteractionEnd);
-      (cardElement as any)._hoverListeners = {
+      
+      cardElement._hoverListeners = {
         start: handleInteractionStart,
         end: handleInteractionEnd,
         isMobile: false
       };
     });
+    
     updateScrollProgress();
+    
     // Cleanup
     return () => {
       if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
+      
       if (carouselElement) {
         carouselElement.removeEventListener("scroll", handleScroll);
-        const wheelListener = (carouselElement as any)._wheelListener;
+        const wheelListener = (carouselElement as CustomHTMLElement)._wheelListener;
         if (wheelListener) carouselElement.removeEventListener("wheel", wheelListener);
       }
-      if (cardsRef.current) {
-        const cards = cardsRef.current.children;
+      
+      // cardsRef.current 값을 cleanup function 실행 시점에 저장
+      const currentCardsContainer = cardsContainer;
+      if (currentCardsContainer) {
+        const cards = currentCardsContainer.children;
         Array.from(cards).forEach((card) => {
-          const cardElement = card as HTMLElement;
-          const listeners = (cardElement as any)._hoverListeners;
+          const cardElement = card as CustomHTMLElement;
+          const listeners = cardElement._hoverListeners;
           cardElement.style.willChange = 'auto';
+          
           if (listeners) {
             cardElement.removeEventListener("mouseenter", listeners.start);
             cardElement.removeEventListener("mouseleave", listeners.end);
           }
         });
       }
+      
       gsap.killTweensOf(carouselElement);
       gsap.killTweensOf(cards);
     };
@@ -221,8 +247,10 @@ const WorkCardList: React.FC = () => {
           }`}
         >
           WORKS
-        </h2>       
+        </h2>
+        <h3 className="text-black mt-3">ZNIT에서 진행중인 프로젝트입니다.</h3>       
       </div>
+      
       {/* 캐러셀 컨테이너 */}
       <div className="relative">
         <div 
@@ -285,6 +313,7 @@ const WorkCardList: React.FC = () => {
                   {/* 이미지 오버레이 */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-300"></div>
                 </ImageProtection>
+                
                 {/* 카드 정보 섹션 */}
                 <div 
                   className="w-full relative overflow-hidden flex flex-col flex-1" 
@@ -294,8 +323,8 @@ const WorkCardList: React.FC = () => {
                     maxHeight: `${cardHeight * 0.3}px`
                   }}
                 >
-                  {/* 기본 정보 */}
-                  <div className="absolute inset-0 flex flex-col justify-start transition-all duration-200 group-hover:opacity-0 group-active:opacity-0"
+                  {/* 통합 정보 */}
+                  <div className="absolute inset-0 flex flex-col justify-start"
                        style={{ 
                          padding: `${Math.max(8, cardWidth * 0.03)}px ${Math.max(10, cardWidth * 0.04)}px`,
                          display: 'flex',
@@ -308,32 +337,7 @@ const WorkCardList: React.FC = () => {
                     </span>
                     <h3 className={`font-bold leading-tight ${
                       darkMode ? 'text-white' : 'text-gray-900'
-                    } text-lg`}
-                        style={{
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          wordBreak: 'keep-all'
-                        } as React.CSSProperties}>
-                      {project.title}
-                    </h3>
-                  </div>
-                  {/* 호버/터치 시 상세 정보 */}
-                  <div className="absolute inset-0 flex flex-col justify-start opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-200"
-                       style={{ 
-                         padding: `${Math.max(8, cardWidth * 0.03)}px ${Math.max(10, cardWidth * 0.04)}px`,
-                         display: 'flex',
-                         flexDirection: 'column',
-                         justifyContent: 'flex-start',
-                         alignItems: 'flex-start'
-                       }}>
-                    <span className={`font-semibold uppercase tracking-wide text-blue-600 block text-sm mb-1`}>
-                      {project.category}
-                    </span>
-                    <h3 className={`font-bold leading-tight ${
-                      darkMode ? 'text-white' : 'text-gray-900'
-                    } text-lg mb-2`}
+                    } text-lg mb-1`}
                         style={{
                           display: '-webkit-box',
                           WebkitLineClamp: 1,
@@ -344,14 +348,15 @@ const WorkCardList: React.FC = () => {
                       {project.title}
                     </h3>
                     <p className={`leading-tight overflow-hidden ${
-                      darkMode ? 'text-gray-300' : 'text-gray-700'
+                      darkMode ? 'text-gray-300' : 'text-gray-500'
                     } text-sm`}
                        style={{ 
                          display: '-webkit-box',
-                         WebkitLineClamp: 2,
+                         WebkitLineClamp: 3,
                          WebkitBoxOrient: 'vertical',
                          overflow: 'hidden',
-                         wordBreak: 'keep-all'
+                         wordBreak: 'keep-all',
+                         whiteSpace: 'pre-line'
                        } as React.CSSProperties}>
                       {project.description}
                     </p>
@@ -361,6 +366,7 @@ const WorkCardList: React.FC = () => {
             ))}
           </div>
         </div>
+        
         {/* 스크롤 프로그레스 바 */}
         <div className="flex justify-center mt-6">
           <div className={`rounded-full overflow-hidden ${
@@ -375,6 +381,7 @@ const WorkCardList: React.FC = () => {
             />
           </div>
         </div>
+        
         {/* 스크롤 힌트 텍스트 */}
         {scrollProgress < 0.1 && (
           <div className="flex justify-center mt-3">
@@ -386,6 +393,7 @@ const WorkCardList: React.FC = () => {
           </div>
         )}
       </div>
+      
       {/* 커스텀 스크롤바 숨김 스타일 - 성능 최적화 */}
       <style jsx>{`
         .scrollbar-hide {
