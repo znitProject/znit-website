@@ -40,43 +40,43 @@ const WorkCardList: React.FC = () => {
   const projects: ProjectData[] = [
     {
       id: 1,
-      title: "정보공개 유지보수",
-      description: "종합 정보공개시스템의 유지보수 및 운영을 담당하는 프로젝트입니다.",
+      title: "정보공개 시스템",
+      description: "-운영\n-유지보수",
       image: "/works/openGoKrImg.png",
       category: "IT"
     },
     {
       id: 2,
       title: "공공 디자인",
-      description: "사용자 친화적인 버스정류장 인터페이스 디자인으로 일상의 대중교통을 더욱 편리하게 만드는 프로젝트입니다.",
+      description: "-키오스크 디자인\n-교통 시설물 디자인",
       image: "/works/3_4/busStopImg34.jpeg",
       category: "Public Design"
     },
     {
       id: 3,
       title: "컨셉 아트 디자인",
-      description: "창의적인 아이디어를 시각적으로 구현하는 컨셉 아트 작업으로 프로젝트의 비전을 명확하게 전달합니다.",
+      description: "-스케치\n-AI/합성",
       image: "/works/3_4/conceptArtImg34.jpeg",
       category: "Concept Art"
     },
     {
       id: 4,
-      title: "3D 정보 시각화",
-      description: "복잡한 데이터를 직관적인 3D 시각화로 표현하여 정보 전달의 효율성을 극대화한 프로젝트입니다.",
+      title: "인포그래픽 디자인",
+      description: "-PPT\n-컨셉 그래픽",
       image: "/works/3_4/Info3DImg34.jpeg",
       category: "3D Visualization"
     },
     {
       id: 5,
       title: "모션그래픽 디자인",
-      description: "모바일 환경에 최적화된 사용자 인터페이스로 터치 기반 상호작용을 고려한 직관적인 디자인을 제공합니다.",
+      description: "-2D\n-3D",
       image: "/works/motion2D2.jpeg",
       category: "MotionGraphic Design"
     },
     {
       id: 6,
       title: "UI/UX 디자인",
-      description: "사용자 경험을 중심으로 한 인터랙티브 프로토타입으로 실제 사용 시나리오를 미리 검증할 수 있습니다.",
+      description: "-WEB\n-APP",
       image: "/works/3_4/KakaoTalk_Photo_2025-07-28-10-00-50 005.jpeg",
       category: "UI/UX Design"
     }
@@ -221,7 +221,8 @@ const WorkCardList: React.FC = () => {
           }`}
         >
           WORKS
-        </h2>       
+        </h2>
+        <h3 className="text-black mt-3">ZNIT에서 진행중인 프로젝트입니다.</h3>       
       </div>
       {/* 캐러셀 컨테이너 */}
       <div className="relative">
@@ -294,8 +295,8 @@ const WorkCardList: React.FC = () => {
                     maxHeight: `${cardHeight * 0.3}px`
                   }}
                 >
-                  {/* 기본 정보 */}
-                  <div className="absolute inset-0 flex flex-col justify-start transition-all duration-200 group-hover:opacity-0 group-active:opacity-0"
+                  {/* 통합 정보 */}
+                  <div className="absolute inset-0 flex flex-col justify-start"
                        style={{ 
                          padding: `${Math.max(8, cardWidth * 0.03)}px ${Math.max(10, cardWidth * 0.04)}px`,
                          display: 'flex',
@@ -308,32 +309,7 @@ const WorkCardList: React.FC = () => {
                     </span>
                     <h3 className={`font-bold leading-tight ${
                       darkMode ? 'text-white' : 'text-gray-900'
-                    } text-lg`}
-                        style={{
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          wordBreak: 'keep-all'
-                        } as React.CSSProperties}>
-                      {project.title}
-                    </h3>
-                  </div>
-                  {/* 호버/터치 시 상세 정보 */}
-                  <div className="absolute inset-0 flex flex-col justify-start opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-200"
-                       style={{ 
-                         padding: `${Math.max(8, cardWidth * 0.03)}px ${Math.max(10, cardWidth * 0.04)}px`,
-                         display: 'flex',
-                         flexDirection: 'column',
-                         justifyContent: 'flex-start',
-                         alignItems: 'flex-start'
-                       }}>
-                    <span className={`font-semibold uppercase tracking-wide text-blue-600 block text-sm mb-1`}>
-                      {project.category}
-                    </span>
-                    <h3 className={`font-bold leading-tight ${
-                      darkMode ? 'text-white' : 'text-gray-900'
-                    } text-lg mb-2`}
+                    } text-lg mb-1`}
                         style={{
                           display: '-webkit-box',
                           WebkitLineClamp: 1,
@@ -344,14 +320,15 @@ const WorkCardList: React.FC = () => {
                       {project.title}
                     </h3>
                     <p className={`leading-tight overflow-hidden ${
-                      darkMode ? 'text-gray-300' : 'text-gray-700'
+                      darkMode ? 'text-gray-300' : 'text-gray-500'
                     } text-sm`}
                        style={{ 
                          display: '-webkit-box',
-                         WebkitLineClamp: 2,
+                         WebkitLineClamp: 3,
                          WebkitBoxOrient: 'vertical',
                          overflow: 'hidden',
-                         wordBreak: 'keep-all'
+                         wordBreak: 'keep-all',
+                         whiteSpace: 'pre-line'
                        } as React.CSSProperties}>
                       {project.description}
                     </p>
