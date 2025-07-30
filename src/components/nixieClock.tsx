@@ -3,7 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import './nixieClock.css';
 
-const NixieClock: React.FC = () => {
+interface NixieClockProps {
+  style?: React.CSSProperties;
+}
+
+const NixieClock: React.FC<NixieClockProps> = ({ style }) => {
   const [isOn, setIsOn] = useState(false);
   const [displayStr, setDisplayStr] = useState('000000000000');
 
@@ -60,6 +64,7 @@ const NixieClock: React.FC = () => {
         maxHeight: '100%',
         gridArea: 'clock',
         boxShadow: '0 20px 40px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.05)',
+        ...style,
       }}
     >
       {/* Noise SVG Filter */}
