@@ -20,17 +20,22 @@ interface ProjectData {
   category: string;
 }
 
+// 커스텀 HTMLElement 타입 정의
+interface CustomHTMLElement extends HTMLElement {
+  _wheelListener?: (e: WheelEvent) => void;
+  _hoverListeners?: {
+    start: () => void;
+    end: () => void;
+    isMobile: boolean;
+  };
+}
+
 // WorkCardList 컴포넌트: GSAP 스크롤 카드 캐러셀
 const WorkCardList: React.FC = () => {
   const { theme } = useTheme();
   const darkMode = theme === 'dark';
-  // 반응형 분기 제거, 고정값 사용
-  const isMobile = false;
-  const isTablet = false;
   const [scrollProgress, setScrollProgress] = useState(0);
 
-
-  
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const animationIdRef = useRef<number | null>(null);
@@ -122,14 +127,18 @@ const WorkCardList: React.FC = () => {
   // GSAP 애니메이션 및 휠 이벤트
   useEffect(() => {
     if (!carouselRef.current || !cardsRef.current) return;
+    
     const carouselElement = carouselRef.current;
     const cardsContainer = cardsRef.current;
     const cards = cardsContainer?.children;
+    
     if (!cards || cards.length === 0) return;
+    
     // 카드 컨테이너 너비 설정
     const totalCardsWidth = (cards.length * cardWidth) + ((cards.length - 1) * CARD_GAP);
     gsap.set(cardsContainer, { width: `${totalCardsWidth}px`, x: 0 });
     gsap.set(cards, { clearProps: "all" });
+    
     // 스크롤 이벤트 핸들러
     const handleScroll = () => {
       if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
@@ -137,7 +146,9 @@ const WorkCardList: React.FC = () => {
         updateScrollProgress();
       });
     };
+    
     carouselElement.addEventListener("scroll", handleScroll, { passive: true });
+    
     // GSAP 부드러운 가로 스크롤 (캐러셀 위에서만)
     const handleWheel = (e: WheelEvent) => {
       // 캐러셀 영역 위에서만 동작
@@ -147,18 +158,22 @@ const WorkCardList: React.FC = () => {
       const maxScroll = carouselElement.scrollWidth - carouselElement.clientWidth;
       let target = current + e.deltaY * 2.2; // 감도
       target = Math.max(0, Math.min(target, maxScroll));
+      
       gsap.to(carouselElement, {
         scrollTo: { x: target },
         duration: 0.6,
         ease: "power2.out"
       });
     };
+    
     carouselElement.addEventListener("wheel", handleWheel, { passive: false });
-    (carouselElement as any)._wheelListener = handleWheel;
-    // 호버 효과 최적화 (기존 코드 유지)
-    Array.from(cards).forEach((card, index) => {
-      const cardElement = card as HTMLElement;
+    (carouselElement as CustomHTMLElement)._wheelListener = handleWheel;
+    
+    // 호버 효과 최적화
+    Array.from(cards).forEach((card) => {
+      const cardElement = card as CustomHTMLElement;
       cardElement.style.willChange = 'transform';
+      
       const handleInteractionStart = () => {
         gsap.to(cardElement, {
           scale: 1.03,
@@ -168,6 +183,7 @@ const WorkCardList: React.FC = () => {
           force3D: true
         });
       };
+      
       const handleInteractionEnd = () => {
         gsap.to(cardElement, {
           scale: 1,
@@ -177,35 +193,45 @@ const WorkCardList: React.FC = () => {
           force3D: true
         });
       };
+      
       cardElement.addEventListener("mouseenter", handleInteractionStart);
       cardElement.addEventListener("mouseleave", handleInteractionEnd);
-      (cardElement as any)._hoverListeners = {
+      
+      cardElement._hoverListeners = {
         start: handleInteractionStart,
         end: handleInteractionEnd,
         isMobile: false
       };
     });
+    
     updateScrollProgress();
+    
     // Cleanup
     return () => {
       if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
+      
       if (carouselElement) {
         carouselElement.removeEventListener("scroll", handleScroll);
-        const wheelListener = (carouselElement as any)._wheelListener;
+        const wheelListener = (carouselElement as CustomHTMLElement)._wheelListener;
         if (wheelListener) carouselElement.removeEventListener("wheel", wheelListener);
       }
-      if (cardsRef.current) {
-        const cards = cardsRef.current.children;
+      
+      // cardsRef.current 값을 cleanup function 실행 시점에 저장
+      const currentCardsContainer = cardsContainer;
+      if (currentCardsContainer) {
+        const cards = currentCardsContainer.children;
         Array.from(cards).forEach((card) => {
-          const cardElement = card as HTMLElement;
-          const listeners = (cardElement as any)._hoverListeners;
+          const cardElement = card as CustomHTMLElement;
+          const listeners = cardElement._hoverListeners;
           cardElement.style.willChange = 'auto';
+          
           if (listeners) {
             cardElement.removeEventListener("mouseenter", listeners.start);
             cardElement.removeEventListener("mouseleave", listeners.end);
           }
         });
       }
+      
       gsap.killTweensOf(carouselElement);
       gsap.killTweensOf(cards);
     };
@@ -224,6 +250,7 @@ const WorkCardList: React.FC = () => {
         </h2>
         <h3 className="text-black mt-3">ZNIT에서 진행중인 프로젝트입니다.</h3>       
       </div>
+      
       {/* 캐러셀 컨테이너 */}
       <div className="relative">
         <div 
@@ -286,6 +313,7 @@ const WorkCardList: React.FC = () => {
                   {/* 이미지 오버레이 */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-300"></div>
                 </ImageProtection>
+                
                 {/* 카드 정보 섹션 */}
                 <div 
                   className="w-full relative overflow-hidden flex flex-col flex-1" 
@@ -338,6 +366,7 @@ const WorkCardList: React.FC = () => {
             ))}
           </div>
         </div>
+        
         {/* 스크롤 프로그레스 바 */}
         <div className="flex justify-center mt-6">
           <div className={`rounded-full overflow-hidden ${
@@ -352,6 +381,7 @@ const WorkCardList: React.FC = () => {
             />
           </div>
         </div>
+        
         {/* 스크롤 힌트 텍스트 */}
         {scrollProgress < 0.1 && (
           <div className="flex justify-center mt-3">
@@ -363,6 +393,7 @@ const WorkCardList: React.FC = () => {
           </div>
         )}
       </div>
+      
       {/* 커스텀 스크롤바 숨김 스타일 - 성능 최적화 */}
       <style jsx>{`
         .scrollbar-hide {

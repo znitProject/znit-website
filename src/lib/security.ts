@@ -1,8 +1,3 @@
-// 보안 관련 유틸리티 함수들
-
-/**
- * 입력값 정제 (XSS 방지)
- */
 export function sanitizeInput(input: string): string {
   if (typeof input !== 'string') return '';
   
@@ -153,7 +148,7 @@ export class RateLimiter {
 /**
  * 로깅 유틸리티 (민감한 정보 제외)
  */
-export function secureLog(message: string, data?: any): void {
+export function secureLog(message: string, data?: Record<string, unknown>): void {
   const sanitizedData = data ? JSON.stringify(data, (key, value) => {
     // 민감한 정보 마스킹
     const sensitiveKeys = ['password', 'token', 'key', 'secret', 'api_key'];
@@ -164,4 +159,4 @@ export function secureLog(message: string, data?: any): void {
   }) : '';
 
   console.log(`[SECURE] ${message}`, sanitizedData);
-} 
+}

@@ -1,6 +1,30 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// IP 주소를 가져오는 헬퍼 함수
+function getClientIP(request: NextRequest): string {
+  // 다양한 헤더에서 IP 주소 추출 시도
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIP = request.headers.get('x-real-ip');
+  const cfConnectingIP = request.headers.get('cf-connecting-ip');
+  
+  if (forwarded) {
+    // x-forwarded-for는 쉼표로 구분된 IP 목록일 수 있음
+    return forwarded.split(',')[0].trim();
+  }
+  
+  if (realIP) {
+    return realIP;
+  }
+  
+  if (cfConnectingIP) {
+    return cfConnectingIP;
+  }
+  
+  // 모든 방법이 실패하면 'unknown' 반환
+  return 'unknown';
+}
+
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
@@ -45,7 +69,7 @@ export function middleware(request: NextRequest) {
   // API 요청에 대한 추가 보안
   if (request.nextUrl.pathname.startsWith('/api/')) {
     // API 요청에 대한 rate limiting 체크
-    const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const ip = getClientIP(request);
     
     // 간단한 rate limiting (실제로는 Redis 등을 사용하는 것이 좋습니다)
     const rateLimitKey = `rate_limit:${ip}`;
@@ -71,4 +95,4 @@ export const config = {
      */
     '/((?!_next/static|_next/image|favicon.ico|public/).*)',
   ],
-}; 
+};
