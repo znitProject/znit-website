@@ -45,8 +45,8 @@ const WorkCardList: React.FC = () => {
   const projects: ProjectData[] = [
     {
       id: 1,
-      title: "정보공개 시스템",
-      description: "-운영\n-유지보수",
+      title: "IT 서비스 솔루션",
+      description: "-SI\n-DX",
       image: "/works/openGoKrImg.png",
       category: "IT"
     },

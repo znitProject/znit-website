@@ -9,11 +9,11 @@ interface StrokeFillTextSectionProps {
 
 // 여러 줄 문구 상수 - 모바일 친화적으로 조정
 const TEXT_LINES = [
-  "Join us.",
-  "Shape the future.",
-  "Grow together at ZNIT.",
-  "Your next challenge starts",
-  "right here.",
+  "우리에게 기술과 디자인은 무기입니다.",
+  "하지만 가장 강한 무기는 ‘집요함’입니다.",
+  "남들이 놓치는 곳에 집중합니다.",
+  "그것이 우리만의 경쟁력입니다.",
+  "ZNIT는 그 힘으로 앞섭니다.",
 ];
 
 // 모바일용 더 짧은 텍스트 라인
@@ -292,7 +292,7 @@ const StrokeFillTextSection: React.FC<StrokeFillTextSectionProps> = ({
             ref={(el) => {
               textRefs.current[idx] = el;
             }}
-            className="block w-fit text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-black select-none leading-tight text-left tracking-tighter cursor-pointer active:scale-95 transition-transform duration-150"
+            className="block w-fit text-3xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.75rem] 2xl:text-8xl font-black select-none leading-relaxed text-left tracking-tighter cursor-pointer active:scale-95 transition-transform duration-150"
             style={{
               WebkitTextStroke: isMobile
                 ? `1px ${strokeColor}`
