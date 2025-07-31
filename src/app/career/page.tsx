@@ -3,7 +3,6 @@
 import Benefits from "./components/Benefits";
 import RecruitProcess from "./components/RecruitProcess";
 import TitleAnimation from "./components/TitleAnimation";
-import ApplySection from "./components/ApplySection";
 
 export default function RecruitPage() {
 
@@ -58,8 +57,7 @@ export default function RecruitPage() {
           {/* 채용 프로세스 */}
           <RecruitProcess />
 
-          {/* 지원 섹션 */}
-          <ApplySection onSubmit={handleFileSubmit} />
+        
         </div>
       </div>
     </div>
