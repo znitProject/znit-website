@@ -66,7 +66,7 @@ export default function WeOwnItCard({
 
   return (
     <Link
-      href="/slogan"
+      href="/about"
       passHref
       style={style}
       onMouseEnter={handleMouseEnter}

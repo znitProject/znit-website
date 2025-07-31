@@ -94,7 +94,6 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <div style={{ height: "10px" }} />
           <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
