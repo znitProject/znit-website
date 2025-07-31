@@ -37,14 +37,14 @@ export default function HomePage() {
     >
       {/* Hero Section - 모바일 최적화된 비율과 레이아웃 */}
       <section
-        className={`w-full flex flex-col xl:flex-row items-center gap-6 sm:gap-8 lg:gap-10 xl:gap-12 pt-6 sm:pt-10 md:pt-14 lg:pt-18 xl:pt-20 pb-6 sm:pb-8 md:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 xl:justify-between ${backgroundColor}`}
+        className={`w-full flex flex-col xl:flex-row items-center gap-6 sm:gap-8 lg:gap-10 xl:gap-12 pt-[4px] sm:pt-0 md:pt-4 lg:pt-8 xl:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 xl:justify-between ${backgroundColor}`}
       >
         {/* 타이틀 섹션 - 모바일에서 더 임팩트 있게 */}
-        <div className="w-full xl:flex-1 flex justify-center xl:justify-start order-1 mt-[100px] sm:mt-[150px] xl:mt-0">
+        <div className="w-full xl:flex-1 flex justify-center xl:justify-start">
           <HomeTitleSection />
         </div>
         {/* 비디오 섹션 - 모바일에서 적절한 크기로 */}
-        <div className="w-full xl:flex-1 flex justify-center xl:justify-end order-2 xl:order-2">
+        <div className="w-full xl:flex-1 flex justify-center xl:justify-end mt-[20px]">
           <HomeTitleVideoSection />
         </div>
       </section>

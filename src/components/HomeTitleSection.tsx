@@ -1,79 +1,80 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useTheme } from "next-themes";
+import React, { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
 
-// 상단 왼쪽의 큰 타이포(제목) 영역 컴포넌트 - 모바일 퍼스트 최적화
 const HomeTitleSection: React.FC = () => {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  // 텍스트와 커서를 각각 분리하여 ref 할당
-  const textRef = useRef<HTMLSpanElement>(null);
-  const cursorRef = useRef<HTMLSpanElement>(null);
-  const fullText = "ZNIT\n우리와 당신의\n열정이 피어나는\n장소";
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const wordsRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    setMounted(true);
-    // 텍스트 초기화
-    if (textRef.current) {
-      textRef.current.textContent = "";
-    }
+    const words = wordsRef.current;
+    if (!words) return;
 
-    // 커서 깜박임 애니메이션 (타이핑 중에도 실행)
-    if (cursorRef.current) {
-      cursorRef.current.style.opacity = "1";
-      cursorRef.current.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: 1000,
-        iterations: Infinity,
-        direction: "alternate",
-        easing: "ease-in-out",
+    const handleMouseEnter = () => {
+      gsap.to(words.querySelectorAll('p'), {
+        y: -88, // -12rem (h-24 두 배 높이만큼 완전히 이동)
+        duration: 0.4,
+        ease: "power2.inOut"
       });
-    }
+    };
 
-    // 자연스러운 타이핑 효과 (랜덤 딜레이)
-    let currentIdx = 0;
-    function typeText() {
-      if (textRef.current) {
-        textRef.current.textContent = fullText.substring(0, currentIdx + 1);
-      }
-      currentIdx++;
-      if (currentIdx < fullText.length) {
-        // 70~180ms 사이 랜덤 딜레이
-        const delay = Math.floor(Math.random() * 110) + 80;
-        timeoutRef.current = setTimeout(typeText, delay);
-      }
-    }
-    typeText();
+    const handleMouseLeave = () => {
+      gsap.to(words.querySelectorAll('p'), {
+        y: 0,
+        duration: 0.4,
+        ease: "power2.inOut"
+      });
+    };
 
-    // 언마운트 시 타임아웃 정리
+    words.addEventListener('mouseenter', handleMouseEnter);
+    words.addEventListener('mouseleave', handleMouseLeave);
+
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      words.removeEventListener('mouseenter', handleMouseEnter);
+      words.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
 
-  // 다크모드 여부에 따른 텍스트 색상 결정
-  const textColorClass =
-    mounted && theme === "dark" ? "text-white" : "text-black";
-  const cursorColorClass =
-    mounted && theme === "dark" ? "bg-white" : "bg-black";
+  const lines = [
+    { first: '\u00A0', second: 'ZNIT', left: '29px' },
+    { first: 'ZNIT', second: 'DEVELOP', left: '58px' },
+    { first: 'DEVELOP', second: 'DESIGN', left: '87px' },
+    { first: 'DESIGN', second: 'CONNECT', left: '116px' },
+    { first: 'CONNECT', second: 'ARCHITECT', left: '145px' },
+    { first: 'ARCHITECT', second: 'ZNIT', left: '174px' },
+    { first: 'ZNIT', second: '\u00A0', left: '203px' }
+  ];
 
   return (
-    <div className="w-full flex flex-col justify-center items-center xl:items-start">
-      {/* 메인 타이틀 - 모바일 퍼스트 타이포그래피 최적화 */}
-      <h1
-        className={`font-extrabold text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-8xl leading-[0.9] sm:leading-[0.95] ${textColorClass} whitespace-pre-line mb-4 sm:mb-6 md:mb-8 text-center xl:text-left max-w-full px-2 sm:px-0 transition-colors duration-300`}
-        style={{
-          fontFamily: "Istok Web",
-          textShadow: "0 2px 4px rgba(0,0,0,0.1)", // 가독성 향상을 위한 미묘한 그림자
+    <div className="flex items-center justify-center h-screen">
+      <ul 
+        ref={wordsRef}
+        className="mx-auto py-20 text-7xl font-black tracking-normal uppercase text-gray-900"
+        style={{ 
+          fontFamily: "'Source Sans Pro', Helvetica, Arial, sans-serif",
+          transform: 'translate3d(0, 0, 0)',
+          WebkitFontSmoothing: 'antialiased',
+          WebkitFontKerning: 'normal',
+          WebkitTextSizeAdjust: '100%'
         }}
       >
-        {/* 타이핑 텍스트 */}
-        <span ref={textRef}></span>
-        {/* 깜박이는 커서 - 모바일에서도 잘 보이도록 크기 조정 */}
-        <span
-          ref={cursorRef}
-          className={`inline-block w-[0.08em] h-[0.85em] ${cursorColorClass} ml-2 align-baseline relative -top-[2px] transition-colors duration-300`}
-        ></span>
-      </h1>
+        {lines.map((line, index) => (
+          <li 
+            key={index}
+            className="h-20 overflow-hidden relative"
+            style={{
+              left: line.left,
+              transform: index % 2 === 0 
+                ? 'skew(60deg, -30deg) scaleY(0.66667)' 
+                : 'skew(0deg, -30deg) scaleY(1.33333)'
+            }}
+          >
+            <div className="h-20 leading-none px-2 whitespace-nowrap align-top"
+                 style={{ transform: 'translate3d(0, 0, 0)' }}>
+              <p className="h-20 leading-none flex items-center">{line.first}</p>
+              <p className="h-20 leading-none flex items-center">{line.second}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

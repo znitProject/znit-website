@@ -7,7 +7,8 @@ const HomeTitleVideoSection: React.FC = () => {
   
   const videos = [
     "/TitleSectionVideo.mp4",
-    "/titleSectionVideo2.mp4"
+    "/TitleSectionVideo2.mp4",
+    "/TitleSectionVideo3.mp4"
   ];
 
   // 비디오가 끝날 때마다 다음 비디오로 전환
@@ -26,7 +27,7 @@ const HomeTitleVideoSection: React.FC = () => {
   }, [currentVideoIndex]);
 
   return (
-    <div className="w-full flex justify-center xl:justify-end items-center xl:items-end relative z-50">
+    <div className="w-full flex justify-center xl:justify-end items-center xl:items-end relative z-50 mt-16">
       {/* 모바일 퍼스트 비디오 컨테이너 - 화면 비율에 맞는 적응형 크기 */}
       <div
         className="w-full max-w-[400px] xs:max-w-[420px] sm:max-w-[480px] md:max-w-[740px] lg:max-w-[920px] xl:max-w-[950px] aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
