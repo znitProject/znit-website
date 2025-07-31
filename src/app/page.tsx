@@ -72,7 +72,7 @@ export default function HomePage() {
           <NixieClock style={{ gridArea: "clock" }} />
           <WorkWithUsCard style={{ gridArea: "workus" }} />
           <ContactCard style={{ gridArea: "contact" }} />
-          <MapCard style={{ gridArea: "map" }} />
+          {mounted && <MapCard style={{ gridArea: "map" }} />}
           <WeOwnItCard style={{ gridArea: "weownit" }} />
           <DarkModeCard style={{ gridArea: "darkmode" }} />
         </section>
@@ -96,7 +96,7 @@ export default function HomePage() {
 
           {/* 보조 정보 카드들 */}
           <div className="h-[180px]">
-            <MapCard />
+            {mounted && <MapCard />}
           </div>
           <div className="h-[180px]">
             <DarkModeCard style={{}} />
@@ -133,7 +133,7 @@ export default function HomePage() {
 
             {/* 지도 - 완전히 분리된 컨테이너 */}
             <div className="w-full h-[80px] sm:h-[100px] relative z-10">
-              <MapCard />
+              {mounted && <MapCard />}
             </div>
 
             {/* 다크모드 토글 - 지도 바로 아래에 배치 */}
