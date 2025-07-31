@@ -7,7 +7,8 @@ const HomeTitleVideoSection: React.FC = () => {
   
   const videos = [
     "/TitleSectionVideo.mp4",
-    "/titleSectionVideo2.mp4"
+    "/TitleSectionVideo2.mp4",
+    "/TitleSectionVideo3.mp4"
   ];
 
   // 비디오가 끝날 때마다 다음 비디오로 전환
