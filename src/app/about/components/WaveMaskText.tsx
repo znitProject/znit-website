@@ -75,7 +75,15 @@ export default function WaveMaskText() {
     // 초기 애니메이션 - ZNIT IDENTITY는 처음부터 보이도록
     gsap
       .timeline({ defaults: { duration: 1 }, delay: 0.9 })
-      .to(window, { scrollTo: ch / 2 }, 0);
+      .to(window, { 
+        scrollTo: ch / 2,
+        onComplete: () => {
+          // 애니메이션 완료 후 처리
+        },
+        onError: (error: any) => {
+          console.warn('ScrollTo animation error:', error);
+        }
+      }, 0);
 
     // 컴포넌트가 화면에 보이는지 확인하는 함수 (사용하지 않음)
     // const isComponentVisible = () => {
@@ -114,7 +122,13 @@ export default function WaveMaskText() {
     // 웨이브 그리기 함수
     function drawWave(t: number) {
       if (waveY !== -window.pageYOffset) {
-        gsap.to(window, { duration: 1, waveY: Math.round(window.pageYOffset) });
+        gsap.to(window, { 
+          duration: 1, 
+          waveY: Math.round(window.pageYOffset),
+          onError: (error: any) => {
+            console.warn('Wave animation error:', error);
+          }
+        });
         waveY = Math.round(window.pageYOffset);
       }
 
