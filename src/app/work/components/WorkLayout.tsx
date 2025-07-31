@@ -57,7 +57,7 @@ export default function WorkLayout({
   onClick={onDropdownToggle}
   className="flex items-center space-x-2 px-6 py-3 text-gray-900 hover:text-gray-700 transition-colors bg-white/80 backdrop-blur-sm "
 >
-  <span className="font-bold text-2xl">
+  <span className="font-bold text-lg">
     {selectedMainCategory === "ALL"
       ? "ALL"
       : categories.find((cat) => cat.value === selectedMainCategory)?.label || selectedMainCategory}
@@ -85,7 +85,7 @@ export default function WorkLayout({
                     onSubCategoryChange("ALL");
                     onDropdownToggle();
                   }}
-                  className={`inline-block px-5 py-1.5 rounded-full text-xl font-bold transition ${
+                  className={`inline-block px-5 py-1.5 rounded-full text-lg font-bold transition ${
                     selectedMainCategory === "ALL"
                       ? "bg-gray-900 text-white"
                       : "bg-white text-gray-900 hover:bg-gray-900 hover:text-white"
@@ -99,18 +99,16 @@ export default function WorkLayout({
                   <div key={category.value} className="flex flex-col items-end gap-1">
                     <button
                       onClick={() => {
-                        // 같은 카테고리를 다시 클릭하면 해당 카테고리 유지
+                        // 같은 카테고리를 다시 클릭하면 드롭다운 토글
                         if (selectedMainCategory === category.value) {
-                          // 이미 선택된 카테고리면 그대로 유지 (서브카테고리만 토글)
-                          onMainCategoryChange(category.value);
-                          onSubCategoryChange("ALL");
+                          onDropdownToggle();
                         } else {
                           // 다른 카테고리면 새로 선택
                           onMainCategoryChange(category.value);
                           onSubCategoryChange("ALL");
                         }
                       }}
-                      className={`inline-block px-6 py-2 rounded-full text-xl font-bold transition whitespace-nowrap ${
+                      className={`inline-block px-5 py-1.5 rounded-full text-lg font-bold transition whitespace-nowrap ${
                         selectedMainCategory === category.value
                           ? category.value === "INFO_DESIGN" 
                             ? "bg-blue-700 text-white"
@@ -136,12 +134,20 @@ export default function WorkLayout({
                         <div key={sub.value} className="flex flex-col items-end gap-1">
                           <button
                             onClick={() => {
-                              onSubCategoryChange(sub.value);
-                              if (onSubSubCategoryChange) {
-                                onSubSubCategoryChange("ALL");
+                              // 같은 서브카테고리를 다시 클릭하면 서브서브카테고리 토글
+                              if (selectedSubCategory === sub.value) {
+                                onSubCategoryChange("ALL");
+                                if (onSubSubCategoryChange) {
+                                  onSubSubCategoryChange("ALL");
+                                }
+                              } else {
+                                onSubCategoryChange(sub.value);
+                                if (onSubSubCategoryChange) {
+                                  onSubSubCategoryChange("ALL");
+                                }
                               }
                             }}
-                            className={`inline-block px-5 py-1 text-sm rounded-full transition whitespace-nowrap ${
+                            className={`inline-block px-5 py-1 text-base rounded-full transition whitespace-nowrap ${
                               selectedSubCategory === sub.value
                                 ? sub.value === "INFOGRAPHIC"
                                   ? "bg-purple-600 text-white font-bold"
@@ -198,7 +204,7 @@ export default function WorkLayout({
                                     }
                                     onDropdownToggle();
                                   }}
-                                  className={`inline-block px-3 py-1 text-xs rounded-full transition whitespace-nowrap ${
+                                  className={`inline-block px-3 py-0.5 text-xs rounded-full transition whitespace-nowrap ${
                                     selectedSubSubCategory === subSub.value
                                       ? subSub.value === "PPT"
                                         ? "bg-purple-500 text-white font-bold"
