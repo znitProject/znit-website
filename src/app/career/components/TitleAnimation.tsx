@@ -94,7 +94,7 @@ const CrossStar = ({
       ease: "easeInOut",
     }}
   >
-    {/* 중앙 원형 별 - 작은 그림자 */}
+    {/* 중앙 원형 별 - 컬러팔레트 기반 */}
     <div
       className="absolute rounded-full"
       style={{
@@ -104,12 +104,12 @@ const CrossStar = ({
         height: `${size}px`,
         transform: "translate(-50%, -50%)",
         background:
-          "radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, transparent 100%)",
-        boxShadow: "0 0 8px rgba(0,0,0,0.3)",
+          "radial-gradient(circle, rgba(2,5,10,0.9) 0%, rgba(0,34,78,0.6) 50%, transparent 100%)",
+        boxShadow: "0 0 8px rgba(2,5,10,0.3)",
       }}
     />
 
-    {/* 십자 빛 효과 - 작고 깔끔하게 */}
+    {/* 십자 빛 효과 - 컬러팔레트 기반 */}
     <div
       className="absolute"
       style={{
@@ -119,8 +119,8 @@ const CrossStar = ({
         height: "2px",
         transform: "translate(-50%, -50%)",
         background:
-          "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.4) 80%, transparent 100%)",
-        boxShadow: "0 0 6px rgba(0,0,0,0.2)",
+          "linear-gradient(90deg, transparent 0%, rgba(67,118,171,0.4) 20%, rgba(246,191,65,0.8) 50%, rgba(67,118,171,0.4) 80%, transparent 100%)",
+        boxShadow: "0 0 6px rgba(67,118,171,0.2)",
       }}
     />
     <div
@@ -132,8 +132,8 @@ const CrossStar = ({
         height: `${size * 2.5}px`,
         transform: "translate(-50%, -50%)",
         background:
-          "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.4) 80%, transparent 100%)",
-        boxShadow: "0 0 6px rgba(0,0,0,0.2)",
+          "linear-gradient(180deg, transparent 0%, rgba(67,118,171,0.4) 20%, rgba(246,191,65,0.8) 50%, rgba(67,118,171,0.4) 80%, transparent 100%)",
+        boxShadow: "0 0 6px rgba(67,118,171,0.2)",
       }}
     />
   </motion.div>

@@ -81,13 +81,13 @@ const ProcessStep = ({
         style={{
           background:
             index === 0
-              ? "#ffffff"
+              ? "#F6BF41" // 밝은 황금색
               : index === 1
-                ? "#cccccc"
+                ? "#4376AB" // 중간 하늘색
                 : index === 2
-                  ? "#666666"
-                  : "#000000",
-          color: index === 0 ? "#000000" : "#ffffff",
+                  ? "#00224E" // 진한 남색
+                  : "#02050A", // 검은색
+          color: "#ffffff",
           boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
         }}
         whileHover={{
@@ -167,8 +167,19 @@ const RecruitProcess = () => {
     >
       <div className="py-32">
         <div className="w-full px-4 sm:px-6 lg:px-8">
-          {/* 전체 배경색 영역 */}
-          <div className="bg-gray-50 rounded-2xl p-12">
+                     {/* 전체 배경색 영역 */}
+           <div 
+             className="rounded-2xl p-12 relative overflow-hidden"
+             style={{
+               background: `
+                 linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%),
+                 radial-gradient(circle at 30% 30%, rgba(67, 118, 171, 0.05) 0%, transparent 50%),
+                 radial-gradient(circle at 70% 70%, rgba(246, 191, 65, 0.05) 0%, transparent 50%)
+               `,
+               backdropFilter: 'blur(10px)',
+               border: '1px solid rgba(67, 118, 171, 0.1)'
+             }}
+           >
             {/* 타이틀 */}
             <div className="mb-20">
               <TypingTitle text="Process" />
