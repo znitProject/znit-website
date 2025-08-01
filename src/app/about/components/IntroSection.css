@@ -1,0 +1,68 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.reader {
+  --thick: 0px;
+  outline: var(--thick) dashed hsl(8 100% 55%);
+  outline-offset: calc(var(--thick) * -1);
+  height: calc(
+    ((var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) * 1px) + 100vh
+  );
+}
+
+.content {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  width: 180ch;
+  padding: 2rem 0;
+  max-width: calc(100% - 4rem);
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  line-height: 1;
+}
+
+.content span {
+  opacity: calc(0.4 + (var(--active, 0)));
+  transition: opacity 0.5s;
+}
+
+[data-split] {
+  font-size: clamp(2rem, 8vmin + 1rem, 4rem);
+  font-weight: 600;
+}
+
+@supports (animation-timeline: scroll()) {
+  @property --active {
+    inherits: true;
+    initial-value: 0;
+    syntax: '<number>';
+  }
+
+  .reader {
+    view-timeline: --reader block;
+  }
+
+  .content span {
+    animation: activate both steps(1);
+    animation-timeline: --reader;
+    animation-range: contain calc(((var(--start, 0) * var(--ppc)) * 1px))
+      contain calc(((var(--end, 0) * var(--ppc)) * 1px));
+  }
+
+  @keyframes activate {
+    to {
+      --active: 1;
+    }
+  }
+} 

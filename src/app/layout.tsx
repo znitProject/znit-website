@@ -30,6 +30,7 @@ const robotoFlex = Roboto_Flex({
 const nanumSquareNeo = localFont({
   src: "../../public/fonts/NanumSquareNeo-Variable.ttf",
   variable: "--font-nanum-square-neo",
+  display: 'swap',
 });
 
 const stylish = Stylish({
@@ -89,6 +90,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
+      <head>
+
+      </head>
       <body
         className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} ${stylish.variable} antialiased`}
       >

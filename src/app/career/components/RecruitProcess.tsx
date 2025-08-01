@@ -182,7 +182,7 @@ const RecruitProcess = () => {
            >
             {/* 타이틀 */}
             <div className="mb-20">
-              <TypingTitle text="Process" />
+              <TypingTitle text="Process." />
             </div>
 
             {/* 스텝 리스트 */}

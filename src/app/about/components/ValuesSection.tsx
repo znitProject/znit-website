@@ -313,6 +313,7 @@ export default function ValuesSection() {
                       src={value.image} 
                       alt={value.title} 
                       fill 
+                      sizes="(max-width: 768px) 100vw, 320px"
                       style={{ objectFit: 'cover' }}
                     />
                     <div className="absolute inset-0 bg-black/50" />

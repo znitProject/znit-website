@@ -12,6 +12,10 @@ body {
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --accent: hsl(8 100% 55%);
+  --base: 0.4;
+  --active: 0;
+  --font-size: clamp(2rem, 8vmin + 1rem, 4rem);
 }
 
 @theme inline {
@@ -51,6 +55,86 @@ body {
 .backdrop-glass {
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 스크롤 애니메이션 스타일 */
+[data-split] {
+  font-size: var(--font-size);
+  font-weight: 600;
+}
+
+.reader {
+  --thick: 0px;
+  outline: var(--thick) dashed var(--accent);
+  outline-offset: calc(var(--thick) * -1);
+  height: calc(
+    ((var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) * 1px) +
+      100vh
+  );
+}
+
+.content {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  width: 100ch;
+  padding: 0.5rem 0;
+  max-width: calc(100% - 4rem);
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  line-height: 1;
+}
+
+.content span {
+  opacity: calc(var(--base) + (var(--active)));
+  transition: opacity 0.5s;
+}
+
+@supports (animation-timeline: scroll()) {
+  @property --active {
+    inherits: true;
+    initial-value: 0;
+    syntax: '<number>';
+  }
+  
+  .content span {
+    --active: 0;
+  }
+  
+  .content span {
+    opacity: calc(var(--base) + (var(--active)));
+    transition: opacity 0.5s;
+  }
+
+  .reader {
+    view-timeline: --reader block;
+  }
+
+  .content span {
+    animation: activate both steps(1);
+    animation-timeline: --reader;
+    animation-range: contain calc(((var(--start, 0) * var(--ppc)) * 1px))
+      contain calc(((var(--end, 0) * var(--ppc)) * 1px));
+  }
+
+  @keyframes activate {
+    to {
+      --active: 1;
+    }
+  }
+}
+
+/* 모바일 최적화 */
+@media (max-width: 768px) {
+  .content {
+    padding: 0.25rem 0;
+    max-width: calc(100% - 2rem);
+  }
+  
+  .content span {
+    transition: opacity 0.2s ease-out;
+  }
 }
 
 /* 모바일 퍼스트 최적화 */
@@ -98,100 +182,101 @@ body {
   .card {
     @apply text-xs min-h-[100px];
   }
-
-  /* 매우 작은 화면에서 패딩 조정 */
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 }
 
-/* 터치 디바이스 감지 및 최적화 */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
 @media (hover: none) and (pointer: coarse) {
-  /* 터치 디바이스에서 호버 효과 제거 */
+  /* 터치 디바이스에서 호버 효과 비활성화 */
   .hover\:scale-105:hover,
-  .group:hover .group-hover\:scale-105 {
+  .hover\:scale-110:hover,
+  .hover\:scale-125:hover {
     transform: none;
   }
 
-  /* 터치 디바이스에서 active 상태 강조 */
+  /* 터치 디바이스에서 액티브 효과 활성화 */
   .active\:scale-95:active,
-  .group:active .group-active\:scale-95 {
+  .active\:scale-90:active,
+  .active\:scale-85:active {
     transform: scale(0.95);
-    transition: transform 0.1s ease;
   }
+}
 
-  /* 터치 시 피드백 효과 */
-  .touch-feedback:active {
-    background-color: rgba(0, 0, 0, 0.05);
-    transition: background-color 0.1s ease;
-  }
+/* 터치 피드백 */
+.touch-feedback {
+  transition: transform 0.1s ease-out;
+}
+
+.touch-feedback:active {
+  transform: scale(0.98);
 }
 
 /* 고해상도 디스플레이 최적화 */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .text-stroke {
-    -webkit-text-stroke: 1px #000000;
+    -webkit-text-stroke: 0.75px #000000;
+    text-stroke: 0.5px #fff;
   }
 }
 
-/* 접근성 개선 */
+/* 모션 감소 설정 */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* 다크 모드에서 터치 피드백 색상 조정 */
+/* 다크 모드 터치 피드백 */
 @media (prefers-color-scheme: dark) {
   .touch-feedback:active {
     background-color: rgba(255, 255, 255, 0.1);
   }
 }
 
-/* 포커스 스타일 개선 (키보드 네비게이션) */
+/* 포커스 가시성 */
 :focus-visible {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* 버튼 및 인터랙티브 요소 스타일 */
+/* 모바일 버튼 스타일 */
 .btn-mobile {
+  @apply px-4 py-3 text-base font-medium rounded-lg;
   min-height: 48px;
-  padding: 12px 24px;
-  border-radius: 24px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-mobile:active {
   transform: scale(0.98);
+  transition: transform 0.1s ease-out;
 }
 
-/* 카드 컴포넌트 터치 최적화 */
+/* 모바일 카드 터치 스타일 */
 .card-touch {
-  transition: all 0.2s ease;
-  cursor: pointer;
+  transition: transform 0.1s ease-out;
 }
 
 .card-touch:active {
   transform: scale(0.98);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* 스와이프 제스처 지원 */
+/* 스와이프 가능한 요소 */
 .swipeable {
-  touch-action: pan-x;
-  -ms-touch-action: pan-x;
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
 }
 
-/* 로딩 스피너 최적화 */
+/* 모바일 스피너 애니메이션 */
 @keyframes mobile-spin {
   from {
     transform: rotate(0deg);
@@ -203,5 +288,4 @@ body {
 
 .loading-mobile {
   animation: mobile-spin 1s linear infinite;
-  will-change: transform;
 }

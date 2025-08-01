@@ -79,34 +79,36 @@ export default function WaveMaskText() {
         scrollTo: ch / 2,
         onComplete: () => {
           // 애니메이션 완료 후 처리
-        },
-        onError: (error: any) => {
-          console.warn('ScrollTo animation error:', error);
         }
       }, 0);
 
-    // 컴포넌트가 화면에 보이는지 확인하는 함수 (사용하지 않음)
-    // const isComponentVisible = () => {
-    //   if (!containerRef.current) return false;
-    //   const rect = containerRef.current.getBoundingClientRect();
-    //   return rect.top < window.innerHeight && rect.bottom > 0;
-    // };
-
-    // 스크롤에 따른 텍스트 페이드아웃
+    // 스크롤에 따른 텍스트 페이드아웃 및 위치 조정
     const handleScroll = () => {
       const scrollY = window.pageYOffset;
+      const containerHeight = ch * 2.0; // 200vh에 맞춤
       const fadeStart = ch * 0.5; // 화면 중앙부터 시작
-      const fadeEnd = ch * 1.1; // 화면 높이의 1.1배에서 완전히 사라짐
+      const fadeEnd = containerHeight * 0.85; // 컨테이너 높이의 85%에서 완전히 사라짐
+      const finalPosition = containerHeight * 0.95; // 최종 위치 (컨테이너 높이의 95%)
 
       if (scrollY >= fadeStart) {
         const progress = Math.min(
           1,
           (scrollY - fadeStart) / (fadeEnd - fadeStart)
         );
+        
         // 비선형 애니메이션: 처음에는 천천히, 마지막에 빠르게
-        const easeProgress = Math.pow(progress, 2); // 제곱 함수로 마지막에 가속
+        const easeProgress = Math.pow(progress, 1.3); // 더 부드러운 감속
         const opacity = Math.max(0, 1 - easeProgress);
-        const y = -easeProgress * 80; // 더 큰 이동 거리
+        
+        // 텍스트가 끝까지 내려와서 정지하도록 위치 계산
+        let y;
+        if (scrollY >= finalPosition) {
+          // 최종 위치에 도달하면 더 이상 움직이지 않음
+          y = -(finalPosition - fadeStart) * 0.6;
+        } else {
+          // 점진적으로 내려오다가 정지
+          y = -easeProgress * 150;
+        }
 
         if (textRef.current) {
           gsap.set(textRef.current, {
@@ -121,15 +123,9 @@ export default function WaveMaskText() {
 
     // 웨이브 그리기 함수
     function drawWave(t: number) {
-      if (waveY !== -window.pageYOffset) {
-        gsap.to(window, { 
-          duration: 1, 
-          waveY: Math.round(window.pageYOffset),
-          onError: (error: any) => {
-            console.warn('Wave animation error:', error);
-          }
-        });
-        waveY = Math.round(window.pageYOffset);
+      const currentScrollY = Math.round(window.pageYOffset);
+      if (waveY !== currentScrollY) {
+        waveY = currentScrollY;
       }
 
       for (let k = 0; k < nWaves; k++) {
@@ -209,7 +205,7 @@ export default function WaveMaskText() {
             <rect width="100%" height="100%" fill="none" />
             <text
               className="txt1"
-              x="50%"
+              x="53%"
               y="50%"
               textAnchor="middle"
               dominantBaseline="central"
@@ -226,7 +222,7 @@ export default function WaveMaskText() {
                 letterSpacing: "0.15em",
               }}
             >
-              ZNIT IDENTITY
+              ABOUT ZNIT.
             </text>
           </g>
         </defs>

@@ -70,81 +70,224 @@ const CrossStar = ({
   y: number;
   size: number;
   delay: number;
-}) => (
-  <motion.div
-    className="absolute"
-    style={{
-      left: `${x}%`,
-      top: `${y}%`,
-      width: `${size * 5}px`,
-      height: `${size * 5}px`,
-    }}
-    initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-    animate={{
-      opacity: [0, 1, 0.8, 1],
-      scale: [0, 1, 0.8, 1],
-      x: [0, Math.random() * 15 - 7.5, Math.random() * 10 - 5, 0],
-      y: [0, Math.random() * 15 - 7.5, Math.random() * 10 - 5, 0],
-    }}
-    transition={{
-      duration: 6 + Math.random() * 3,
-      delay: delay,
-      repeat: Infinity,
-      repeatType: "reverse",
-      ease: "easeInOut",
-    }}
-  >
-    {/* 중앙 원형 별 - 컬러팔레트 기반 */}
-    <div
-      className="absolute rounded-full"
-      style={{
-        left: "50%",
-        top: "50%",
-        width: `${size}px`,
-        height: `${size}px`,
-        transform: "translate(-50%, -50%)",
-        background:
-          "radial-gradient(circle, rgba(2,5,10,0.9) 0%, rgba(0,34,78,0.6) 50%, transparent 100%)",
-        boxShadow: "0 0 8px rgba(2,5,10,0.3)",
-      }}
-    />
+}) => {
+  // 황금색 통일 색상 조합
+  const colors = {
+    primary: "rgba(246,191,65,1)",      // #F6BF41 - 밝은 황금색
+    secondary: "rgba(246,191,65,0.8)",   // 황금색 (투명도 낮춤)
+    tertiary: "rgba(246,191,65,0.6)",    // 황금색 (투명도 더 낮춤)
+    dark: "rgba(246,191,65,0.4)",        // 황금색 (가장 투명)
+    glow: "rgba(246,191,65,0.3)",        // 황금색 빛 (약하게)
+    outerGlow: "rgba(246,191,65,0.1)",   // 황금색 빛무리 (매우 약하게)
+  };
 
-    {/* 십자 빛 효과 - 컬러팔레트 기반 */}
-    <div
+  return (
+    <motion.div
       className="absolute"
       style={{
-        left: "50%",
-        top: "50%",
-        width: `${size * 2.5}px`,
-        height: "2px",
-        transform: "translate(-50%, -50%)",
-        background:
-          "linear-gradient(90deg, transparent 0%, rgba(67,118,171,0.4) 20%, rgba(246,191,65,0.8) 50%, rgba(67,118,171,0.4) 80%, transparent 100%)",
-        boxShadow: "0 0 6px rgba(67,118,171,0.2)",
+        left: `${x}%`,
+        top: `${y}%`,
+        width: `${size * 5}px`,
+        height: `${size * 5}px`,
       }}
-    />
-    <div
-      className="absolute"
-      style={{
-        left: "50%",
-        top: "50%",
-        width: "2px",
-        height: `${size * 2.5}px`,
-        transform: "translate(-50%, -50%)",
-        background:
-          "linear-gradient(180deg, transparent 0%, rgba(67,118,171,0.4) 20%, rgba(246,191,65,0.8) 50%, rgba(67,118,171,0.4) 80%, transparent 100%)",
-        boxShadow: "0 0 6px rgba(67,118,171,0.2)",
+      initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
+      animate={{
+        opacity: [0, 1, 0.8, 1],
+        scale: [0, 1, 0.8, 1],
+        x: [0, Math.random() * 15 - 7.5, Math.random() * 10 - 5, 0],
+        y: [0, Math.random() * 15 - 7.5, Math.random() * 10 - 5, 0],
       }}
-    />
-  </motion.div>
-);
+      transition={{
+        duration: 6 + Math.random() * 3,
+        delay: delay,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut",
+      }}
+    >
+      {/* 외부 빛무리 - 밝은 색상 */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 8}px`,
+          height: `${size * 8}px`,
+          transform: "translate(-50%, -50%)",
+          background: `radial-gradient(circle, ${colors.outerGlow} 0%, transparent 70%)`,
+          filter: "blur(3px)",
+        }}
+      />
+
+      {/* 추가 빛무리 레이어 - 더 밝은 효과 */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 12}px`,
+          height: `${size * 12}px`,
+          transform: "translate(-50%, -50%)",
+          background: `radial-gradient(circle, rgba(246,191,65,0.2) 0%, rgba(246,191,65,0.1) 30%, transparent 80%)`,
+          filter: "blur(5px)",
+        }}
+      />
+
+      {/* 황금빛 빛무리 - 가장 밝은 효과 */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 15}px`,
+          height: `${size * 15}px`,
+          transform: "translate(-50%, -50%)",
+          background: `radial-gradient(circle, rgba(246,191,65,0.15) 0%, rgba(246,191,65,0.05) 50%, transparent 90%)`,
+          filter: "blur(8px)",
+        }}
+      />
+
+      {/* 중앙 원형 별 - 황금색 통일 */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size}px`,
+          height: `${size}px`,
+          transform: "translate(-50%, -50%)",
+          background: `radial-gradient(circle, ${colors.primary} 0%, ${colors.secondary} 30%, ${colors.tertiary} 60%, ${colors.dark} 100%)`,
+          boxShadow: `
+             0 0 6px ${colors.glow},
+             0 0 8px ${colors.outerGlow}
+           `,
+         }}
+       />
+
+      {/* 별 모양 십자 효과 - 8방향 빛 */}
+      {/* 상단 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 0.8}px`,
+          height: `${size * 2.5}px`,
+          transform: "translate(-50%, -50%)",
+          background: `linear-gradient(180deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
+          boxShadow: `0 0 4px ${colors.glow}`,
+          clipPath: "polygon(50% 0%, 0% 20%, 0% 80%, 50% 100%, 100% 80%, 100% 20%)",
+        }}
+      />
+      {/* 하단 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 0.8}px`,
+          height: `${size * 2.5}px`,
+          transform: "translate(-50%, -50%) rotate(180deg)",
+          background: `linear-gradient(180deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
+          boxShadow: `0 0 4px ${colors.glow}`,
+          clipPath: "polygon(50% 0%, 0% 20%, 0% 80%, 50% 100%, 100% 80%, 100% 20%)",
+        }}
+      />
+      {/* 좌측 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 2.5}px`,
+          height: `${size * 0.8}px`,
+          transform: "translate(-50%, -50%)",
+          background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
+          boxShadow: `0 0 4px ${colors.glow}`,
+          clipPath: "polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%)",
+        }}
+      />
+      {/* 우측 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 2.5}px`,
+          height: `${size * 0.8}px`,
+          transform: "translate(-50%, -50%)",
+          background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
+          boxShadow: `0 0 4px ${colors.glow}`,
+          clipPath: "polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%)",
+        }}
+      />
+
+      {/* 대각선 방향 빛 - 별 모양 완성 */}
+      {/* 좌상단 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 1.8}px`,
+          height: `${size * 0.6}px`,
+          transform: "translate(-50%, -50%) rotate(-45deg)",
+          background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
+          boxShadow: `0 0 3px ${colors.glow}`,
+          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+        }}
+      />
+      {/* 우상단 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 1.8}px`,
+          height: `${size * 0.6}px`,
+          transform: "translate(-50%, -50%) rotate(45deg)",
+          background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
+          boxShadow: `0 0 3px ${colors.glow}`,
+          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+        }}
+      />
+      {/* 좌하단 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 1.8}px`,
+          height: `${size * 0.6}px`,
+          transform: "translate(-50%, -50%) rotate(-135deg)",
+          background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
+          boxShadow: `0 0 3px ${colors.glow}`,
+          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+        }}
+      />
+      {/* 우하단 */}
+      <div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: `${size * 1.8}px`,
+          height: `${size * 0.6}px`,
+          transform: "translate(-50%, -50%) rotate(135deg)",
+          background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
+          boxShadow: `0 0 3px ${colors.glow}`,
+          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+        }}
+      />
+    </motion.div>
+  );
+};
 
 // 우주 배경 컴포넌트
 const SpaceBackground = () => {
   const [stars] = useState<
     Array<{ x: number; y: number; size: number; delay: number }>
   >([]);
-
 
   useEffect(() => {
     // 랜덤한 별들 생성
@@ -159,8 +302,6 @@ const SpaceBackground = () => {
           delay: Math.random() * 2,
         });
       }
-
-
     };
 
     generateStars();
@@ -173,10 +314,13 @@ const SpaceBackground = () => {
         <CrossStar key={index} {...star} />
       ))}
 
-      {/* 큰 십자 별들 */}
+      {/* 큰 십자 별들 - 통일된 색상 */}
       <CrossStar x={15} y={20} size={8} delay={0} />
       <CrossStar x={85} y={30} size={6} delay={0.5} />
       <CrossStar x={70} y={70} size={5} delay={1} />
+      <CrossStar x={25} y={80} size={4} delay={1.5} />
+      <CrossStar x={90} y={80} size={3} delay={2} />
+      <CrossStar x={50} y={15} size={7} delay={2.5} />
     </div>
   );
 };
