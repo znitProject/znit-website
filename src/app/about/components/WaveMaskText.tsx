@@ -73,14 +73,16 @@ export default function WaveMaskText() {
     }
 
     // 초기 애니메이션 - ZNIT IDENTITY는 처음부터 보이도록
-    gsap
-      .timeline({ defaults: { duration: 1 }, delay: 0.9 })
-      .to(window, { 
+    gsap.timeline({ defaults: { duration: 1 }, delay: 0.9 }).to(
+      window,
+      {
         scrollTo: ch / 2,
         onComplete: () => {
           // 애니메이션 완료 후 처리
-        }
-      }, 0);
+        },
+      },
+      0
+    );
 
     // 스크롤에 따른 텍스트 페이드아웃 및 위치 조정
     const handleScroll = () => {
@@ -95,11 +97,11 @@ export default function WaveMaskText() {
           1,
           (scrollY - fadeStart) / (fadeEnd - fadeStart)
         );
-        
+
         // 비선형 애니메이션: 처음에는 천천히, 마지막에 빠르게
         const easeProgress = Math.pow(progress, 1.3); // 더 부드러운 감속
         const opacity = Math.max(0, 1 - easeProgress);
-        
+
         // 텍스트가 끝까지 내려와서 정지하도록 위치 계산
         let y;
         if (scrollY >= finalPosition) {

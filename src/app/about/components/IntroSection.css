@@ -15,21 +15,26 @@
   outline: var(--thick) dashed hsl(8 100% 55%);
   outline-offset: calc(var(--thick) * -1);
   height: calc(
-    ((var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) * 1px) + 100vh
+    (
+        (var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) *
+          1px
+      ) +
+      100vh
   );
 }
 
 .content {
   position: sticky;
   top: 0;
-  min-height: 100vh;
-  width: 180ch;
-  padding: 2rem 0;
+  min-height: 80vh;
+  width: 160ch;
+  padding: 0.5rem 0;
   max-width: calc(100% - 4rem);
   display: grid;
   place-items: center;
-  margin: 0 auto;
-  line-height: 1;
+  margin-right: 400px;
+  line-height: 1.2;
+  text-align: left;
 }
 
 .content span {
@@ -40,13 +45,19 @@
 [data-split] {
   font-size: clamp(2rem, 8vmin + 1rem, 4rem);
   font-weight: 600;
+  white-space: pre-line;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  text-align: left;
 }
 
 @supports (animation-timeline: scroll()) {
   @property --active {
     inherits: true;
     initial-value: 0;
-    syntax: '<number>';
+    syntax: "<number>";
   }
 
   .reader {
@@ -65,4 +76,4 @@
       --active: 1;
     }
   }
-} 
+}
