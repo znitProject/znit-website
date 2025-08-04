@@ -25,7 +25,7 @@
 
 .content {
   position: sticky;
-  top: 0;
+  top: 40;
   min-height: 80vh;
   width: 160ch;
   padding: 0.5rem 0;
@@ -43,8 +43,8 @@
 }
 
 [data-split] {
-  font-size: clamp(2rem, 8vmin + 1rem, 4rem);
-  font-weight: 600;
+  font-size: clamp(32px, 8vmin + 16px, 70px);
+  font-weight: 800;
   white-space: pre-line;
   word-wrap: break-word;
   overflow-wrap: break-word;

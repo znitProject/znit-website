@@ -161,12 +161,20 @@ export default function IntroSection() {
             ref={toSplitRef}
             data-split
             aria-hidden="true"
-            className="text-9xl md:text-10xl font-semibold text-white"
+            className="text-[150px] md:text-[180px] font-bold text-white"
+            style={{ lineHeight: 1.6 }}
           >
-            We take responsibility for everything <br />
-            we do and think of every result we create as our{" "}
-            <span className="text-blue-400">own</span>. 우리는, 우리가 하는 일에
-            책임을 지고 우리가 만든 모든 결과를
+            We take responsibility for everything
+            <br />
+            we do and think of every result
+            <br />
+            we create as our <span className="text-blue-400">own</span>.
+            <br />
+            <br />
+            <br />
+            우리는, 우리가 하는 일에 책임을 지고
+            <br />
+            우리가 만든 모든 결과를
             <span className="text-blue-400">내 것처럼</span> 생각합니다.
           </div>
         </div>
