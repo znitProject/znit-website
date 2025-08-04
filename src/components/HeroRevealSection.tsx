@@ -33,7 +33,8 @@ const MadAnimation: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
   const wrapperRef = useRef<SVGGElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
-  const wordRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<SVGFEGaussianBlurElement>(null);
   const animationRef = useRef<number>();
   
   const [mouse] = useState<Mouse>({
@@ -121,10 +122,13 @@ const MadAnimation: React.FC = () => {
       svgRef.current.style.height = viewport.height + 'px';
     }
     
-    if (wordRef.current) {
-      const wordHeight = wordRef.current.clientHeight;
-      const maxScale = viewport.height / (wordHeight * 0.75);
-      wordRef.current.style.setProperty('--max-scale', maxScale.toString());
+    if (sceneRef.current) {
+      sceneRef.current.style.backgroundSize = window.innerWidth < 768 ? '20px 20px' : '40px 40px';
+    }
+
+    if (filterRef.current) {
+      const deviation = window.innerWidth < 768 ? '20' : '35';
+      filterRef.current.setAttribute('stdDeviation', deviation);
     }
   };
 
@@ -185,7 +189,7 @@ const MadAnimation: React.FC = () => {
         }}
       >
         {/* Title */}
-        <div className="flex justify-center pt-24">
+        <div className="flex justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-24">
             <GeometricGlobe />
         </div>
         
@@ -195,7 +199,7 @@ const MadAnimation: React.FC = () => {
           className="absolute left-0 bottom-0 w-full text-center whitespace-nowrap"
           style={{
             fontWeight: 700,
-            fontSize: '13vw',
+            fontSize: 'clamp(48px, 13vw, 200px)',
             letterSpacing: '-0.025em'
           }}
         >
@@ -209,6 +213,7 @@ const MadAnimation: React.FC = () => {
 
       {/* Scene */}
       <div 
+        ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
           background: '#0c0b0e',
@@ -220,20 +225,22 @@ const MadAnimation: React.FC = () => {
       >
         {/* Scene Title */}
         <div 
-          className="absolute flex flex-row flex-wrap"
+          className="absolute top-[2vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline"
           style={{
-            top: '2vw',
-            right: '2vw',
-            left: '2vw',
             fontWeight: 700,
-            fontSize: '13vw',
+            fontSize: 'clamp(2.5rem, 13vw, 12rem)',
             letterSpacing: '-0.025em',
             lineHeight: 0.9
           }}
         >
-          <div>One Vision, Two Crafts.</div>
-          <div className="ml-auto mt-[40px]">IT&DESIGN</div>
-          <div className="ml-auto">ZNIT</div>
+          <div className="flex-none">
+            <div><span style={{color: '#ff68a8'}}>O</span>ne Vision,</div>
+            <div> Two <span style={{color: '#009800'}}>C</span>rafts.</div>
+          </div>
+          <div className="flex-end text-right ml-auto ">
+            <div className="mt-5 md:mt-10">IT<span style={{color: '#4376AB'}}>&</span>DESIGN</div>
+            <div style={{color: '#F6BF41'}}>ZNIT</div>
+          </div>
         </div>
         
       
@@ -293,7 +300,7 @@ const MadAnimation: React.FC = () => {
           </g>
         </mask>
         <filter id="gooey">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="35" /> {/* 25에서 35로 증가하여 더 부드러운 효과 */}
+          <feGaussianBlur ref={filterRef} in="SourceGraphic" stdDeviation="35" /> {/* 25에서 35로 증가하여 더 부드러운 효과 */}
           <feColorMatrix 
             type="matrix" 
             values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7" 
