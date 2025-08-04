@@ -12,8 +12,7 @@ import KeywordCard from "../components/KeywordCard";
 import WorkCard from "../components/WorkCard";
 
 import WorkCardList from "../components/WorkCardList";
-import HomeTitleSection from "../components/HomeTitleSection";
-import HomeTitleVideoSection from "../components/HomeTitleVideoSection";
+import HeroRevealSection from "../components/HeroRevealSection";
 import StrokeFillTextSection from "../components/StrokeFillTextSection";
 
 const MapCard = dynamic(() => import("../components/MapCard"), { ssr: false });
@@ -36,17 +35,8 @@ export default function HomePage() {
       className={`min-h-screen w-full flex flex-col justify-center items-center mx-auto ${backgroundColor} transition-colors duration-300`}
     >
       {/* Hero Section - 모바일 최적화된 비율과 레이아웃 */}
-      <section
-        className={`w-full flex flex-col xl:flex-row items-center gap-6 sm:gap-8 lg:gap-10 xl:gap-12 pt-[4px] sm:pt-0 md:pt-4 lg:pt-8 xl:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 xl:justify-between ${backgroundColor}`}
-      >
-        {/* 타이틀 섹션 - 모바일에서 더 임팩트 있게 */}
-        <div className="w-full xl:flex-1 flex justify-center xl:justify-start">
-          <HomeTitleSection />
-        </div>
-        {/* 비디오 섹션 - 모바일에서 적절한 크기로 */}
-        <div className="w-full xl:flex-1 flex justify-center xl:justify-end mt-[20px]">
-          <HomeTitleVideoSection />
-        </div>
+      <section className={`w-full ${backgroundColor}`}>
+        <HeroRevealSection />
       </section>
 
       {/* Main Content Grid - 모바일 퍼스트 정보 위계 적용 */}
