@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import GeometricGlobe from './HeroGeometric';
+import { useTheme } from 'next-themes';
 
 
 // GSAP은 사용할 수 없으므로 Web Animations API로 대체하겠습니다
@@ -36,6 +37,7 @@ const MadAnimation: React.FC = () => {
   const sceneRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<SVGFEGaussianBlurElement>(null);
   const animationRef = useRef<number>();
+  const { theme } = useTheme();
   
   const [mouse] = useState<Mouse>({
     x: 0,
@@ -182,9 +184,9 @@ const MadAnimation: React.FC = () => {
       <div 
         className="absolute top-0 left-0 w-full h-full"
         style={{ 
-          background: '#ffffff', // #f1f0f9에서 #ffffff로 변경
+          background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
           cursor: 'none',
-          color: '#0c0b0e',
+          color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
           fontFamily: '"Fira Sans", sans-serif'
         }}
       >
@@ -216,11 +218,11 @@ const MadAnimation: React.FC = () => {
         ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
-          background: '#0c0b0e',
-          backgroundImage: 'linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
+          background: theme === 'dark' ? '#0c0b0e' : '#ffffff',
+          backgroundImage: theme === 'dark' ? 'linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)' : 'linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px)',
           backgroundSize: '40px 40px',
           mask: 'url(#mask)',
-          color: '#f1f0f9'
+          color: theme === 'dark' ? '#f1f0f9' : '#0c0b0e'
         }}
       >
         {/* Scene Title */}
@@ -237,7 +239,7 @@ const MadAnimation: React.FC = () => {
             <div><span style={{color: '#ff68a8'}}>O</span>ne Vision,</div>
             <div> Two <span style={{color: '#009800'}}>C</span>rafts.</div>
           </div>
-          <div className="flex-end text-right ml-auto ">
+          <div className="flex-end text-right ml-auto  ">
             <div className="mt-5 md:mt-10">IT<span style={{color: '#4376AB'}}>&</span>DESIGN</div>
             <div style={{color: '#F6BF41'}}>ZNIT</div>
           </div>
