@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import GeometricGlobe from './HeroGeometric';
 
 
 // GSAP은 사용할 수 없으므로 Web Animations API로 대체하겠습니다
@@ -65,7 +66,6 @@ const MadAnimation: React.FC = () => {
     }
     
     .char-animation {
-      animation: char-scale 1.25s cubic-bezier(0.65, 0, 0.35, 1) infinite;
       transform-origin: 50% 86.5%;
     }
     
@@ -75,24 +75,10 @@ const MadAnimation: React.FC = () => {
     
     .char-animation:nth-child(2) {
       color: #ff68a8;
-      animation-delay: 0.25s;
     }
     
     .char-animation:nth-child(3) {
       color: #009800;
-      animation-delay: 0.5s;
-    }
-    
-    @keyframes char-scale {
-      0% {
-        transform: scaleY(0.1);
-      }
-      50% {
-        transform: scaleY(var(--max-scale, 3));
-      }
-      100% {
-        transform: scaleY(0.1);
-      }
     }
   `;
 
@@ -199,6 +185,9 @@ const MadAnimation: React.FC = () => {
         }}
       >
         {/* Title */}
+        <div className="flex justify-center pt-24">
+            <GeometricGlobe />
+        </div>
         
         
         {/* Catcher */}
@@ -210,7 +199,7 @@ const MadAnimation: React.FC = () => {
             letterSpacing: '-0.025em'
           }}
         >
-          Reveal the ZNIT
+        REVEAL ZNIT.
         </div>
         
         
@@ -223,6 +212,8 @@ const MadAnimation: React.FC = () => {
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
           background: '#0c0b0e',
+          backgroundImage: 'linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
           mask: 'url(#mask)',
           color: '#f1f0f9'
         }}
@@ -240,25 +231,12 @@ const MadAnimation: React.FC = () => {
             lineHeight: 0.9
           }}
         >
-          <div>IT&DESIGN</div>
-          <div className="ml-auto">Define Us</div>
+          <div>One Vision, Two Crafts.</div>
+          <div className="ml-auto mt-[40px]">IT&DESIGN</div>
+          <div className="ml-auto">ZNIT</div>
         </div>
         
-        {/* Word */}
-        <div 
-          ref={wordRef}
-          className="absolute bottom-0 left-0 w-full flex justify-center flex-row"
-          style={{
-            fontFamily: '"Climate Crisis", sans-serif',
-            fontSize: '20vw',
-            fontWeight: 800,
-            textTransform: 'uppercase'
-          }}
-        >
-          <div className="char-animation">O</div>
-          <div className="char-animation">W</div>
-          <div className="char-animation">N</div>
-        </div>
+      
       </div>
 
       {/* Cursor */}
