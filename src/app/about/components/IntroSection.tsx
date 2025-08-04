@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./IntroSection.css";
@@ -69,18 +70,30 @@ export default function IntroSection() {
           toSplit.appendChild(lineBreak);
         } else if (
           element.tagName === "SPAN" &&
-          element.className.includes("text-blue-400")
+          (element.className.includes("text-blue-400") ||
+            element.className.includes("text-yellow-400") ||
+            (element as HTMLElement).style.color === "#F6BF41")
         ) {
           // 색상이 적용된 span인 경우
           const text = element.textContent || "";
           const words = text.trim().split(/\s+/);
+          const isYellow =
+            element.className.includes("text-yellow-400") ||
+            (element as HTMLElement).style.color === "#F6BF41";
 
           words.forEach((word) => {
             if (word) {
               const coloredSpan = document.createElement("span");
               coloredSpan.textContent = word + " ";
-              coloredSpan.className = "text-blue-400";
-              coloredSpan.style.cssText = `
+              if (isYellow) {
+                coloredSpan.className = "text-yellow-400";
+                coloredSpan.style.textShadow =
+                  "0 0 20px rgba(251, 191, 36, 0.5)";
+                coloredSpan.style.transition = "all 0.3s ease";
+              } else {
+                coloredSpan.className = "text-blue-400";
+              }
+              coloredSpan.style.cssText += `
                 --index: ${wordIndex};
                 --start: ${cumulation};
                 --end: ${cumulation + word.length};
@@ -139,12 +152,12 @@ export default function IntroSection() {
           <h1
             className="font-black text-white mb-6"
             style={{
-              fontSize: "100px",
+              fontSize: "90px",
               fontFamily: "var(--font-montserrat), sans-serif",
               fontWeight: 900,
             }}
           >
-            WE OWN IT!
+            WE OWN IT?
           </h1>
 
           <div
@@ -161,21 +174,43 @@ export default function IntroSection() {
             ref={toSplitRef}
             data-split
             aria-hidden="true"
-            className="text-[150px] md:text-[180px] font-bold text-white"
-            style={{ lineHeight: 1.6 }}
+            className="text-[160px] md:text-[180px] font-bold text-white"
+            style={{ lineHeight: 1.5 }}
           >
-            We take responsibility for everything
+            We own our standards.
             <br />
-            we do and think of every result
+            We own our impact.
             <br />
-            we create as our <span className="text-blue-400">own</span>.
+            <span
+              className="text-yellow-400"
+              style={{
+                textShadow: "0 0 20px rgba(251, 191, 36, 0.5)",
+                transition: "all 0.3s ease",
+              }}
+            >
+              We
+            </span>{" "}
+            <span
+              className="text-yellow-400"
+              style={{
+                textShadow: "0 0 20px rgba(251, 191, 36, 0.5)",
+                transition: "all 0.3s ease",
+              }}
+            >
+              own
+            </span>{" "}
+            <span
+              className="text-yellow-400"
+              style={{
+                textShadow: "0 0 20px rgba(251, 191, 36, 0.5)",
+                transition: "all 0.3s ease",
+              }}
+            >
+              it
+            </span>
+            ,
             <br />
-            <br />
-            <br />
-            우리는, 우리가 하는 일에 책임을 지고
-            <br />
-            우리가 만든 모든 결과를
-            <span className="text-blue-400">내 것처럼</span> 생각합니다.
+            Because it reflects who we are.
           </div>
         </div>
       </section>

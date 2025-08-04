@@ -27,7 +27,7 @@
   position: sticky;
   top: 40;
   min-height: 80vh;
-  width: 160ch;
+  width: 180ch;
   padding: 0.5rem 0;
   max-width: calc(100% - 4rem);
   display: grid;
@@ -43,7 +43,7 @@
 }
 
 [data-split] {
-  font-size: clamp(32px, 8vmin + 16px, 70px);
+  font-size: clamp(36px, 8vmin + 16px, 80px);
   font-weight: 800;
   white-space: pre-line;
   word-wrap: break-word;
@@ -51,6 +51,16 @@
   word-break: normal;
   hyphens: auto;
   text-align: left;
+}
+
+[data-split] .text-right {
+  text-align: right !important;
+}
+
+[data-split] .text-yellow-400 {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+  transition: all 0.3s ease;
 }
 
 @supports (animation-timeline: scroll()) {

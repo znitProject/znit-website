@@ -23,7 +23,7 @@ const values: ValueCardData[] = [
     title: "주체성",
     description: "Independence\nProactiveness",
     color: "bg-blue-500",
-    image: "/values/independence.png",
+    image: "/values/independence.jpg",
     detailContent: {
       subtitle: "자신의 생각과 판단으로 행동하는 능력",
       explanation:
@@ -35,7 +35,7 @@ const values: ValueCardData[] = [
     title: "공동체 의식",
     description: "Community spirit\nTogetherness",
     color: "bg-red-500",
-    image: "/values/community.png",
+    image: "/values/community.jpg",
     detailContent: {
       subtitle: "함께 살아가는 공동체를 위한 마음가짐",
       explanation:
@@ -47,7 +47,7 @@ const values: ValueCardData[] = [
     title: "전문성",
     description: "Professionalism\nExpertise",
     color: "bg-purple-500",
-    image: "/values/professionalism.png",
+    image: "/values/professional.jpg",
     detailContent: {
       subtitle: "자신이 맡은 분야에 대한 전문적인 지식과 경험",
       explanation:
@@ -59,7 +59,7 @@ const values: ValueCardData[] = [
     title: "책임감",
     description: "Responsibility",
     color: "bg-orange-500",
-    image: "/values/responsibility.png",
+    image: "/values/responsibility.jpg",
     detailContent: {
       subtitle: "자신의 행동과 결정에 대한 책임을 지는 태도",
       explanation:
@@ -71,7 +71,7 @@ const values: ValueCardData[] = [
     title: "전략적 사고",
     description: "Strategic thinking",
     color: "bg-green-500",
-    image: "/values/stratigic.png",
+    image: "/values/stratigic.jpg",
     detailContent: {
       subtitle: "나무가 아니라 숲을 보고, 더 나은 방법을 모색하는 태도",
       explanation:
@@ -80,55 +80,192 @@ const values: ValueCardData[] = [
   },
 ];
 
-const StarryBackground = () => {
-  const [stars, setStars] = useState<
+const FluidMixingPattern = () => {
+  const [layers, setLayers] = useState<
     Array<{
       id: number;
+      type: "main-flow" | "secondary-flow" | "accent-flow" | "texture";
       top: string;
       left: string;
-      size: string;
+      width: string;
+      height: string;
+      color: string;
+      blendMode: string;
       duration: number;
       delay: number;
     }>
   >([]);
 
   useEffect(() => {
-    // 클라이언트에서만 별들을 생성하여 hydration 오류 방지
-    const generatedStars = Array.from({ length: 60 }).map((_, i) => ({
+    const colors = [
+      "#1a1a2e", // 어두운 남색
+      "#ff2e63", // 밝은 마젠타
+      "#ff6b35", // 주황색
+      "#6a4c93", // 보라색
+      "#ffd93d", // 노란색
+      "#8b4513", // 갈색
+      "#e91e63", // 핑크
+      "#9c27b0", // 자주색
+    ];
+    const types = ["main-flow", "secondary-flow", "accent-flow", "texture"];
+    const blendModes = ["multiply", "screen", "overlay", "soft-light"];
+
+    const generatedLayers = Array.from({ length: 15 }).map((_, i) => ({
       id: i,
+      type: types[Math.floor(Math.random() * types.length)] as
+        | "main-flow"
+        | "secondary-flow"
+        | "accent-flow"
+        | "texture",
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
-      size: `${Math.random() * 2 + 1}px`,
-      duration: Math.random() * 2 + 1,
-      delay: Math.random() * 2,
+      width: `${Math.random() * 80 + 60}%`,
+      height: `${Math.random() * 100 + 80}%`,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      blendMode: blendModes[Math.floor(Math.random() * blendModes.length)],
+      duration: Math.random() * 15 + 12,
+      delay: Math.random() * 6,
     }));
-    setStars(generatedStars);
+    setLayers(generatedLayers);
   }, []);
+
+  const renderLayer = (layer: any) => {
+    switch (layer.type) {
+      case "main-flow":
+        return (
+          <motion.div
+            key={layer.id}
+            className="absolute"
+            style={{
+              top: layer.top,
+              left: layer.left,
+              width: layer.width,
+              height: layer.height,
+              background: `linear-gradient(135deg, ${layer.color} 0%, ${layer.color}80 40%, transparent 80%)`,
+              borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
+              mixBlendMode: layer.blendMode,
+            }}
+            animate={{
+              borderRadius: [
+                "60% 40% 30% 70% / 60% 30% 70% 40%",
+                "30% 70% 60% 40% / 40% 60% 40% 60%",
+                "60% 40% 30% 70% / 60% 30% 70% 40%",
+              ],
+              scale: [1, 1.15, 1],
+              opacity: [0.7, 0.9, 0.7],
+            }}
+            transition={{
+              duration: layer.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: layer.delay,
+            }}
+          />
+        );
+      case "secondary-flow":
+        return (
+          <motion.div
+            key={layer.id}
+            className="absolute"
+            style={{
+              top: layer.top,
+              left: layer.left,
+              width: layer.width,
+              height: layer.height,
+              background: `radial-gradient(ellipse at center, ${layer.color} 0%, ${layer.color}80 60%, transparent 80%)`,
+              borderRadius: "70% 30% 40% 60% / 60% 40% 60% 40%",
+              mixBlendMode: layer.blendMode,
+            }}
+            animate={{
+              borderRadius: [
+                "70% 30% 40% 60% / 60% 40% 60% 40%",
+                "30% 70% 60% 40% / 40% 60% 40% 60%",
+                "70% 30% 40% 60% / 60% 40% 60% 40%",
+              ],
+              scale: [1, 1.1, 1],
+              opacity: [0.6, 0.8, 0.6],
+            }}
+            transition={{
+              duration: layer.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: layer.delay,
+            }}
+          />
+        );
+      case "accent-flow":
+        return (
+          <motion.div
+            key={layer.id}
+            className="absolute"
+            style={{
+              top: layer.top,
+              left: layer.left,
+              width: layer.width,
+              height: layer.height,
+              background: `conic-gradient(from 45deg, ${layer.color} 0deg, ${layer.color}80 180deg, transparent 180deg)`,
+              borderRadius: "50% 20% 80% 10% / 40% 80% 20% 60%",
+              mixBlendMode: layer.blendMode,
+            }}
+            animate={{
+              borderRadius: [
+                "50% 20% 80% 10% / 40% 80% 20% 60%",
+                "20% 80% 10% 50% / 80% 20% 60% 40%",
+                "50% 20% 80% 10% / 40% 80% 20% 60%",
+              ],
+              rotate: [0, 180, 360],
+              opacity: [0.5, 0.7, 0.5],
+            }}
+            transition={{
+              duration: layer.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: layer.delay,
+            }}
+          />
+        );
+      case "texture":
+        return (
+          <motion.div
+            key={layer.id}
+            className="absolute"
+            style={{
+              top: layer.top,
+              left: layer.left,
+              width: layer.width,
+              height: layer.height,
+              background: `radial-gradient(circle at 20% 30%, ${layer.color} 0%, ${layer.color} 1px, transparent 1px),
+                          radial-gradient(circle at 80% 20%, ${layer.color} 0%, ${layer.color} 0.5px, transparent 0.5px),
+                          radial-gradient(circle at 40% 70%, ${layer.color} 0%, ${layer.color} 1.5px, transparent 1.5px),
+                          radial-gradient(circle at 90% 80%, ${layer.color} 0%, ${layer.color} 0.8px, transparent 0.8px),
+                          radial-gradient(circle at 10% 90%, ${layer.color} 0%, ${layer.color} 1.2px, transparent 1.2px),
+                          radial-gradient(circle at 60% 50%, ${layer.color} 0%, ${layer.color} 0.6px, transparent 0.6px)`,
+              mixBlendMode: layer.blendMode,
+            }}
+            animate={{
+              scale: [1, 1.02, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: layer.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: layer.delay,
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      {stars.map((star) => (
-        <motion.div
-          key={star.id}
-          className="absolute bg-white rounded-full"
-          style={{
-            top: star.top,
-            left: star.left,
-            width: star.size,
-            height: star.size,
-          }}
-          animate={{
-            opacity: [0.2, 1, 0.2],
-          }}
-          transition={{
-            duration: star.duration,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "easeInOut",
-            delay: star.delay,
-          }}
-        />
-      ))}
+      {layers.map(renderLayer)}
     </div>
   );
 };
@@ -250,7 +387,40 @@ export default function ValuesSection() {
                       .split("\n")
                       .map((line, index) => (
                         <span key={index}>
-                          {line}
+                          {line.split(" ").map((word, wordIndex) => {
+                            // 포인트 단어들 (각 가치에 맞는 키워드)
+                            const highlightWords: { [key: number]: string[] } =
+                              {
+                                1: ["혁신", "창의성", "최고의", "결과물"],
+                                2: ["함께", "협력", "소통", "성장", "동반자"],
+                                3: ["전문성", "배움", "도전", "혁신적인"],
+                                4: ["책임감", "신뢰", "약속", "최고의"],
+                                5: ["전략적", "혁신적", "지속 가능한", "미래"],
+                              };
+
+                            const shouldHighlight =
+                              highlightWords[selectedValue.id]?.includes(word);
+
+                            return (
+                              <span key={wordIndex}>
+                                {shouldHighlight ? (
+                                  <span
+                                    style={{
+                                      color: "#F6BF41",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    {word}
+                                  </span>
+                                ) : (
+                                  word
+                                )}
+                                {wordIndex < line.split(" ").length - 1
+                                  ? " "
+                                  : ""}
+                              </span>
+                            );
+                          })}
                           {index <
                             selectedValue.detailContent.explanation.split("\n")
                               .length -
@@ -285,10 +455,10 @@ export default function ValuesSection() {
                 >
                   {/* Card Front */}
                   <div
-                    className="absolute inset-0 rounded-xl p-6 flex flex-col justify-end text-right bg-black border border-white/20 overflow-hidden"
+                    className="absolute inset-0 rounded-xl p-6 flex flex-col justify-end text-right bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-white/20 overflow-hidden"
                     style={{ backfaceVisibility: "hidden" }}
                   >
-                    <StarryBackground />
+                    <FluidMixingPattern />
                     <div className="relative z-10 mb-4">
                       <h3 className="text-3xl font-bold mb-2 text-white">
                         {value.title}
@@ -314,7 +484,7 @@ export default function ValuesSection() {
                       sizes="(max-width: 768px) 100vw, 320px"
                       style={{ objectFit: "cover" }}
                     />
-                    <div className="absolute inset-0 bg-black/50" />
+                    <div className="absolute inset-0 bg-black/20" />
                     <div className="absolute left-4 top-1/2 -translate-y-1/2">
                       <motion.svg
                         width="32"
