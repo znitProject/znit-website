@@ -19,7 +19,7 @@
         (var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) *
           1px
       ) +
-      100vh
+      50vh
   );
 }
 
@@ -32,9 +32,9 @@
   max-width: calc(100% - 4rem);
   display: grid;
   place-items: center;
-  margin-right: 400px;
+  margin-right: 200px;
   line-height: 1.2;
-  text-align: left;
+  text-align: center;
 }
 
 .content span {
@@ -43,7 +43,7 @@
 }
 
 [data-split] {
-  font-size: clamp(36px, 8vmin + 16px, 80px);
+  font-size: clamp(36px, 8vmin + 16px, 65px);
   font-weight: 800;
   white-space: pre-line;
   word-wrap: break-word;
@@ -61,6 +61,16 @@
   color: #fbbf24 !important;
   text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
   transition: all 0.3s ease;
+}
+
+[data-split] .smaller {
+  font-size: 0.4em !important;
+  line-height: 1.5 !important;
+  opacity: 1 !important;
+  animation: none !important;
+  --active: 1 !important;
+  display: block !important;
+  margin: 0.2em 0 !important;
 }
 
 @supports (animation-timeline: scroll()) {

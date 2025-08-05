@@ -84,13 +84,12 @@ export default function WaveMaskText() {
       0
     );
 
-    // 스크롤에 따른 텍스트 페이드아웃 및 위치 조정
+    // 스크롤에 따른 텍스트 페이드아웃만 적용 (위치 이동 없음)
     const handleScroll = () => {
       const scrollY = window.pageYOffset;
       const containerHeight = ch * 2.0; // 200vh에 맞춤
       const fadeStart = ch * 0.5; // 화면 중앙부터 시작
-      const fadeEnd = containerHeight * 0.85; // 컨테이너 높이의 85%에서 완전히 사라짐
-      const finalPosition = containerHeight * 0.95; // 최종 위치 (컨테이너 높이의 95%)
+      const fadeEnd = containerHeight * 0.8; // 컨테이너 높이의 85%에서 완전히 사라짐
 
       if (scrollY >= fadeStart) {
         const progress = Math.min(
@@ -102,20 +101,11 @@ export default function WaveMaskText() {
         const easeProgress = Math.pow(progress, 1.3); // 더 부드러운 감속
         const opacity = Math.max(0, 1 - easeProgress);
 
-        // 텍스트가 끝까지 내려와서 정지하도록 위치 계산
-        let y;
-        if (scrollY >= finalPosition) {
-          // 최종 위치에 도달하면 더 이상 움직이지 않음
-          y = -(finalPosition - fadeStart) * 0.6;
-        } else {
-          // 점진적으로 내려오다가 정지
-          y = -easeProgress * 150;
-        }
-
+        // 텍스트는 위치 이동 없이 페이드아웃만 적용
         if (textRef.current) {
           gsap.set(textRef.current, {
             opacity: opacity,
-            y: y,
+            y: 0, // 위치 이동 없음
           });
         }
       }

@@ -363,7 +363,7 @@ export default function ValuesSection() {
   return (
     <section className="min-h-screen py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 mt-20">
           <h2 className="text-4xl font-bold text-white mb-40 font-red-hat-display">
             {"We own what defines us.".split("").map((char, index) => (
               <motion.span

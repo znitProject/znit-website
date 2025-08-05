@@ -106,6 +106,16 @@ export default function IntroSection() {
               wordIndex++;
             }
           });
+        } else if (
+          element.tagName === "SPAN" &&
+          element.className.includes("smaller")
+        ) {
+          // .smaller 클래스를 가진 span은 애니메이션 제외하고 그대로 복사
+          const smallerSpan = document.createElement("span");
+          smallerSpan.className = "smaller";
+          smallerSpan.style.cssText = (element as HTMLElement).style.cssText;
+          smallerSpan.innerHTML = element.innerHTML;
+          toSplit.appendChild(smallerSpan);
         } else {
           // 다른 요소인 경우 자식 노드들을 재귀적으로 처리
           Array.from(element.childNodes).forEach(processNode);
@@ -147,7 +157,10 @@ export default function IntroSection() {
   return (
     <div className="min-h-screen">
       {/* 타이틀 섹션 */}
-      <div className="flex items-start justify-center pt-10">
+      <div
+        className="flex items-start justify-center pt-10 pb-10 relative"
+        style={{ zIndex: 10 }}
+      >
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h1
             className="font-black text-white mb-6"
@@ -159,11 +172,6 @@ export default function IntroSection() {
           >
             WE OWN IT?
           </h1>
-
-          <div
-            className="h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 rounded-full mx-auto"
-            style={{ width: "200px" }}
-          />
         </div>
       </div>
 
@@ -174,43 +182,31 @@ export default function IntroSection() {
             ref={toSplitRef}
             data-split
             aria-hidden="true"
-            className="text-[160px] md:text-[180px] font-bold text-white"
             style={{ lineHeight: 1.5 }}
           >
             We own our standards.
             <br />
+            <span className="smaller">
+              "우리의 기준은 외부의 기대에만 머물지 않습니다. 우리는 스스로
+              <br />
+              나아가야 할 방향을 정의하고, 그 기준을 주도적으로 세웁니다."
+            </span>
+            <br />
             We own our impact.
             <br />
-            <span
-              className="text-yellow-400"
-              style={{
-                textShadow: "0 0 20px rgba(251, 191, 36, 0.5)",
-                transition: "all 0.3s ease",
-              }}
-            >
-              We
-            </span>{" "}
-            <span
-              className="text-yellow-400"
-              style={{
-                textShadow: "0 0 20px rgba(251, 191, 36, 0.5)",
-                transition: "all 0.3s ease",
-              }}
-            >
-              own
-            </span>{" "}
-            <span
-              className="text-yellow-400"
-              style={{
-                textShadow: "0 0 20px rgba(251, 191, 36, 0.5)",
-                transition: "all 0.3s ease",
-              }}
-            >
-              it
+            <span className="smaller">
+              "결과뿐 아니라 그로 인해 생기는 변화, 감정, 맥락까지
+              <br />
+              우리는 끝까지 돌보고, 깊이 있게 마주합니다."
             </span>
-            ,
             <br />
-            Because it reflects who we are.
+            We own it , Because it reflects who we are.
+            <br />
+            <span className="smaller">
+              "우리가 만든 것은 단순한 결과물이 아닙니다.
+              <br />
+              우리가 어떻게 생각하고 움직이는지를 보여주는 증거입니다."
+            </span>
           </div>
         </div>
       </section>

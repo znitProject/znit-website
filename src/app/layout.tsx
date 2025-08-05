@@ -30,7 +30,7 @@ const robotoFlex = Roboto_Flex({
 const nanumSquareNeo = localFont({
   src: "../../public/fonts/NanumSquareNeo-Variable.ttf",
   variable: "--font-nanum-square-neo",
-  display: 'swap',
+  display: "swap",
 });
 
 const stylish = Stylish({
@@ -40,7 +40,8 @@ const stylish = Stylish({
 
 export const metadata: Metadata = {
   title: "ZNIT - 혁신적인 솔루션으로 미래를 만들어갑니다",
-  description: "ZNIT는 혁신적인 디지털 솔루션을 제공하는 기업입니다. 웹 개발, 디자인, 모바일 앱 개발 등 다양한 서비스를 제공합니다.",
+  description:
+    "ZNIT는 혁신적인 디지털 솔루션을 제공하는 기업입니다. 웹 개발, 디자인, 모바일 앱 개발 등 다양한 서비스를 제공합니다.",
   keywords: ["ZNIT", "웹 개발", "디자인", "모바일 앱", "디지털 솔루션"],
   authors: [{ name: "ZNIT" }],
   creator: "ZNIT",
@@ -50,7 +51,9 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  ),
   alternates: {
     canonical: "/",
   },
@@ -91,7 +94,7 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
       </head>
       <body
         className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} ${stylish.variable} antialiased`}

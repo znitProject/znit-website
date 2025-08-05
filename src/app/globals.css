@@ -68,7 +68,10 @@ body {
   outline: var(--thick) dashed var(--accent);
   outline-offset: calc(var(--thick) * -1);
   height: calc(
-    ((var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) * 1px) +
+    (
+        (var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) *
+          1px
+      ) +
       100vh
   );
 }
@@ -95,13 +98,13 @@ body {
   @property --active {
     inherits: true;
     initial-value: 0;
-    syntax: '<number>';
+    syntax: "<number>";
   }
-  
+
   .content span {
     --active: 0;
   }
-  
+
   .content span {
     opacity: calc(var(--base) + (var(--active)));
     transition: opacity 0.5s;
@@ -131,7 +134,7 @@ body {
     padding: 0.25rem 0;
     max-width: calc(100% - 2rem);
   }
-  
+
   .content span {
     transition: opacity 0.2s ease-out;
   }
