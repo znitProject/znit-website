@@ -1,5 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import GeometricGlobe from "./HeroGeometric";
+
+import React, { useEffect, useRef, useState } from 'react';
+import GeometricGlobe from './HeroGeometric';
+import { useTheme } from 'next-themes';
+
 
 // GSAP은 사용할 수 없으므로 Web Animations API로 대체하겠습니다
 interface Mouse {
@@ -34,7 +37,15 @@ const MadAnimation: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<SVGFEGaussianBlurElement>(null);
-  const animationRef = useRef<number | undefined>(undefined);
+
+  const animationRef = useRef<number>();
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
 
   const [mouse] = useState<Mouse>({
     x: 0,
@@ -182,16 +193,22 @@ const MadAnimation: React.FC = () => {
     };
   }, []);
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div className="relative w-full h-screen">
       {/* Hero Section */}
       <div
         className="absolute top-0 left-0 w-full h-full"
-        style={{
-          background: "#ffffff", // #f1f0f9에서 #ffffff로 변경
-          cursor: "none",
-          color: "#0c0b0e",
-          fontFamily: '"Fira Sans", sans-serif',
+
+        style={{ 
+          background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
+          cursor: 'none',
+          color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
+          fontFamily: '"Fira Sans", sans-serif'
+
         }}
       >
         {/* Title */}
@@ -217,12 +234,16 @@ const MadAnimation: React.FC = () => {
         ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
-          background: "#0c0b0e",
+
+          backgroundColor: theme === "dark" ? "#0c0b0e" : "#ffffff",
           backgroundImage:
-            "linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
+            theme === "dark"
+              ? "linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)"
+              : "linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
           mask: "url(#mask)",
-          color: "#f1f0f9",
+          color: theme === "dark" ? "#f1f0f9" : "#0c0b0e",
+
         }}
       >
         {/* Scene Title */}
@@ -244,11 +265,11 @@ const MadAnimation: React.FC = () => {
               Two <span style={{ color: "#009800" }}>C</span>rafts.
             </div>
           </div>
-          <div className="flex-end text-right ml-auto ">
-            <div className="mt-5 md:mt-10">
-              IT<span style={{ color: "#4376AB" }}>&</span>DESIGN
-            </div>
-            <div style={{ color: "#F6BF41" }}>ZNIT</div>
+
+          <div className="flex-end text-right ml-auto  ">
+            <div className="mt-5 md:mt-10">IT<span style={{color: '#4376AB'}}>&</span>DESIGN</div>
+            <div style={{color: '#F6BF41'}}>ZNIT</div>
+
           </div>
         </div>
       </div>

@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from "react";
+
+import React, { useEffect, useRef } from 'react';
+import { useTheme } from 'next-themes';
 
 interface Point {
   x: number;
@@ -22,6 +24,7 @@ const GeometricGlobe: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
   const pointsRef = useRef<Point[]>([]);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -36,9 +39,11 @@ const GeometricGlobe: React.FC = () => {
     canvas.width = width;
     canvas.height = height;
 
-    const dark = "rgb(0, 0, 0)";
-    const light = "rgba(167,175,181,1)";
-    const gold = "rgba(141,116,75,1)";
+
+    const dark = theme === 'dark' ? '#FFFFFF' : 'rgb(0, 0, 0)';
+    const light = theme === 'dark' ? 'rgba(167,175,181,0.5)' : 'rgba(167,175,181,1)';
+    const gold = 'rgb(188, 208, 229)';
+
 
     const getRandomInt = (min: number, max: number): number => {
       return Math.floor(Math.random() * (max - min + 1) + min);
@@ -459,7 +464,7 @@ const GeometricGlobe: React.FC = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas
