@@ -23,7 +23,7 @@ const values: ValueCardData[] = [
     title: "주체성",
     description: "Independence\nProactiveness",
     color: "bg-blue-500",
-    image: "/values/independence.png",
+    image: "/values/independence.jpg",
     detailContent: {
       subtitle: "자신의 생각과 판단으로 행동하는 능력",
       explanation:
@@ -35,7 +35,7 @@ const values: ValueCardData[] = [
     title: "공동체 의식",
     description: "Community spirit\nTogetherness",
     color: "bg-red-500",
-    image: "/values/community.png",
+    image: "/values/community.jpg",
     detailContent: {
       subtitle: "함께 살아가는 공동체를 위한 마음가짐",
       explanation:
@@ -47,7 +47,7 @@ const values: ValueCardData[] = [
     title: "전문성",
     description: "Professionalism\nExpertise",
     color: "bg-purple-500",
-    image: "/values/professionalism.png",
+    image: "/values/professional.jpg",
     detailContent: {
       subtitle: "자신이 맡은 분야에 대한 전문적인 지식과 경험",
       explanation:
@@ -59,7 +59,7 @@ const values: ValueCardData[] = [
     title: "책임감",
     description: "Responsibility",
     color: "bg-orange-500",
-    image: "/values/responsibility.png",
+    image: "/values/responsibility.jpg",
     detailContent: {
       subtitle: "자신의 행동과 결정에 대한 책임을 지는 태도",
       explanation:
@@ -71,7 +71,7 @@ const values: ValueCardData[] = [
     title: "전략적 사고",
     description: "Strategic thinking",
     color: "bg-green-500",
-    image: "/values/stratigic.png",
+    image: "/values/stratigic.jpg",
     detailContent: {
       subtitle: "나무가 아니라 숲을 보고, 더 나은 방법을 모색하는 태도",
       explanation:
@@ -80,55 +80,210 @@ const values: ValueCardData[] = [
   },
 ];
 
-const StarryBackground = () => {
-  const [stars, setStars] = useState<
+const WavePattern = () => {
+  const [waves, setWaves] = useState<
     Array<{
       id: number;
+      type: "wave-1" | "wave-2" | "wave-3" | "ripple";
       top: string;
       left: string;
-      size: string;
+      width: string;
+      height: string;
+      color: string;
+      blendMode: "multiply" | "screen" | "overlay" | "soft-light";
       duration: number;
       delay: number;
     }>
   >([]);
 
   useEffect(() => {
-    // 클라이언트에서만 별들을 생성하여 hydration 오류 방지
-    const generatedStars = Array.from({ length: 60 }).map((_, i) => ({
+    const colors = [
+      "#1a1a2e", // 어두운 남색
+      "#ff2e63", // 밝은 마젠타
+      "#ff6b35", // 주황색
+      "#6a4c93", // 보라색
+      "#ffd93d", // 노란색
+      "#8b4513", // 갈색
+      "#e91e63", // 핑크
+      "#9c27b0", // 자주색
+    ];
+    const types = ["wave-1", "wave-2", "wave-3", "ripple"];
+    const blendModes = ["multiply", "screen", "overlay", "soft-light"];
+
+    const generatedWaves = Array.from({ length: 12 }).map((_, i) => ({
       id: i,
+      type: types[Math.floor(Math.random() * types.length)] as
+        | "wave-1"
+        | "wave-2"
+        | "wave-3"
+        | "ripple",
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
-      size: `${Math.random() * 2 + 1}px`,
-      duration: Math.random() * 2 + 1,
-      delay: Math.random() * 2,
+      width: `${Math.random() * 100 + 80}%`,
+      height: `${Math.random() * 120 + 100}%`,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      blendMode: blendModes[Math.floor(Math.random() * blendModes.length)] as
+        | "multiply"
+        | "screen"
+        | "overlay"
+        | "soft-light",
+      duration: Math.random() * 25 + 20,
+      delay: Math.random() * 10,
     }));
-    setStars(generatedStars);
+    setWaves(generatedWaves);
   }, []);
+
+  const renderWave = (wave: {
+    id: number;
+    type: "wave-1" | "wave-2" | "wave-3" | "ripple";
+    top: string;
+    left: string;
+    width: string;
+    height: string;
+    color: string;
+    blendMode: "multiply" | "screen" | "overlay" | "soft-light";
+    duration: number;
+    delay: number;
+  }) => {
+    switch (wave.type) {
+      case "wave-1":
+        return (
+          <motion.div
+            key={wave.id}
+            className="absolute"
+            style={{
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `linear-gradient(180deg, ${wave.color} 0%, ${wave.color}80 30%, transparent 70%)`,
+              borderRadius: "50% 50% 30% 70% / 60% 30% 70% 40%",
+              mixBlendMode: wave.blendMode,
+            }}
+            animate={{
+              borderRadius: [
+                "50% 50% 30% 70% / 60% 30% 70% 40%",
+                "30% 70% 50% 50% / 40% 70% 30% 60%",
+                "50% 50% 30% 70% / 60% 30% 70% 40%",
+              ],
+              y: [0, -20, 0],
+              scaleY: [1, 1.2, 1],
+              opacity: [0.6, 0.9, 0.6],
+            }}
+            transition={{
+              duration: wave.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: wave.delay,
+            }}
+          />
+        );
+      case "wave-2":
+        return (
+          <motion.div
+            key={wave.id}
+            className="absolute"
+            style={{
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `radial-gradient(ellipse at center, ${wave.color} 0%, ${wave.color}80 50%, transparent 80%)`,
+              borderRadius: "70% 30% 40% 60% / 60% 40% 60% 40%",
+              mixBlendMode: wave.blendMode,
+            }}
+            animate={{
+              borderRadius: [
+                "70% 30% 40% 60% / 60% 40% 60% 40%",
+                "30% 70% 60% 40% / 40% 60% 40% 60%",
+                "70% 30% 40% 60% / 60% 40% 60% 40%",
+              ],
+              x: [0, 15, 0],
+              scale: [1, 1.1, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{
+              duration: wave.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: wave.delay,
+            }}
+          />
+        );
+      case "wave-3":
+        return (
+          <motion.div
+            key={wave.id}
+            className="absolute"
+            style={{
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `conic-gradient(from 45deg, ${wave.color} 0deg, ${wave.color}80 180deg, transparent 180deg)`,
+              borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
+              mixBlendMode: wave.blendMode,
+            }}
+            animate={{
+              borderRadius: [
+                "60% 40% 30% 70% / 60% 30% 70% 40%",
+                "40% 60% 70% 30% / 30% 70% 40% 60%",
+                "60% 40% 30% 70% / 60% 30% 70% 40%",
+              ],
+              rotate: [0, 180, 360],
+              scale: [1, 1.15, 1],
+              opacity: [0.4, 0.7, 0.4],
+            }}
+            transition={{
+              duration: wave.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: wave.delay,
+            }}
+          />
+        );
+      case "ripple":
+        return (
+          <motion.div
+            key={wave.id}
+            className="absolute"
+            style={{
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `radial-gradient(circle at 20% 30%, ${wave.color} 0%, ${wave.color} 1px, transparent 1px),
+                          radial-gradient(circle at 80% 20%, ${wave.color} 0%, ${wave.color} 0.5px, transparent 0.5px),
+                          radial-gradient(circle at 40% 70%, ${wave.color} 0%, ${wave.color} 1.5px, transparent 1.5px),
+                          radial-gradient(circle at 90% 80%, ${wave.color} 0%, ${wave.color} 0.8px, transparent 0.8px),
+                          radial-gradient(circle at 10% 90%, ${wave.color} 0%, ${wave.color} 1.2px, transparent 1.2px),
+                          radial-gradient(circle at 60% 50%, ${wave.color} 0%, ${wave.color} 0.6px, transparent 0.6px)`,
+              mixBlendMode: wave.blendMode,
+            }}
+            animate={{
+              scale: [1, 1.05, 1],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{
+              duration: wave.duration,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: wave.delay,
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      {stars.map((star) => (
-        <motion.div
-          key={star.id}
-          className="absolute bg-white rounded-full"
-          style={{
-            top: star.top,
-            left: star.left,
-            width: star.size,
-            height: star.size,
-          }}
-          animate={{
-            opacity: [0.2, 1, 0.2],
-          }}
-          transition={{
-            duration: star.duration,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "easeInOut",
-            delay: star.delay,
-          }}
-        />
-      ))}
+      {waves.map(renderWave)}
     </div>
   );
 };
@@ -186,11 +341,19 @@ const TypingAnimation = ({
 };
 
 const colorMap: { [key: string]: string } = {
-  "bg-blue-500": "text-blue-300",
-  "bg-green-500": "text-green-300",
-  "bg-purple-500": "text-purple-300",
-  "bg-orange-500": "text-orange-300",
-  "bg-red-500": "text-red-300",
+  "bg-blue-500": "text-blue-400",
+  "bg-green-500": "text-green-400",
+  "bg-purple-500": "text-purple-400",
+  "bg-orange-500": "text-orange-400",
+  "bg-red-500": "text-red-400",
+};
+
+const highlightColorMap: { [key: string]: string } = {
+  "bg-blue-500": "#3b82f6", // blue-500
+  "bg-green-500": "#10b981", // green-500
+  "bg-purple-500": "#8b5cf6", // purple-500
+  "bg-orange-500": "#f97316", // orange-500
+  "bg-red-500": "#ef4444", // red-500
 };
 
 export default function ValuesSection() {
@@ -250,7 +413,41 @@ export default function ValuesSection() {
                       .split("\n")
                       .map((line, index) => (
                         <span key={index}>
-                          {line}
+                          {line.split(" ").map((word, wordIndex) => {
+                            // 포인트 단어들 (각 가치에 맞는 키워드)
+                            const highlightWords: { [key: number]: string[] } =
+                              {
+                                1: ["혁신", "창의성", "최고의", "결과물"],
+                                2: ["함께", "협력", "소통", "성장", "동반자"],
+                                3: ["전문성", "배움", "도전", "혁신적인"],
+                                4: ["책임감", "신뢰", "약속", "최고의"],
+                                5: ["전략적", "혁신적", "지속 가능한", "미래"],
+                              };
+
+                            const shouldHighlight =
+                              highlightWords[selectedValue.id]?.includes(word);
+
+                            return (
+                              <span key={wordIndex}>
+                                {shouldHighlight ? (
+                                  <span
+                                    style={{
+                                      color:
+                                        highlightColorMap[selectedValue.color],
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    {word}
+                                  </span>
+                                ) : (
+                                  word
+                                )}
+                                {wordIndex < line.split(" ").length - 1
+                                  ? " "
+                                  : ""}
+                              </span>
+                            );
+                          })}
                           {index <
                             selectedValue.detailContent.explanation.split("\n")
                               .length -
@@ -285,10 +482,10 @@ export default function ValuesSection() {
                 >
                   {/* Card Front */}
                   <div
-                    className="absolute inset-0 rounded-xl p-6 flex flex-col justify-end text-right bg-black border border-white/20 overflow-hidden"
+                    className="absolute inset-0 rounded-xl p-6 flex flex-col justify-end text-right bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-white/20 overflow-hidden"
                     style={{ backfaceVisibility: "hidden" }}
                   >
-                    <StarryBackground />
+                    <WavePattern />
                     <div className="relative z-10 mb-4">
                       <h3 className="text-3xl font-bold mb-2 text-white">
                         {value.title}
@@ -314,7 +511,7 @@ export default function ValuesSection() {
                       sizes="(max-width: 768px) 100vw, 320px"
                       style={{ objectFit: "cover" }}
                     />
-                    <div className="absolute inset-0 bg-black/50" />
+                    <div className="absolute inset-0 bg-black/20" />
                     <div className="absolute left-4 top-1/2 -translate-y-1/2">
                       <motion.svg
                         width="32"

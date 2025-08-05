@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 import React, { useEffect, useRef, useState } from 'react';
 import GeometricGlobe from './HeroGeometric';
 import { useTheme } from 'next-themes';
 
+=======
+import React, { useEffect, useRef, useState } from "react";
+import GeometricGlobe from "./HeroGeometric";
+>>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
 
 // GSAP은 사용할 수 없으므로 Web Animations API로 대체하겠습니다
 interface Mouse {
@@ -36,6 +41,7 @@ const MadAnimation: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<SVGFEGaussianBlurElement>(null);
+
   const animationRef = useRef<number>();
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -44,6 +50,7 @@ const MadAnimation: React.FC = () => {
     setMounted(true);
   }, []);
   
+
   const [mouse] = useState<Mouse>({
     x: 0,
     y: 0,
@@ -51,14 +58,14 @@ const MadAnimation: React.FC = () => {
     smoothY: 0,
     diff: 0,
     vx: 0,
-    vy: 0
+    vy: 0,
   });
-  
+
   const [viewport] = useState<Viewport>({
-    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
-    height: typeof window !== 'undefined' ? window.innerHeight : 800
+    width: typeof window !== "undefined" ? window.innerWidth : 1200,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
   });
-  
+
   const [particles, setParticles] = useState<ParticleData[]>([]);
   const particleIdRef = useRef(0);
 
@@ -99,23 +106,27 @@ const MadAnimation: React.FC = () => {
       seed: Math.random() * 1000,
       freq: (0.5 + Math.random() * 1) * 0.01,
       amplitude: (1 - Math.random() * 2) * 0.5,
-      startTime: Date.now()
+      startTime: Date.now(),
     };
-    
+
     return particle;
   };
 
   const emitParticle = () => {
     if (mouse.diff > 0.01) {
-      const particle = createParticle(mouse.smoothX, mouse.smoothY, mouse.diff * 0.4); // 크기를 0.2에서 0.4로 증가
-      setParticles(prev => [...prev, particle]);
+      const particle = createParticle(
+        mouse.smoothX,
+        mouse.smoothY,
+        mouse.diff * 0.4
+      ); // 크기를 0.2에서 0.4로 증가
+      setParticles((prev) => [...prev, particle]);
     }
   };
 
   const onMouseMove = (e: MouseEvent) => {
     mouse.vx += mouse.x - e.pageX;
     mouse.vy += mouse.y - e.pageY;
-    
+
     mouse.x = e.pageX;
     mouse.y = e.pageY;
   };
@@ -123,19 +134,20 @@ const MadAnimation: React.FC = () => {
   const onResize = () => {
     viewport.width = window.innerWidth;
     viewport.height = window.innerHeight;
-    
+
     if (svgRef.current) {
-      svgRef.current.style.width = viewport.width + 'px';
-      svgRef.current.style.height = viewport.height + 'px';
+      svgRef.current.style.width = viewport.width + "px";
+      svgRef.current.style.height = viewport.height + "px";
     }
-    
+
     if (sceneRef.current) {
-      sceneRef.current.style.backgroundSize = window.innerWidth < 768 ? '20px 20px' : '40px 40px';
+      sceneRef.current.style.backgroundSize =
+        window.innerWidth < 768 ? "20px 20px" : "40px 40px";
     }
 
     if (filterRef.current) {
-      const deviation = window.innerWidth < 768 ? '20' : '35';
-      filterRef.current.setAttribute('stdDeviation', deviation);
+      const deviation = window.innerWidth < 768 ? "20" : "35";
+      filterRef.current.setAttribute("stdDeviation", deviation);
     }
   };
 
@@ -143,39 +155,41 @@ const MadAnimation: React.FC = () => {
     // Smooth mouse
     mouse.smoothX += (mouse.x - mouse.smoothX) * 0.1;
     mouse.smoothY += (mouse.y - mouse.smoothY) * 0.1;
-    
+
     mouse.diff = Math.hypot(mouse.x - mouse.smoothX, mouse.y - mouse.smoothY);
-    
+
     emitParticle();
-    
+
     // Cursor
     if (cursorRef.current) {
-      cursorRef.current.style.setProperty('--x', mouse.smoothX + 'px');
-      cursorRef.current.style.setProperty('--y', mouse.smoothY + 'px');
+      cursorRef.current.style.setProperty("--x", mouse.smoothX + "px");
+      cursorRef.current.style.setProperty("--y", mouse.smoothY + "px");
     }
-    
+
     // Clean up old particles
     const now = Date.now();
-    setParticles(prev => prev.filter(particle => now - particle.startTime < 7000));
-    
+    setParticles((prev) =>
+      prev.filter((particle) => now - particle.startTime < 7000)
+    );
+
     animationRef.current = requestAnimationFrame(render);
   };
 
   useEffect(() => {
     // Add styles
-    const styleSheet = document.createElement('style');
+    const styleSheet = document.createElement("style");
     styleSheet.textContent = customStyles;
     document.head.appendChild(styleSheet);
-    
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('resize', onResize);
-    
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("resize", onResize);
+
     onResize();
     animationRef.current = requestAnimationFrame(render);
-    
+
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("resize", onResize);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -190,36 +204,39 @@ const MadAnimation: React.FC = () => {
   return (
     <div className="relative w-full h-screen">
       {/* Hero Section */}
-      <div 
+      <div
         className="absolute top-0 left-0 w-full h-full"
+<<<<<<< HEAD
         style={{ 
           background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
           cursor: 'none',
           color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
           fontFamily: '"Fira Sans", sans-serif'
+=======
+        style={{
+          background: "#ffffff", // #f1f0f9에서 #ffffff로 변경
+          cursor: "none",
+          color: "#0c0b0e",
+          fontFamily: '"Fira Sans", sans-serif',
+>>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
         }}
       >
         {/* Title */}
         <div className="flex justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-24">
-            <GeometricGlobe />
+          <GeometricGlobe />
         </div>
-        
-        
+
         {/* Catcher */}
-        <div 
+        <div
           className="absolute left-0 bottom-0 w-full text-center whitespace-nowrap"
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(48px, 13vw, 200px)',
-            letterSpacing: '-0.025em'
+            fontSize: "clamp(48px, 13vw, 200px)",
+            letterSpacing: "-0.025em",
           }}
         >
-        REVEAL ZNIT.
+          REVEAL ZNIT.
         </div>
-        
-        
-        
-       
       </div>
 
       {/* Scene */}
@@ -227,6 +244,7 @@ const MadAnimation: React.FC = () => {
         ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
+<<<<<<< HEAD
           backgroundColor: theme === "dark" ? "#0c0b0e" : "#ffffff",
           backgroundImage:
             theme === "dark"
@@ -235,72 +253,94 @@ const MadAnimation: React.FC = () => {
           backgroundSize: "40px 40px",
           mask: "url(#mask)",
           color: theme === "dark" ? "#f1f0f9" : "#0c0b0e",
+=======
+          background: "#0c0b0e",
+          backgroundImage:
+            "linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          mask: "url(#mask)",
+          color: "#f1f0f9",
+>>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
         }}
       >
         {/* Scene Title */}
-        <div 
+        <div
           className="absolute top-[2vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline"
           style={{
             fontWeight: 700,
-            fontSize: 'clamp(2.5rem, 13vw, 12rem)',
-            letterSpacing: '-0.025em',
-            lineHeight: 0.9
+            fontSize: "clamp(2.5rem, 13vw, 12rem)",
+            letterSpacing: "-0.025em",
+            lineHeight: 0.9,
           }}
         >
           <div className="flex-none">
-            <div><span style={{color: '#ff68a8'}}>O</span>ne Vision,</div>
-            <div> Two <span style={{color: '#009800'}}>C</span>rafts.</div>
+            <div>
+              <span style={{ color: "#ff68a8" }}>O</span>ne Vision,
+            </div>
+            <div>
+              {" "}
+              Two <span style={{ color: "#009800" }}>C</span>rafts.
+            </div>
           </div>
+<<<<<<< HEAD
           <div className="flex-end text-right ml-auto  ">
             <div className="mt-5 md:mt-10">IT<span style={{color: '#4376AB'}}>&</span>DESIGN</div>
             <div style={{color: '#F6BF41'}}>ZNIT</div>
+=======
+          <div className="flex-end text-right ml-auto ">
+            <div className="mt-5 md:mt-10">
+              IT<span style={{ color: "#4376AB" }}>&</span>DESIGN
+            </div>
+            <div style={{ color: "#F6BF41" }}>ZNIT</div>
+>>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
           </div>
         </div>
-        
-      
       </div>
 
       {/* Cursor */}
-      <div 
+      <div
         ref={cursorRef}
         className="absolute rounded-full pointer-events-none"
         style={{
-          top: '-1.5vw',
-          left: '-1.5vw',
+          top: "-1.5vw",
+          left: "-1.5vw",
           zIndex: 2,
-          width: '3vw',
-          height: '3vw',
-          background: '#88f901',
-          transform: 'translate3d(var(--x), var(--y), 0)'
+          width: "3vw",
+          height: "3vw",
+          background: "#88f901",
+          transform: "translate3d(var(--x), var(--y), 0)",
         }}
       />
 
       {/* SVG */}
-      <svg 
+      <svg
         ref={svgRef}
-        xmlns="http://www.w3.org/2000/svg" 
-        preserveAspectRatio="none" 
-        width="100" 
-        height="100" 
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+        width="100"
+        height="100"
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{ zIndex: 3 }}
       >
         <mask id="mask">
           <g ref={wrapperRef}>
-            {particles.map(particle => {
+            {particles.map((particle) => {
               const age = (Date.now() - particle.startTime) / 1000;
               let size = particle.size;
-              
+
               // Animate size based on age - 크기를 더 크게 조정
               if (age < 2) {
-                size = particle.size + (particle.size * age * 0.8); // 0.5에서 0.8로 증가
+                size = particle.size + particle.size * age * 0.8; // 0.5에서 0.8로 증가
               } else if (age < 6) {
                 const fadeAge = (age - 2) / 4;
-                size = particle.size * 2.5 * (1 - fadeAge * fadeAge * fadeAge * fadeAge); // 2에서 2.5로 증가
+                size =
+                  particle.size *
+                  2.5 *
+                  (1 - fadeAge * fadeAge * fadeAge * fadeAge); // 2에서 2.5로 증가
               } else {
                 size = 0;
               }
-              
+
               return (
                 <circle
                   key={particle.id}
@@ -314,11 +354,16 @@ const MadAnimation: React.FC = () => {
           </g>
         </mask>
         <filter id="gooey">
-          <feGaussianBlur ref={filterRef} in="SourceGraphic" stdDeviation="35" /> {/* 25에서 35로 증가하여 더 부드러운 효과 */}
-          <feColorMatrix 
-            type="matrix" 
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7" 
-            result="goo" 
+          <feGaussianBlur
+            ref={filterRef}
+            in="SourceGraphic"
+            stdDeviation="35"
+          />{" "}
+          {/* 25에서 35로 증가하여 더 부드러운 효과 */}
+          <feColorMatrix
+            type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7"
+            result="goo"
           />
         </filter>
       </svg>
