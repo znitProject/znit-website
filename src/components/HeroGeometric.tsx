@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
 interface Point {
   x: number;
@@ -20,25 +20,25 @@ interface Circle {
 
 const GeometricGlobe: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const pointsRef = useRef<Point[]>([]);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const width = 470;
     const height = 490;
-    
+
     canvas.width = width;
     canvas.height = height;
 
-    const dark = 'rgb(0, 0, 0)';
-    const light = 'rgba(167,175,181,1)';
-    const gold = 'rgba(141,116,75,1)';
+    const dark = "rgb(0, 0, 0)";
+    const light = "rgba(167,175,181,1)";
+    const gold = "rgba(141,116,75,1)";
 
     const getRandomInt = (min: number, max: number): number => {
       return Math.floor(Math.random() * (max - min + 1) + min);
@@ -50,33 +50,275 @@ const GeometricGlobe: React.FC = () => {
         ctx.arc(pos.x, pos.y, rad, 0, 2 * Math.PI, false);
         ctx.fillStyle = color;
         ctx.fill();
-      }
+      },
     });
 
     // Initialize points
     const points: Point[] = [
-      { x: 216, originX: 216, y: 49,  originY: 49,  rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 125, originX: 125, y: 95,  originY: 95,  rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 250, originX: 250, y: 100, originY: 100, rad: 10, color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 346, originX: 346, y: 80,  originY: 80,  rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 51,  originX: 51,  y: 182, originY: 182, rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 120, originX: 120, y: 205, originY: 205, rad: 6,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 380, originX: 380, y: 165, originY: 165, rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 420, originX: 420, y: 190, originY: 190, rad: 6,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 50,  originX: 50,  y: 270, originY: 270, rad: 3,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 293, originX: 293, y: 260, originY: 260, rad: 12, color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 65,  originX: 65,  y: 320, originY: 320, rad: 3,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 170, originX: 170, y: 350, originY: 350, rad: 9,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 400, originX: 400, y: 300, originY: 300, rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 100, originX: 100, y: 370, originY: 370, rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 290, originX: 290, y: 380, originY: 380, rad: 6,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 370, originX: 370, y: 370, originY: 370, rad: 3,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 175, originX: 175, y: 400, originY: 400, rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 270, originX: 270, y: 415, originY: 415, rad: 4,  color: dark, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 314, originX: 314, y: 184, originY: 184, rad: 4,  color: light, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 235, originX: 235, y: 270, originY: 270, rad: 6,  color: light, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 112, originX: 112, y: 315, originY: 315, rad: 5,  color: light, jointo: [], length: 0, seperation: 0, offset: 0 },
-      { x: 140, originX: 140, y: 150, originY: 150, rad: 4,  color: light, jointo: [], length: 0, seperation: 0, offset: 0 }
+      {
+        x: 216,
+        originX: 216,
+        y: 49,
+        originY: 49,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 125,
+        originX: 125,
+        y: 95,
+        originY: 95,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 250,
+        originX: 250,
+        y: 100,
+        originY: 100,
+        rad: 10,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 346,
+        originX: 346,
+        y: 80,
+        originY: 80,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 51,
+        originX: 51,
+        y: 182,
+        originY: 182,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 120,
+        originX: 120,
+        y: 205,
+        originY: 205,
+        rad: 6,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 380,
+        originX: 380,
+        y: 165,
+        originY: 165,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 420,
+        originX: 420,
+        y: 190,
+        originY: 190,
+        rad: 6,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 50,
+        originX: 50,
+        y: 270,
+        originY: 270,
+        rad: 3,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 293,
+        originX: 293,
+        y: 260,
+        originY: 260,
+        rad: 12,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 65,
+        originX: 65,
+        y: 320,
+        originY: 320,
+        rad: 3,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 170,
+        originX: 170,
+        y: 350,
+        originY: 350,
+        rad: 9,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 400,
+        originX: 400,
+        y: 300,
+        originY: 300,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 100,
+        originX: 100,
+        y: 370,
+        originY: 370,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 290,
+        originX: 290,
+        y: 380,
+        originY: 380,
+        rad: 6,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 370,
+        originX: 370,
+        y: 370,
+        originY: 370,
+        rad: 3,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 175,
+        originX: 175,
+        y: 400,
+        originY: 400,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 270,
+        originX: 270,
+        y: 415,
+        originY: 415,
+        rad: 4,
+        color: dark,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 314,
+        originX: 314,
+        y: 184,
+        originY: 184,
+        rad: 4,
+        color: light,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 235,
+        originX: 235,
+        y: 270,
+        originY: 270,
+        rad: 6,
+        color: light,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 112,
+        originX: 112,
+        y: 315,
+        originY: 315,
+        rad: 5,
+        color: light,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
+      {
+        x: 140,
+        originX: 140,
+        y: 150,
+        originY: 150,
+        rad: 4,
+        color: light,
+        jointo: [],
+        length: 0,
+        seperation: 0,
+        offset: 0,
+      },
     ];
 
     // Set random properties for each point
@@ -111,7 +353,11 @@ const GeometricGlobe: React.FC = () => {
 
     // Create circles for each point
     for (let i = 0; i < points.length; i++) {
-      points[i].circle = createCircle(points[i], points[i].rad, points[i].color);
+      points[i].circle = createCircle(
+        points[i],
+        points[i].rad,
+        points[i].color
+      );
     }
 
     pointsRef.current = points;
@@ -144,14 +390,14 @@ const GeometricGlobe: React.FC = () => {
           ctx.lineDashOffset = p.offset;
           ctx.stroke();
           ctx.restore();
-          p.offset = p.offset + 0.2 + (0.4 * Math.random());
+          p.offset = p.offset + 0.2 + 0.4 * Math.random();
         }
       }
     };
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
-      
+
       // Draw light points first
       for (let i = 0; i < points.length; i++) {
         if (points[i].color === light) {
@@ -160,7 +406,7 @@ const GeometricGlobe: React.FC = () => {
           points[i].circle?.draw();
         }
       }
-      
+
       // Draw dark points
       for (let i = 0; i < points.length; i++) {
         if (points[i].color === dark) {
@@ -169,7 +415,7 @@ const GeometricGlobe: React.FC = () => {
           points[i].circle?.draw();
         }
       }
-      
+
       animationRef.current = requestAnimationFrame(render);
     };
 
@@ -177,28 +423,28 @@ const GeometricGlobe: React.FC = () => {
       const duration = 1000 + 2000 * Math.random();
       const targetX = getRandomInt(p.originX - 8, p.originX + 8);
       const targetY = getRandomInt(p.originY - 8, p.originY + 8);
-      
+
       const startTime = Date.now();
       const startX = p.x;
       const startY = p.y;
-      
+
       const animate = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         // Easing function (ease out)
         const easeOut = 1 - Math.pow(1 - progress, 3);
-        
+
         p.x = startX + (targetX - startX) * easeOut;
         p.y = startY + (targetY - startY) * easeOut;
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
           setTimeout(() => shiftPoint(p), 100);
         }
       };
-      
+
       animate();
     };
 
@@ -216,10 +462,10 @@ const GeometricGlobe: React.FC = () => {
   }, []);
 
   return (
-    <canvas 
+    <canvas
       ref={canvasRef}
       className="max-w-full mx-auto block"
-      style={{ maxWidth: '100%' }}
+      style={{ maxWidth: "100%" }}
     />
   );
 };

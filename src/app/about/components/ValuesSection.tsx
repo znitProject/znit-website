@@ -80,17 +80,17 @@ const values: ValueCardData[] = [
   },
 ];
 
-const FluidMixingPattern = () => {
-  const [layers, setLayers] = useState<
+const WavePattern = () => {
+  const [waves, setWaves] = useState<
     Array<{
       id: number;
-      type: "main-flow" | "secondary-flow" | "accent-flow" | "texture";
+      type: "wave-1" | "wave-2" | "wave-3" | "ripple";
       top: string;
       left: string;
       width: string;
       height: string;
       color: string;
-      blendMode: string;
+      blendMode: "multiply" | "screen" | "overlay" | "soft-light";
       duration: number;
       delay: number;
     }>
@@ -107,75 +107,91 @@ const FluidMixingPattern = () => {
       "#e91e63", // 핑크
       "#9c27b0", // 자주색
     ];
-    const types = ["main-flow", "secondary-flow", "accent-flow", "texture"];
+    const types = ["wave-1", "wave-2", "wave-3", "ripple"];
     const blendModes = ["multiply", "screen", "overlay", "soft-light"];
 
-    const generatedLayers = Array.from({ length: 15 }).map((_, i) => ({
+    const generatedWaves = Array.from({ length: 12 }).map((_, i) => ({
       id: i,
       type: types[Math.floor(Math.random() * types.length)] as
-        | "main-flow"
-        | "secondary-flow"
-        | "accent-flow"
-        | "texture",
+        | "wave-1"
+        | "wave-2"
+        | "wave-3"
+        | "ripple",
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
-      width: `${Math.random() * 80 + 60}%`,
-      height: `${Math.random() * 100 + 80}%`,
+      width: `${Math.random() * 100 + 80}%`,
+      height: `${Math.random() * 120 + 100}%`,
       color: colors[Math.floor(Math.random() * colors.length)],
-      blendMode: blendModes[Math.floor(Math.random() * blendModes.length)],
-      duration: Math.random() * 15 + 12,
-      delay: Math.random() * 6,
+      blendMode: blendModes[Math.floor(Math.random() * blendModes.length)] as
+        | "multiply"
+        | "screen"
+        | "overlay"
+        | "soft-light",
+      duration: Math.random() * 25 + 20,
+      delay: Math.random() * 10,
     }));
-    setLayers(generatedLayers);
+    setWaves(generatedWaves);
   }, []);
 
-  const renderLayer = (layer: any) => {
-    switch (layer.type) {
-      case "main-flow":
+  const renderWave = (wave: {
+    id: number;
+    type: "wave-1" | "wave-2" | "wave-3" | "ripple";
+    top: string;
+    left: string;
+    width: string;
+    height: string;
+    color: string;
+    blendMode: "multiply" | "screen" | "overlay" | "soft-light";
+    duration: number;
+    delay: number;
+  }) => {
+    switch (wave.type) {
+      case "wave-1":
         return (
           <motion.div
-            key={layer.id}
+            key={wave.id}
             className="absolute"
             style={{
-              top: layer.top,
-              left: layer.left,
-              width: layer.width,
-              height: layer.height,
-              background: `linear-gradient(135deg, ${layer.color} 0%, ${layer.color}80 40%, transparent 80%)`,
-              borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
-              mixBlendMode: layer.blendMode,
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `linear-gradient(180deg, ${wave.color} 0%, ${wave.color}80 30%, transparent 70%)`,
+              borderRadius: "50% 50% 30% 70% / 60% 30% 70% 40%",
+              mixBlendMode: wave.blendMode,
             }}
             animate={{
               borderRadius: [
-                "60% 40% 30% 70% / 60% 30% 70% 40%",
-                "30% 70% 60% 40% / 40% 60% 40% 60%",
-                "60% 40% 30% 70% / 60% 30% 70% 40%",
+                "50% 50% 30% 70% / 60% 30% 70% 40%",
+                "30% 70% 50% 50% / 40% 70% 30% 60%",
+                "50% 50% 30% 70% / 60% 30% 70% 40%",
               ],
-              scale: [1, 1.15, 1],
-              opacity: [0.7, 0.9, 0.7],
+              y: [0, -20, 0],
+              scaleY: [1, 1.2, 1],
+              opacity: [0.6, 0.9, 0.6],
             }}
             transition={{
-              duration: layer.duration,
+              duration: wave.duration,
               repeat: Infinity,
               repeatType: "loop",
               ease: "easeInOut",
-              delay: layer.delay,
+              delay: wave.delay,
             }}
           />
         );
-      case "secondary-flow":
+      case "wave-2":
         return (
           <motion.div
-            key={layer.id}
+            key={wave.id}
             className="absolute"
             style={{
-              top: layer.top,
-              left: layer.left,
-              width: layer.width,
-              height: layer.height,
-              background: `radial-gradient(ellipse at center, ${layer.color} 0%, ${layer.color}80 60%, transparent 80%)`,
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `radial-gradient(ellipse at center, ${wave.color} 0%, ${wave.color}80 50%, transparent 80%)`,
               borderRadius: "70% 30% 40% 60% / 60% 40% 60% 40%",
-              mixBlendMode: layer.blendMode,
+              mixBlendMode: wave.blendMode,
             }}
             animate={{
               borderRadius: [
@@ -183,78 +199,80 @@ const FluidMixingPattern = () => {
                 "30% 70% 60% 40% / 40% 60% 40% 60%",
                 "70% 30% 40% 60% / 60% 40% 60% 40%",
               ],
+              x: [0, 15, 0],
               scale: [1, 1.1, 1],
-              opacity: [0.6, 0.8, 0.6],
+              opacity: [0.5, 0.8, 0.5],
             }}
             transition={{
-              duration: layer.duration,
+              duration: wave.duration,
               repeat: Infinity,
               repeatType: "loop",
               ease: "easeInOut",
-              delay: layer.delay,
+              delay: wave.delay,
             }}
           />
         );
-      case "accent-flow":
+      case "wave-3":
         return (
           <motion.div
-            key={layer.id}
+            key={wave.id}
             className="absolute"
             style={{
-              top: layer.top,
-              left: layer.left,
-              width: layer.width,
-              height: layer.height,
-              background: `conic-gradient(from 45deg, ${layer.color} 0deg, ${layer.color}80 180deg, transparent 180deg)`,
-              borderRadius: "50% 20% 80% 10% / 40% 80% 20% 60%",
-              mixBlendMode: layer.blendMode,
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `conic-gradient(from 45deg, ${wave.color} 0deg, ${wave.color}80 180deg, transparent 180deg)`,
+              borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
+              mixBlendMode: wave.blendMode,
             }}
             animate={{
               borderRadius: [
-                "50% 20% 80% 10% / 40% 80% 20% 60%",
-                "20% 80% 10% 50% / 80% 20% 60% 40%",
-                "50% 20% 80% 10% / 40% 80% 20% 60%",
+                "60% 40% 30% 70% / 60% 30% 70% 40%",
+                "40% 60% 70% 30% / 30% 70% 40% 60%",
+                "60% 40% 30% 70% / 60% 30% 70% 40%",
               ],
               rotate: [0, 180, 360],
-              opacity: [0.5, 0.7, 0.5],
+              scale: [1, 1.15, 1],
+              opacity: [0.4, 0.7, 0.4],
             }}
             transition={{
-              duration: layer.duration,
+              duration: wave.duration,
               repeat: Infinity,
               repeatType: "loop",
               ease: "easeInOut",
-              delay: layer.delay,
+              delay: wave.delay,
             }}
           />
         );
-      case "texture":
+      case "ripple":
         return (
           <motion.div
-            key={layer.id}
+            key={wave.id}
             className="absolute"
             style={{
-              top: layer.top,
-              left: layer.left,
-              width: layer.width,
-              height: layer.height,
-              background: `radial-gradient(circle at 20% 30%, ${layer.color} 0%, ${layer.color} 1px, transparent 1px),
-                          radial-gradient(circle at 80% 20%, ${layer.color} 0%, ${layer.color} 0.5px, transparent 0.5px),
-                          radial-gradient(circle at 40% 70%, ${layer.color} 0%, ${layer.color} 1.5px, transparent 1.5px),
-                          radial-gradient(circle at 90% 80%, ${layer.color} 0%, ${layer.color} 0.8px, transparent 0.8px),
-                          radial-gradient(circle at 10% 90%, ${layer.color} 0%, ${layer.color} 1.2px, transparent 1.2px),
-                          radial-gradient(circle at 60% 50%, ${layer.color} 0%, ${layer.color} 0.6px, transparent 0.6px)`,
-              mixBlendMode: layer.blendMode,
+              top: wave.top,
+              left: wave.left,
+              width: wave.width,
+              height: wave.height,
+              background: `radial-gradient(circle at 20% 30%, ${wave.color} 0%, ${wave.color} 1px, transparent 1px),
+                          radial-gradient(circle at 80% 20%, ${wave.color} 0%, ${wave.color} 0.5px, transparent 0.5px),
+                          radial-gradient(circle at 40% 70%, ${wave.color} 0%, ${wave.color} 1.5px, transparent 1.5px),
+                          radial-gradient(circle at 90% 80%, ${wave.color} 0%, ${wave.color} 0.8px, transparent 0.8px),
+                          radial-gradient(circle at 10% 90%, ${wave.color} 0%, ${wave.color} 1.2px, transparent 1.2px),
+                          radial-gradient(circle at 60% 50%, ${wave.color} 0%, ${wave.color} 0.6px, transparent 0.6px)`,
+              mixBlendMode: wave.blendMode,
             }}
             animate={{
-              scale: [1, 1.02, 1],
-              opacity: [0.3, 0.5, 0.3],
+              scale: [1, 1.05, 1],
+              opacity: [0.2, 0.4, 0.2],
             }}
             transition={{
-              duration: layer.duration,
+              duration: wave.duration,
               repeat: Infinity,
               repeatType: "loop",
               ease: "easeInOut",
-              delay: layer.delay,
+              delay: wave.delay,
             }}
           />
         );
@@ -265,7 +283,7 @@ const FluidMixingPattern = () => {
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      {layers.map(renderLayer)}
+      {waves.map(renderWave)}
     </div>
   );
 };
@@ -323,11 +341,19 @@ const TypingAnimation = ({
 };
 
 const colorMap: { [key: string]: string } = {
-  "bg-blue-500": "text-blue-300",
-  "bg-green-500": "text-green-300",
-  "bg-purple-500": "text-purple-300",
-  "bg-orange-500": "text-orange-300",
-  "bg-red-500": "text-red-300",
+  "bg-blue-500": "text-blue-400",
+  "bg-green-500": "text-green-400",
+  "bg-purple-500": "text-purple-400",
+  "bg-orange-500": "text-orange-400",
+  "bg-red-500": "text-red-400",
+};
+
+const highlightColorMap: { [key: string]: string } = {
+  "bg-blue-500": "#3b82f6", // blue-500
+  "bg-green-500": "#10b981", // green-500
+  "bg-purple-500": "#8b5cf6", // purple-500
+  "bg-orange-500": "#f97316", // orange-500
+  "bg-red-500": "#ef4444", // red-500
 };
 
 export default function ValuesSection() {
@@ -406,7 +432,8 @@ export default function ValuesSection() {
                                 {shouldHighlight ? (
                                   <span
                                     style={{
-                                      color: "#F6BF41",
+                                      color:
+                                        highlightColorMap[selectedValue.color],
                                       fontWeight: "600",
                                     }}
                                   >
@@ -458,7 +485,7 @@ export default function ValuesSection() {
                     className="absolute inset-0 rounded-xl p-6 flex flex-col justify-end text-right bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-white/20 overflow-hidden"
                     style={{ backfaceVisibility: "hidden" }}
                   >
-                    <FluidMixingPattern />
+                    <WavePattern />
                     <div className="relative z-10 mb-4">
                       <h3 className="text-3xl font-bold mb-2 text-white">
                         {value.title}
