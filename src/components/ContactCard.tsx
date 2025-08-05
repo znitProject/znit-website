@@ -1,64 +1,127 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 
-// ContactCard 컴포넌트: 호버 시 배경 이미지가 변경되는 애니메이션 포함
 export default function ContactCard({ style }: { style?: React.CSSProperties }) {
-  const cardRef = useRef<HTMLAnchorElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    const bounds = cardRef.current!.getBoundingClientRect();
+    const x = e.clientX - bounds.left;
+    const y = e.clientY - bounds.top;
+
+    // 🔥 현재 애니메이션 중인 요소들 중지
+    gsap.killTweensOf([cardRef.current, overlayRef.current, infoRef.current]);
+
+    // 카드 스케일 업
     gsap.to(cardRef.current, {
-      scale: 1.05,
-      duration: 0.3,
+      scale: 1.02,
+      duration: 0.5,
+      ease: "power2.out",
+    });
+
+    // 오버레이 wave
+    gsap.set(overlayRef.current, {
+      clipPath: `circle(0% at ${x}px ${y}px)`,
+      opacity: 1,
+    });
+
+    gsap.to(overlayRef.current, {
+      clipPath: `circle(150% at ${x}px ${y}px)`,
+      duration: 0.8,
+      ease: "power2.out",
+    });
+
+    // 텍스트 fade in
+    gsap.to(infoRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      delay: 0.1,
       ease: "power2.out",
     });
   };
 
   const handleMouseLeave = () => {
+    // 텍스트 먼저 사라짐
+    gsap.to(infoRef.current, {
+      opacity: 0,
+      y: 20,
+      duration: 0.5,
+      ease: "power2.in",
+    });
+
+    // 오버레이 사라짐
+    gsap.to(overlayRef.current, {
+      clipPath: `circle(0% at 50% 50%)`,
+      duration: 0.7,
+      delay: 0.2,
+      ease: "power2.inOut",
+      onComplete: () => {
+        gsap.set(overlayRef.current, { opacity: 0 });
+      },
+    });
+
+    // 카드 스케일 원복
     gsap.to(cardRef.current, {
       scale: 1,
-      duration: 0.3,
+      duration: 0.4,
       ease: "power2.inOut",
     });
   };
 
   return (
-    <Link
-      href="/contact"
+    <div
       ref={cardRef}
-      className="card relative overflow-hidden group"
+      className="relative overflow-hidden group rounded-2xl shadow-2xl cursor-pointer transition-transform"
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* 기본 배경 이미지 */}
-      <Image
-        src="/contact_us_image.jpg"
-        alt="Contact Background"
-        fill
-        className="absolute inset-0 w-full h-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-0"
-        aria-hidden="true"
-      />
-      {/* 호버 시 나타나는 배경 이미지 */}
-      <Image
-        src="/contact_us_image2.jpg"
-        alt="Contact Background Hover"
-        fill
-        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-95"
-        aria-hidden="true"
-      />
-      {/* Contact 아이콘 및 텍스트 */}
-      <div className="absolute top-0 right-0 p-4 z-10">
+            {/* 기본 "Contact Us" 텍스트 */}
+            <div className="absolute top-0 right-0 p-4 z-10 transition-opacity duration-300 ease-in-out group-hover:opacity-0">
         <span
           className="text-3xl font-semibold text-white"
           style={{ fontFamily: "Red Hat Display" }}
         >
           Contact Us
         </span>
+        
       </div>
-    </Link>
+      {/* 배경 이미지 */}
+      <Image
+        src="/contact_us_image2.jpg"
+        alt="Contact Background"
+        fill
+        className="object-cover"
+        aria-hidden="true"
+      />
+
+      {/* 파동 오버레이 */}
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 z-20 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none"
+        style={{
+          clipPath: "circle(0% at 50% 50%)",
+        }}
+      />
+
+      {/* 연락처 텍스트 */}
+      <div
+        ref={infoRef}
+        className="absolute inset-0 z-30 flex flex-col items-center justify-center text-white opacity-0"
+        style={{ transform: "translateY(20px)" }}
+      >
+        <h3 className="text-4xl font-bold tracking-widest mb-5 font-sans">CONTACT</h3>
+        <div className="space-y-1 text-xl font-light text-center tracking-wide leading-snug font-sans opacity-90">
+          <p>contact@znit.co.kr</p>
+          <p>032-1234-5678</p>
+        </div>
+      </div>
+    </div>
   );
 }
