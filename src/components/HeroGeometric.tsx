@@ -40,7 +40,7 @@ const GeometricGlobe: React.FC = () => {
 
     const dark = theme === 'dark' ? '#FFFFFF' : 'rgb(0, 0, 0)';
     const light = theme === 'dark' ? 'rgba(167,175,181,0.5)' : 'rgba(167,175,181,1)';
-    const gold = 'rgb(12, 23, 106)';
+    const gold = 'rgb(188, 208, 229)';
 
     const getRandomInt = (min: number, max: number): number => {
       return Math.floor(Math.random() * (max - min + 1) + min);

@@ -33,6 +33,10 @@ interface CustomHTMLElement extends HTMLElement {
 // WorkCardList 컴포넌트: GSAP 스크롤 카드 캐러셀
 const WorkCardList: React.FC = () => {
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const darkMode = theme === 'dark';
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -236,6 +240,10 @@ const WorkCardList: React.FC = () => {
       gsap.killTweensOf(cards);
     };
   }, [cardWidth, cardHeight, updateScrollProgress]);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <section className="w-full max-w-full mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-50 mt-10">

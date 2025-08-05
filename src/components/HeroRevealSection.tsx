@@ -38,6 +38,11 @@ const MadAnimation: React.FC = () => {
   const filterRef = useRef<SVGFEGaussianBlurElement>(null);
   const animationRef = useRef<number>();
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const [mouse] = useState<Mouse>({
     x: 0,
@@ -178,6 +183,10 @@ const MadAnimation: React.FC = () => {
     };
   }, []);
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div className="relative w-full h-screen">
       {/* Hero Section */}
@@ -214,15 +223,18 @@ const MadAnimation: React.FC = () => {
       </div>
 
       {/* Scene */}
-      <div 
+      <div
         ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
-          background: theme === 'dark' ? '#0c0b0e' : '#ffffff',
-          backgroundImage: theme === 'dark' ? 'linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)' : 'linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          mask: 'url(#mask)',
-          color: theme === 'dark' ? '#f1f0f9' : '#0c0b0e'
+          backgroundColor: theme === "dark" ? "#0c0b0e" : "#ffffff",
+          backgroundImage:
+            theme === "dark"
+              ? "linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)"
+              : "linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          mask: "url(#mask)",
+          color: theme === "dark" ? "#f1f0f9" : "#0c0b0e",
         }}
       >
         {/* Scene Title */}
