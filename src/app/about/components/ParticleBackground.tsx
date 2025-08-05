@@ -130,10 +130,10 @@ export default function ParticleBackground() {
           this.render = function () {
             if (this.fill == 1) {
               p.noStroke();
-              p.fill(this.col + "40"); // 투명도 추가
+              p.fill(this.col);
             } else {
               p.noFill();
-              p.stroke(this.col + "40"); // 투명도 추가
+              p.stroke(this.col);
               p.strokeWeight(1);
             }
             p.ellipse(this.pos.x, this.pos.y, this.size, this.size);

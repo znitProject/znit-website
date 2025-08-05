@@ -477,7 +477,7 @@ export default function ValuesSection() {
                   className="w-80 h-120 rounded-xl cursor-pointer relative"
                   style={{ transformStyle: "preserve-3d" }}
                   animate={{ rotateY: hoveredId === value.id ? 180 : 0 }}
-                  transition={{ duration: 0.7, ease: "easeInOut" }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
                   whileHover={{ scale: 1.05 }}
                 >
                   {/* Card Front */}
@@ -486,6 +486,13 @@ export default function ValuesSection() {
                     style={{ backfaceVisibility: "hidden" }}
                   >
                     <WavePattern />
+                    {/* 광택 효과 */}
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-60" />
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                    <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-white/30 to-transparent" />
+                    <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+
                     <div className="relative z-10 mb-4">
                       <h3 className="text-3xl font-bold mb-2 text-white">
                         {value.title}

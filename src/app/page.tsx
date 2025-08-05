@@ -85,9 +85,7 @@ export default function HomePage() {
           </div>
 
           {/* 보조 정보 카드들 */}
-          <div className="h-[180px]">
-            {mounted && <MapCard />}
-          </div>
+          <div className="h-[180px]">{mounted && <MapCard />}</div>
           <div className="h-[180px]">
             <DarkModeCard style={{}} />
           </div>
