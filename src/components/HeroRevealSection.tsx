@@ -1,12 +1,8 @@
-<<<<<<< HEAD
+
 import React, { useEffect, useRef, useState } from 'react';
 import GeometricGlobe from './HeroGeometric';
 import { useTheme } from 'next-themes';
 
-=======
-import React, { useEffect, useRef, useState } from "react";
-import GeometricGlobe from "./HeroGeometric";
->>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
 
 // GSAP은 사용할 수 없으므로 Web Animations API로 대체하겠습니다
 interface Mouse {
@@ -206,19 +202,13 @@ const MadAnimation: React.FC = () => {
       {/* Hero Section */}
       <div
         className="absolute top-0 left-0 w-full h-full"
-<<<<<<< HEAD
+
         style={{ 
           background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
           cursor: 'none',
           color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
           fontFamily: '"Fira Sans", sans-serif'
-=======
-        style={{
-          background: "#ffffff", // #f1f0f9에서 #ffffff로 변경
-          cursor: "none",
-          color: "#0c0b0e",
-          fontFamily: '"Fira Sans", sans-serif',
->>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
+
         }}
       >
         {/* Title */}
@@ -244,7 +234,7 @@ const MadAnimation: React.FC = () => {
         ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
-<<<<<<< HEAD
+
           backgroundColor: theme === "dark" ? "#0c0b0e" : "#ffffff",
           backgroundImage:
             theme === "dark"
@@ -253,14 +243,7 @@ const MadAnimation: React.FC = () => {
           backgroundSize: "40px 40px",
           mask: "url(#mask)",
           color: theme === "dark" ? "#f1f0f9" : "#0c0b0e",
-=======
-          background: "#0c0b0e",
-          backgroundImage:
-            "linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-          mask: "url(#mask)",
-          color: "#f1f0f9",
->>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
+
         }}
       >
         {/* Scene Title */}
@@ -282,17 +265,11 @@ const MadAnimation: React.FC = () => {
               Two <span style={{ color: "#009800" }}>C</span>rafts.
             </div>
           </div>
-<<<<<<< HEAD
+
           <div className="flex-end text-right ml-auto  ">
             <div className="mt-5 md:mt-10">IT<span style={{color: '#4376AB'}}>&</span>DESIGN</div>
             <div style={{color: '#F6BF41'}}>ZNIT</div>
-=======
-          <div className="flex-end text-right ml-auto ">
-            <div className="mt-5 md:mt-10">
-              IT<span style={{ color: "#4376AB" }}>&</span>DESIGN
-            </div>
-            <div style={{ color: "#F6BF41" }}>ZNIT</div>
->>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
+
           </div>
         </div>
       </div>

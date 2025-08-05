@@ -1,9 +1,6 @@
-<<<<<<< HEAD
+
 import React, { useEffect, useRef } from 'react';
 import { useTheme } from 'next-themes';
-=======
-import React, { useEffect, useRef } from "react";
->>>>>>> 2c5dd5b49b2fe8a9c2e1c8ee1754333604b27213
 
 interface Point {
   x: number;
