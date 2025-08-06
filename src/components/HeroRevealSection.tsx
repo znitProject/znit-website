@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import GeometricGlobe from "./HeroGeometric";
-import { useTheme } from "next-themes";
+import React, { useEffect, useRef, useState } from 'react';
+import GeometricGlobe from './HeroGeometric';
+import { useTheme } from 'next-themes';
 
-// GSAP은 사용할 수 없으므로 Web Animations API로 대체하겠습니다
+// Web Animations API 사용
 interface Mouse {
   x: number;
   y: number;
@@ -31,13 +31,14 @@ const MadAnimation: React.FC = () => {
   const sceneRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<SVGFEGaussianBlurElement>(null);
 
-  const animationRef = useRef<number | null>(null);
+  const animationRef = useRef<number>();
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+  
 
   const [mouse] = useState<Mouse>({
     x: 0,
@@ -55,107 +56,93 @@ const MadAnimation: React.FC = () => {
   const [particles, setParticles] = useState<ParticleData[]>([]);
   const particleIdRef = useRef(0);
 
-  useEffect(() => {
-    const createParticle = (
-      x: number,
-      y: number,
-      size: number,
-    ): ParticleData => {
-      const particle: ParticleData = {
-        id: particleIdRef.current++,
-        x,
-        y,
-        size,
-        seed: Math.random() * 1000,
-        freq: (0.5 + Math.random() * 1) * 0.01,
-        amplitude: (1 - Math.random() * 2) * 0.5,
-        startTime: Date.now(),
-      };
-
-      return particle;
+  const createParticle = (x: number, y: number, size: number): ParticleData => {
+    const particle: ParticleData = {
+      id: particleIdRef.current++,
+      x,
+      y,
+      size,
+      startTime: Date.now(),
     };
 
-    const emitParticle = () => {
-      if (mouse.diff > 0.01) {
-        const particle = createParticle(
-          mouse.smoothX,
-          mouse.smoothY,
-          mouse.diff * 0.4,
-        ); // 크기를 0.2에서 0.4로 증가
-        setParticles((prev) => [...prev, particle]);
-      }
-    };
-    // Add styles
-    const styleSheet = document.createElement("style");
-    styleSheet.textContent = customStyles;
-    document.head.appendChild(styleSheet);
+    return particle;
+  };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.vx += mouse.x - e.pageX;
-      mouse.vy += mouse.y - e.pageY;
-
-      mouse.x = e.pageX;
-      mouse.y = e.pageY;
-    };
-
-    const handleResize = () => {
-      viewport.width = window.innerWidth;
-      viewport.height = window.innerHeight;
-
-      if (svgRef.current) {
-        svgRef.current.style.width = viewport.width + "px";
-        svgRef.current.style.height = viewport.height + "px";
-      }
-
-      if (sceneRef.current) {
-        sceneRef.current.style.backgroundSize =
-          window.innerWidth < 768 ? "20px 20px" : "40px 40px";
-      }
-
-      if (filterRef.current) {
-        const deviation = window.innerWidth < 768 ? "20" : "35";
-        filterRef.current.setAttribute("stdDeviation", deviation);
-      }
-    };
-
-    const handleRender = () => {
-      // Smooth mouse
-      mouse.smoothX += (mouse.x - mouse.smoothX) * 0.1;
-      mouse.smoothY += (mouse.y - mouse.smoothY) * 0.1;
-
-      mouse.diff = Math.hypot(mouse.x - mouse.smoothX, mouse.y - mouse.smoothY);
-
-      emitParticle();
-
-      // Cursor
-      if (cursorRef.current) {
-        cursorRef.current.style.setProperty("--x", mouse.smoothX + "px");
-        cursorRef.current.style.setProperty("--y", mouse.smoothY + "px");
-      }
-
-      // Clean up old particles
-      const now = Date.now();
-      setParticles((prev) =>
-        prev.filter((particle) => now - particle.startTime < 7000),
+  const emitParticle = () => {
+    if (mouse.diff > 0.01) {
+      const particle = createParticle(
+        mouse.smoothX,
+        mouse.smoothY,
+        mouse.diff * 0.4
       );
+      setParticles((prev) => [...prev, particle]);
+    }
+  };
 
-      animationRef.current = requestAnimationFrame(handleRender);
-    };
+  const onMouseMove = (e: MouseEvent) => {
+    mouse.x = e.pageX;
+    mouse.y = e.pageY;
+  };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("resize", handleResize);
+  const onResize = () => {
+    viewport.width = window.innerWidth;
+    viewport.height = window.innerHeight;
 
-    handleResize();
-    animationRef.current = requestAnimationFrame(handleRender);
+    if (svgRef.current) {
+      svgRef.current.style.width = viewport.width + "px";
+      svgRef.current.style.height = viewport.height + "px";
+    }
+
+    if (sceneRef.current) {
+      sceneRef.current.style.backgroundSize =
+        window.innerWidth < 768 ? "20px 20px" : "40px 40px";
+    }
+
+    if (filterRef.current) {
+      const deviation = window.innerWidth < 768 ? "20" : "35";
+      filterRef.current.setAttribute("stdDeviation", deviation);
+    }
+  };
+
+  const render = () => {
+    // Smooth mouse
+    mouse.smoothX += (mouse.x - mouse.smoothX) * 0.1;
+    mouse.smoothY += (mouse.y - mouse.smoothY) * 0.1;
+
+    mouse.diff = Math.hypot(mouse.x - mouse.smoothX, mouse.y - mouse.smoothY);
+
+    emitParticle();
+
+    // Cursor
+    if (cursorRef.current) {
+      cursorRef.current.style.setProperty("--x", mouse.smoothX + "px");
+      cursorRef.current.style.setProperty("--y", mouse.smoothY + "px");
+    }
+
+    // Clean up old particles
+    const now = Date.now();
+    setParticles((prev) =>
+      prev.filter((particle) => now - particle.startTime < 7000)
+    );
+
+    animationRef.current = requestAnimationFrame(render);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("resize", onResize);
+
+    onResize();
+    animationRef.current = requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("resize", onResize);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [customStyles, mouse, viewport]);
+  }, []);
 
   if (!mounted) {
     return null;
@@ -165,12 +152,12 @@ const MadAnimation: React.FC = () => {
     <div className="relative w-full h-auto xl:h-screen">
       {/* Hero Section */}
       <div
-        className="absolute top-0 left-0 w-full h-full"
-        style={{
-          background: theme === "dark" ? "#1F1F1F" : "#ffffff",
-          cursor: "none",
-          color: theme === "dark" ? "#ffffff" : "#0c0b0e",
-          fontFamily: '"Fira Sans", sans-serif',
+        className="absolute top-0 left-0 w-full h-full xl:block hidden"
+        style={{ 
+          background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
+          cursor: 'none',
+          color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
+          fontFamily: '"Fira Sans", sans-serif'
         }}
       >
         {/* Title */}
@@ -217,7 +204,6 @@ const MadAnimation: React.FC = () => {
             REVEAL ZNIT.
           </div>
         </div>
-
       </div>
 
       {/* Scene - All devices */}
@@ -225,7 +211,7 @@ const MadAnimation: React.FC = () => {
         ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
-          backgroundColor: theme === "dark" ? "#0c0b0e" : "#ffffff",
+          backgroundColor: theme === "dark" ? "#0c0b0e" : "#fafafa",
           backgroundImage:
             theme === "dark"
               ? "linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)"
@@ -237,7 +223,7 @@ const MadAnimation: React.FC = () => {
       >
         {/* Scene Title */}
         <div
-          className="absolute top-[4vw] sm:top-[1vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[10rem] 2xl:text-[10.5rem]"
+          className="absolute top-[4vw] sm:top-[0.5vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[10rem] 2xl:text-[10.5rem]"
           style={{
             fontWeight: 700,
             letterSpacing: "-0.025em",
@@ -256,13 +242,16 @@ const MadAnimation: React.FC = () => {
               </div>
             </div>
 
-          <div className="flex-end text-right ml-auto  ">
-            <div className="mt-5 md:mt-10">
-              IT<span style={{ color: "#4376AB" }}>&</span>DESIGN
+            {/* 하위 2줄 - 우측 정렬 */}
+            <div className="text-right">
+              <div className="mb-2 sm:mb-3">
+                IT<span style={{color: '#4376AB'}}>&</span>DESIGN
+              </div>
+              <div style={{color: '#F6BF41'}}>
+                ZNIT
+              </div>
             </div>
-            <div style={{ color: "#F6BF41" }}>ZNIT</div>
           </div>
-
         </div>
       </div>
 
@@ -297,15 +286,14 @@ const MadAnimation: React.FC = () => {
               const age = (Date.now() - particle.startTime) / 1000;
               let size = particle.size;
 
-              // Animate size based on age - 크기를 더 크게 조정
               if (age < 2) {
-                size = particle.size + particle.size * age * 0.8; // 0.5에서 0.8로 증가
+                size = particle.size + particle.size * age * 0.8;
               } else if (age < 6) {
                 const fadeAge = (age - 2) / 4;
                 size =
                   particle.size *
                   2.5 *
-                  (1 - fadeAge * fadeAge * fadeAge * fadeAge); // 2에서 2.5로 증가
+                  (1 - fadeAge * fadeAge * fadeAge * fadeAge);
               } else {
                 size = 0;
               }
@@ -327,8 +315,7 @@ const MadAnimation: React.FC = () => {
             ref={filterRef}
             in="SourceGraphic"
             stdDeviation="35"
-          />{" "}
-          {/* 25에서 35로 증가하여 더 부드러운 효과 */}
+          />
           <feColorMatrix
             type="matrix"
             values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7"
