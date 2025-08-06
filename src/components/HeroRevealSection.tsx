@@ -223,11 +223,11 @@ const MadAnimation: React.FC = () => {
       >
         {/* Scene Title */}
         <div
-          className="absolute top-[4vw] sm:top-[0.5vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[10rem] 2xl:text-[10.5rem]"
+          className="absolute top-[4vw] sm:top-[0.5vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[11rem] 2xl:text-[12rem]"
           style={{
             fontWeight: 700,
             letterSpacing: "-0.025em",
-            lineHeight: 1.15,
+            lineHeight: 1,
           }}
         >
           {/* All Devices Layout - 4줄 세로 구조 */}
