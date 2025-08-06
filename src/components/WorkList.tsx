@@ -1,0 +1,228 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Server, Building2, Brush, BarChart3, Play, Smartphone } from 'lucide-react';
+
+interface Card {
+  id: number;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  image: string;
+}
+
+const UICraftCards: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [gridColumns, setGridColumns] = useState('10fr 1fr 1fr 1fr 1fr 1fr');
+  const listRef = useRef<HTMLUListElement>(null);
+
+  const cards: Card[] = [
+    {
+      id: 1,
+      title: 'IT 서비스 솔루션',
+      description: 'SI 구축부터 DX 기반 시스템 운영까지, 기업 맞춤형 IT 서비스를 설계하고 유지보수합니다.',
+      icon: <Server className="w-4 h-4" />,
+      image: '/works/openGoKrImg.png'
+    },
+    {
+      id: 2,
+      title: '공공 디자인',
+      description: '버스정류장, 안내판 등 교통 시설물 디자인과 키오스크 UI 설계까지 모두 진행합니다.',
+      icon: <Building2 className="w-4 h-4" />,
+      image: '/works/3_4/busStopImg34.jpeg'
+    },
+    {
+      id: 3,
+      title: '컨셉 아트 디자인',
+      description: '스케치 기반 원화부터 AI·합성 기술을 활용한 컨셉 아트까지, 비주얼의 시작을 함께 그립니다.',
+      icon: <Brush className="w-4 h-4" />,
+      image: '/works/3_4/conceptArtImg34.jpeg'
+    },
+    {
+      id: 4,
+      title: '인포그래픽 디자인',
+      description: '프레젠테이션용 PPT 디자인과 콘텐츠를 시각화한 컨셉 인포그래픽을 제작합니다.',
+      icon: <BarChart3 className="w-4 h-4" />,
+      image: '/works/3_4/Info3DImg34.jpeg'
+    },
+    {
+      id: 5,
+      title: '모션 그래픽 디자인',
+      description: '2D 모션 영상과 3D 기반 애니메이션까지, 목적에 맞는 다이나믹한 모션 콘텐츠를 제작합니다.',
+      icon: <Play className="w-4 h-4" />,
+      image: '/works/motion2D2.jpeg'
+    },
+    {
+      id: 6,
+      title: 'UI/UX 디자인',
+      description: '웹사이트와 모바일 앱 모두에 최적화된 UI/UX 설계로 사용성과 디자인을 모두 잡습니다.',
+      icon: <Smartphone className="w-4 h-4" />,
+      image: '/works/3_4/KakaoTalk_Photo_2025-07-28-10-00-50 005.jpeg'
+    }
+  ];
+
+  const handleCardInteraction = (index: number) => {
+    setActiveIndex(index);
+    const cols = new Array(cards.length)
+      .fill('')
+      .map((_, i) => (index === i ? '10fr' : '1fr'))
+      .join(' ');
+    setGridColumns(cols);
+  };
+
+  useEffect(() => {
+    // Initialize with first card active
+    handleCardInteraction(0);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4 p-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div 
+        className="absolute inset-0 opacity-7 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(950deg, #000 1px, transparent 1px),
+            linear-gradient(#000 1px, transparent 1px)
+          `,
+          backgroundSize: '45px 45px'
+        }}
+      />
+      
+      {/* Header */}
+      <div className="text-center mb-16 z-10">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
+          What We Do
+        </h1>
+        <p className="max-w-1xl mx-auto text-sm font-mono leading-relaxed opacity-80 text-gray-700">
+          아이디어를 현실로 바꾸는 팀, ZNIT는 생각만 하지 않고, 직접 만듭니다. 끊임없는 도전과 세심한 손길로 완성도 높은 결과물을 만들어냅니다.
+        </p>
+      </div>
+
+      {/* Cards Container */}
+      <ul 
+        ref={listRef}
+        className="grid gap-2 h-96 w-full max-w-4xl transition-all duration-700 ease-out"
+        style={{ 
+          gridTemplateColumns: gridColumns,
+          transition: 'grid-template-columns 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+        }}
+      >
+        {cards.map((card, index) => (
+          <li
+            key={card.id}
+            className="relative bg-white border border-gray-300 rounded-lg overflow-hidden min-w-16 cursor-pointer group"
+            onMouseEnter={() => handleCardInteraction(index)}
+            onFocus={() => handleCardInteraction(index)}
+            onClick={() => handleCardInteraction(index)}
+            tabIndex={0}
+          >
+            <article className="absolute inset-0 flex flex-col justify-end p-4 font-mono">
+              {/* Background Image */}
+              <img 
+                src={card.image}
+                alt=""
+                className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-700 ${
+                  activeIndex === index 
+                    ? 'grayscale-0 brightness-100 scale-100' 
+                    : 'grayscale brightness-150 scale-110'
+                }`}
+                style={{
+                  mask: 'radial-gradient(100% 100% at 100% 0, #fff, transparent)'
+                }}
+              />
+              
+              {/* Title (Rotated) */}
+              <h3 
+                className={`absolute top-4 left-4 text-md font-medium uppercase whitespace-nowrap origin-left transition-opacity duration-700 text-gray-900 ${
+                  activeIndex === index ? 'opacity-100' : 'opacity-60'
+                }`}
+                style={{ transform: 'rotate(90deg)' }}
+              >
+                {card.title}
+              </h3>
+
+              {/* Description */}
+              <p className={`text-xs leading-tight mb-4 transition-all duration-700 text-gray-800 ${
+                activeIndex === index 
+                  ? 'opacity-80 delay-150' 
+                  : 'opacity-0'
+              }`}>
+                {card.description}
+              </p>
+
+              {/* Icon */}
+              <div className={`mb-4 transition-opacity duration-700 text-gray-900 ${
+                activeIndex === index ? 'opacity-100' : 'opacity-60'
+              }`}>
+                {card.icon}
+              </div>
+
+              {/* Watch Now Link */}
+              
+            </article>
+          </li>
+        ))}
+      </ul>
+
+      {/* Footer Link */}
+      <a
+        href="https://twitter.com/intent/follow?screen_name=jh3yy"
+        target="_blank"
+        rel="noreferrer noopener"
+        className="fixed top-4 left-4 w-12 h-12 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity text-gray-900"
+      >
+        <svg
+          className="w-9 h-9"
+          viewBox="0 0 969 955"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="161.191"
+            cy="320.191"
+            r="133.191"
+            stroke="currentColor"
+            strokeWidth="20"
+          />
+          <circle
+            cx="806.809"
+            cy="320.191"
+            r="133.191"
+            stroke="currentColor"
+            strokeWidth="20"
+          />
+          <circle
+            cx="695.019"
+            cy="587.733"
+            r="31.4016"
+            fill="currentColor"
+          />
+          <circle
+            cx="272.981"
+            cy="587.733"
+            r="31.4016"
+            fill="currentColor"
+          />
+          <path
+            d="M564.388 712.083C564.388 743.994 526.035 779.911 483.372 779.911C440.709 779.911 402.356 743.994 402.356 712.083C402.356 680.173 440.709 664.353 483.372 664.353C526.035 664.353 564.388 680.173 564.388 712.083Z"
+            fill="currentColor"
+          />
+          <rect
+            x="310.42"
+            y="448.31"
+            width="343.468"
+            height="51.4986"
+            fill="#FF1E1E"
+          />
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M745.643 288.24C815.368 344.185 854.539 432.623 854.539 511.741H614.938V454.652C614.938 433.113 597.477 415.652 575.938 415.652H388.37C366.831 415.652 349.37 433.113 349.37 454.652V511.741L110.949 511.741C110.949 432.623 150.12 344.185 219.845 288.24C289.57 232.295 384.138 200.865 482.744 200.865C581.35 200.865 675.918 232.295 745.643 288.24Z"
+            fill="currentColor"
+          />
+        </svg>
+      </a>
+    </div>
+  );
+};
+
+export default UICraftCards;

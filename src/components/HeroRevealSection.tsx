@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import GeometricGlobe from './HeroGeometric';
 import { useTheme } from 'next-themes';
@@ -11,8 +10,6 @@ interface Mouse {
   smoothX: number;
   smoothY: number;
   diff: number;
-  vx: number;
-  vy: number;
 }
 
 interface Viewport {
@@ -25,9 +22,6 @@ interface ParticleData {
   x: number;
   y: number;
   size: number;
-  seed: number;
-  freq: number;
-  amplitude: number;
   startTime: number;
 }
 
@@ -53,8 +47,6 @@ const MadAnimation: React.FC = () => {
     smoothX: 0,
     smoothY: 0,
     diff: 0,
-    vx: 0,
-    vy: 0,
   });
 
   const [viewport] = useState<Viewport>({
@@ -65,43 +57,12 @@ const MadAnimation: React.FC = () => {
   const [particles, setParticles] = useState<ParticleData[]>([]);
   const particleIdRef = useRef(0);
 
-  // 커스텀 CSS 스타일
-  const customStyles = `
-    @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend:wght@100..900&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend:wght@100..900&display=swap');
-    
-    body {
-      margin: 0;
-      padding: 0;
-      
-    }
-    
-    .char-animation {
-      transform-origin: 50% 86.5%;
-    }
-    
-    .char-animation:nth-child(1) {
-      color: #fe6319;
-    }
-    
-    .char-animation:nth-child(2) {
-      color: #ff68a8;
-    }
-    
-    .char-animation:nth-child(3) {
-      color: #009800;
-    }
-  `;
-
   const createParticle = (x: number, y: number, size: number): ParticleData => {
     const particle: ParticleData = {
       id: particleIdRef.current++,
       x,
       y,
       size,
-      seed: Math.random() * 1000,
-      freq: (0.5 + Math.random() * 1) * 0.01,
-      amplitude: (1 - Math.random() * 2) * 0.5,
       startTime: Date.now(),
     };
 
@@ -120,9 +81,6 @@ const MadAnimation: React.FC = () => {
   };
 
   const onMouseMove = (e: MouseEvent) => {
-    mouse.vx += mouse.x - e.pageX;
-    mouse.vy += mouse.y - e.pageY;
-
     mouse.x = e.pageX;
     mouse.y = e.pageY;
   };
@@ -172,11 +130,6 @@ const MadAnimation: React.FC = () => {
   };
 
   useEffect(() => {
-    // Add styles
-    const styleSheet = document.createElement("style");
-    styleSheet.textContent = customStyles;
-    document.head.appendChild(styleSheet);
-
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("resize", onResize);
 
@@ -189,7 +142,6 @@ const MadAnimation: React.FC = () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      document.head.removeChild(styleSheet);
     };
   }, []);
 
@@ -235,7 +187,7 @@ const MadAnimation: React.FC = () => {
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         style={{
 
-          backgroundColor: theme === "dark" ? "#0c0b0e" : "#ffffff",
+          backgroundColor: theme === "dark" ? "#0c0b0e" : "#fafafa",
           backgroundImage:
             theme === "dark"
               ? "linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)"

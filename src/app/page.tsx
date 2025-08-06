@@ -11,7 +11,7 @@ import ContactCard from "../components/ContactCard";
 import KeywordCard from "../components/KeywordCard";
 import WorkCard from "../components/WorkCard";
 
-import WorkCardList from "../components/WorkCardList";
+import WorkList from "../components/WorkList";
 import HeroRevealSection from "../components/HeroRevealSection";
 import StrokeFillTextSection from "../components/StrokeFillTextSection";
 
@@ -145,7 +145,7 @@ export default function HomePage() {
       <div
         className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
       >
-        <WorkCardList />
+        <WorkList />
       </div>
     </div>
   );
