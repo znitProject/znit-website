@@ -27,14 +27,22 @@
   position: sticky;
   top: 40px;
   min-height: 80vh;
-  width: 180ch;
-  padding: 0.5rem 0;
-  max-width: calc(100% - 4rem);
+  width: 100%;
+  padding: 0.5rem 2rem;
+  max-width: 100%;
   display: grid;
   place-items: center;
-  margin-right: 200px;
   line-height: 1.2;
   text-align: center;
+}
+
+@media (min-width: 768px) {
+  .content {
+    width: 180ch;
+    max-width: calc(100% - 4rem);
+    margin-right: 200px;
+    padding: 0.5rem 0;
+  }
 }
 
 .content span {

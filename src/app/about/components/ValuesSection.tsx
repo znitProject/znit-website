@@ -283,7 +283,10 @@ export default function ValuesSection() {
         <div className="text-center mb-40 mt-30">
           <motion.h2
             className="text-6xl font-bold text-white mb-6 relative z-50"
-            style={{ fontFamily: "var(--font-red-hat-display), sans-serif" }}
+            style={{
+              fontFamily: "var(--font-red-hat-display), sans-serif",
+              fontSize: "clamp(36px, 8vw, 60px)",
+            }}
           >
             {Array.from("The values that define who we are.").map(
               (char, index) => (
@@ -310,9 +313,12 @@ export default function ValuesSection() {
             transition={{ duration: 0.8, delay: 1.5, ease: "easeOut" }}
             viewport={{ once: true, amount: 0.1 }}
             className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed relative z-50"
-            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+            style={{
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "clamp(14px, 3vw, 18px)",
+            }}
           >
-            The values we pursue together form ZNIT&apos;s identity
+            우리가 함께 추구하는 가치가 ZNIT의 정체성을 만듭니다
           </motion.p>
         </div>
       </div>
@@ -320,8 +326,8 @@ export default function ValuesSection() {
       {/* 카드 섹션을 별도 컨테이너로 분리 */}
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-          {/* Left-side Description Area */}
-          <div className="lg:sticky lg:top-40">
+          {/* Left-side Description Area (Desktop) */}
+          <div className="hidden lg:block lg:sticky lg:top-40">
             <div className="w-full p-8 text-white min-h-[500px] flex items-center">
               {selectedValue && (
                 <motion.div
@@ -400,11 +406,36 @@ export default function ValuesSection() {
                 initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className={`flex ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
+                className={`flex flex-col ${index % 2 === 0 ? "items-start" : "items-end"}`}
                 onMouseEnter={() => setHoveredId(value.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 style={{ perspective: "1000px" }}
               >
+                {/* Description Area (Mobile) */}
+                <div className="lg:hidden w-full p-4 text-white mb-4">
+                  {hoveredId === value.id && (
+                    <motion.div
+                      key={value.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="w-full"
+                    >
+                      <div className="mb-4">
+                        <TypingAnimation
+                          text={value.title}
+                          className={`text-4xl font-bold ${colorMap[value.color]}`}
+                        />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-4 text-gray-200 leading-tight">
+                        {value.detailContent.subtitle}
+                      </h3>
+                      <p className="text-base text-gray-200 leading-relaxed">
+                        {value.detailContent.explanation}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
                 <motion.div
                   className="w-80 h-120 rounded-xl cursor-pointer relative"
                   style={{ transformStyle: "preserve-3d" }}

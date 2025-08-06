@@ -6,48 +6,86 @@ export default function ClosingSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const containers = containerRef.current?.querySelectorAll(
-      ".js-flip"
-    ) as NodeListOf<HTMLElement>;
+    const containers = Array.from(
+      containerRef.current?.querySelectorAll(
+        ".js-flip"
+      ) as NodeListOf<HTMLElement>
+    );
 
-    containers?.forEach((container) => {
-      const targets = container.querySelectorAll(
-        ".m-flip_item"
-      ) as NodeListOf<HTMLElement>;
+    if (containers.length === 0) return;
 
-      if (targets.length > 0) {
-        const targetFirstHeight = targets[0].offsetHeight;
-        container.style.height = `${targetFirstHeight}px`;
+    const eventHandlers = new Map<
+      HTMLElement,
+      { mouseenter: () => void; mouseleave: () => void }
+    >();
 
-        const handleMouseEnter = () => {
-          targets.forEach((target) => {
-            target.style.top = `-${targetFirstHeight}px`;
+    const setupContainers = () => {
+      containers.forEach((container) => {
+        if (eventHandlers.has(container)) {
+          const handlers = eventHandlers.get(container);
+          container.removeEventListener("mouseenter", handlers!.mouseenter);
+          container.removeEventListener("mouseleave", handlers!.mouseleave);
+        }
+
+        const targets = container.querySelectorAll(
+          ".m-flip_item"
+        ) as NodeListOf<HTMLElement>;
+
+        if (targets.length > 0) {
+          container.style.height = "auto";
+          const targetFirstHeight = targets[0].offsetHeight;
+          container.style.height = `${targetFirstHeight}px`;
+
+          const handleMouseEnter = () => {
+            targets.forEach((target) => {
+              target.style.top = `-${targetFirstHeight}px`;
+            });
+          };
+
+          const handleMouseLeave = () => {
+            targets.forEach((target) => {
+              target.style.top = "0px";
+            });
+          };
+
+          container.addEventListener("mouseenter", handleMouseEnter);
+          container.addEventListener("mouseleave", handleMouseLeave);
+
+          eventHandlers.set(container, {
+            mouseenter: handleMouseEnter,
+            mouseleave: handleMouseLeave,
           });
-        };
+        }
+      });
+    };
 
-        const handleMouseLeave = () => {
-          targets.forEach((target) => {
-            target.style.top = "0px";
-          });
-        };
+    setupContainers();
 
-        container.addEventListener("mouseenter", handleMouseEnter);
-        container.addEventListener("mouseleave", handleMouseLeave);
-      }
-    });
+    window.addEventListener("resize", setupContainers);
+
+    return () => {
+      window.removeEventListener("resize", setupContainers);
+      containers.forEach((container) => {
+        if (eventHandlers.has(container)) {
+          const handlers = eventHandlers.get(container);
+          container.removeEventListener("mouseenter", handlers!.mouseenter);
+          container.removeEventListener("mouseleave", handlers!.mouseleave);
+        }
+      });
+    };
   }, []);
 
   return (
-    <section className="min-h-screen py-20 relative overflow-hidden">
-      <div className="container px-4 relative z-10 mt-20">
+    <section className="min-h-screen flex items-center justify-center py-12 md:py-20 relative overflow-hidden">
+      <div className="container px-4 relative z-10">
         <div
           ref={containerRef}
-          className="text-center flex flex-col items-center justify-center min-h-screen space-y-12"
+          className="text-center flex flex-col items-center justify-center space-y-6 md:space-y-10"
         >
           <p
             className="m-flip js-flip"
             style={{
-              fontSize: "40px",
+              fontSize: "clamp(24px, 5vw, 40px)",
               fontFamily: "var(--font-red-hat-display), sans-serif",
               fontWeight: "bold",
             }}
@@ -64,7 +102,7 @@ export default function ClosingSection() {
           <p
             className="m-flip js-flip"
             style={{
-              fontSize: "32px",
+              fontSize: "clamp(20px, 4vw, 32px)",
               fontFamily: "var(--font-red-hat-display), sans-serif",
               fontWeight: "bold",
             }}
@@ -80,7 +118,7 @@ export default function ClosingSection() {
           <p
             className="m-flip js-flip"
             style={{
-              fontSize: "35px",
+              fontSize: "clamp(22px, 4.5vw, 35px)",
               fontFamily: "var(--font-red-hat-display), sans-serif",
               fontWeight: "bold",
             }}
@@ -90,7 +128,7 @@ export default function ClosingSection() {
               style={{
                 fontFamily: "var(--font-zen-kurenaido)",
                 fontWeight: "400",
-                fontSize: "40px",
+                fontSize: "clamp(24px, 5vw, 40px)",
               }}
             >
               ZNITは 今日も、
@@ -101,7 +139,7 @@ export default function ClosingSection() {
           <p
             className="m-flip js-flip"
             style={{
-              fontSize: "40px",
+              fontSize: "clamp(24px, 5vw, 40px)",
               fontFamily: "var(--font-red-hat-display), sans-serif",
               fontWeight: "bold",
             }}

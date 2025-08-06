@@ -165,7 +165,7 @@ export default function IntroSection() {
           <h1
             className="font-black text-white mb-6"
             style={{
-              fontSize: "90px",
+              fontSize: "clamp(40px, 10vw, 90px)",
               fontFamily: "var(--font-montserrat), sans-serif",
               fontWeight: 900,
             }}
