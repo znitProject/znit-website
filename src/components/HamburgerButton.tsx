@@ -1,17 +1,22 @@
-import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import { useTheme } from 'next-themes';
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 
 interface HamburgerButtonProps {
   toggleMenu: () => void;
   isMenuOpen: boolean;
+  isScrolled?: boolean;
 }
 
-const HamburgerButton: React.FC<HamburgerButtonProps> = ({ toggleMenu, isMenuOpen }) => {
+const HamburgerButton: React.FC<HamburgerButtonProps> = ({
+  toggleMenu,
+  isMenuOpen,
+  isScrolled = false,
+}) => {
   const pathname = usePathname();
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [buttonColor, setButtonColor] = useState('#000');
+  const [buttonColor, setButtonColor] = useState("#000");
 
   useEffect(() => {
     setMounted(true);
@@ -19,45 +24,22 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({ toggleMenu, isMenuOpe
 
   useEffect(() => {
     const updateButtonColor = () => {
-      // 현재 스크롤 위치에 따라 배경색 감지
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      
-      // 메인 페이지에서만 다크모드 감지
-      const isMainPage = pathname === '/';
-      const isDarkMode = mounted && theme === 'dark';
-      
-      // /slogan 페이지에서 스크롤 위치에 따라 색상 결정
-      if (pathname === '/slogan') {
-        if (scrollY < windowHeight) {
-          // 첫 번째 섹션 (화이트 배경)
-          setButtonColor('#000');
-        } else {
-          // 나머지 섹션 (블랙 배경)
-          setButtonColor('#fff');
-        }
-      } else if (isMainPage) {
-        // 메인 페이지는 다크모드에 따라 색상 결정
-        setButtonColor(isDarkMode ? '#fff' : '#000');
+      // about 페이지에서 스크롤 위치에 따라 색상 결정
+      if (isScrolled) {
+        // 스크롤된 상태 (검정 배경 구간): 흰색
+        setButtonColor("#fff");
       } else {
-        // 다른 페이지는 기본 검정색
-        setButtonColor('#000');
+        // 스크롤되지 않은 상태 (투명 배경 구간): 검정색
+        setButtonColor("#000");
       }
     };
 
     // 초기 색상 설정
     updateButtonColor();
-
-    // 스크롤 이벤트 리스너 추가
-    window.addEventListener('scroll', updateButtonColor);
-    
-    return () => {
-      window.removeEventListener('scroll', updateButtonColor);
-    };
-  }, [pathname, mounted, theme]);
+  }, [isScrolled]);
 
   useEffect(() => {
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       .toggle {
         cursor: pointer;
@@ -106,7 +88,10 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({ toggleMenu, isMenuOpe
   }, [buttonColor]);
 
   return (
-    <div className={`toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
+    <div
+      className={`toggle ${isMenuOpen ? "active" : ""}`}
+      onClick={toggleMenu}
+    >
       <span></span>
       <span></span>
       <span></span>

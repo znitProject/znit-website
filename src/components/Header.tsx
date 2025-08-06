@@ -3,10 +3,13 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import HamburgerButton from "./HamburgerButton";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -15,8 +18,27 @@ export default function Header() {
     { name: "WORKS", path: "/work" },
     { name: "ABOUT", path: "/about" },
     { name: "CAREERS", path: "/career" },
-   // { name: "CONTACT US", path: "/contact" },
+    // { name: "CONTACT US", path: "/contact" },
   ];
+
+  // 스크롤 위치 감지 (about 페이지에서만)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (pathname === "/about") {
+        const scrollPosition = window.scrollY;
+        // about 페이지에서 800px 이상 스크롤되면 색상 변경 (검정 배경 구간)
+        setIsScrolled(scrollPosition > 800);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    // 초기 상태 설정
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -44,7 +66,7 @@ export default function Header() {
   }, [isMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-transparent z-[500] mb-[10px]">
+    <header className="fixed top-0 left-0 right-0 z-[500] mb-[10px] transition-all duration-300 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 relative">
           {/* 로고 - 왼쪽 */}
@@ -64,7 +86,11 @@ export default function Header() {
 
           {/* 햄버거 메뉴 버튼 - 오른쪽 */}
           <div className="relative" ref={menuRef}>
-            <HamburgerButton toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
+            <HamburgerButton
+              toggleMenu={toggleMenu}
+              isMenuOpen={isMenuOpen}
+              isScrolled={pathname === "/about" ? isScrolled : false}
+            />
 
             {/* 촤라락 메뉴 드롭다운 */}
             <div

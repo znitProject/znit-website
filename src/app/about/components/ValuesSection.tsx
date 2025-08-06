@@ -84,13 +84,13 @@ const WavePattern = () => {
   const [waves, setWaves] = useState<
     Array<{
       id: number;
-      type: "wave-1" | "wave-2" | "wave-3" | "ripple";
+      type: "wave-1" | "wave-2";
       top: string;
       left: string;
       width: string;
       height: string;
       color: string;
-      blendMode: "multiply" | "screen" | "overlay" | "soft-light";
+      blendMode: "multiply" | "screen";
       duration: number;
       delay: number;
     }>
@@ -102,21 +102,15 @@ const WavePattern = () => {
       "#ff2e63", // 밝은 마젠타
       "#ff6b35", // 주황색
       "#6a4c93", // 보라색
-      "#ffd93d", // 노란색
-      "#8b4513", // 갈색
-      "#e91e63", // 핑크
-      "#9c27b0", // 자주색
     ];
-    const types = ["wave-1", "wave-2", "wave-3", "ripple"];
-    const blendModes = ["multiply", "screen", "overlay", "soft-light"];
+    const types = ["wave-1", "wave-2"];
+    const blendModes = ["multiply", "screen"];
 
-    const generatedWaves = Array.from({ length: 12 }).map((_, i) => ({
+    const generatedWaves = Array.from({ length: 6 }).map((_, i) => ({
       id: i,
       type: types[Math.floor(Math.random() * types.length)] as
         | "wave-1"
-        | "wave-2"
-        | "wave-3"
-        | "ripple",
+        | "wave-2",
       top: `${Math.random() * 100}%`,
       left: `${Math.random() * 100}%`,
       width: `${Math.random() * 100 + 80}%`,
@@ -124,24 +118,22 @@ const WavePattern = () => {
       color: colors[Math.floor(Math.random() * colors.length)],
       blendMode: blendModes[Math.floor(Math.random() * blendModes.length)] as
         | "multiply"
-        | "screen"
-        | "overlay"
-        | "soft-light",
-      duration: Math.random() * 25 + 20,
-      delay: Math.random() * 10,
+        | "screen",
+      duration: Math.random() * 15 + 10,
+      delay: Math.random() * 5,
     }));
     setWaves(generatedWaves);
   }, []);
 
   const renderWave = (wave: {
     id: number;
-    type: "wave-1" | "wave-2" | "wave-3" | "ripple";
+    type: "wave-1" | "wave-2";
     top: string;
     left: string;
     width: string;
     height: string;
     color: string;
-    blendMode: "multiply" | "screen" | "overlay" | "soft-light";
+    blendMode: "multiply" | "screen";
     duration: number;
     delay: number;
   }) => {
@@ -161,14 +153,8 @@ const WavePattern = () => {
               mixBlendMode: wave.blendMode,
             }}
             animate={{
-              borderRadius: [
-                "50% 50% 30% 70% / 60% 30% 70% 40%",
-                "30% 70% 50% 50% / 40% 70% 30% 60%",
-                "50% 50% 30% 70% / 60% 30% 70% 40%",
-              ],
-              y: [0, -20, 0],
-              scaleY: [1, 1.2, 1],
-              opacity: [0.6, 0.9, 0.6],
+              y: [0, -10, 0],
+              opacity: [0.4, 0.6, 0.4],
             }}
             transition={{
               duration: wave.duration,
@@ -194,78 +180,8 @@ const WavePattern = () => {
               mixBlendMode: wave.blendMode,
             }}
             animate={{
-              borderRadius: [
-                "70% 30% 40% 60% / 60% 40% 60% 40%",
-                "30% 70% 60% 40% / 40% 60% 40% 60%",
-                "70% 30% 40% 60% / 60% 40% 60% 40%",
-              ],
-              x: [0, 15, 0],
-              scale: [1, 1.1, 1],
-              opacity: [0.5, 0.8, 0.5],
-            }}
-            transition={{
-              duration: wave.duration,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
-              delay: wave.delay,
-            }}
-          />
-        );
-      case "wave-3":
-        return (
-          <motion.div
-            key={wave.id}
-            className="absolute"
-            style={{
-              top: wave.top,
-              left: wave.left,
-              width: wave.width,
-              height: wave.height,
-              background: `conic-gradient(from 45deg, ${wave.color} 0deg, ${wave.color}80 180deg, transparent 180deg)`,
-              borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
-              mixBlendMode: wave.blendMode,
-            }}
-            animate={{
-              borderRadius: [
-                "60% 40% 30% 70% / 60% 30% 70% 40%",
-                "40% 60% 70% 30% / 30% 70% 40% 60%",
-                "60% 40% 30% 70% / 60% 30% 70% 40%",
-              ],
-              rotate: [0, 180, 360],
-              scale: [1, 1.15, 1],
-              opacity: [0.4, 0.7, 0.4],
-            }}
-            transition={{
-              duration: wave.duration,
-              repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
-              delay: wave.delay,
-            }}
-          />
-        );
-      case "ripple":
-        return (
-          <motion.div
-            key={wave.id}
-            className="absolute"
-            style={{
-              top: wave.top,
-              left: wave.left,
-              width: wave.width,
-              height: wave.height,
-              background: `radial-gradient(circle at 20% 30%, ${wave.color} 0%, ${wave.color} 1px, transparent 1px),
-                          radial-gradient(circle at 80% 20%, ${wave.color} 0%, ${wave.color} 0.5px, transparent 0.5px),
-                          radial-gradient(circle at 40% 70%, ${wave.color} 0%, ${wave.color} 1.5px, transparent 1.5px),
-                          radial-gradient(circle at 90% 80%, ${wave.color} 0%, ${wave.color} 0.8px, transparent 0.8px),
-                          radial-gradient(circle at 10% 90%, ${wave.color} 0%, ${wave.color} 1.2px, transparent 1.2px),
-                          radial-gradient(circle at 60% 50%, ${wave.color} 0%, ${wave.color} 0.6px, transparent 0.6px)`,
-              mixBlendMode: wave.blendMode,
-            }}
-            animate={{
-              scale: [1, 1.05, 1],
-              opacity: [0.2, 0.4, 0.2],
+              x: [0, 8, 0],
+              opacity: [0.3, 0.5, 0.3],
             }}
             transition={{
               duration: wave.duration,
@@ -362,35 +278,57 @@ export default function ValuesSection() {
 
   return (
     <section className="min-h-screen py-20">
+      {/* 타이틀 섹션을 완전히 고정 */}
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-40 font-red-hat-display">
-            {"We own what defines us.".split("").map((char, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{
-                  duration: 0.5,
-                  delay: Math.random() * 2,
-                  ease: "easeInOut",
-                }}
-                className="inline-block"
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-          </h2>
+        <div className="text-center mb-40 mt-30">
+          <motion.h2
+            className="text-6xl font-bold text-white mb-6 relative z-50"
+            style={{
+              fontFamily: "var(--font-red-hat-display), sans-serif",
+              fontSize: "clamp(36px, 8vw, 60px)",
+            }}
+          >
+            {Array.from("The values that define who we are.").map(
+              (char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: index * 0.05,
+                    ease: "easeOut",
+                  }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  style={{ display: "inline-block" }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              )
+            )}
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.5, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.1 }}
+            className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed relative z-50"
+            style={{
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "clamp(14px, 3vw, 18px)",
+            }}
+          >
+            우리가 함께 추구하는 가치가 ZNIT의 정체성을 만듭니다
+          </motion.p>
         </div>
+      </div>
 
+      {/* 카드 섹션을 별도 컨테이너로 분리 */}
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-          {/* Left-side Description Area */}
-          <div className="lg:sticky lg:top-40">
-            <motion.div
-              className="w-full p-8 text-white min-h-[500px] flex items-center"
-              animate={{ opacity: selectedValue ? 1 : 0.2 }}
-              transition={{ duration: 0.5 }}
-            >
+          {/* Left-side Description Area (Desktop) */}
+          <div className="hidden lg:block lg:sticky lg:top-40">
+            <div className="w-full p-8 text-white min-h-[500px] flex items-center">
               {selectedValue && (
                 <motion.div
                   key={selectedValue.id}
@@ -457,7 +395,7 @@ export default function ValuesSection() {
                   </p>
                 </motion.div>
               )}
-            </motion.div>
+            </div>
           </div>
 
           {/* Right-side Card Area */}
@@ -465,20 +403,45 @@ export default function ValuesSection() {
             {values.map((value, index) => (
               <motion.div
                 key={value.id}
-                initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
+                initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`flex ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className={`flex flex-col ${index % 2 === 0 ? "items-start" : "items-end"}`}
                 onMouseEnter={() => setHoveredId(value.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 style={{ perspective: "1000px" }}
               >
+                {/* Description Area (Mobile) */}
+                <div className="lg:hidden w-full p-4 text-white mb-4">
+                  {hoveredId === value.id && (
+                    <motion.div
+                      key={value.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="w-full"
+                    >
+                      <div className="mb-4">
+                        <TypingAnimation
+                          text={value.title}
+                          className={`text-4xl font-bold ${colorMap[value.color]}`}
+                        />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-4 text-gray-200 leading-tight">
+                        {value.detailContent.subtitle}
+                      </h3>
+                      <p className="text-base text-gray-200 leading-relaxed">
+                        {value.detailContent.explanation}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
                 <motion.div
                   className="w-80 h-120 rounded-xl cursor-pointer relative"
                   style={{ transformStyle: "preserve-3d" }}
                   animate={{ rotateY: hoveredId === value.id ? 180 : 0 }}
-                  transition={{ duration: 0.7, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  whileHover={{ scale: 1.02 }}
                 >
                   {/* Card Front */}
                   <div
@@ -486,6 +449,13 @@ export default function ValuesSection() {
                     style={{ backfaceVisibility: "hidden" }}
                   >
                     <WavePattern />
+                    {/* 광택 효과 */}
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-60" />
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                    <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-white/30 to-transparent" />
+                    <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+
                     <div className="relative z-10 mb-4">
                       <h3 className="text-3xl font-bold mb-2 text-white">
                         {value.title}
