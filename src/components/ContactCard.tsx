@@ -58,7 +58,7 @@ export default function ContactCard({ style }: { style?: React.CSSProperties }) 
   return (
     <div
       ref={cardRef}
-      className="relative overflow-hidden group rounded-2xl shadow-2xl cursor-pointer"
+      className="relative overflow-hidden group rounded-2xl shadow-2xl cursor-pointer w-full h-full"
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

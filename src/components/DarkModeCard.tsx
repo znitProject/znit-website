@@ -54,7 +54,7 @@ const DarkModeCard: React.FC<DarkModeCardProps> = ({ style }) => {
   return (
     <div
       ref={cardRef}
-      className="flex items-center justify-center cursor-pointer border rounded-[20px]"
+      className="w-full h-full flex items-center justify-center cursor-pointer border rounded-[20px]"
       style={{
         backgroundColor: theme === "dark" ? "white" : "black",
         color: theme === "dark" ? "black" : "white",

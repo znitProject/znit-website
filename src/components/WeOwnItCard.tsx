@@ -90,10 +90,9 @@ export default function WeOwnItCard({
         {/* Main Content */}
         <div className="z-10 text-center w-full h-full flex flex-col justify-center items-center px-2">
           <h1
-            className="line font-extrabold leading-tight tracking-tight text-white"
+            className="line font-extrabold leading-tight tracking-tight text-white text-xl sm:text-2xl md:text-xl lg:text-4xl xl:text-7xl"
             style={{
               fontFamily: "Playfair Display, serif",
-              fontSize: "clamp(1rem, 4.5vw, 4rem)",
               marginBottom: "clamp(0.25rem, 1.5vw, 1rem)",
               maxWidth: "100%",
               wordWrap: "break-word",
@@ -103,10 +102,9 @@ export default function WeOwnItCard({
           </h1>
 
           <p
-            className="line font-light text-white leading-relaxed text-center"
+            className="line font-light text-white leading-relaxed text-center text-sm sm:text-base md:text-sm lg:text-xl xl:text-2xl"
             style={{
               fontFamily: "Inter, sans-serif",
-              fontSize: "clamp(0.6rem, 2.2vw, 1.5rem)",
               marginBottom: "clamp(0.25rem, 1vw, 0.75rem)",
               maxWidth: "100%",
               lineHeight: "1.4",
@@ -122,9 +120,8 @@ export default function WeOwnItCard({
           </p>
 
           <p
-            className="line text-gray-500 italic text-center"
+            className="line text-gray-500 italic text-center text-xs sm:text-sm md:text-xs lg:text-lg xl:text-xl"
             style={{
-              fontSize: "clamp(0.5rem, 1.8vw, 1.125rem)",
               maxWidth: "100%",
               lineHeight: "1.3",
             }}

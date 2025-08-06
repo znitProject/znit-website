@@ -83,13 +83,11 @@ export default function HomePage() {
             <WeOwnItCard style={{}} />
           </div>
 
-          {/* 보조 정보 카드들 */}
-          <div className="h-[180px]">{mounted && <MapCard />}</div>
-          <div className="h-[180px]">
+          {/* 보조 정보 카드들 - 동일한 높이로 통일 */}
+          <div className="h-[200px]">{mounted && <MapCard />}</div>
+          <div className="h-[200px]">
             <DarkModeCard style={{}} />
           </div>
-
-         
         </section>
 
         {/* 모바일 (sm 이하): 1열, 명확한 구분과 적절한 간격 */}
@@ -115,22 +113,22 @@ export default function HomePage() {
               <WeOwnItCard style={{}} />
             </div>
 
-            {/* 지도 - 완전히 분리된 컨테이너 */}
-            <div className="w-full h-[80px] sm:h-[100px] relative z-10">
+            {/* 지도 - 동일한 높이로 통일 */}
+            <div className="w-full h-[220px] sm:h-[240px] relative z-10">
               {mounted && <MapCard />}
             </div>
 
-            {/* 다크모드 토글 - 지도 바로 아래에 배치 */}
-            <div className="w-full h-[80px] sm:h-[100px]">
+            {/* 다크모드 토글 - 모바일에서 10px 증가 */}
+            <div className="w-full h-[230px] sm:h-[250px]">
               <DarkModeCard style={{}} />
             </div>
           </div>
         </section>
       </div>
 
-      {/* CTA Section - 모바일에서 더 강력한 임팩트 */}
+      {/* CTA Section - 노트북/데스크톱에서만 출력 */}
       <div
-        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
+        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor} hidden xl:block`}
       >
         <StrokeFillTextSection />
       </div>
