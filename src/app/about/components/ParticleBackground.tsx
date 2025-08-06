@@ -1,51 +1,127 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type p5 from "p5";
 
-interface Particle {
-  pos: any;
+// p5.Particle 타입이 없으므로 커스텀 타입을 정의합니다.
+interface CustomParticle {
+  pos: p5.Vector;
   col: string;
   size: number;
   fill: number;
-  velocity: any;
-  acceleration: any;
-  offset: any;
+  velocity: p5.Vector;
+  acceleration: p5.Vector;
+  offset: p5.Vector;
   update: () => void;
   isDead: () => boolean;
   render: () => void;
 }
 
+interface CustomParticleConstructor {
+  new (pos: p5.Vector, ppos: p5.Vector): CustomParticle;
+}
+
 interface ParticleSystem {
-  particles: Particle[];
-  addParticle: (pos: any, ppos: any) => void;
+  particles: CustomParticle[];
+  addParticle: (pos: p5.Vector, ppos: p5.Vector) => void;
   run: () => void;
+}
+
+interface ParticleSystemConstructor {
+  new (): ParticleSystem;
 }
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLDivElement>(null);
-  const p5InstanceRef = useRef<any>(null);
+  const p5InstanceRef = useRef<p5 | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
     // 동적으로 p5.js 로드
     const loadP5 = async () => {
-      // @ts-ignore
       const p5 = (await import("p5")).default;
 
       const colors = ["#FFE300", "#FF7494", "#00E6FF", "#89FF47"];
       let ps: ParticleSystem;
-      let time: number;
       let ptime = 0;
-      let offset: any;
-      let origin: any;
+      let offset: p5.Vector;
+      let origin: p5.Vector;
       let bg = 0;
 
-      const sketch = (p: any) => {
+      const sketch = (p: p5) => {
+        const Particle = function (
+          this: CustomParticle,
+          pos: p5.Vector,
+          ppos: p5.Vector,
+        ) {
+          this.pos = pos.copy();
+          this.col = p.random(colors);
+          this.size = p.random(5, 30);
+          this.fill = p.random([0, 1]);
+          this.velocity = p.createVector(0, 0);
+          this.acceleration = p5.Vector.sub(ppos, pos);
+          this.acceleration.mult(0.02);
+          this.offset = p.createVector(p.random(0, 1000), p.random(0, 1000));
+
+          this.update = function () {
+            this.velocity.add(this.acceleration);
+            this.pos.add(this.velocity);
+            this.pos.add(
+              p.createVector(
+                10 * (p.noise(this.offset.x) - 0.5),
+                10 * (p.noise(this.offset.y) - 0.5),
+              ),
+            );
+            this.offset.x = this.offset.x + 0.01;
+            this.offset.y = this.offset.y + 0.01;
+            this.size = this.size * 0.95;
+            this.acceleration.mult(0);
+            if (this.velocity.mag() > 1) this.velocity.mult(0.95);
+          };
+
+          this.isDead = function () {
+            return this.size < 1;
+          };
+
+          this.render = function () {
+            if (this.fill == 1) {
+              p.noStroke();
+              p.fill(this.col);
+            } else {
+              p.noFill();
+              p.stroke(this.col);
+              p.strokeWeight(1);
+            }
+            p.ellipse(this.pos.x, this.pos.y, this.size, this.size);
+          };
+        } as unknown as CustomParticleConstructor;
+
+        const ParticleSystem = function (this: ParticleSystem) {
+          this.particles = [];
+
+          this.addParticle = function (pos: p5.Vector, ppos: p5.Vector) {
+            this.particles.push(new Particle(pos, ppos));
+          };
+
+          this.run = function () {
+            for (let i = this.particles.length - 1; i >= 0; i--) {
+              const particle: CustomParticle = this.particles[i];
+              particle.update();
+              particle.render();
+              if (particle.isDead()) {
+                this.particles.splice(i, 1);
+              }
+            }
+          };
+        } as unknown as ParticleSystemConstructor;
+
         p.setup = () => {
           const canvas = p.createCanvas(window.innerWidth, window.innerHeight);
-          canvas.parent(canvasRef.current);
-          ps = new (ParticleSystem as any)();
+          if (canvasRef.current) {
+            canvas.parent(canvasRef.current);
+          }
+          ps = new ParticleSystem();
           p.background(0, 0, 0);
           offset = p.createVector(p.random(1000), p.random(1000));
           origin = p.createVector(p.width / 2, p.height / 2);
@@ -62,7 +138,7 @@ export default function ParticleBackground() {
           ) {
             const step = p.createVector(
               p.noise(offset.x) - 0.5,
-              p.noise(offset.y) - 0.5
+              p.noise(offset.y) - 0.5,
             );
             step.mult(10);
             const pos = p5.Vector.add(origin, step);
@@ -94,74 +170,6 @@ export default function ParticleBackground() {
           ptime = p.millis();
           origin = p.createVector(p.width / 2, p.height / 2);
         };
-
-        // Particle 클래스
-        const Particle = function (this: any, pos: any, ppos: any) {
-          this.pos = pos.copy();
-          this.col = p.random(colors);
-          this.size = p.random(5, 30);
-          this.fill = p.random([0, 1]);
-          this.velocity = p.createVector(0, 0);
-          this.acceleration = p5.Vector.sub(ppos, pos);
-          this.acceleration.mult(0.02);
-          this.offset = p.createVector(p.random(0, 1000), p.random(0, 1000));
-
-          this.update = function () {
-            this.velocity.add(this.acceleration);
-            this.pos.add(this.velocity);
-            this.pos.add(
-              p.createVector(
-                10 * (p.noise(this.offset.x) - 0.5),
-                10 * (p.noise(this.offset.y) - 0.5)
-              )
-            );
-            this.offset.x = this.offset.x + 0.01;
-            this.offset.y = this.offset.y + 0.01;
-            this.size = this.size * 0.95;
-            this.acceleration.mult(0);
-            if (this.velocity.mag() > 1) this.velocity.mult(0.95);
-          };
-
-          this.isDead = function () {
-            if (this.size < 1) return true;
-            else return false;
-          };
-
-          this.render = function () {
-            if (this.fill == 1) {
-              p.noStroke();
-              p.fill(this.col);
-            } else {
-              p.noFill();
-              p.stroke(this.col);
-              p.strokeWeight(1);
-            }
-            p.ellipse(this.pos.x, this.pos.y, this.size, this.size);
-          };
-        };
-
-        // ParticleSystem 클래스
-        const ParticleSystem = function (this: any) {
-          this.particles = [];
-
-          this.addParticle = function (pos: any, ppos: any) {
-            this.particles.push(new (Particle as any)(pos, ppos));
-          };
-
-          this.run = function () {
-            for (let i = this.particles.length - 1; i >= 0; i--) {
-              const particle = this.particles[i];
-              particle.update();
-              particle.render();
-              if (particle.isDead()) {
-                this.particles.splice(i, 1);
-              }
-            }
-          };
-        };
-
-        // 전역 변수에 할당
-        ps = new (ParticleSystem as any)();
       };
 
       // p5.js 인스턴스 생성

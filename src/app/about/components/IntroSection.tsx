@@ -187,25 +187,26 @@ export default function IntroSection() {
             We own our standards.
             <br />
             <span className="smaller">
-              "우리의 기준은 외부의 기대에만 머물지 않습니다. 우리는 스스로
+              &ldquo;우리의 기준은 외부의 기대에만 머물지 않습니다. 우리는
+              스스로
               <br />
-              나아가야 할 방향을 정의하고, 그 기준을 주도적으로 세웁니다."
+              나아가야 할 방향을 정의하고, 그 기준을 주도적으로 세웁니다.&rdquo;
             </span>
             <br />
             We own our impact.
             <br />
             <span className="smaller">
-              "결과뿐 아니라 그로 인해 생기는 변화, 감정, 맥락까지
+              &ldquo;결과뿐 아니라 그로 인해 생기는 변화, 감정, 맥락까지
               <br />
-              우리는 끝까지 돌보고, 깊이 있게 마주합니다."
+              우리는 끝까지 돌보고, 깊이 있게 마주합니다.&rdquo;
             </span>
             <br />
             We own it , Because it reflects who we are.
             <br />
             <span className="smaller">
-              "우리가 만든 것은 단순한 결과물이 아닙니다.
+              &ldquo;우리가 만든 것은 단순한 결과물이 아닙니다.
               <br />
-              우리가 어떻게 생각하고 움직이는지를 보여주는 증거입니다."
+              우리가 어떻게 생각하고 움직이는지를 보여주는 증거입니다.&rdquo;
             </span>
           </div>
         </div>

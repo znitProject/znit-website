@@ -278,15 +278,34 @@ export default function ValuesSection() {
 
   return (
     <section className="min-h-screen py-20">
+      {/* 타이틀 섹션을 완전히 고정 */}
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-20">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-6xl font-bold text-white font-red-hat-display mb-6"
+          >
+            ZNIT의 핵심 가치
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-xl text-gray-300 font-red-hat-display max-w-2xl mx-auto leading-relaxed"
+          >
+            우리가 추구하는 가치들이 모여 ZNIT의 정체성을 만들어갑니다
+          </motion.p>
+        </div>
+      </div>
+
+      {/* 카드 섹션을 별도 컨테이너로 분리 */}
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           {/* Left-side Description Area */}
           <div className="lg:sticky lg:top-40">
-            <motion.div
-              className="w-full p-8 text-white min-h-[500px] flex items-center"
-              animate={{ opacity: selectedValue ? 1 : 0.2 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="w-full p-8 text-white min-h-[500px] flex items-center">
               {selectedValue && (
                 <motion.div
                   key={selectedValue.id}
@@ -353,7 +372,7 @@ export default function ValuesSection() {
                   </p>
                 </motion.div>
               )}
-            </motion.div>
+            </div>
           </div>
 
           {/* Right-side Card Area */}

@@ -94,7 +94,10 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"
+          async
+        />
       </head>
       <body
         className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} ${stylish.variable} antialiased`}
