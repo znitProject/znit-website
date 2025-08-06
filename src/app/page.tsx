@@ -5,13 +5,12 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import WeOwnItCard from "../components/WeOwnItCard";
 import WorkWithUsCard from "../components/WorkWithUsCard";
-import CustomerCarousel from "../components/CustomerCarousel";
 import DarkModeCard from "../components/DarkModeCard";
 import ContactCard from "../components/ContactCard";
 import KeywordCard from "../components/KeywordCard";
 import WorkCard from "../components/WorkCard";
 
-import WorkCardList from "../components/WorkCardList";
+import WorkList from "../components/WorkList";
 import HeroRevealSection from "../components/HeroRevealSection";
 import StrokeFillTextSection from "../components/StrokeFillTextSection";
 
@@ -41,7 +40,7 @@ export default function HomePage() {
 
       {/* Main Content Grid - 모바일 퍼스트 정보 위계 적용 */}
       <div
-        className={`w-full flex justify-center px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 transition-colors duration-300 ${backgroundColor}`}
+        className={`w-full flex justify-center px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 py-2 sm:py-4 md:py-6 lg:py-6 xl:py-20 transition-colors duration-300 ${backgroundColor}`}
       >
         {/* 데스크톱 (xl 이상): 기존 복합 grid 레이아웃 유지 */}
         <section
@@ -84,15 +83,10 @@ export default function HomePage() {
             <WeOwnItCard style={{}} />
           </div>
 
-          {/* 보조 정보 카드들 */}
-          <div className="h-[180px]">{mounted && <MapCard />}</div>
-          <div className="h-[180px]">
+          {/* 보조 정보 카드들 - 동일한 높이로 통일 */}
+          <div className="h-[200px]">{mounted && <MapCard />}</div>
+          <div className="h-[200px]">
             <DarkModeCard style={{}} />
-          </div>
-
-          {/* 기타 요소들 */}
-          <div className="col-span-2 h-[120px]">
-            <CustomerCarousel />
           </div>
         </section>
 
@@ -119,22 +113,22 @@ export default function HomePage() {
               <WeOwnItCard style={{}} />
             </div>
 
-            {/* 지도 - 완전히 분리된 컨테이너 */}
-            <div className="w-full h-[80px] sm:h-[100px] relative z-10">
+            {/* 지도 - 동일한 높이로 통일 */}
+            <div className="w-full h-[220px] sm:h-[240px] relative z-10">
               {mounted && <MapCard />}
             </div>
 
-            {/* 다크모드 토글 - 지도 바로 아래에 배치 */}
-            <div className="w-full h-[80px] sm:h-[100px]">
+            {/* 다크모드 토글 - 모바일에서 10px 증가 */}
+            <div className="w-full h-[230px] sm:h-[250px]">
               <DarkModeCard style={{}} />
             </div>
           </div>
         </section>
       </div>
 
-      {/* CTA Section - 모바일에서 더 강력한 임팩트 */}
+      {/* CTA Section - 노트북/데스크톱에서만 출력 */}
       <div
-        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
+        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor} hidden xl:block`}
       >
         <StrokeFillTextSection />
       </div>
@@ -143,7 +137,7 @@ export default function HomePage() {
       <div
         className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
       >
-        <WorkCardList />
+        <WorkList />
       </div>
     </div>
   );

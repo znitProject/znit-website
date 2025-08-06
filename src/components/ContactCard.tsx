@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import React, { useRef } from "react";
-import { gsap } from "gsap";
+import Image from 'next/image';
+import React, { useRef } from 'react';
+import { gsap } from 'gsap';
 
 export default function ContactCard({ style }: { style?: React.CSSProperties }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -14,17 +14,8 @@ export default function ContactCard({ style }: { style?: React.CSSProperties }) 
     const x = e.clientX - bounds.left;
     const y = e.clientY - bounds.top;
 
-    // 🔥 현재 애니메이션 중인 요소들 중지
-    gsap.killTweensOf([cardRef.current, overlayRef.current, infoRef.current]);
+    gsap.killTweensOf([overlayRef.current, infoRef.current]);
 
-    // 카드 스케일 업
-    gsap.to(cardRef.current, {
-      scale: 1.02,
-      duration: 0.5,
-      ease: "power2.out",
-    });
-
-    // 오버레이 wave
     gsap.set(overlayRef.current, {
       clipPath: `circle(0% at ${x}px ${y}px)`,
       opacity: 1,
@@ -33,66 +24,53 @@ export default function ContactCard({ style }: { style?: React.CSSProperties }) 
     gsap.to(overlayRef.current, {
       clipPath: `circle(150% at ${x}px ${y}px)`,
       duration: 0.8,
-      ease: "power2.out",
+      ease: 'power2.out',
     });
 
-    // 텍스트 fade in
     gsap.to(infoRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.6,
       delay: 0.1,
-      ease: "power2.out",
+      ease: 'power2.out',
     });
   };
 
   const handleMouseLeave = () => {
-    // 텍스트 먼저 사라짐
     gsap.to(infoRef.current, {
       opacity: 0,
       y: 20,
       duration: 0.5,
-      ease: "power2.in",
+      ease: 'power2.in',
     });
 
-    // 오버레이 사라짐
     gsap.to(overlayRef.current, {
       clipPath: `circle(0% at 50% 50%)`,
       duration: 0.7,
       delay: 0.2,
-      ease: "power2.inOut",
+      ease: 'power2.inOut',
       onComplete: () => {
         gsap.set(overlayRef.current, { opacity: 0 });
       },
-    });
-
-    // 카드 스케일 원복
-    gsap.to(cardRef.current, {
-      scale: 1,
-      duration: 0.4,
-      ease: "power2.inOut",
     });
   };
 
   return (
     <div
       ref={cardRef}
-      className="relative overflow-hidden group rounded-2xl shadow-2xl cursor-pointer transition-transform"
+      className="relative overflow-hidden group rounded-2xl shadow-2xl cursor-pointer w-full h-full"
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-            {/* 기본 "Contact Us" 텍스트 */}
-            <div className="absolute top-0 right-0 p-4 z-10 transition-opacity duration-300 ease-in-out group-hover:opacity-0">
+      <div className="absolute top-0 right-0 p-4 z-10 transition-opacity duration-300 ease-in-out group-hover:opacity-0">
         <span
           className="text-3xl font-semibold text-white"
-          style={{ fontFamily: "Red Hat Display" }}
+          style={{ fontFamily: 'Red Hat Display' }}
         >
           Contact Us
         </span>
-        
       </div>
-      {/* 배경 이미지 */}
       <Image
         src="/contact_us_image2.jpg"
         alt="Contact Background"
@@ -101,20 +79,18 @@ export default function ContactCard({ style }: { style?: React.CSSProperties }) 
         aria-hidden="true"
       />
 
-      {/* 파동 오버레이 */}
       <div
         ref={overlayRef}
         className="absolute inset-0 z-20 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none"
         style={{
-          clipPath: "circle(0% at 50% 50%)",
+          clipPath: 'circle(0% at 50% 50%)',
         }}
       />
 
-      {/* 연락처 텍스트 */}
       <div
         ref={infoRef}
         className="absolute inset-0 z-30 flex flex-col items-center justify-center text-white opacity-0"
-        style={{ transform: "translateY(20px)" }}
+        style={{ transform: 'translateY(20px)' }}
       >
         <h3 className="text-4xl font-bold tracking-widest mb-5 font-sans">CONTACT</h3>
         <div className="space-y-1 text-xl font-light text-center tracking-wide leading-snug font-sans opacity-90">
