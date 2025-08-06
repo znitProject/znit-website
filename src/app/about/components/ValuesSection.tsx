@@ -280,22 +280,39 @@ export default function ValuesSection() {
     <section className="min-h-screen py-20">
       {/* 타이틀 섹션을 완전히 고정 */}
       <div className="container mx-auto px-4">
-        <div className="text-center mb-20">
+        <div className="text-center mb-40 mt-30">
           <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-6xl font-bold text-white font-red-hat-display mb-6"
+            className="text-6xl font-bold text-white mb-6 relative z-50"
+            style={{ fontFamily: "var(--font-red-hat-display), sans-serif" }}
           >
-            ZNIT의 핵심 가치
+            {Array.from("The values that define who we are.").map(
+              (char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: index * 0.05,
+                    ease: "easeOut",
+                  }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  style={{ display: "inline-block" }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              )
+            )}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-xl text-gray-300 font-red-hat-display max-w-2xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: 1.5, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.1 }}
+            className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed relative z-50"
+            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
           >
-            우리가 추구하는 가치들이 모여 ZNIT의 정체성을 만들어갑니다
+            The values we pursue together form ZNIT&apos;s identity
           </motion.p>
         </div>
       </div>

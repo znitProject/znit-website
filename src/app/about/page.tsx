@@ -4,6 +4,7 @@ import WaveMaskText from "./components/WaveMaskText";
 import ValuesSection from "./components/ValuesSection";
 import IntroSection from "./components/IntroSection";
 import ParticleBackground from "./components/ParticleBackground";
+import ClosingSection from "./components/ClosingSection";
 
 export default function SloganPage() {
   return (
@@ -21,6 +22,9 @@ export default function SloganPage() {
 
       {/* 세 번째 섹션 - 핵심 가치 */}
       <ValuesSection />
+
+      {/* 네 번째 섹션 - 마무리 */}
+      <ClosingSection />
     </div>
   );
 }

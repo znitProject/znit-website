@@ -72,11 +72,11 @@ export default function WaveMaskText() {
       }
     }
 
-    // 초기 애니메이션 - ZNIT IDENTITY는 처음부터 보이도록
+    // 초기 애니메이션
     gsap.timeline({ defaults: { duration: 1 }, delay: 0.9 }).to(
       window,
       {
-        scrollTo: ch / 2,
+        scrollTo: ch / 3,
         onComplete: () => {
           // 애니메이션 완료 후 처리
         },

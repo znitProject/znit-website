@@ -94,6 +94,16 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Song+Myung&family=Zen+Kurenaido&display=swap"
+          rel="stylesheet"
+        />
         <script
           src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"
           async
