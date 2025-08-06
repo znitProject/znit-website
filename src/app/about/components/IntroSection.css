@@ -19,13 +19,13 @@
         (var(--ppc) * var(--content-length) + (var(--pad) * var(--buffer))) *
           1px
       ) +
-      50vh
+      5vh
   );
 }
 
 .content {
   position: sticky;
-  top: 40;
+  top: 40px;
   min-height: 80vh;
   width: 180ch;
   padding: 0.5rem 0;
@@ -39,7 +39,10 @@
 
 .content span {
   opacity: calc(0.4 + (var(--active, 0)));
-  transition: opacity 0.5s;
+  transition:
+    opacity 0.5s,
+    color 0.5s;
+  color: calc(rgb(102, 102, 102) + (var(--active, 0) * rgb(153, 153, 153)));
 }
 
 [data-split] {
@@ -51,6 +54,7 @@
   word-break: normal;
   hyphens: auto;
   text-align: left;
+  color: #666666;
 }
 
 [data-split] .text-right {
@@ -71,6 +75,7 @@
   --active: 1 !important;
   display: block !important;
   margin: 0.2em 0 !important;
+  color: rgba(255, 255, 255, 0.95) !important;
 }
 
 @supports (animation-timeline: scroll()) {

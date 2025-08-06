@@ -16,12 +16,12 @@ export default function IntroSection() {
     const content = toSplit.innerText;
     const contentLength = content.length;
 
-    const PPC = 10; // Pixels per character
-    const BUFFER = 40;
+    const PPC = 5; // Pixels per character (10에서 5로 줄임)
+    const BUFFER = 20; // 40에서 20으로 줄임
 
     document.documentElement.style.setProperty("--buffer", BUFFER.toString());
     document.documentElement.style.setProperty("--ppc", PPC.toString());
-    document.documentElement.style.setProperty("--pad", "8");
+    document.documentElement.style.setProperty("--pad", "4"); // 8에서 4로 줄임
     document.documentElement.style.setProperty(
       "--content-length",
       (contentLength + 2).toString()
