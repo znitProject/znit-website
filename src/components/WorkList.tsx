@@ -15,7 +15,10 @@ const UICraftCards: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [gridColumns, setGridColumns] = useState('10fr 1fr 1fr 1fr 1fr 1fr');
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const [mobileGridRows, setMobileGridRows] = useState('10fr 1fr 1fr 1fr 1fr 1fr');
   const listRef = useRef<HTMLUListElement>(null);
+  const mobileListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -75,9 +78,19 @@ const UICraftCards: React.FC = () => {
     setGridColumns(cols);
   };
 
+  const handleMobileCardInteraction = (index: number) => {
+    setMobileActiveIndex(index);
+    const rows = new Array(cards.length)
+      .fill('')
+      .map((_, i) => (index === i ? '10fr' : '1fr'))
+      .join(' ');
+    setMobileGridRows(rows);
+  };
+
   useEffect(() => {
     // Initialize with first card active
     handleCardInteraction(0);
+    handleMobileCardInteraction(0);
   }, []);
 
   if (!mounted) return null;
@@ -113,9 +126,82 @@ const UICraftCards: React.FC = () => {
       </div>
 
       {/* Cards Container */}
+      {/* 모바일: 세로 레이아웃 (접힘/펼침 기능 포함) */}
+      <div 
+        ref={mobileListRef}
+        className="md:hidden w-full max-w-lg h-96 transition-all duration-700 ease-out"
+        style={{ 
+          display: 'grid',
+          gridTemplateRows: mobileGridRows,
+          gap: '8px',
+          transition: 'grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+        }}
+      >
+        {cards.map((card, index) => (
+          <div
+            key={card.id}
+            className={`relative border rounded-lg overflow-hidden min-h-16 cursor-pointer group transition-colors duration-300 ${
+              theme === 'dark' 
+                ? 'bg-zinc-800 border-zinc-600' 
+                : 'bg-white border-gray-300'
+            }`}
+            onMouseEnter={() => handleMobileCardInteraction(index)}
+            onFocus={() => handleMobileCardInteraction(index)}
+            onClick={() => handleMobileCardInteraction(index)}
+            tabIndex={0}
+          >
+            <article className="absolute inset-0 flex flex-col justify-end p-4 font-mono">
+              {/* Background Image */}
+              <img 
+                src={card.image}
+                alt=""
+                className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-700 ${
+                  mobileActiveIndex === index 
+                    ? 'grayscale-0 brightness-100 scale-100' 
+                    : 'grayscale brightness-150 scale-110'
+                }`}
+                style={{
+                  mask: 'radial-gradient(100% 100% at 100% 0, #fff, transparent)'
+                }}
+              />
+              
+              {/* Title */}
+              <h3 className={`text-md font-medium uppercase whitespace-nowrap transition-opacity duration-700 mb-2 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              } ${
+                mobileActiveIndex === index ? 'opacity-100' : 'opacity-60'
+              }`}>
+                {card.title}
+              </h3>
+
+              {/* Description */}
+              <p className={`text-xs leading-tight mb-4 transition-all duration-700 ${
+                theme === 'dark' ? 'text-gray-200' : 'text-gray-800'
+              } ${
+                mobileActiveIndex === index 
+                  ? 'opacity-80 delay-150' 
+                  : 'opacity-0'
+              }`}>
+                {card.description}
+              </p>
+
+              {/* Icon */}
+              <div className={`mb-2 transition-opacity duration-700 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              } ${
+                mobileActiveIndex === index ? 'opacity-100' : 'opacity-60'
+              }`}>
+                {card.icon}
+              </div>
+            </article>
+          </div>
+        ))}
+      </div>
+
+      {/* 태블릿/데스크톱: 기존 가로 레이아웃 */}
       <ul 
         ref={listRef}
-        className="grid gap-2 h-96 w-full max-w-4xl transition-all duration-700 ease-out"
+        className="hidden md:grid gap-2 h-96 w-full max-w-4xl transition-all duration-700 ease-out"
         style={{ 
           gridTemplateColumns: gridColumns,
           transition: 'grid-template-columns 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
