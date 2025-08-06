@@ -23,7 +23,8 @@ const values: ValueCardData[] = [
     title: "주체성",
     description: "Independence\nProactiveness",
     color: "bg-blue-500",
-    image: "/values/independence.jpg",
+    image:
+      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=300&fit=crop&crop=center",
     detailContent: {
       subtitle: "자신의 생각과 판단으로 행동하는 능력",
       explanation:

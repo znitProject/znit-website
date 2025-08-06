@@ -90,15 +90,17 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
   const [spiralParticles, setSpiralParticles] = React.useState<
     SpiralParticle[]
   >([]);
-  const [crossParticles, setCrossParticles] = React.useState<CrossParticle[]>([]);
+  const [crossParticles, setCrossParticles] = React.useState<CrossParticle[]>(
+    []
+  );
 
   React.useEffect(() => {
     // 컬러팔레트 색상 정의
     const colorPalette = [
-      { r: 2, g: 5, b: 10, a: 0.9 },      // #02050A - 검은색
-      { r: 0, g: 34, b: 78, a: 0.9 },     // #00224E - 진한 남색
-      { r: 67, g: 118, b: 171, a: 0.9 },  // #4376AB - 중간 하늘색
-      { r: 246, g: 191, b: 65, a: 0.9 },  // #F6BF41 - 밝은 황금색
+      { r: 2, g: 5, b: 10, a: 0.9 }, // #02050A - 검은색
+      { r: 0, g: 34, b: 78, a: 0.9 }, // #00224E - 진한 남색
+      { r: 67, g: 118, b: 171, a: 0.9 }, // #4376AB - 중간 하늘색
+      { r: 246, g: 191, b: 65, a: 0.9 }, // #F6BF41 - 밝은 황금색
     ];
 
     // 블랙홀 주변 파티클 랜덤값 생성 (컬러팔레트 기반)
@@ -197,18 +199,18 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
           }}
         />
 
-                 {/* 강착원반 (Accretion Disk) - 컬러팔레트 기반 */}
-         {[0, 1, 2].map((index) => (
-           <div
-             key={`accretion-${index}`}
-             ref={(el) => {
-               if (el) accretionRefs.current[index] = el;
-             }}
-             className="absolute rounded-full"
-             style={{
-               width: `${180 + index * 25}px`,
-               height: `${180 + index * 25}px`,
-               background: `conic-gradient(from ${index * 45}deg, 
+        {/* 강착원반 (Accretion Disk) - 컬러팔레트 기반 */}
+        {[0, 1, 2].map((index) => (
+          <div
+            key={`accretion-${index}`}
+            ref={(el) => {
+              if (el) accretionRefs.current[index] = el;
+            }}
+            className="absolute rounded-full"
+            style={{
+              width: `${180 + index * 25}px`,
+              height: `${180 + index * 25}px`,
+              background: `conic-gradient(from ${index * 45}deg, 
                  transparent 0%, 
                  rgba(67,118,171,0.4) 10%, 
                  rgba(0,34,78,0.7) 25%, 
@@ -218,14 +220,14 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
                  rgba(0,34,78,0.9) 75%, 
                  rgba(246,191,65,0.4) 90%, 
                  transparent 100%)`,
-               left: "50%",
-               top: "50%",
-               transform: "translate(-50%, -50%)",
-               opacity: 0.8 - index * 0.1,
-               filter: `blur(${index * 0.5}px)`,
-             }}
-           />
-         ))}
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              opacity: 0.8 - index * 0.1,
+              filter: `blur(${index * 0.5}px)`,
+            }}
+          />
+        ))}
 
         {/* 외부 링들 - 사건 지평선 효과 (컬러팔레트 기반) */}
         {[0, 1, 2, 3, 4].map((index) => (
@@ -249,18 +251,18 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
           />
         ))}
 
-                 {/* 중간 소용돌이 링들 - 컬러팔레트 기반 */}
-         {[0, 1, 2, 3].map((index) => (
-           <div
-             key={`middle-${index}`}
-             ref={(el) => {
-               if (el) ringRefs.current[index + 5] = el;
-             }}
-             className="absolute rounded-full"
-             style={{
-               width: `${70 + index * 15}px`,
-               height: `${70 + index * 15}px`,
-               background: `conic-gradient(from ${index * 90}deg, 
+        {/* 중간 소용돌이 링들 - 컬러팔레트 기반 */}
+        {[0, 1, 2, 3].map((index) => (
+          <div
+            key={`middle-${index}`}
+            ref={(el) => {
+              if (el) ringRefs.current[index + 5] = el;
+            }}
+            className="absolute rounded-full"
+            style={{
+              width: `${70 + index * 15}px`,
+              height: `${70 + index * 15}px`,
+              background: `conic-gradient(from ${index * 90}deg, 
                  transparent, 
                  rgba(67,118,171,0.5), 
                  transparent, 
@@ -268,54 +270,54 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
                  transparent, 
                  rgba(246,191,65,0.4), 
                  transparent)`,
-               left: "50%",
-               top: "50%",
-               transform: "translate(-50%, -50%)",
-               opacity: 0.6 - index * 0.08,
-             }}
-           />
-         ))}
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              opacity: 0.6 - index * 0.08,
+            }}
+          />
+        ))}
 
-                 {/* 블랙홀 중심부 - 컬러팔레트 기반 */}
-         <div
-           className="black-hole-center relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full z-10"
-           style={{
-             backgroundImage: `
+        {/* 블랙홀 중심부 - 컬러팔레트 기반 */}
+        <div
+          className="black-hole-center relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full z-10"
+          style={{
+            backgroundImage: `
                radial-gradient(circle at 30% 30%, #02050A 0%, #00224E 25%, #4376AB 45%, #F6BF41 75%, transparent 100%),
                radial-gradient(circle at 70% 70%, #02050A 0%, #00224E 35%, #4376AB 65%, transparent 100%)
              `,
-             boxShadow: `
+            boxShadow: `
                0 0 20px rgba(2,5,10,0.9),
                inset 0 0 20px rgba(2,5,10,1),
                0 0 40px rgba(67,118,171,0.8),
                0 0 60px rgba(246,191,65,0.6),
                inset 0 0 10px rgba(0,34,78,0.9)
              `,
-           }}
-         >
-           {/* 중심의 완전한 검은 구멍 - 다층 구조 */}
-           <div
-             className="absolute inset-1 sm:inset-2 rounded-full"
-             style={{
-               backgroundImage:
-                 "radial-gradient(circle, #02050A 0%, #00224E 65%, rgba(67,118,171,0.9) 100%)",
-               boxShadow: `
+          }}
+        >
+          {/* 중심의 완전한 검은 구멍 - 다층 구조 */}
+          <div
+            className="absolute inset-1 sm:inset-2 rounded-full"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, #02050A 0%, #00224E 65%, rgba(67,118,171,0.9) 100%)",
+              boxShadow: `
                  inset 0 0 15px rgba(2,5,10,1),
                  inset 0 0 8px rgba(0,34,78,1),
                  0 0 10px rgba(67,118,171,0.9)
                `,
-             }}
-           >
-             {/* 최종 특이점 */}
-             <div
-               className="absolute inset-1 rounded-full"
-               style={{
-                 backgroundColor: "#02050A",
-                 boxShadow: "inset 0 0 5px rgba(2,5,10,1)",
-               }}
-             />
-           </div>
-         </div>
+            }}
+          >
+            {/* 최종 특이점 */}
+            <div
+              className="absolute inset-1 rounded-full"
+              style={{
+                backgroundColor: "#02050A",
+                boxShadow: "inset 0 0 5px rgba(2,5,10,1)",
+              }}
+            />
+          </div>
+        </div>
 
         {/* 블랙홀 주변 파티클 효과 (더 많고 다양하게) */}
         {particles.map((p, index) => (
@@ -355,60 +357,60 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
               boxShadow: `0 0 ${1 + (index % 3)}px ${p.backgroundColor}`,
             }}
           />
-                 ))}
+        ))}
 
-                   {/* 십자 모양 파티클 - 주 컬러 팔레트 기반 */}
-          {crossParticles.map((p, index) => (
+        {/* 십자 모양 파티클 - 주 컬러 팔레트 기반 */}
+        {crossParticles.map((p, index) => (
+          <div
+            key={`cross-${index}`}
+            className="absolute opacity-95"
+            style={{
+              width: `${p.size * 2}px`,
+              height: `${p.size * 2}px`,
+              left: "50%",
+              top: "50%",
+              transform: `translate(-50%, -50%) translate(${p.translateX}px, ${p.translateY}px) rotate(${p.rotate}deg)`,
+              animation: `crossFloat ${p.animationDuration}s linear infinite`,
+              animationDelay: `${p.animationDelay}s`,
+              filter: `blur(${0.02}px)`,
+              boxShadow: `0 0 ${4 + (index % 3)}px ${p.backgroundColor}, 0 0 ${8 + (index % 4)}px ${p.backgroundColor}`,
+            }}
+          >
+            {/* 세로선 */}
             <div
-              key={`cross-${index}`}
-              className="absolute opacity-95"
+              className="absolute"
               style={{
-                width: `${p.size * 2}px`,
+                width: `${p.size * 0.3}px`,
                 height: `${p.size * 2}px`,
+                backgroundColor: p.backgroundColor,
                 left: "50%",
                 top: "50%",
-                transform: `translate(-50%, -50%) translate(${p.translateX}px, ${p.translateY}px) rotate(${p.rotate}deg)`,
-                animation: `crossFloat ${p.animationDuration}s linear infinite`,
-                animationDelay: `${p.animationDelay}s`,
-                filter: `blur(${0.02}px)`,
-                boxShadow: `0 0 ${4 + (index % 3)}px ${p.backgroundColor}, 0 0 ${8 + (index % 4)}px ${p.backgroundColor}`,
+                transform: "translate(-50%, -50%)",
+                borderRadius: "2px",
+                boxShadow: `0 0 ${2 + (index % 2)}px ${p.backgroundColor}`,
+                zIndex: 1,
               }}
-            >
-              {/* 세로선 */}
-              <div
-                className="absolute"
-                style={{
-                  width: `${p.size * 0.3}px`,
-                  height: `${p.size * 2}px`,
-                  backgroundColor: p.backgroundColor,
-                  left: '50%',
-                  top: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  borderRadius: '2px',
-                  boxShadow: `0 0 ${2 + (index % 2)}px ${p.backgroundColor}`,
-                  zIndex: 1,
-                }}
-              />
-              {/* 가로선 */}
-              <div
-                className="absolute"
-                style={{
-                  width: `${p.size * 2}px`,
-                  height: `${p.size * 0.3}px`,
-                  backgroundColor: p.backgroundColor,
-                  left: '50%',
-                  top: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  borderRadius: '2px',
-                  boxShadow: `0 0 ${2 + (index % 2)}px ${p.backgroundColor}`,
-                  zIndex: 1,
-                }}
-              />
-            </div>
-          ))}
-       </div>
+            />
+            {/* 가로선 */}
+            <div
+              className="absolute"
+              style={{
+                width: `${p.size * 2}px`,
+                height: `${p.size * 0.3}px`,
+                backgroundColor: p.backgroundColor,
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+                borderRadius: "2px",
+                boxShadow: `0 0 ${2 + (index % 2)}px ${p.backgroundColor}`,
+                zIndex: 1,
+              }}
+            />
+          </div>
+        ))}
+      </div>
 
-       <style jsx>{`
+      <style jsx>{`
         @keyframes particleOrbit {
           0% {
             transform: translate(-50%, -50%) rotate(0deg) translateX(40px) scale(1);
@@ -444,7 +446,7 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
 
                  @keyframes particlePulse {
            0%, 100% {
-             opacity: 0.8;
+             opacity: 0.8;ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
              transform: scale(1);
            }
            50% {
@@ -513,8 +515,8 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     [0.8, 1, 1, 0.8]
   );
 
-  // 반응형 반지름과 카드 크기 (더 작게)
-  const [radius, setRadius] = useState(280); // Default to desktop size
+  // 반응형 반지름과 카드 크기 (더 크게)
+  const [radius, setRadius] = useState(350); // Default to desktop size
   const [cardMarginLeft, setCardMarginLeft] = useState(-128); // Default to desktop size
   const [cardMarginTop, setCardMarginTop] = useState(-96); // Default to desktop size
   const [perspective, setPerspective] = useState(800); // Default to desktop size
@@ -523,7 +525,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
   // 스크롤 위치에 따른 가시성 제어
   useEffect(() => {
     const handleResize = () => {
-      setRadius(window.innerWidth < 768 ? 200 : 280);
+      setRadius(window.innerWidth < 768 ? 250 : 350);
       setPerspective(window.innerWidth < 768 ? 600 : 800);
       if (window.innerWidth < 768) {
         setCardMarginLeft(-96);
@@ -670,7 +672,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
             return (
               <div
                 key={item.id}
-                className="absolute w-48 sm:w-56 lg:w-64 h-36 sm:h-40 lg:h-48 flex flex-col justify-center items-center border border-gray-300 shadow-lg rounded-lg bg-white z-0 group cursor-pointer transition-all duration-300 hover:scale-105 hover:border-black"
+                className="absolute w-48 sm:w-56 lg:w-64 h-36 sm:h-40 lg:h-48 shadow-lg rounded-lg z-0 group cursor-pointer transition-all duration-300 hover:scale-105"
                 style={{
                   transform: `rotateY(${rotateY}deg) translateZ(${radius}px)`,
                   transformOrigin: "center center",
@@ -678,27 +680,66 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                   top: "50%",
                   marginLeft: `${cardMarginLeft}px`,
                   marginTop: `${cardMarginTop}px`,
+                  border: `2px solid ${
+                    index === 0
+                      ? "#11224D" // 진한 남색
+                      : index === 1
+                        ? "#193A6F" // 깊은 파란색
+                        : index === 2
+                          ? "#2C599D" // 중간 파란색
+                          : index === 3
+                            ? "#5B84C4" // 밝은 파란색
+                            : index === 4
+                              ? "#F98125" // 밝은 주황색
+                              : index === 5
+                                ? "#FB9B50" // 연한 주황색
+                                : "#11224D" // 진한 남색
+                  }`,
                 }}
                 onClick={() => {}} // 카드 클릭 이벤트
               >
-                {/* 기본 타이틀 */}
-                <div className="flex flex-col items-center space-y-1 group-hover:opacity-0 transition-opacity duration-300">
+                {/* 앞면: 배경 이미지와 겹치는 제목 */}
+                <div className="w-full h-full flex flex-col justify-center items-center group-hover:opacity-0 transition-opacity duration-300 relative">
+                  {/* 배경 이미지 효과 */}
                   <div
-                    className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 text-center px-2 sm:px-3 lg:px-4 leading-tight"
-                    style={{ fontFamily: "var(--font-stylish)" }}
-                  >
-                    {item.title}
-                  </div>
-                  <div
-                    className="text-xs sm:text-sm lg:text-base font-medium text-gray-600 text-center px-2 sm:px-3 lg:px-4 leading-tight"
-                    style={{ fontFamily: "var(--font-red-hat-display)" }}
-                  >
-                    {item.titleEn}
+                    className="absolute inset-0 rounded-lg"
+                    style={{
+                      backgroundColor:
+                        index === 0
+                          ? "#11224D" // 진한 남색
+                          : index === 1
+                            ? "#193A6F" // 깊은 파란색
+                            : index === 2
+                              ? "#2C599D" // 중간 파란색
+                              : index === 3
+                                ? "#5B84C4" // 밝은 파란색
+                                : index === 4
+                                  ? "#F98125" // 밝은 주황색
+                                  : index === 5
+                                    ? "#FB9B50" // 연한 주황색
+                                    : "#11224D", // 진한 남색
+                    }}
+                  />
+
+                  {/* 제목 (배경 위에 겹쳐서 표시) */}
+                  <div className="relative z-10 flex flex-col items-center px-2 sm:px-3 lg:px-4 py-2">
+                    <div
+                      className="text-sm sm:text-base lg:text-lg font-bold text-white text-center leading-tight drop-shadow-md"
+                      style={{ fontFamily: "var(--font-stylish)" }}
+                    >
+                      {item.title}
+                    </div>
+                    <div
+                      className="text-xs sm:text-sm font-medium text-white text-center leading-tight mt-1 drop-shadow-md opacity-90"
+                      style={{ fontFamily: "var(--font-red-hat-display)" }}
+                    >
+                      {item.titleEn}
+                    </div>
                   </div>
                 </div>
 
-                {/* 호버 시 설명 */}
-                <div className="absolute inset-0 bg-black bg-opacity-90 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* 뒷면: 설명 */}
+                <div className="absolute inset-0 bg-black bg-opacity-95 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="text-center px-3 sm:px-4">
                     <p
                       className="text-xs sm:text-sm lg:text-base text-white leading-relaxed"
