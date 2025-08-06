@@ -33,12 +33,28 @@ const GeometricGlobe: React.FC = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const width = 470;
-    const height = 490;
+    // 반응형 크기 설정 - 원래 비율 유지
+    const getCanvasSize = () => {
+      const windowWidth = window.innerWidth;
+      if (windowWidth < 640) {
+        // 모바일 - 원래 비율 유지하면서 스케일링
+        return { width: 280, height: 290 };
+      } else if (windowWidth < 1024) {
+        // 태블릿 - 원래 비율 유지하면서 스케일링
+        return { width: 360, height: 375 };
+      } else {
+        // 데스크톱/노트북 - 원래 크기 유지
+        return { width: 470, height: 490 };
+      }
+    };
 
+    const { width, height } = getCanvasSize();
     canvas.width = width;
     canvas.height = height;
 
+    // 스케일링 팩터 계산 - 데스크톱/노트북은 스케일링 없음
+    const scaleX = width < 1024 ? width / 470 : 1;
+    const scaleY = width < 1024 ? height / 490 : 1;
 
     const dark = theme === 'dark' ? '#FFFFFF' : 'rgb(0, 0, 0)';
     const light = theme === 'dark' ? 'rgba(167,175,181,0.5)' : 'rgba(167,175,181,1)';
@@ -326,6 +342,17 @@ const GeometricGlobe: React.FC = () => {
       },
     ];
 
+    // Apply scaling to all points only for mobile/tablet
+    if (window.innerWidth < 1024) {
+      for (let i = 0; i < points.length; i++) {
+        points[i].x *= scaleX;
+        points[i].originX *= scaleX;
+        points[i].y *= scaleY;
+        points[i].originY *= scaleY;
+        points[i].rad *= Math.min(scaleX, scaleY);
+      }
+    }
+
     // Set random properties for each point
     for (let i = 0; i < points.length; i++) {
       points[i].length = getRandomInt(16, 35);
@@ -469,8 +496,12 @@ const GeometricGlobe: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="max-w-full mx-auto block"
-      style={{ maxWidth: "100%" }}
+      className="max-w-full mx-auto block w-full h-auto"
+      style={{ 
+        maxWidth: "100%",
+        width: "auto",
+        height: "auto"
+      }}
     />
   );
 };

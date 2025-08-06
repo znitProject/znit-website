@@ -5,7 +5,6 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import WeOwnItCard from "../components/WeOwnItCard";
 import WorkWithUsCard from "../components/WorkWithUsCard";
-import CustomerCarousel from "../components/CustomerCarousel";
 import DarkModeCard from "../components/DarkModeCard";
 import ContactCard from "../components/ContactCard";
 import KeywordCard from "../components/KeywordCard";
@@ -41,7 +40,7 @@ export default function HomePage() {
 
       {/* Main Content Grid - 모바일 퍼스트 정보 위계 적용 */}
       <div
-        className={`w-full flex justify-center px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 transition-colors duration-300 ${backgroundColor}`}
+        className={`w-full flex justify-center px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 py-2 sm:py-4 md:py-6 lg:py-6 xl:py-20 transition-colors duration-300 ${backgroundColor}`}
       >
         {/* 데스크톱 (xl 이상): 기존 복합 grid 레이아웃 유지 */}
         <section
@@ -92,10 +91,7 @@ export default function HomePage() {
             <DarkModeCard style={{}} />
           </div>
 
-          {/* 기타 요소들 */}
-          <div className="col-span-2 h-[120px]">
-            <CustomerCarousel />
-          </div>
+         
         </section>
 
         {/* 모바일 (sm 이하): 1열, 명확한 구분과 적절한 간격 */}

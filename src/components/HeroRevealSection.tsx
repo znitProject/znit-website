@@ -150,17 +150,15 @@ const MadAnimation: React.FC = () => {
   }
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-auto xl:h-screen">
       {/* Hero Section */}
       <div
-        className="absolute top-0 left-0 w-full h-full"
-
+        className="absolute top-0 left-0 w-full h-full xl:block hidden"
         style={{ 
           background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
           cursor: 'none',
           color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
           fontFamily: '"Fira Sans", sans-serif'
-
         }}
       >
         {/* Title */}
@@ -181,7 +179,36 @@ const MadAnimation: React.FC = () => {
         </div>
       </div>
 
-      {/* Scene */}
+      {/* Mobile/Tablet - 간단한 레이아웃 */}
+      <div
+        className="block xl:hidden py-4 md:py-8 lg:py-12 px-4"
+        style={{ 
+          background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
+          color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
+          fontFamily: '"Fira Sans", sans-serif'
+        }}
+      >
+        {/* Geometric Globe */}
+        <div className="flex justify-center mb-2 md:mb-6 lg:mb-8">
+          <GeometricGlobe />
+        </div>
+
+        {/* REVEAL ZNIT */}
+        <div className="text-center mb-4 md:mb-8 lg:mb-12">
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: "clamp(2.5rem, 10vw, 4rem)",
+              letterSpacing: "-0.025em",
+            }}
+          >
+            REVEAL ZNIT.
+          </div>
+        </div>
+
+      </div>
+
+      {/* Scene - All devices */}
       <div
         ref={sceneRef}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
@@ -200,36 +227,43 @@ const MadAnimation: React.FC = () => {
       >
         {/* Scene Title */}
         <div
-          className="absolute top-[2vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline"
+          className="absolute top-[4vw] sm:top-[1vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[10rem] 2xl:text-[10.5rem]"
           style={{
             fontWeight: 700,
-            fontSize: "clamp(2.5rem, 13vw, 12rem)",
             letterSpacing: "-0.025em",
-            lineHeight: 0.9,
+            lineHeight: 1.2,
           }}
         >
-          <div className="flex-none">
-            <div>
-              <span style={{ color: "#ff68a8" }}>O</span>ne Vision,
+          {/* All Devices Layout - 4줄 세로 구조 */}
+          <div className="w-full flex flex-col">
+            {/* 상위 2줄 - 좌측 정렬 */}
+            <div className="text-left mb-4 sm:mb-6 md:mb-8">
+              <div className="mb-2 sm:mb-3">
+                <span style={{ color: "#ff68a8" }}>O</span>ne Vision,
+              </div>
+              <div>
+                Two <span style={{ color: "#009800" }}>C</span>rafts.
+              </div>
             </div>
-            <div>
-              {" "}
-              Two <span style={{ color: "#009800" }}>C</span>rafts.
+
+            {/* 하위 2줄 - 우측 정렬 */}
+            <div className="text-right">
+              <div className="mb-2 sm:mb-3">
+                IT<span style={{color: '#4376AB'}}>&</span>DESIGN
+              </div>
+              <div style={{color: '#F6BF41'}}>
+                ZNIT
+              </div>
             </div>
           </div>
 
-          <div className="flex-end text-right ml-auto  ">
-            <div className="mt-5 md:mt-10">IT<span style={{color: '#4376AB'}}>&</span>DESIGN</div>
-            <div style={{color: '#F6BF41'}}>ZNIT</div>
-
-          </div>
         </div>
       </div>
 
-      {/* Cursor */}
+      {/* Cursor - Desktop only */}
       <div
         ref={cursorRef}
-        className="absolute rounded-full pointer-events-none"
+        className="absolute rounded-full pointer-events-none hidden xl:block"
         style={{
           top: "-1.5vw",
           left: "-1.5vw",
@@ -241,7 +275,7 @@ const MadAnimation: React.FC = () => {
         }}
       />
 
-      {/* SVG */}
+      {/* SVG - All devices */}
       <svg
         ref={svgRef}
         xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Server, Building2, Brush, BarChart3, Play, Smartphone } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 interface Card {
   id: number;
@@ -10,9 +11,15 @@ interface Card {
 }
 
 const UICraftCards: React.FC = () => {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [gridColumns, setGridColumns] = useState('10fr 1fr 1fr 1fr 1fr 1fr');
   const listRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const cards: Card[] = [
     {
@@ -73,15 +80,19 @@ const UICraftCards: React.FC = () => {
     handleCardInteraction(0);
   }, []);
 
+  if (!mounted) return null;
+
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4 p-8 relative overflow-hidden">
+    <div className={`min-h-screen flex flex-col items-center justify-center gap-4 p-8 relative overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' ? 'bg-zinc-850' : 'bg-white'
+    }`}>
       {/* Background Grid */}
       <div 
         className="absolute inset-0 opacity-7 pointer-events-none"
         style={{
           backgroundImage: `
-            linear-gradient(950deg, #000 1px, transparent 1px),
-            linear-gradient(#000 1px, transparent 1px)
+            linear-gradient(950deg, ${theme === 'dark' ? '#fff' : '#000'} 1px, transparent 1px),
+            linear-gradient(${theme === 'dark' ? '#fff' : '#000'} 1px, transparent 1px)
           `,
           backgroundSize: '45px 45px'
         }}
@@ -89,10 +100,14 @@ const UICraftCards: React.FC = () => {
       
       {/* Header */}
       <div className="text-center mb-16 z-10">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
+        <h1 className={`text-4xl md:text-6xl font-bold mb-6 transition-colors duration-300 ${
+          theme === 'dark' ? 'text-white' : 'text-gray-900'
+        }`}>
           What We Do
         </h1>
-        <p className="max-w-1xl mx-auto text-sm font-mono leading-relaxed opacity-80 text-gray-700">
+        <p className={`max-w-1xl mx-auto text-sm font-mono leading-relaxed opacity-80 transition-colors duration-300 ${
+          theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+        }`}>
           아이디어를 현실로 바꾸는 팀, ZNIT는 생각만 하지 않고, 직접 만듭니다. 끊임없는 도전과 세심한 손길로 완성도 높은 결과물을 만들어냅니다.
         </p>
       </div>
@@ -109,7 +124,11 @@ const UICraftCards: React.FC = () => {
         {cards.map((card, index) => (
           <li
             key={card.id}
-            className="relative bg-white border border-gray-300 rounded-lg overflow-hidden min-w-16 cursor-pointer group"
+            className={`relative border rounded-lg overflow-hidden min-w-16 cursor-pointer group transition-colors duration-300 ${
+              theme === 'dark' 
+                ? 'bg-zinc-800 border-zinc-600' 
+                : 'bg-white border-gray-300'
+            }`}
             onMouseEnter={() => handleCardInteraction(index)}
             onFocus={() => handleCardInteraction(index)}
             onClick={() => handleCardInteraction(index)}
@@ -132,7 +151,9 @@ const UICraftCards: React.FC = () => {
               
               {/* Title (Rotated) */}
               <h3 
-                className={`absolute top-4 left-4 text-md font-medium uppercase whitespace-nowrap origin-left transition-opacity duration-700 text-gray-900 ${
+                className={`absolute top-4 left-4 text-md font-medium uppercase whitespace-nowrap origin-left transition-opacity duration-700 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                } ${
                   activeIndex === index ? 'opacity-100' : 'opacity-60'
                 }`}
                 style={{ transform: 'rotate(90deg)' }}
@@ -141,7 +162,9 @@ const UICraftCards: React.FC = () => {
               </h3>
 
               {/* Description */}
-              <p className={`text-xs leading-tight mb-4 transition-all duration-700 text-gray-800 ${
+              <p className={`text-xs leading-tight mb-4 transition-all duration-700 ${
+                theme === 'dark' ? 'text-gray-200' : 'text-gray-800'
+              } ${
                 activeIndex === index 
                   ? 'opacity-80 delay-150' 
                   : 'opacity-0'
@@ -150,7 +173,9 @@ const UICraftCards: React.FC = () => {
               </p>
 
               {/* Icon */}
-              <div className={`mb-4 transition-opacity duration-700 text-gray-900 ${
+              <div className={`mb-4 transition-opacity duration-700 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              } ${
                 activeIndex === index ? 'opacity-100' : 'opacity-60'
               }`}>
                 {card.icon}
@@ -168,7 +193,9 @@ const UICraftCards: React.FC = () => {
         href="https://twitter.com/intent/follow?screen_name=jh3yy"
         target="_blank"
         rel="noreferrer noopener"
-        className="fixed top-4 left-4 w-12 h-12 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity text-gray-900"
+        className={`fixed top-4 left-4 w-12 h-12 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity ${
+          theme === 'dark' ? 'text-white' : 'text-gray-900'
+        }`}
       >
         <svg
           className="w-9 h-9"
