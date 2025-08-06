@@ -31,7 +31,7 @@ const MadAnimation: React.FC = () => {
   const sceneRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<SVGFEGaussianBlurElement>(null);
 
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -227,7 +227,7 @@ const MadAnimation: React.FC = () => {
           style={{
             fontWeight: 700,
             letterSpacing: "-0.025em",
-            lineHeight: 1.2,
+            lineHeight: 1.15,
           }}
         >
           {/* All Devices Layout - 4줄 세로 구조 */}

@@ -129,11 +129,9 @@ const UICraftCards: React.FC = () => {
       {/* 모바일: 세로 레이아웃 (접힘/펼침 기능 포함) */}
       <div 
         ref={mobileListRef}
-        className="md:hidden w-full max-w-lg h-96 transition-all duration-700 ease-out"
+        className="grid md:hidden w-full max-w-lg h-96 gap-2 transition-all duration-700 ease-out"
         style={{ 
-          display: 'grid',
           gridTemplateRows: mobileGridRows,
-          gap: '8px',
           transition: 'grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
         }}
       >

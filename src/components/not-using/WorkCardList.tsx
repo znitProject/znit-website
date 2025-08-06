@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import ImageProtection from "./ImageProtection";
+// import ImageProtection from "./ImageProtection";
 
 // GSAP 플러그인 등록
 if (typeof window !== "undefined") {
@@ -294,7 +294,7 @@ const WorkCardList: React.FC = () => {
                 }}
               >
                 {/* 이미지 컨테이너 */}
-                <ImageProtection 
+                <div 
                   className="w-full relative overflow-hidden flex-shrink-0 image-container" 
                   style={{ 
                     height: `${cardHeight * 0.7}px`,
@@ -320,7 +320,7 @@ const WorkCardList: React.FC = () => {
                   />
                   {/* 이미지 오버레이 */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-300"></div>
-                </ImageProtection>
+                </div>
                 
                 {/* 카드 정보 섹션 */}
                 <div 
