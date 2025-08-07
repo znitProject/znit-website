@@ -53,7 +53,16 @@ export default function NetworkGraph() {
       blue: "#3B757F",
     };
 
-    const colors = d3.scaleOrdinal(d3.schemeCategory10);
+    // 컬러 팔레트 정의 (우주적 느낌)
+    const colorPalette = [
+      "#02050A", // 매우 어두운 검정
+      "#00224E", // 어두운 네이비 블루
+      "#4376AB", // 중간 블루
+      "#F6BF41", // 골든 옐로우/라이트 오렌지
+      "#FFD700", // 밝은 골든 옐로우
+    ];
+
+    const colors = d3.scaleOrdinal(colorPalette);
 
     const nodes = [
       { 
@@ -611,13 +620,23 @@ export default function NetworkGraph() {
       node.attr("transform", (d: any) => `translate(${d.x},${d.y})`);
     });
 
-    // 간단한 호버 효과
+    // 호버 시 크기 변화 효과
     node
       .on("mouseenter", function () {
-        d3.select(this).select("circle").style("opacity", 0.8);
+        const circle = d3.select(this).select("circle");
+        const currentRadius = parseFloat(circle.attr("r"));
+        circle
+          .transition()
+          .duration(200)
+          .attr("r", currentRadius * 1.05); // 현재 크기에서 5% 증가
       })
       .on("mouseleave", function () {
-        d3.select(this).select("circle").style("opacity", 1);
+        const circle = d3.select(this).select("circle");
+        const currentRadius = parseFloat(circle.attr("r"));
+        circle
+          .transition()
+          .duration(200)
+          .attr("r", currentRadius / 1.05); // 5% 증가된 크기에서 원래 크기로 복원
       });
 
     // 중앙 WITH 노드 고정 해제 (GSAP 애니메이션 허용)
