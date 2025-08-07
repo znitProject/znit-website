@@ -19,9 +19,6 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-red-hat-display)", "sans-serif"],
-        nanumSquareNeo: ["var(--font-nanum-square)", "sans-serif"],
-        stylish: ["var(--font-stylish)", "sans-serif"],
-        serif: ["Georgia", "serif"],
         "red-hat-display": ["var(--font-red-hat-display)", "sans-serif"],
         "roboto-flex": ["var(--font-roboto-flex)", "sans-serif"],
         "zen-kurenaido": ["var(--font-zen-kurenaido)", "sans-serif"],
