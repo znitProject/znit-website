@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as d3 from "d3";
+import { gsap } from "gsap";
 
 export default function NetworkGraph() {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -31,9 +32,19 @@ export default function NetworkGraph() {
     d3.select(svgRef.current).selectAll("*").remove();
 
     const svgElement = svgRef.current;
-    const w = svgElement?.clientWidth || 1000;
-    const h = svgElement?.clientHeight || 800;
+    // 노트북 사이즈에서 SVG 크기가 0이 되는 문제 방지
+    const w = Math.max(svgElement?.clientWidth || 0, 800); // 최소 800px
+    const h = Math.max(svgElement?.clientHeight || 0, 600); // 최소 600px
+    
+    // 크기가 여전히 작으면 부모 요소 크기 사용
+    if (w < 100 || h < 100) {
+      console.warn('SVG 크기가 너무 작습니다:', { w, h });
+      return; // 애니메이션 설정하지 않음
+    }
     const circleWidth = 12; // 기본 원형 크기 증가
+    
+    // GSAP 애니메이션을 위한 참조 저장
+    const nodeElements: any[] = [];
 
     const palette = {
       lightgray: "#E5E8E8",
@@ -45,7 +56,15 @@ export default function NetworkGraph() {
     const colors = d3.scaleOrdinal(d3.schemeCategory10);
 
     const nodes = [
-      { name: "WITH", x: w / 2, y: h / 2, charge: -2000 }, // 중앙 노드 - 강한 반발력
+      { 
+        name: "WITH", 
+        x: w / 2, 
+        y: h / 2, 
+        charge: -2000, 
+        originalX: w / 2, 
+        originalY: h / 2,
+        gsapFloat: { speed: 0.5, radius: 15 }
+      }, // 중앙 노드 - 강한 반발력
       {
         name: "변화에 대한 도전",
         target: [0], // with 노드에만 연결
@@ -53,6 +72,9 @@ export default function NetworkGraph() {
         x: w * 0.2,
         y: h * 0.3,
         charge: -1200,
+        originalX: w * 0.2,
+        originalY: h * 0.3,
+        gsapFloat: { speed: 0.7, radius: 18 }
       },
       {
         name: "긍정적인 마인드",
@@ -61,6 +83,9 @@ export default function NetworkGraph() {
         x: w * 0.8,
         y: h * 0.3,
         charge: -1000,
+        originalX: w * 0.8,
+        originalY: h * 0.3,
+        gsapFloat: { speed: 0.6, radius: 16 }
       },
       {
         name: "지속적인 성장",
@@ -69,6 +94,9 @@ export default function NetworkGraph() {
         x: w * 0.9,
         y: h * 0.7,
         charge: -800,
+        originalX: w * 0.9,
+        originalY: h * 0.7,
+        gsapFloat: { speed: 0.8, radius: 20 }
       },
       {
         name: "창의적 사고",
@@ -77,6 +105,9 @@ export default function NetworkGraph() {
         x: w * 0.85,
         y: h * 0.7,
         charge: -1500,
+        originalX: w * 0.85,
+        originalY: h * 0.7,
+        gsapFloat: { speed: 0.55, radius: 14 }
       },
       {
         name: "책임감과 열정",
@@ -85,14 +116,9 @@ export default function NetworkGraph() {
         x: w * 0.35,
         y: h * 0.15,
         charge: -600,
-      },
-      {
-        name: "함께 할 수 있는 유대감",
-        target: [0], // with 노드에만 연결
-        value: 36,
-        x: w * 0.65,
-        y: h * 0.15,
-        charge: -900,
+        originalX: w * 0.35,
+        originalY: h * 0.15,
+        gsapFloat: { speed: 0.65, radius: 17 }
       },
       {
         name: "팀워크 정신",
@@ -101,6 +127,9 @@ export default function NetworkGraph() {
         x: w * 0.5,
         y: h * 0.85,
         charge: -1100,
+        originalX: w * 0.5,
+        originalY: h * 0.85,
+        gsapFloat: { speed: 0.6, radius: 19 }
       },
     ];
 
@@ -143,22 +172,34 @@ export default function NetworkGraph() {
           }
         })
       )
-      .force("x", d3.forceX().strength(0.3)) // X축 중심력 추가
-      .force("y", d3.forceY().strength(0.1)); // Y축 중심력 (약하게)
+      .force("x", d3.forceX().strength(0.05)) // X축 중심력 감소 (GSAP 충돌 방지)
+      .force("y", d3.forceY().strength(0.02)); // Y축 중심력 감소 (GSAP 충돌 방지)
 
-    // 경계 제한 함수 추가
+    // 경계 제한 함수 (부드러운 제한으로 GSAP 애니메이션 보호)
     function constrainPosition(node: any) {
       const radius = node.value
         ? circleWidth + node.value * 1.5 + 60
         : circleWidth + 50 + 60;
-
-      // X축 경계 제한
-      if (node.x < radius) node.x = radius;
-      if (node.x > w - radius) node.x = w - radius;
-
-      // Y축 경계 제한
-      if (node.y < radius) node.y = radius;
-      if (node.y > h - radius) node.y = h - radius;
+      
+      const margin = 20; // 여유 공간 추가
+      
+      // 부드러운 경계 제한 (GSAP 애니메이션 방해 방지)
+      if (node.x < radius + margin) {
+        node.x = Math.max(node.x, radius + margin);
+        if (node.vx < 0) node.vx *= 0.8; // 속도 감소
+      }
+      if (node.x > w - radius - margin) {
+        node.x = Math.min(node.x, w - radius - margin);
+        if (node.vx > 0) node.vx *= 0.8;
+      }
+      if (node.y < radius + margin) {
+        node.y = Math.max(node.y, radius + margin);
+        if (node.vy < 0) node.vy *= 0.8;
+      }
+      if (node.y > h - radius - margin) {
+        node.y = Math.min(node.y, h - radius - margin);
+        if (node.vy > 0) node.vy *= 0.8;
+      }
     }
 
     // 초기 위치 설정 - 가로로 더 넓게
@@ -169,10 +210,124 @@ export default function NetworkGraph() {
       }
     });
 
-    // 3D 스러운 원판 효과를 위한 그라데이션 정의
+    // D3 시뮬레이션 빠른 안정화
+    force.alphaTarget(0).alphaDecay(0.05);
+    
+    // GSAP 애니메이션 상태 추적
+    let animationsInitialized = false;
+    
+    // GSAP 두둥실 흔들리는 애니메이션 설정 (D3 데이터 직접 조작)
+    function setupFloatingAnimations() {
+      if (animationsInitialized) return; // 중복 실행 방지
+      
+      // D3 시뮬레이션이 안정된 후 GSAP 애니메이션 시작
+      setTimeout(() => {
+        if (animationsInitialized) return;
+        
+        // SVG 크기가 유효한지 다시 확인 (노트북 화면 방어)
+        if (w < 100 || h < 100) {
+          console.warn('애니메이션 시작 불가: SVG 크기 문제');
+          return;
+        }
+        
+        animationsInitialized = true;
+        
+        // D3 시뮬레이션 강도를 더욱 낮춰서 GSAP와의 충돌 방지
+        force.alphaTarget(0.005).alphaDecay(0.01);
+        nodes.forEach((nodeData: any, index: number) => {
+          if (index > 0 && nodeData.gsapFloat) {
+            const { speed, radius } = nodeData.gsapFloat;
+            
+            // 기준 위치 저장 (원래 위치로 돌아가기 위해)
+            if (!nodeData.baseX) nodeData.baseX = nodeData.x;
+            if (!nodeData.baseY) nodeData.baseY = nodeData.y;
+            
+            // D3 데이터 객체를 직접 애니메이션 (처음에 원래 위치 기준으로 설정)
+            const tl = gsap.timeline({ repeat: -1 });
+            
+            // 각 단계마다 기준 위치에서의 상대적 이동
+            tl.to(nodeData, {
+              x: nodeData.baseX + radius * 1.3,
+              y: nodeData.baseY + radius * 0.9,
+              duration: 1.2 / speed,
+              ease: "sine.inOut"
+            })
+            .to(nodeData, {
+              x: nodeData.baseX - radius * 0.9,
+              y: nodeData.baseY + radius * 1.7,
+              duration: 1.6 / speed,
+              ease: "sine.inOut"
+            })
+            .to(nodeData, {
+              x: nodeData.baseX + radius * 0.6,
+              y: nodeData.baseY - radius * 0.1,
+              duration: 1.4 / speed,
+              ease: "sine.inOut"
+            })
+            .to(nodeData, {
+              x: nodeData.baseX,
+              y: nodeData.baseY,
+              duration: 1.0 / speed,
+              ease: "sine.inOut"
+            })
+            .delay(index * 0.3);
+          }
+        });
+        
+        // 중앙 WITH 노드도 D3 데이터 기반 애니메이션
+        const centralNode = nodes[0];
+        if (!centralNode.baseX) {
+          centralNode.baseX = centralNode.x;
+          centralNode.baseY = centralNode.y;
+        }
+        
+        gsap.to(centralNode, {
+          x: centralNode.baseX + 4,
+          y: centralNode.baseY + 3,
+          duration: 5,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+      }, 2000); // D3 시뮬레이션 안정화 대기
+    }
+    
+    // 애니메이션 시작
+    setupFloatingAnimations();
+
+    // Glassmorphism 평면 원 효과를 위한 필터 정의
     const defs = svg.append("defs");
 
-    // 연결선 그라데이션 정의
+    // Soft Blur for background glow
+    const blurFilter = defs
+      .append("filter")
+      .attr("id", "blur")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+
+    blurFilter
+      .append("feGaussianBlur")
+      .attr("stdDeviation", "8");
+
+    // Drop Shadow for depth
+    const dropShadow = defs
+      .append("filter")
+      .attr("id", "drop-shadow")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+
+    dropShadow
+      .append("feDropShadow")
+      .attr("dx", "0")
+      .attr("dy", "4")
+      .attr("stdDeviation", "6")
+      .attr("flood-color", "rgba(0,0,0,0.15)");
+
+    // 연결선 그라데이션 정의 (더 부드럽고 현대적인 스타일)
     const linkGradient = defs
       .append("linearGradient")
       .attr("id", "link-gradient")
@@ -181,29 +336,30 @@ export default function NetworkGraph() {
     linkGradient
       .append("stop")
       .attr("offset", "0%")
-      .attr("stop-color", "#E5E8E8")
-      .attr("stop-opacity", "0.8");
-
-    linkGradient
-      .append("stop")
-      .attr("offset", "50%")
-      .attr("stop-color", "#708284")
+      .attr("stop-color", "rgba(255, 255, 255, 0.4)")
       .attr("stop-opacity", "0.6");
 
     linkGradient
       .append("stop")
-      .attr("offset", "100%")
-      .attr("stop-color", "#E5E8E8")
+      .attr("offset", "50%")
+      .attr("stop-color", "rgba(147, 197, 253, 0.6)")
       .attr("stop-opacity", "0.8");
+
+    linkGradient
+      .append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "rgba(255, 255, 255, 0.4)")
+      .attr("stop-opacity", "0.6");
 
     const link = svg
       .selectAll("line")
       .data(links)
       .enter()
       .append("line")
-      .attr("stroke", "#E5E8E8")
-      .attr("stroke-width", "3")
-      .attr("opacity", "0.6");
+      .attr("stroke", "url(#link-gradient)")
+      .attr("stroke-width", "2")
+      .attr("opacity", "0.8")
+      .style("filter", "drop-shadow(0px 2px 4px rgba(147, 197, 253, 0.3))");
 
     const node = svg
       .selectAll("g")
@@ -218,135 +374,173 @@ export default function NetworkGraph() {
           .on("end", dragended)
       );
 
-    // 배경 그라데이션
-    const backgroundGradient = defs
-      .append("radialGradient")
-      .attr("id", "background-gradient")
-      .attr("cx", "50%")
-      .attr("cy", "50%")
-      .attr("r", "100%");
+    // 불투명 구체 색상 팔레트 정의 (반투명도 제거)
+    const solidColors = [
+      { light: "rgb(139, 92, 246)", medium: "rgb(120, 80, 220)" }, // Purple - 완전 불투명
+      { light: "rgb(59, 130, 246)", medium: "rgb(45, 115, 230)" }, // Blue  
+      { light: "rgb(16, 185, 129)", medium: "rgb(10, 160, 115)" }, // Emerald
+      { light: "rgb(245, 158, 11)", medium: "rgb(220, 140, 5)" }, // Amber
+      { light: "rgb(239, 68, 68)", medium: "rgb(220, 50, 50)" },   // Red
+      { light: "rgb(236, 72, 153)", medium: "rgb(220, 55, 135)" }  // Pink
+    ];
 
-    backgroundGradient
-      .append("stop")
-      .attr("offset", "0%")
-      .attr("stop-color", "#ffffff")
-      .attr("stop-opacity", "1");
-
-    backgroundGradient
-      .append("stop")
-      .attr("offset", "100%")
-      .attr("stop-color", "#f8fafc")
-      .attr("stop-opacity", "1");
-
+    // 각 노드별 불투명 색상 그라데이션 생성
     nodes.forEach((node: any, i: number) => {
       if (i > 0) {
-        // 메인 그라데이션
-        const gradient = defs
+        const colorIndex = (i - 1) % solidColors.length;
+        const nodeColor = solidColors[colorIndex];
+
+        // 각 노드의 불투명 색상 그라데이션
+        const nodeGradient = defs
           .append("radialGradient")
-          .attr("id", `gradient-${i}`)
-          .attr("cx", "25%")
-          .attr("cy", "25%")
-          .attr("r", "75%");
+          .attr("id", `node-gradient-${i}`)
+          .attr("cx", "30%")
+          .attr("cy", "30%")
+          .attr("r", "70%");
 
-        gradient
-          .append("stop")
-          .attr("offset", "0%")
-          .attr("stop-color", colors(i.toString()))
-          .attr("stop-opacity", "1");
-
-        gradient
-          .append("stop")
-          .attr("offset", "50%")
-          .attr("stop-color", colors(i.toString()))
-          .attr("stop-opacity", "0.9");
-
-        gradient
-          .append("stop")
-          .attr("offset", "100%")
-          .attr("stop-color", colors(i.toString()))
-          .attr("stop-opacity", "0.7");
-
-        // 하이라이트 그라데이션 (입체감 강화)
-        const highlightGradient = defs
-          .append("radialGradient")
-          .attr("id", `highlight-${i}`)
-          .attr("cx", "20%")
-          .attr("cy", "20%")
-          .attr("r", "60%");
-
-        highlightGradient
+        nodeGradient
           .append("stop")
           .attr("offset", "0%")
           .attr("stop-color", "#ffffff")
-          .attr("stop-opacity", "0.8");
+          .attr("stop-opacity", "1");
 
-        highlightGradient
+        nodeGradient
+          .append("stop")
+          .attr("offset", "40%")
+          .attr("stop-color", nodeColor.light)
+          .attr("stop-opacity", "1");
+
+        nodeGradient
           .append("stop")
           .attr("offset", "100%")
-          .attr("stop-color", "transparent")
-          .attr("stop-opacity", "0");
+          .attr("stop-color", nodeColor.medium)
+          .attr("stop-opacity", "1");
+      } else {
+        // 중앙 WITH 노드의 불투명 그라데이션
+        const centralGradient = defs
+          .append("radialGradient")
+          .attr("id", "central-gradient")
+          .attr("cx", "30%")
+          .attr("cy", "30%")
+          .attr("r", "70%");
+
+        centralGradient
+          .append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", "#ffffff")
+          .attr("stop-opacity", "1");
+
+        centralGradient
+          .append("stop")
+          .attr("offset", "40%")
+          .attr("stop-color", "rgb(59, 117, 127)")
+          .attr("stop-opacity", "1");
+
+        centralGradient
+          .append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", "rgb(45, 95, 105)")
+          .attr("stop-opacity", "1");
       }
     });
 
-    // 메인 원형 노드
-    node
-      .append("circle")
-      .attr("r", (d: any, i: number) => {
-        if (i > 0) {
-          return circleWidth + d.value * 1.5; // 크기 1.5배 증가
-        } else {
-          return circleWidth + 50; // 중앙 노드 크기 증가
-        }
-      })
-      .attr("fill", (d: any, i: number) => {
-        if (i > 0) {
-          return colors(i.toString());
-        } else {
-          return "#3B757F";
-        }
-      })
-      .attr("stroke-width", (d: any, i: number) => {
-        if (i > 0) {
-          return "2";
-        } else {
-          return "3";
-        }
-      })
-      .attr("stroke", (d: any, i: number) => {
-        if (i > 0) {
-          return "#ffffff";
-        } else {
-          return "#ffffff";
-        }
-      });
+    // 불투명 구체 구조 (각기 다른 색상, 반투명도 제거)
+    nodes.forEach((nodeData: any, i: number) => {
+      const nodeGroup = d3.select(node.nodes()[i]);
+      const radius = i > 0 ? circleWidth + nodeData.value * 1.5 : circleWidth + 50;
+
+      if (i > 0) {
+        const colorIndex = (i - 1) % solidColors.length;
+        const nodeColor = solidColors[colorIndex];
+
+        // 배경 글로우 레이어 (예또한 그림자 효과)
+        nodeGroup
+          .append("circle")
+          .attr("r", radius + 3)
+          .attr("fill", nodeColor.medium)
+          .attr("opacity", "0.3")
+          .style("filter", "url(#blur)");
+
+        // 메인 불투명 구체
+        nodeGroup
+          .append("circle")
+          .attr("r", radius)
+          .attr("fill", `url(#node-gradient-${i})`)
+          .attr("stroke", "rgba(255, 255, 255, 0.8)")
+          .attr("stroke-width", "1.5")
+          .style("filter", "url(#drop-shadow)");
+      } else {
+        // 중앙 WITH 노드 - 불투명 강조 스타일
+        // 배경 글로우 (청록색 계열)
+        nodeGroup
+          .append("circle")
+          .attr("r", radius + 6)
+          .attr("fill", "rgb(45, 95, 105)")
+          .attr("opacity", "0.4")
+          .style("filter", "url(#blur)");
+
+        // 메인 중앙 구체
+        nodeGroup
+          .append("circle")
+          .attr("r", radius)
+          .attr("fill", "url(#central-gradient)")
+          .attr("stroke", "rgba(255, 255, 255, 0.9)")
+          .attr("stroke-width", "2.5")
+          .style("filter", "url(#drop-shadow)");
+      }
+    });
+
+    // 텍스트 그림자 필터 추가
+    const textShadow = defs
+      .append("filter")
+      .attr("id", "text-shadow")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+
+    textShadow
+      .append("feDropShadow")
+      .attr("dx", "0")
+      .attr("dy", "2")
+      .attr("stdDeviation", "3")
+      .attr("flood-color", "rgba(0, 0, 0, 0.4)")
+      .attr("flood-opacity", "1");
 
     node
       .append("text")
       .text((d: any) => d.name)
-      .attr("font-family", "Raleway, Helvetica Neue, Helvetica")
+      .attr("font-family", "'Inter', 'Raleway', 'Helvetica Neue', Helvetica, sans-serif")
       .attr("fill", (d: any, i: number) => {
         if (i === 0) {
-          return "#ffffff"; // WITH 노드는 흰색 텍스트
-        } else if (i > 0 && d.value < 10) {
-          return palette.mediumgray;
-        } else if (i > 0 && d.value > 10) {
-          return palette.lightgray;
+          return "#ffffff";
         } else {
-          return palette.blue;
+          return "rgba(55, 65, 81, 0.9)"; // 모든 서브 노드에 일관된 다크 컬러
         }
       })
       .attr("text-anchor", "middle")
       .attr("font-size", (d: any, i: number) => {
         if (i > 0) {
-          return "1.2em";
+          return "1.1em";
         } else {
-          return "1.4em";
+          return "1.5em";
         }
       })
-      .attr("font-weight", "600");
+      .attr("font-weight", (d: any, i: number) => {
+        if (i === 0) {
+          return "700";
+        } else {
+          return "600";
+        }
+      })
+      .style("filter", "url(#text-shadow)")
+      .style("text-rendering", "optimizeLegibility")
+      .style("letter-spacing", "0.02em");
 
     function dragstarted(event: any, d: any) {
-      if (!event.active) force.alphaTarget(0.3).restart();
+      // GSAP 애니메이션 일시 중지
+      gsap.killTweensOf(d);
+      if (!event.active) force.alphaTarget(0.1).restart();
       d.fx = d.x;
       d.fy = d.y;
     }
@@ -357,23 +551,63 @@ export default function NetworkGraph() {
     }
 
     function dragended(event: any, d: any) {
-      if (!event.active) force.alphaTarget(0);
+      if (!event.active) force.alphaTarget(0.005);
       d.fx = null;
       d.fy = null;
+      
+      // 드래그 종료 후 기준점 업데이트 및 GSAP 애니메이션 재시작
+      setTimeout(() => {
+        d.baseX = d.x;
+        d.baseY = d.y;
+        
+        // 개별 노드 GSAP 애니메이션 재시작 (중앙 노드 제외)
+        const nodeIndex = nodes.findIndex(node => node === d);
+        if (nodeIndex > 0 && d.gsapFloat) {
+          const { speed, radius } = d.gsapFloat;
+          
+          const tl = gsap.timeline({ repeat: -1 });
+          tl.to(d, {
+            x: d.baseX + radius * 1.3,
+            y: d.baseY + radius * 0.9,
+            duration: 1.2 / speed,
+            ease: "sine.inOut"
+          })
+          .to(d, {
+            x: d.baseX - radius * 0.9,
+            y: d.baseY + radius * 1.7,
+            duration: 1.6 / speed,
+            ease: "sine.inOut"
+          })
+          .to(d, {
+            x: d.baseX + radius * 0.6,
+            y: d.baseY - radius * 0.1,
+            duration: 1.4 / speed,
+            ease: "sine.inOut"
+          })
+          .to(d, {
+            x: d.baseX,
+            y: d.baseY,
+            duration: 1.0 / speed,
+            ease: "sine.inOut"
+          });
+        }
+      }, 500);
     }
 
     force.on("tick", () => {
       // 모든 노드에 경계 제한 적용
-      nodes.forEach((node: any) => {
-        constrainPosition(node);
+      nodes.forEach((nodeData: any) => {
+        constrainPosition(nodeData);
       });
 
+      // 링크 업데이트 (D3 데이터 기반)
       link
         .attr("x1", (d: any) => d.source.x)
         .attr("y1", (d: any) => d.source.y)
         .attr("x2", (d: any) => d.target.x)
         .attr("y2", (d: any) => d.target.y);
 
+      // 노드 위치 업데이트 (D3 데이터 기반, GSAP 캐싱 및 총돌 방지)
       node.attr("transform", (d: any) => `translate(${d.x},${d.y})`);
     });
 
@@ -386,14 +620,61 @@ export default function NetworkGraph() {
         d3.select(this).select("circle").style("opacity", 1);
       });
 
-    // WITH 노드 고정 (떨림 방지)
-    (nodes[0] as any).fx = w / 2;
-    (nodes[0] as any).fy = h / 2;
+    // 중앙 WITH 노드 고정 해제 (GSAP 애니메이션 허용)
+    // D3 force의 강제 고정을 해제하여 GSAP이 자연스럽게 작동하도록 함
+    setTimeout(() => {
+      delete (nodes[0] as any).fx;
+      delete (nodes[0] as any).fy;
+    }, 3000); // 초기 안정화 후 고정 해제
 
+    // 리사이즈 이벤트 핸들러 (노트북 화면 안정성 개선)
+    let resizeTimeout: NodeJS.Timeout;
+    function handleResize() {
+      if (!svgRef.current) return;
+      
+      // 디바운싱으로 과도한 리사이즈 이벤트 방지
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const newW = Math.max(svgRef.current?.clientWidth || 0, 800);
+        const newH = Math.max(svgRef.current?.clientHeight || 0, 600);
+        
+        // 너무 작은 크기에서는 리사이즈 무시
+        if (newW < 100 || newH < 100) return;
+        
+        // SVG 크기만 업데이트, 애니메이션은 유지
+        d3.select(svgRef.current!)
+          .attr("width", newW)
+          .attr("height", newH);
+        
+        // 비율 변화가 클 때만 노드 위치 조정
+        const scaleX = newW / w;
+        const scaleY = newH / h;
+        
+        if (Math.abs(scaleX - 1) > 0.1 || Math.abs(scaleY - 1) > 0.1) {
+          nodes.forEach((node: any) => {
+            if (node.baseX && node.baseY) {
+              node.baseX *= scaleX;
+              node.baseY *= scaleY;
+              node.x *= scaleX;
+              node.y *= scaleY;
+            }
+          });
+        }
+      }, 150); // 150ms 디바운싱
+    }
+    
+    // 리사이즈 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize);
+    
+    // 컴포너트 언마운트 시 GSAP 애니메이션 정리
     return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout); // 리사이즈 타이머 정리
       force.stop();
+      gsap.killTweensOf(nodes); // 모든 GSAP 애니메이션 중단
+      animationsInitialized = false; // 상태 초기화
     };
-  }, []);
+  }, []); // 빈 의존성 배열로 한 번만 실행
 
   // 각 글자별 애니메이션 - 스크롤 기반
   const letters = "Work with us.".split("");
@@ -401,11 +682,11 @@ export default function NetworkGraph() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full min-h-[130vh] bg-white overflow-hidden flex flex-col items-center justify-center py-20"
+      className="relative w-full h-screen bg-white overflow-hidden flex flex-col items-center justify-center py-8"
     >
       {/* 메인 타이틀 */}
       <motion.div
-        className="relative z-10 text-center mt-5 sm:mt-5 lg:mt-5"
+        className="relative z-10 text-center mt-24 sm:mt-28 lg:mt-54"
         style={{ opacity, scale, y, rotateX }}
       >
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 lg:gap-6">
@@ -442,7 +723,7 @@ export default function NetworkGraph() {
 
         {/* 서브 타이틀 */}
         <motion.div
-          className="mt-6 sm:mt-8 lg:mt-10"
+          className="mt-3 sm:mt-4 lg:mt-5"
           initial={{ opacity: 0, y: 20, scale: 0.9 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: false, amount: 0.3 }}
@@ -468,7 +749,7 @@ export default function NetworkGraph() {
 
       {/* 네트워크 그래프 */}
       <motion.div
-        className="mt-32 sm:mt-40 lg:mt-48 mb-10 sm:mb-30 lg:mb-38 flex justify-center items-center flex-1 w-full px-2"
+        className="mt-4 sm:mt-10 lg:mt-0 mb-10 sm:mb-30 lg:mb-38 flex justify-center items-center flex-1 w-full px-2"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.3 }}
@@ -478,8 +759,8 @@ export default function NetworkGraph() {
           ref={svgRef}
           width="100%"
           height="100%"
-          className="max-w-full max-h-[75vh]"
-          style={{ minHeight: "650px" }}
+          className="max-w-full max-h-[70vh]"
+          style={{ minHeight: "600px" }}
         />
       </motion.div>
     </div>
