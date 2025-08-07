@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
+    "@types/d3": "^7.4.3",
     "@types/p5": "^1.7.6",
     "clsx": "^2.1.1",
+    "d3": "^7.9.0",
     "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",
     "html2canvas": "^1.4.1",
@@ -29,7 +31,6 @@
     "react-leaflet": "^5.0.0",
     "redis": "^4.6.13",
     "resend": "^4.7.0",
-    "three": "^0.178.0",
     "turbopack": "^0.0.1"
   },
   "devDependencies": {
