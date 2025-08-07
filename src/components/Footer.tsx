@@ -158,10 +158,10 @@ export default function Footer() {
             </p>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
               <Link
-                href="/privacy"
+                href="/credits"
                 className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
               >
-                개인정보처리방침
+                코드 출처
               </Link>
               <Link
                 href="/terms"
