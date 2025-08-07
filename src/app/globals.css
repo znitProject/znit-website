@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Zen+Kurenaido&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Zen+Kurenaido&family=Righteous&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Song+Myung&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,6 +6,10 @@
 
 :root {
   --font-zen-kurenaido: "Zen Kurenaido", sans-serif;
+  --font-red-hat-display: "Red Hat Display", sans-serif;
+  --font-roboto-flex: "Roboto Flex", sans-serif;
+  --font-righteous: "Righteous", cursive;
+  --font-song-myung: "Song Myung", serif;
 }
 
 @import "tailwindcss";

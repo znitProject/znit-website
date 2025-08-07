@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import {
-  Red_Hat_Display,
-  Montserrat,
-  Roboto_Flex,
-  Stylish,
-} from "next/font/google";
+import { Red_Hat_Display, Montserrat, Roboto_Flex } from "next/font/google";
+import { Stylish } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -93,9 +90,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
-      </head>
       <body
         className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} ${stylish.variable} antialiased`}
       >
@@ -104,6 +98,10 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
+        <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
