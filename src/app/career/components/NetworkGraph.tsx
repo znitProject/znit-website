@@ -33,7 +33,7 @@ export default function NetworkGraph() {
     const svgElement = svgRef.current;
     const w = svgElement?.clientWidth || 1000;
     const h = svgElement?.clientHeight || 800;
-    const circleWidth = 12; // 기본 원형 크기 증가
+    const circleWidth = 20; // 기본 원형 크기 증가
 
     const palette = {
       lightgray: "#E5E8E8",
@@ -42,7 +42,16 @@ export default function NetworkGraph() {
       blue: "#3B757F",
     };
 
-    const colors = d3.scaleOrdinal(d3.schemeCategory10);
+    // 컬러 팔레트 정의 (우주적 느낌)
+    const colorPalette = [
+      "#02050A", // 매우 어두운 검정
+      "#00224E", // 어두운 네이비 블루
+      "#4376AB", // 중간 블루
+      "#F6BF41", // 골든 옐로우/라이트 오렌지
+      "#FFD700", // 밝은 골든 옐로우
+    ];
+
+    const colors = d3.scaleOrdinal(colorPalette);
 
     const nodes = [
       { name: "WITH", x: w / 2, y: h / 2, charge: -2000 }, // 중앙 노드 - 강한 반발력
@@ -201,9 +210,9 @@ export default function NetworkGraph() {
       .data(links)
       .enter()
       .append("line")
-      .attr("stroke", "#E5E8E8")
-      .attr("stroke-width", "3")
-      .attr("opacity", "0.6");
+      .attr("stroke", "#000000")
+      .attr("stroke-width", "2")
+      .attr("opacity", "0.4");
 
     const node = svg
       .selectAll("g")
@@ -293,16 +302,20 @@ export default function NetworkGraph() {
       .append("circle")
       .attr("r", (d: any, i: number) => {
         if (i > 0) {
-          return circleWidth + d.value * 1.5; // 크기 1.5배 증가
+          // 맨 처음처럼 제각각한 크기로 조정
+          const baseSize = circleWidth + d.value * 1.5; // 기본 크기
+          const textLength = d.name.length;
+          const textAdjustment = Math.max(textLength * 4, 20); // 글자 길이에 따른 최소 크기
+          return Math.max(baseSize, textAdjustment); // 기본 크기와 글자 크기 중 큰 값 사용
         } else {
-          return circleWidth + 50; // 중앙 노드 크기 증가
+          return circleWidth + 50; // WITH 노드 크기
         }
       })
       .attr("fill", (d: any, i: number) => {
         if (i > 0) {
           return colors(i.toString());
         } else {
-          return "#3B757F";
+          return "#02050A"; // WITH 노드는 가장 어두운 검정 색상
         }
       })
       .attr("stroke-width", (d: any, i: number) => {
@@ -338,9 +351,9 @@ export default function NetworkGraph() {
       .attr("text-anchor", "middle")
       .attr("font-size", (d: any, i: number) => {
         if (i > 0) {
-          return "1.2em";
+          return "1.8em"; // 글자 크기 증가
         } else {
-          return "1.4em";
+          return "2.2em"; // WITH 노드 글자 크기 증가
         }
       })
       .attr("font-weight", "600");
@@ -377,18 +390,28 @@ export default function NetworkGraph() {
       node.attr("transform", (d: any) => `translate(${d.x},${d.y})`);
     });
 
-    // 간단한 호버 효과
+    // 호버 시 크기 변화 효과
     node
       .on("mouseenter", function () {
-        d3.select(this).select("circle").style("opacity", 0.8);
+        const circle = d3.select(this).select("circle");
+        const currentRadius = parseFloat(circle.attr("r"));
+        circle
+          .transition()
+          .duration(200)
+          .attr("r", currentRadius * 1.05); // 현재 크기에서 5% 증가
       })
       .on("mouseleave", function () {
-        d3.select(this).select("circle").style("opacity", 1);
+        const circle = d3.select(this).select("circle");
+        const currentRadius = parseFloat(circle.attr("r"));
+        circle
+          .transition()
+          .duration(200)
+          .attr("r", currentRadius / 1.05); // 5% 증가된 크기에서 원래 크기로 복원
       });
 
-    // WITH 노드 고정 (떨림 방지)
-    (nodes[0] as any).fx = w / 2;
-    (nodes[0] as any).fy = h / 2;
+    // 우주에 떠있는 듯한 움직임 추가
+    force.alphaDecay(0.01); // 천천히 안정화되도록
+    force.velocityDecay(0.3); // 속도 감쇠를 줄여서 계속 움직이도록
 
     return () => {
       force.stop();

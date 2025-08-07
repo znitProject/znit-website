@@ -8,10 +8,7 @@ import NetworkGraph from "./components/NetworkGraph";
 export default function RecruitPage() {
   return (
     <div className="min-h-screen bg-white transition-colors duration-300">
-      {/* Work with us 타이틀 애니메이션 - 풀스크린 */}
-      <TitleAnimation />
-
-      {/* 기술 스택 네트워크 그래프 섹션 */}
+      {/* 타이틀 섹션 */}
       <NetworkGraph />
 
       {/* 풀스크린 섹션 */}
