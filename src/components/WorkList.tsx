@@ -264,9 +264,9 @@ const UICraftCards: React.FC = () => {
 
               {/* Title (Rotated) */}
               <h3
-                className={`absolute top-4 left-4 text-md font-medium uppercase whitespace-nowrap origin-left transition-opacity duration-700 ${
+                className={`absolute top-4 left-4 text-md font-bold uppercase whitespace-nowrap origin-left transition-opacity duration-700 ${
                   theme === "dark" ? "text-white" : "text-gray-900"
-                } ${activeIndex === index ? "opacity-100" : "opacity-60"}`}
+                } ${activeIndex === index ? "opacity-100" : "opacity-70"}`}
                 style={{ transform: "rotate(90deg)" }}
               >
                 {card.title}

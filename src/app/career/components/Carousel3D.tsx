@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
-import React from "react"; // Added for React.useState
+import React from "react";
 
 interface CarouselItem {
   id: number;
@@ -17,478 +17,7 @@ interface Carousel3DProps {
   items: CarouselItem[];
 }
 
-interface BlackHoleProps {
-  parentRotationY: number;
-  parentRotationX: number;
-}
 
-// 블랙홀 컴포넌트
-const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
-  const blackHoleRef = useRef<HTMLDivElement>(null);
-  const ringRefs = useRef<HTMLDivElement[]>([]);
-  const accretionRefs = useRef<HTMLDivElement[]>([]);
-
-  useEffect(() => {
-    if (!blackHoleRef.current) return;
-
-    // Continuously apply inverse rotation to counteract parent's rotation
-    gsap.set(blackHoleRef.current, {
-      rotationY: -parentRotationY,
-      rotationX: -parentRotationX,
-      z: 0, // Ensure it stays at the same depth
-    });
-
-    // 메인 블랙홀 펄스 애니메이션 (더 강렬하게)
-    gsap.to(blackHoleRef.current, {
-      scale: 1.3,
-      duration: 1.5,
-      ease: "power3.inOut",
-      repeat: -1,
-      yoyo: true,
-    });
-
-    // ... (rest of your existing animations for rings, accretion disk, etc.)
-  }, [parentRotationY, parentRotationX]); // Add parent rotations to dependency array
-
-  // 파티클 속성 타입 정의
-  interface Particle {
-    width: number;
-    height: number;
-    backgroundColor: string;
-    translateX: number;
-    rotate: number;
-    animationDuration: number;
-    animationDelay: number;
-  }
-
-  // 소용돌이 파티클 속성 타입 정의
-  interface SpiralParticle {
-    backgroundColor: string;
-    translateX: number;
-    rotate: number;
-    animationDuration: number;
-    animationDelay: number;
-  }
-
-  // 십자 모양 파티클 속성 타입 정의
-  interface CrossParticle {
-    backgroundColor: string;
-    translateX: number;
-    translateY: number;
-    rotate: number;
-    animationDuration: number;
-    animationDelay: number;
-    size: number;
-  }
-
-  const PARTICLE_COUNT = 20;
-  const SPIRAL_COUNT = 15;
-  const CROSS_COUNT = 12;
-
-  // 파티클 랜덤값을 CSR에서만 생성
-  const [particles, setParticles] = React.useState<Particle[]>([]);
-  const [spiralParticles, setSpiralParticles] = React.useState<
-    SpiralParticle[]
-  >([]);
-  const [crossParticles, setCrossParticles] = React.useState<CrossParticle[]>(
-    []
-  );
-
-  React.useEffect(() => {
-    // 컬러팔레트 색상 정의
-    const colorPalette = [
-      { r: 2, g: 5, b: 10, a: 0.9 }, // #02050A - 검은색
-      { r: 0, g: 34, b: 78, a: 0.9 }, // #00224E - 진한 남색
-      { r: 67, g: 118, b: 171, a: 0.9 }, // #4376AB - 중간 하늘색
-      { r: 246, g: 191, b: 65, a: 0.9 }, // #F6BF41 - 밝은 황금색
-    ];
-
-    // 블랙홀 주변 파티클 랜덤값 생성 (컬러팔레트 기반)
-    const generatedParticles: Particle[] = Array.from({
-      length: PARTICLE_COUNT,
-    }).map((_, index) => {
-      const colorIndex = index % colorPalette.length;
-      const color = colorPalette[colorIndex];
-      return {
-        width: 1 + (index % 4),
-        height: 1 + (index % 4),
-        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
-        translateX: 40 + (index % 5) * 8,
-        rotate: index * 30,
-        animationDuration: 2 + (index % 4),
-        animationDelay: (index % 3) * 0.5,
-      };
-    });
-    setParticles(generatedParticles);
-
-    // 소용돌이 파티클 랜덤값 생성 (컬러팔레트 기반)
-    const generatedSpirals: SpiralParticle[] = Array.from({
-      length: SPIRAL_COUNT,
-    }).map((_, index) => {
-      const colorIndex = (index + 2) % colorPalette.length;
-      const color = colorPalette[colorIndex];
-      return {
-        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
-        translateX: 60 + (index % 4) * 10,
-        rotate: index * 45,
-        animationDuration: 4 + (index % 3),
-        animationDelay: (index % 4) * 0.7,
-      };
-    });
-    setSpiralParticles(generatedSpirals);
-
-    // 십자 모양 파티클 생성 (컬러팔레트 기반)
-    const generatedCrosses: CrossParticle[] = Array.from({
-      length: CROSS_COUNT,
-    }).map((_, index) => {
-      const colorIndex = index % colorPalette.length;
-      const color = colorPalette[colorIndex];
-      return {
-        backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
-        translateX: -150 + (index % 12) * 25,
-        translateY: -120 + (index % 10) * 24,
-        rotate: index * 30,
-        animationDuration: 2 + (index % 4) * 0.3,
-        animationDelay: (index % 8) * 0.2,
-        size: 4 + (index % 6),
-      };
-    });
-    setCrossParticles(generatedCrosses);
-  }, []);
-
-  return (
-    <div
-      className="absolute inset-0 flex items-center justify-center pointer-events-none"
-      style={{
-        transformStyle: "preserve-3d",
-        zIndex: -1, // Ensure it's behind the cards
-      }}
-    >
-      <div
-        ref={blackHoleRef}
-        className="relative w-32 h-32 sm:w-36 sm:h-36 lg:w-44 lg:h-44 flex items-center justify-center"
-        style={{
-          transformStyle: "preserve-3d",
-        }}
-      >
-        {/* 중력 렌즈 효과 - 가장 외곽 */}
-        <div
-          className="outer-lens absolute rounded-full opacity-5"
-          style={{
-            width: "400px",
-            height: "400px",
-            background:
-              "radial-gradient(circle, transparent 0%, rgba(67,118,171,0.05) 30%, rgba(67,118,171,0.1) 60%, transparent 100%)",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            filter: "blur(3px)",
-          }}
-        />
-        <div
-          className="gravity-lens absolute rounded-full opacity-10"
-          style={{
-            width: "300px",
-            height: "300px",
-            background:
-              "radial-gradient(circle, transparent 0%, rgba(67,118,171,0.1) 30%, rgba(67,118,171,0.2) 60%, transparent 100%)",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            filter: "blur(2px)",
-          }}
-        />
-
-        {/* 강착원반 (Accretion Disk) - 컬러팔레트 기반 */}
-        {[0, 1, 2].map((index) => (
-          <div
-            key={`accretion-${index}`}
-            ref={(el) => {
-              if (el) accretionRefs.current[index] = el;
-            }}
-            className="absolute rounded-full"
-            style={{
-              width: `${180 + index * 25}px`,
-              height: `${180 + index * 25}px`,
-              background: `conic-gradient(from ${index * 45}deg, 
-                 transparent 0%, 
-                 rgba(67,118,171,0.4) 10%, 
-                 rgba(0,34,78,0.7) 25%, 
-                 rgba(246,191,65,0.5) 40%, 
-                 transparent 50%, 
-                 rgba(67,118,171,0.6) 60%, 
-                 rgba(0,34,78,0.9) 75%, 
-                 rgba(246,191,65,0.4) 90%, 
-                 transparent 100%)`,
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              opacity: 0.8 - index * 0.1,
-              filter: `blur(${index * 0.5}px)`,
-            }}
-          />
-        ))}
-
-        {/* 외부 링들 - 사건 지평선 효과 (컬러팔레트 기반) */}
-        {[0, 1, 2, 3, 4].map((index) => (
-          <div
-            key={index}
-            ref={(el) => {
-              if (el) ringRefs.current[index] = el;
-            }}
-            className="absolute rounded-full border"
-            style={{
-              width: `${90 + index * 18}px`,
-              height: `${90 + index * 18}px`,
-              borderColor: `rgba(67, 118, 171, ${0.4 - index * 0.06})`,
-              borderWidth: `${3 - index * 0.4}px`,
-              borderStyle: index % 2 === 0 ? "dashed" : "dotted",
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              opacity: 0.6 - index * 0.08,
-            }}
-          />
-        ))}
-
-        {/* 중간 소용돌이 링들 - 컬러팔레트 기반 */}
-        {[0, 1, 2, 3].map((index) => (
-          <div
-            key={`middle-${index}`}
-            ref={(el) => {
-              if (el) ringRefs.current[index + 5] = el;
-            }}
-            className="absolute rounded-full"
-            style={{
-              width: `${70 + index * 15}px`,
-              height: `${70 + index * 15}px`,
-              background: `conic-gradient(from ${index * 90}deg, 
-                 transparent, 
-                 rgba(67,118,171,0.5), 
-                 transparent, 
-                 rgba(0,34,78,0.7), 
-                 transparent, 
-                 rgba(246,191,65,0.4), 
-                 transparent)`,
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              opacity: 0.6 - index * 0.08,
-            }}
-          />
-        ))}
-
-        {/* 블랙홀 중심부 - 컬러팔레트 기반 */}
-        <div
-          className="black-hole-center relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full z-10"
-          style={{
-            backgroundImage: `
-               radial-gradient(circle at 30% 30%, #02050A 0%, #00224E 25%, #4376AB 45%, #F6BF41 75%, transparent 100%),
-               radial-gradient(circle at 70% 70%, #02050A 0%, #00224E 35%, #4376AB 65%, transparent 100%)
-             `,
-            boxShadow: `
-               0 0 20px rgba(2,5,10,0.9),
-               inset 0 0 20px rgba(2,5,10,1),
-               0 0 40px rgba(67,118,171,0.8),
-               0 0 60px rgba(246,191,65,0.6),
-               inset 0 0 10px rgba(0,34,78,0.9)
-             `,
-          }}
-        >
-          {/* 중심의 완전한 검은 구멍 - 다층 구조 */}
-          <div
-            className="absolute inset-1 sm:inset-2 rounded-full"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, #02050A 0%, #00224E 65%, rgba(67,118,171,0.9) 100%)",
-              boxShadow: `
-                 inset 0 0 15px rgba(2,5,10,1),
-                 inset 0 0 8px rgba(0,34,78,1),
-                 0 0 10px rgba(67,118,171,0.9)
-               `,
-            }}
-          >
-            {/* 최종 특이점 */}
-            <div
-              className="absolute inset-1 rounded-full"
-              style={{
-                backgroundColor: "#02050A",
-                boxShadow: "inset 0 0 5px rgba(2,5,10,1)",
-              }}
-            />
-          </div>
-        </div>
-
-        {/* 블랙홀 주변 파티클 효과 (더 많고 다양하게) */}
-        {particles.map((p, index) => (
-          <div
-            key={`particle-${index}`}
-            className="absolute rounded-full opacity-80"
-            style={{
-              width: `${p.width}px`,
-              height: `${p.height}px`,
-              backgroundColor: p.backgroundColor,
-              left: "50%",
-              top: "50%",
-              transform: `translate(-50%, -50%) rotate(${p.rotate}deg) translateX(${p.translateX}px)`,
-              animation: `particleOrbit ${p.animationDuration}s linear infinite`,
-              animationDelay: `${p.animationDelay}s`,
-              filter: `blur(${0.2 + (index % 3) * 0.1}px)`,
-              boxShadow: `0 0 ${2 + (index % 4)}px ${p.backgroundColor}`,
-            }}
-          />
-        ))}
-
-        {/* 추가 소용돌이 파티클 */}
-        {spiralParticles.map((p, index) => (
-          <div
-            key={`spiral-${index}`}
-            className="absolute rounded-full opacity-70"
-            style={{
-              width: `${1 + (index % 3)}px`,
-              height: `${1 + (index % 3)}px`,
-              backgroundColor: p.backgroundColor,
-              left: "50%",
-              top: "50%",
-              transform: `translate(-50%, -50%) rotate(${p.rotate}deg) translateX(${p.translateX}px)`,
-              animation: `spiralOrbit ${p.animationDuration}s linear infinite reverse`,
-              animationDelay: `${p.animationDelay}s`,
-              filter: `blur(${0.1 + (index % 2) * 0.1}px)`,
-              boxShadow: `0 0 ${1 + (index % 3)}px ${p.backgroundColor}`,
-            }}
-          />
-        ))}
-
-        {/* 십자 모양 파티클 - 주 컬러 팔레트 기반 */}
-        {crossParticles.map((p, index) => (
-          <div
-            key={`cross-${index}`}
-            className="absolute opacity-95"
-            style={{
-              width: `${p.size * 2}px`,
-              height: `${p.size * 2}px`,
-              left: "50%",
-              top: "50%",
-              transform: `translate(-50%, -50%) translate(${p.translateX}px, ${p.translateY}px) rotate(${p.rotate}deg)`,
-              animation: `crossFloat ${p.animationDuration}s linear infinite`,
-              animationDelay: `${p.animationDelay}s`,
-              filter: `blur(${0.02}px)`,
-              boxShadow: `0 0 ${4 + (index % 3)}px ${p.backgroundColor}, 0 0 ${8 + (index % 4)}px ${p.backgroundColor}`,
-            }}
-          >
-            {/* 세로선 */}
-            <div
-              className="absolute"
-              style={{
-                width: `${p.size * 0.3}px`,
-                height: `${p.size * 2}px`,
-                backgroundColor: p.backgroundColor,
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-                borderRadius: "2px",
-                boxShadow: `0 0 ${2 + (index % 2)}px ${p.backgroundColor}`,
-                zIndex: 1,
-              }}
-            />
-            {/* 가로선 */}
-            <div
-              className="absolute"
-              style={{
-                width: `${p.size * 2}px`,
-                height: `${p.size * 0.3}px`,
-                backgroundColor: p.backgroundColor,
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-                borderRadius: "2px",
-                boxShadow: `0 0 ${2 + (index % 2)}px ${p.backgroundColor}`,
-                zIndex: 1,
-              }}
-            />
-          </div>
-        ))}
-      </div>
-
-      <style jsx>{`
-        @keyframes particleOrbit {
-          0% {
-            transform: translate(-50%, -50%) rotate(0deg) translateX(40px) scale(1);
-          }
-          25% {
-            transform: translate(-50%, -50%) rotate(90deg) translateX(45px) scale(1.2);
-          }
-          50% {
-            transform: translate(-50%, -50%) rotate(180deg) translateX(40px) scale(0.8);
-          }
-          75% {
-            transform: translate(-50%, -50%) rotate(270deg) translateX(35px) scale(1.1);
-          }
-          100% {
-            transform: translate(-50%, -50%) rotate(360deg) translateX(40px) scale(1);
-          }
-        }
-
-        @keyframes spiralOrbit {
-          0% {
-            transform: translate(-50%, -50%) rotate(0deg) translateX(60px) scale(1);
-          }
-          33% {
-            transform: translate(-50%, -50%) rotate(120deg) translateX(65px) scale(1.3);
-          }
-          66% {
-            transform: translate(-50%, -50%) rotate(240deg) translateX(55px) scale(0.7);
-          }
-          100% {
-            transform: translate(-50%, -50%) rotate(360deg) translateX(60px) scale(1);
-          }
-        }
-
-                 @keyframes particlePulse {
-           0%, 100% {
-             opacity: 0.8;ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-             transform: scale(1);
-           }
-           50% {
-             opacity: 1;
-             transform: scale(1.5);
-           }
-         }
-
-         @keyframes crossFloat {
-           0% {
-             transform: translate(-50%, -50%) translate(0px, 0px) rotate(0deg) scale(1);
-             opacity: 1;
-           }
-           16.66% {
-             transform: translate(-50%, -50%) translate(20px, -20px) rotate(60deg) scale(1.4);
-             opacity: 1;
-           }
-           33.33% {
-             transform: translate(-50%, -50%) translate(-15px, 25px) rotate(120deg) scale(0.6);
-             opacity: 0.8;
-           }
-           50% {
-             transform: translate(-50%, -50%) translate(-25px, -15px) rotate(180deg) scale(1.3);
-             opacity: 1;
-           }
-           66.66% {
-             transform: translate(-50%, -50%) translate(10px, 30px) rotate(240deg) scale(0.8);
-             opacity: 0.9;
-           }
-           83.33% {
-             transform: translate(-50%, -50%) translate(30px, 10px) rotate(300deg) scale(1.2);
-             opacity: 1;
-           }
-           100% {
-             transform: translate(-50%, -50%) translate(0px, 0px) rotate(360deg) scale(1);
-             opacity: 1;
-           }
-         }
-       `}</style>
-    </div>
-  );
-};
 
 export default function Carousel3D({ items }: Carousel3DProps) {
   const [rotationY, setRotationY] = useState(0);
@@ -497,45 +26,64 @@ export default function Carousel3D({ items }: Carousel3DProps) {
   const [lastMouseX, setLastMouseX] = useState(0);
   const [lastMouseY, setLastMouseY] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  // 스크롤에 따른 애니메이션
+  // Enhanced scroll animations
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.8, 1],
-    [0.8, 1, 1, 0.8]
-  );
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.7, 1, 1, 0.7]);
 
-  // 반응형 반지름과 카드 크기 (더 크게)
-  const [radius, setRadius] = useState(350); // Default to desktop size
-  const [cardMarginLeft, setCardMarginLeft] = useState(-128); // Default to desktop size
-  const [cardMarginTop, setCardMarginTop] = useState(-96); // Default to desktop size
-  const [perspective, setPerspective] = useState(800); // Default to desktop size
-  const angleStep = 360 / items.length; // 카드 하나당 각도
+  // Responsive settings
+  const [radius, setRadius] = useState(380);
+  const [cardWidth, setCardWidth] = useState(288);
+  const [cardHeight, setCardHeight] = useState(224);
+  const [perspective, setPerspective] = useState(900);
+  const angleStep = 360 / items.length;
 
-  // 스크롤 위치에 따른 가시성 제어
+  // Enhanced GSAP 3D orbital animation
+  useEffect(() => {
+    if (!carouselRef.current || !isVisible) return;
+
+    const tl = gsap.timeline({ repeat: -1 });
+    
+    // Create smooth orbital motion
+    tl.to(carouselRef.current, {
+      rotationY: "+=360",
+      duration: 20,
+      ease: "none",
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, [isVisible]);
+
+  // Responsive and visibility setup
   useEffect(() => {
     const handleResize = () => {
-      setRadius(window.innerWidth < 768 ? 250 : 350);
-      setPerspective(window.innerWidth < 768 ? 600 : 800);
       if (window.innerWidth < 768) {
-        setCardMarginLeft(-96);
-        setCardMarginTop(-72);
+        setRadius(280);
+        setPerspective(700);
+        setCardWidth(224); // w-56
+        setCardHeight(160); // h-40
       } else if (window.innerWidth < 1024) {
-        setCardMarginLeft(-112);
-        setCardMarginTop(-80);
+        setRadius(330);
+        setPerspective(800);
+        setCardWidth(256); // w-64
+        setCardHeight(192); // h-48
       } else {
-        setCardMarginLeft(-128);
-        setCardMarginTop(-96);
+        setRadius(380);
+        setPerspective(900);
+        setCardWidth(288); // w-72
+        setCardHeight(224); // h-56
       }
     };
 
@@ -549,8 +97,8 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("scroll", handleScroll);
-    handleResize(); // Initial check
-    handleScroll(); // Initial check
+    handleResize();
+    handleScroll();
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -558,195 +106,289 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     };
   }, []);
 
-  // 지속적인 자동 회전 (가시성에 따라 제어)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isDragging && isVisible) {
-        setRotationY((prev: number) => prev - 0.2); // 더 느리게 회전
-      }
-    }, 16); // 60fps로 부드러운 애니메이션
-
-    return () => clearInterval(interval);
-  }, [isDragging, isVisible]);
-
-  // 마우스 위치 추적
+  // Enhanced mouse tracking
   useEffect(() => {
     const handleMouseMove = (e: Event) => {
       const mouseEvent = e as MouseEvent;
 
       if (!isDragging) {
-        // 전체 화면 기준으로 마우스 위치 계산
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
-
-        // 마우스 위치를 -1에서 1 사이의 값으로 정규화 (전체 화면 기준)
         const normalizedX = (mouseEvent.clientX - centerX) / centerX;
         const normalizedY = (mouseEvent.clientY - centerY) / centerY;
 
-        // 부드러운 마우스 추적을 위한 보간
-        setMouseX((prev) => prev * 0.7 + normalizedX * 0.3);
-        setMouseY((prev) => prev * 0.7 + normalizedY * 0.3);
+        setMouseX((prev) => prev * 0.8 + normalizedX * 0.2);
+        setMouseY((prev) => prev * 0.8 + normalizedY * 0.2);
       }
     };
 
-    // 전체 문서에 마우스 이벤트 리스너 추가
     document.addEventListener("mousemove", handleMouseMove);
     return () => document.removeEventListener("mousemove", handleMouseMove);
   }, [isDragging]);
 
-  // 마우스 드래그 시작
+  // Enhanced interaction handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setLastMouseX(e.clientX);
     setLastMouseY(e.clientY);
-    document.body.style.cursor = "crosshair";
+    document.body.style.cursor = "grabbing";
   };
 
-  // 마우스 드래그 중 (3D 회전)
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return;
 
     const deltaX = e.clientX - lastMouseX;
     const deltaY = e.clientY - lastMouseY;
 
-    // Y축 회전 (좌우)
-    setRotationY((prev: number) => prev + deltaX * 0.5);
-    // X축 회전 (상하) - 제한된 범위
+    setRotationY((prev: number) => prev + deltaX * 0.6);
     setRotationX((prev: number) => {
-      const newRotation = prev - deltaY * 0.3;
-      return Math.max(-45, Math.min(45, newRotation)); // -45도에서 45도로 제한
+      const newRotation = prev - deltaY * 0.4;
+      return Math.max(-60, Math.min(60, newRotation));
     });
 
     setLastMouseX(e.clientX);
     setLastMouseY(e.clientY);
   };
 
-  // 마우스 드래그 종료 - 자연스럽게 정지
   const handleMouseUp = () => {
     setIsDragging(false);
-
-    // 드래그 종료 시 자연스럽게 정지 (스냅 없음)
-    // X축은 중앙으로 부드럽게 복귀
     setRotationX(0);
-    document.body.style.cursor = "default";
+    document.body.style.cursor = "grab";
+  };
+
+  // Hopeful and modern card styles for career page
+  const getHopefulCardStyle = (index: number) => {
+    const colors = [
+      { 
+        bg: "linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(99,102,241,0.05) 100%)", 
+        border: "rgba(59,130,246,0.6)", 
+        glow: "rgba(59,130,246,0.4)", 
+        accent: "#3b82f6",
+        shadow: "rgba(59,130,246,0.15)",
+        neumorphism: {
+          light: "rgba(255,255,255,0.1)",
+          dark: "rgba(59,130,246,0.1)"
+        }
+      },
+      { 
+        bg: "linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(5,150,105,0.05) 100%)", 
+        border: "rgba(16,185,129,0.6)", 
+        glow: "rgba(16,185,129,0.4)", 
+        accent: "#10b981",
+        shadow: "rgba(16,185,129,0.15)",
+        neumorphism: {
+          light: "rgba(255,255,255,0.1)",
+          dark: "rgba(16,185,129,0.1)"
+        }
+      },
+      { 
+        bg: "linear-gradient(135deg, rgba(245,101,101,0.1) 0%, rgba(251,113,133,0.05) 100%)", 
+        border: "rgba(245,101,101,0.6)", 
+        glow: "rgba(245,101,101,0.4)", 
+        accent: "#f56565",
+        shadow: "rgba(245,101,101,0.15)",
+        neumorphism: {
+          light: "rgba(255,255,255,0.1)",
+          dark: "rgba(245,101,101,0.1)"
+        }
+      },
+      { 
+        bg: "linear-gradient(135deg, rgba(168,85,247,0.1) 0%, rgba(147,51,234,0.05) 100%)", 
+        border: "rgba(168,85,247,0.6)", 
+        glow: "rgba(168,85,247,0.4)", 
+        accent: "#a855f7",
+        shadow: "rgba(168,85,247,0.15)",
+        neumorphism: {
+          light: "rgba(255,255,255,0.1)",
+          dark: "rgba(168,85,247,0.1)"
+        }
+      },
+      { 
+        bg: "linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(22,163,74,0.05) 100%)", 
+        border: "rgba(34,197,94,0.6)", 
+        glow: "rgba(34,197,94,0.4)", 
+        accent: "#22c55e",
+        shadow: "rgba(34,197,94,0.15)",
+        neumorphism: {
+          light: "rgba(255,255,255,0.1)",
+          dark: "rgba(34,197,94,0.1)"
+        }
+      },
+      { 
+        bg: "linear-gradient(135deg, rgba(251,191,36,0.1) 0%, rgba(245,158,11,0.05) 100%)", 
+        border: "rgba(251,191,36,0.6)", 
+        glow: "rgba(251,191,36,0.4)", 
+        accent: "#fbbf24",
+        shadow: "rgba(251,191,36,0.15)",
+        neumorphism: {
+          light: "rgba(255,255,255,0.1)",
+          dark: "rgba(251,191,36,0.1)"
+        }
+      },
+    ];
+    return colors[index % colors.length];
   };
 
   return (
     <motion.div
       ref={containerRef}
-      className="flex flex-col items-center select-none carousel-container"
-      style={{ opacity, scale }}
+      className="flex flex-col items-center select-none carousel-container min-h-screen"
+      style={{ 
+        opacity, 
+        scale,
+        background: "linear-gradient(180deg, #1e293b 0%, #334155 30%, #475569 60%, #1e293b 100%)",
+      }}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseEnter={() => {
-        document.body.style.cursor = "crosshair";
+        document.body.style.cursor = "grab";
       }}
       onMouseLeave={() => {
         handleMouseUp();
         document.body.style.cursor = "default";
       }}
     >
-      {/* 3D 캐러셀 컨테이너 */}
+      {/* Enhanced 3D Carousel Container */}
       <div
-        className="relative h-[190px] sm:h-[240px] lg:h-[280px] mb-1 sm:mb-1 lg:mb-2"
+        className="relative h-[220px] sm:h-[280px] lg:h-[320px] mb-2 sm:mb-3 lg:mb-4"
         style={{ perspective: `${perspective}px` }}
         onMouseDown={handleMouseDown}
       >
         <div
+          ref={carouselRef}
           className="relative w-full h-full"
           style={{
             transformStyle: "preserve-3d",
-            transform: `rotateY(${rotationY + mouseX * 8}deg) rotateX(${rotationX + mouseY * 12}deg)`,
-            transition: isDragging ? "none" : "transform 0.4s ease-out",
+            transform: `rotateY(${rotationY + mouseX * 10}deg) rotateX(${rotationX + mouseY * 15}deg)`,
+            transition: isDragging ? "none" : "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {/* 블랙홀 애니메이션 - 3D 공간 내부에 위치 */}
-          <BlackHole
-            parentRotationY={rotationY + mouseX * 8}
-            parentRotationX={rotationX + mouseY * 12}
-          />
+
 
           {items.map((item, index) => {
             const rotateY = index * angleStep;
+            const cardStyle = getHopefulCardStyle(index);
 
             return (
               <div
                 key={item.id}
-                className="absolute w-48 sm:w-56 lg:w-64 h-36 sm:h-40 lg:h-48 shadow-lg rounded-lg z-0 group cursor-pointer transition-all duration-300 hover:scale-105"
+                className="absolute w-56 sm:w-64 lg:w-72 h-40 sm:h-48 lg:h-56 z-0 group cursor-pointer transition-all duration-700 hover:scale-105 hover:-translate-y-2"
                 style={{
-                  transform: `rotateY(${rotateY}deg) translateZ(${radius}px)`,
-                  transformOrigin: "center center",
+                  position: "absolute",
                   left: "50%",
                   top: "50%",
-                  marginLeft: `${cardMarginLeft}px`,
-                  marginTop: `${cardMarginTop}px`,
-                  border: `2px solid ${
-                    index === 0
-                      ? "#11224D" // 진한 남색
-                      : index === 1
-                        ? "#193A6F" // 깊은 파란색
-                        : index === 2
-                          ? "#2C599D" // 중간 파란색
-                          : index === 3
-                            ? "#5B84C4" // 밝은 파란색
-                            : index === 4
-                              ? "#F98125" // 밝은 주황색
-                              : index === 5
-                                ? "#FB9B50" // 연한 주황색
-                                : "#11224D" // 진한 남색
-                  }`,
+                  width: `${cardWidth}px`,
+                  height: `${cardHeight}px`,
+                  transform: `translate(-50%, -50%) rotateY(${rotateY}deg) translateZ(${radius}px)`,
+                  transformOrigin: "center center",
+                  background: `linear-gradient(145deg, rgba(248,250,252,0.1), rgba(241,245,249,0.05))`,
+                  clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
+                  boxShadow: `
+                    12px 12px 24px ${cardStyle.shadow},
+                    -12px -12px 24px ${cardStyle.neumorphism.light},
+                    inset 4px 4px 8px ${cardStyle.neumorphism.dark},
+                    inset -4px -4px 8px ${cardStyle.neumorphism.light},
+                    0 0 20px ${cardStyle.shadow}
+                  `,
+                  backdropFilter: "blur(25px) saturate(200%)",
                 }}
-                onClick={() => {}} // 카드 클릭 이벤트
+                onClick={() => {}}
               >
-                {/* 앞면: 배경 이미지와 겹치는 제목 */}
-                <div className="w-full h-full flex flex-col justify-center items-center group-hover:opacity-0 transition-opacity duration-300 relative">
-                  {/* 배경 이미지 효과 */}
+                {/* Gradient Border Effect */}
+                <div 
+                  className="absolute inset-0 rounded-none"
+                  style={{
+                    background: `linear-gradient(45deg, ${cardStyle.accent}20, transparent 30%, transparent 70%, ${cardStyle.accent}20)`,
+                    clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
+                    zIndex: 1,
+                    filter: `blur(1px)`,
+                  }}
+                />
+                <div 
+                  className="absolute inset-0.5 rounded-none"
+                  style={{
+                    background: `linear-gradient(145deg, rgba(248,250,252,0.1), rgba(241,245,249,0.05))`,
+                    clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
+                    zIndex: 2,
+                  }}
+                />
+                {/* Enhanced Front Face */}
+                <div className="w-full h-full flex flex-col justify-center items-center group-hover:opacity-0 transition-opacity duration-700 relative overflow-hidden z-10">
+                  {/* Modern glass overlay */}
                   <div
-                    className="absolute inset-0 rounded-lg"
+                    className="absolute inset-0 opacity-10"
                     style={{
-                      backgroundColor:
-                        index === 0
-                          ? "#11224D" // 진한 남색
-                          : index === 1
-                            ? "#193A6F" // 깊은 파란색
-                            : index === 2
-                              ? "#2C599D" // 중간 파란색
-                              : index === 3
-                                ? "#5B84C4" // 밝은 파란색
-                                : index === 4
-                                  ? "#F98125" // 밝은 주황색
-                                  : index === 5
-                                    ? "#FB9B50" // 연한 주황색
-                                    : "#11224D", // 진한 남색
+                      background: `linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%)`,
+                      clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
                     }}
                   />
-
-                  {/* 제목 (배경 위에 겹쳐서 표시) */}
-                  <div className="relative z-10 flex flex-col items-center px-2 sm:px-3 lg:px-4 py-2">
+                  
+                  
+                  {/* Content */}
+                  <div className="relative z-10 flex flex-col items-center px-6 sm:px-7 lg:px-8 py-4">
                     <div
-                      className="text-sm sm:text-base lg:text-lg font-bold text-white text-center leading-tight drop-shadow-md"
-                      style={{ fontFamily: "var(--font-stylish)" }}
+                      className="text-base sm:text-lg lg:text-xl font-bold text-center leading-tight mb-2"
+                      style={{ 
+                        fontFamily: "var(--font-stylish)",
+                        textShadow: `0 2px 8px rgba(0,0,0,0.3)`,
+                        letterSpacing: "0.02em",
+                        color: cardStyle.accent,
+                      }}
                     >
                       {item.title}
                     </div>
                     <div
-                      className="text-xs sm:text-sm font-medium text-white text-center leading-tight mt-1 drop-shadow-md opacity-90"
-                      style={{ fontFamily: "var(--font-red-hat-display)" }}
+                      className="text-sm sm:text-base font-medium text-center leading-tight"
+                      style={{ 
+                        fontFamily: "var(--font-red-hat-display)",
+                        color: cardStyle.accent,
+                        letterSpacing: "0.01em",
+                        opacity: 0.9,
+                      }}
                     >
                       {item.titleEn}
                     </div>
                   </div>
+                  
+                  {/* Bottom geometric accent */}
+                  <div
+                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-8 h-1 opacity-50"
+                    style={{
+                      background: `linear-gradient(90deg, transparent, ${cardStyle.accent}, transparent)`,
+                      clipPath: `polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)`,
+                    }}
+                  />
                 </div>
 
-                {/* 뒷면: 설명 */}
-                <div className="absolute inset-0 bg-black bg-opacity-95 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="text-center px-3 sm:px-4">
+                {/* Enhanced Back Face */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 z-10"
+                  style={{
+                    background: `linear-gradient(145deg, rgba(30,30,35,0.98) 0%, rgba(40,40,45,0.95) 100%)`,
+                    backdropFilter: "blur(30px) saturate(180%)",
+                    border: `2px solid ${cardStyle.border}`,
+                    clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
+                    boxShadow: `
+                      inset 0 0 30px rgba(0,0,0,0.3),
+                      0 0 40px ${cardStyle.glow},
+                      inset 0 1px 2px rgba(255,255,255,0.03)
+                    `,
+                  }}
+                >
+                  {/* Content wrapper with geometric elements */}
+                  <div className="text-center px-6 sm:px-7 py-4 relative">
+                    
                     <p
-                      className="text-xs sm:text-sm lg:text-base text-white leading-relaxed"
-                      style={{ fontFamily: "var(--font-stylish)" }}
+                      className="text-sm sm:text-base lg:text-lg text-white leading-relaxed pt-6"
+                      style={{ 
+                        fontFamily: "var(--font-stylish)",
+                        textShadow: `0 2px 8px rgba(0,0,0,0.4)`,
+                        lineHeight: "1.6",
+                        letterSpacing: "0.01em",
+                      }}
                     >
                       {item.description}
                     </p>
+                    
                   </div>
                 </div>
               </div>
@@ -754,6 +396,61 @@ export default function Carousel3D({ items }: Carousel3DProps) {
           })}
         </div>
       </div>
+
+      {/* Modern Background Effects */}
+      <div className="fixed inset-0 pointer-events-none z-[-2]">
+        {/* Static gradient overlays only */}
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            background: `
+              radial-gradient(ellipse at 25% 25%, rgba(100,116,139,0.2) 0%, transparent 60%),
+              radial-gradient(ellipse at 75% 75%, rgba(148,163,184,0.15) 0%, transparent 60%),
+              linear-gradient(135deg, rgba(203,213,225,0.1) 0%, transparent 50%)
+            `,
+          }}
+        />
+      </div>
+
+      <style jsx>{`
+
+        .carousel-container {
+          background: linear-gradient(180deg, #0f172a 0%, #1e293b 30%, #0f172a 100%);
+        }
+
+        .carousel-container::before {
+          content: '';
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            radial-gradient(circle at 20% 30%, rgba(100,116,139,0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 60%, rgba(148,163,184,0.06) 0%, transparent 50%),
+            linear-gradient(135deg, rgba(203,213,225,0.04) 0%, transparent 70%);
+          pointer-events: none;
+          z-index: -1;
+        }
+
+        /* Enhanced scrollbar styling for modern theme */
+        .carousel-container::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .carousel-container::-webkit-scrollbar-track {
+          background: rgba(30,41,59,0.3);
+        }
+
+        .carousel-container::-webkit-scrollbar-thumb {
+          background: linear-gradient(45deg, #64748b, #94a3b8);
+          border-radius: 3px;
+        }
+
+        .carousel-container::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(45deg, #94a3b8, #cbd5e1);
+        }
+      `}</style>
     </motion.div>
   );
 }

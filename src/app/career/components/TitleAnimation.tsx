@@ -7,52 +7,59 @@ import Carousel3D from "./Carousel3D";
 const carouselItems = [
   {
     id: 1,
-    title: "함께 할 수 있는 유대감",
-    titleEn: "Bonding Together",
-    description: "소통과 참여를 통해 함께 극복하는",
+    title: "함께 나누는 유대감",
+    titleEn: "Shared Bonding",
+    description: "소통과 참여로 연결되는 깊은 관계",
     color: "bg-blue-500",
   },
   {
     id: 2,
-    title: "변화에 대한 도전",
-    titleEn: "Embracing Change",
-    description: "두려움을 넘어서는 도전하는 자세",
-    color: "bg-purple-500",
+    title: "변화를 향한 도전",
+    titleEn: "Challenge Toward Change",
+    description: "두려움을 넘어 과감히 시도하는 태도",
+    color: "bg-violet-500", // 기존 purple → violet로 조정
   },
   {
     id: 3,
-    title: "긍정적인 마인드",
-    titleEn: "Positive Mindset",
-    description: "뛰어난 재능보다 중요한 마음가짐",
-    color: "bg-green-500",
+    title: "긍정의 힘",
+    titleEn: "The Power of Positivity",
+    description: "재능보다 빛나는 건강한 마인드셋",
+    color: "bg-emerald-500", // green보다 산뜻한 emerald로
   },
   {
     id: 4,
-    title: "지속적인 성장",
-    titleEn: "Continuous Growth",
-    description: "함께 변화의 시작점이 되고자 하는",
-    color: "bg-orange-500",
+    title: "끊임없는 성장",
+    titleEn: "Ongoing Growth",
+    description: "함께 나아가며 변화의 계기가 되는",
+    color: "bg-amber-500", // orange → 더 밝은 amber
   },
   {
     id: 5,
-    title: "창의적 사고",
-    titleEn: "Creative Thinking",
-    description: "새로운 아이디어로 문제를 해결하는",
-    color: "bg-red-500",
+    title: "창의력 있는 사고",
+    titleEn: "Inventive Thinking",
+    description: "틀을 깨고 새로운 방식으로 접근하는",
+    color: "bg-rose-500", // red보다 따뜻하고 부드러운 rose
   },
   {
     id: 6,
-    title: "팀워크 정신",
-    titleEn: "Team Spirit",
-    description: "함께 성장하고 함께 성공하는",
-    color: "bg-pink-500",
+    title: "협업의 시너지",
+    titleEn: "Synergy of Teamwork",
+    description: "성장을 함께 만들어가는 협력의 힘",
+    color: "bg-pink-500", // 유지 (구분감 충분)
   },
   {
     id: 7,
-    title: "책임감과 열정",
-    titleEn: "Responsibility & Passion",
-    description: "자신의 역할에 최선을 다하는",
-    color: "bg-indigo-500",
+    title: "열정과 책임",
+    titleEn: "Passion with Responsibility",
+    description: "역할을 넘어 스스로를 다하는 자세",
+    color: "bg-indigo-500", // 유지
+  },
+  {
+    id: 8,
+    title: "섬세한 관찰력",
+    titleEn: "Attention to Detail",
+    description: "작은 부분까지 놓치지 않는 집중력과 꼼꼼함",
+    color: "bg-cyan-500", // teal → cyan으로 시각적 분리
   },
 ];
 
