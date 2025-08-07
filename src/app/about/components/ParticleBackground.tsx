@@ -53,7 +53,7 @@ export default function ParticleBackground() {
         const Particle = function (
           this: CustomParticle,
           pos: p5.Vector,
-          ppos: p5.Vector,
+          ppos: p5.Vector
         ) {
           this.pos = pos.copy();
           this.col = p.random(colors);
@@ -70,8 +70,8 @@ export default function ParticleBackground() {
             this.pos.add(
               p.createVector(
                 10 * (p.noise(this.offset.x) - 0.5),
-                10 * (p.noise(this.offset.y) - 0.5),
-              ),
+                10 * (p.noise(this.offset.y) - 0.5)
+              )
             );
             this.offset.x = this.offset.x + 0.01;
             this.offset.y = this.offset.y + 0.01;
@@ -138,7 +138,7 @@ export default function ParticleBackground() {
           ) {
             const step = p.createVector(
               p.noise(offset.x) - 0.5,
-              p.noise(offset.y) - 0.5,
+              p.noise(offset.y) - 0.5
             );
             step.mult(10);
             const pos = p5.Vector.add(origin, step);

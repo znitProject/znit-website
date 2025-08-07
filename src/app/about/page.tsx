@@ -3,8 +3,8 @@
 import WaveMaskText from "./components/WaveMaskText";
 import ValuesSection from "./components/ValuesSection";
 import IntroSection from "./components/IntroSection";
-import ParticleBackground from "./components/ParticleBackground";
 import ClosingSection from "./components/ClosingSection";
+import ParticleBackground from "./components/ParticleBackground";
 
 export default function SloganPage() {
   return (
