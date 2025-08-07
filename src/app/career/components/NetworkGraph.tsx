@@ -46,23 +46,57 @@ export default function NetworkGraph() {
     // GSAP 애니메이션을 위한 참조 저장
     const nodeElements: any[] = [];
 
-    const palette = {
-      lightgray: "#E5E8E8",
-      gray: "#708284",
-      mediumgray: "#536870",
-      blue: "#3B757F",
+    // 모던 미니멀 컬러 팔레트 정의
+    const modernPalette = {
+      primary: "#1F2937",     // 다크 그레이 (전체 페이지와 통일)
+      secondary: "#3B82F6",   // 블루 (BenefitCard와 일관성)
+      emerald: "#10B981",     // 에메랄드 (포인트 컬러)
+      amber: "#F59E0B",       // 앰버 (포인트 컬러)
+      purple: "#8B5CF6",      // 퍼플
+      rose: "#F43F5E",        // 로즈
+      violet: "#A855F7",      // 바이올렛
+      neutral: "rgba(255,255,255,0.1)", // 글라스모피즘 효과
     };
 
-    // 컬러 팔레트 정의 (우주적 느낌)
-    const colorPalette = [
-      "#02050A", // 매우 어두운 검정
-      "#00224E", // 어두운 네이비 블루
-      "#4376AB", // 중간 블루
-      "#F6BF41", // 골든 옐로우/라이트 오렌지
-      "#FFD700", // 밝은 골든 옐로우
+    // 글라스모피즘 스타일 색상 팔레트
+    const glassColors = [
+      { 
+        primary: "rgba(59, 130, 246, 0.08)",   // 블루
+        accent: "rgba(59, 130, 246, 0.25)",
+        border: "rgba(59, 130, 246, 0.4)",
+        glow: "rgba(59, 130, 246, 0.6)"
+      },
+      { 
+        primary: "rgba(16, 185, 129, 0.08)",   // 에메랄드
+        accent: "rgba(16, 185, 129, 0.25)",
+        border: "rgba(16, 185, 129, 0.4)",
+        glow: "rgba(16, 185, 129, 0.6)"
+      },
+      { 
+        primary: "rgba(245, 158, 11, 0.08)",   // 앰버
+        accent: "rgba(245, 158, 11, 0.25)",
+        border: "rgba(245, 158, 11, 0.4)",
+        glow: "rgba(245, 158, 11, 0.6)"
+      },
+      { 
+        primary: "rgba(139, 92, 246, 0.08)",   // 퍼플
+        accent: "rgba(139, 92, 246, 0.25)",
+        border: "rgba(139, 92, 246, 0.4)",
+        glow: "rgba(139, 92, 246, 0.6)"
+      },
+      { 
+        primary: "rgba(244, 63, 94, 0.08)",    // 로즈
+        accent: "rgba(244, 63, 94, 0.25)",
+        border: "rgba(244, 63, 94, 0.4)",
+        glow: "rgba(244, 63, 94, 0.6)"
+      },
+      { 
+        primary: "rgba(168, 85, 247, 0.08)",   // 바이올렛
+        accent: "rgba(168, 85, 247, 0.25)",
+        border: "rgba(168, 85, 247, 0.4)",
+        glow: "rgba(168, 85, 247, 0.6)"
+      }
     ];
-
-    const colors = d3.scaleOrdinal(colorPalette);
 
     const nodes = [
       { 
@@ -336,7 +370,7 @@ export default function NetworkGraph() {
       .attr("stdDeviation", "6")
       .attr("flood-color", "rgba(0,0,0,0.15)");
 
-    // 연결선 그라데이션 정의 (더 부드럽고 현대적인 스타일)
+    // 모던한 연결선 그라데이션 정의
     const linkGradient = defs
       .append("linearGradient")
       .attr("id", "link-gradient")
@@ -345,32 +379,38 @@ export default function NetworkGraph() {
     linkGradient
       .append("stop")
       .attr("offset", "0%")
-      .attr("stop-color", "rgba(255, 255, 255, 0.4)")
-      .attr("stop-opacity", "0.6");
+      .attr("stop-color", "rgba(31, 41, 55, 0.05)")
+      .attr("stop-opacity", "0.3");
 
     linkGradient
       .append("stop")
       .attr("offset", "50%")
-      .attr("stop-color", "rgba(147, 197, 253, 0.6)")
-      .attr("stop-opacity", "0.8");
+      .attr("stop-color", "rgba(59, 130, 246, 0.2)")
+      .attr("stop-opacity", "0.6");
 
     linkGradient
       .append("stop")
       .attr("offset", "100%")
-      .attr("stop-color", "rgba(255, 255, 255, 0.4)")
-      .attr("stop-opacity", "0.6");
+      .attr("stop-color", "rgba(31, 41, 55, 0.05)")
+      .attr("stop-opacity", "0.3");
 
-    const link = svg
+    // 연결선을 먼저 그리기 (z-index 문제 해결)
+    const linkGroup = svg.append("g").attr("class", "links");
+    
+    const link = linkGroup
       .selectAll("line")
       .data(links)
       .enter()
       .append("line")
       .attr("stroke", "url(#link-gradient)")
-      .attr("stroke-width", "2")
-      .attr("opacity", "0.8")
-      .style("filter", "drop-shadow(0px 2px 4px rgba(147, 197, 253, 0.3))");
+      .attr("stroke-width", "1")
+      .attr("opacity", "0.4")
+      .style("filter", "drop-shadow(0px 1px 2px rgba(59, 130, 246, 0.1))");
+    
+    // 노드 그룹을 연결선 이후에 생성 (항상 위에 표시)
+    const nodeGroup = svg.append("g").attr("class", "nodes");
 
-    const node = svg
+    const node = nodeGroup
       .selectAll("g")
       .data(nodes)
       .enter()
@@ -383,119 +423,161 @@ export default function NetworkGraph() {
           .on("end", dragended)
       );
 
-    // 불투명 구체 색상 팔레트 정의 (반투명도 제거)
-    const solidColors = [
-      { light: "rgb(139, 92, 246)", medium: "rgb(120, 80, 220)" }, // Purple - 완전 불투명
-      { light: "rgb(59, 130, 246)", medium: "rgb(45, 115, 230)" }, // Blue  
-      { light: "rgb(16, 185, 129)", medium: "rgb(10, 160, 115)" }, // Emerald
-      { light: "rgb(245, 158, 11)", medium: "rgb(220, 140, 5)" }, // Amber
-      { light: "rgb(239, 68, 68)", medium: "rgb(220, 50, 50)" },   // Red
-      { light: "rgb(236, 72, 153)", medium: "rgb(220, 55, 135)" }  // Pink
-    ];
-
-    // 각 노드별 불투명 색상 그라데이션 생성
+    // 글라스모피즘 그라데이션 생성
     nodes.forEach((node: any, i: number) => {
       if (i > 0) {
-        const colorIndex = (i - 1) % solidColors.length;
-        const nodeColor = solidColors[colorIndex];
+        const colorIndex = (i - 1) % glassColors.length;
+        const nodeColor = glassColors[colorIndex];
 
-        // 각 노드의 불투명 색상 그라데이션
+        // 각 노드의 글라스모피즘 그라데이션
         const nodeGradient = defs
           .append("radialGradient")
           .attr("id", `node-gradient-${i}`)
-          .attr("cx", "30%")
-          .attr("cy", "30%")
-          .attr("r", "70%");
+          .attr("cx", "20%")
+          .attr("cy", "20%")
+          .attr("r", "85%");
 
         nodeGradient
           .append("stop")
           .attr("offset", "0%")
-          .attr("stop-color", "#ffffff")
-          .attr("stop-opacity", "1");
+          .attr("stop-color", "rgba(255, 255, 255, 0.9)")
+          .attr("stop-opacity", "0.95");
 
         nodeGradient
           .append("stop")
-          .attr("offset", "40%")
-          .attr("stop-color", nodeColor.light)
-          .attr("stop-opacity", "1");
+          .attr("offset", "25%")
+          .attr("stop-color", "rgba(255, 255, 255, 0.6)")
+          .attr("stop-opacity", "0.7");
+
+        nodeGradient
+          .append("stop")
+          .attr("offset", "60%")
+          .attr("stop-color", nodeColor.accent)
+          .attr("stop-opacity", "0.3");
 
         nodeGradient
           .append("stop")
           .attr("offset", "100%")
-          .attr("stop-color", nodeColor.medium)
-          .attr("stop-opacity", "1");
+          .attr("stop-color", nodeColor.primary)
+          .attr("stop-opacity", "0.6");
       } else {
-        // 중앙 WITH 노드의 불투명 그라데이션
+        // 중앙 WITH 노드의 글라스모피즘 그라데이션
         const centralGradient = defs
           .append("radialGradient")
           .attr("id", "central-gradient")
-          .attr("cx", "30%")
-          .attr("cy", "30%")
-          .attr("r", "70%");
+          .attr("cx", "20%")
+          .attr("cy", "20%")
+          .attr("r", "85%");
 
         centralGradient
           .append("stop")
           .attr("offset", "0%")
-          .attr("stop-color", "#ffffff")
+          .attr("stop-color", "rgba(255, 255, 255, 0.95)")
           .attr("stop-opacity", "1");
 
         centralGradient
           .append("stop")
-          .attr("offset", "40%")
-          .attr("stop-color", "rgb(59, 117, 127)")
-          .attr("stop-opacity", "1");
+          .attr("offset", "25%")
+          .attr("stop-color", "rgba(255, 255, 255, 0.7)")
+          .attr("stop-opacity", "0.8");
+
+        centralGradient
+          .append("stop")
+          .attr("offset", "60%")
+          .attr("stop-color", "rgba(31, 41, 55, 0.2)")
+          .attr("stop-opacity", "0.4");
 
         centralGradient
           .append("stop")
           .attr("offset", "100%")
-          .attr("stop-color", "rgb(45, 95, 105)")
-          .attr("stop-opacity", "1");
+          .attr("stop-color", "rgba(31, 41, 55, 0.4)")
+          .attr("stop-opacity", "0.7");
       }
     });
 
-    // 불투명 구체 구조 (각기 다른 색상, 반투명도 제거)
+    // 글라스모피즘 노드 구조
     nodes.forEach((nodeData: any, i: number) => {
-      const nodeGroup = d3.select(node.nodes()[i]);
+      const nodeElement = d3.select(node.nodes()[i]);
       const radius = i > 0 ? circleWidth + nodeData.value * 1.5 : circleWidth + 50;
 
       if (i > 0) {
-        const colorIndex = (i - 1) % solidColors.length;
-        const nodeColor = solidColors[colorIndex];
+        const colorIndex = (i - 1) % glassColors.length;
+        const nodeColor = glassColors[colorIndex];
 
-        // 배경 글로우 레이어 (예또한 그림자 효과)
-        nodeGroup
+        // 외부 글로우 링
+        nodeElement
           .append("circle")
-          .attr("r", radius + 3)
-          .attr("fill", nodeColor.medium)
-          .attr("opacity", "0.3")
+          .attr("r", radius + 10)
+          .attr("fill", "none")
+          .attr("stroke", nodeColor.glow)
+          .attr("stroke-width", "2")
+          .attr("opacity", "0.4")
           .style("filter", "url(#blur)");
 
-        // 메인 불투명 구체
-        nodeGroup
+        // 중간 글로우 레이어
+        nodeElement
+          .append("circle")
+          .attr("r", radius + 5)
+          .attr("fill", nodeColor.glow)
+          .attr("opacity", "0.2")
+          .style("filter", "url(#blur)");
+
+        // 메인 글라스모피즘 구체
+        nodeElement
           .append("circle")
           .attr("r", radius)
           .attr("fill", `url(#node-gradient-${i})`)
-          .attr("stroke", "rgba(255, 255, 255, 0.8)")
+          .attr("stroke", nodeColor.border)
           .attr("stroke-width", "1.5")
           .style("filter", "url(#drop-shadow)");
-      } else {
-        // 중앙 WITH 노드 - 불투명 강조 스타일
-        // 배경 글로우 (청록색 계열)
-        nodeGroup
+
+        // 하이라이트 점
+        nodeElement
           .append("circle")
-          .attr("r", radius + 6)
-          .attr("fill", "rgb(45, 95, 105)")
+          .attr("r", radius * 0.12)
+          .attr("cx", -radius * 0.35)
+          .attr("cy", -radius * 0.35)
+          .attr("fill", "rgba(255, 255, 255, 0.9)")
+          .attr("opacity", "0.8");
+          
+      } else {
+        // 중앙 WITH 노드 - 특별한 글라스모피즘 스타일
+        
+        // 외부 펄스 링
+        nodeElement
+          .append("circle")
+          .attr("r", radius + 15)
+          .attr("fill", "none")
+          .attr("stroke", "rgba(31, 41, 55, 0.5)")
+          .attr("stroke-width", "3")
+          .attr("opacity", "0.6")
+          .style("filter", "url(#blur)");
+
+        // 중간 글로우
+        nodeElement
+          .append("circle")
+          .attr("r", radius + 8)
+          .attr("fill", "rgba(31, 41, 55, 0.3)")
           .attr("opacity", "0.4")
           .style("filter", "url(#blur)");
 
         // 메인 중앙 구체
-        nodeGroup
+        nodeElement
           .append("circle")
           .attr("r", radius)
           .attr("fill", "url(#central-gradient)")
-          .attr("stroke", "rgba(255, 255, 255, 0.9)")
+          .attr("stroke", "rgba(255, 255, 255, 0.7)")
           .attr("stroke-width", "2.5")
           .style("filter", "url(#drop-shadow)");
+
+        // 중앙 노드 하이라이트
+        nodeElement
+          .append("circle")
+          .attr("r", radius * 0.15)
+          .attr("cx", -radius * 0.3)
+          .attr("cy", -radius * 0.3)
+          .attr("fill", "rgba(255, 255, 255, 1)")
+          .attr("opacity", "0.9");
       }
     });
 
@@ -513,18 +595,18 @@ export default function NetworkGraph() {
       .attr("dx", "0")
       .attr("dy", "2")
       .attr("stdDeviation", "3")
-      .attr("flood-color", "rgba(0, 0, 0, 0.4)")
+      .attr("flood-color", "rgba(0, 0, 0, 0.3)")
       .attr("flood-opacity", "1");
 
     node
       .append("text")
       .text((d: any) => d.name)
-      .attr("font-family", "'Inter', 'Raleway', 'Helvetica Neue', Helvetica, sans-serif")
+      .attr("font-family", "'Istok Web', 'Inter', 'Helvetica Neue', Helvetica, sans-serif")
       .attr("fill", (d: any, i: number) => {
         if (i === 0) {
-          return "#ffffff";
+          return "#1F2937";
         } else {
-          return "rgba(55, 65, 81, 0.9)"; // 모든 서브 노드에 일관된 다크 컬러
+          return "#1F2937"; // 모든 노드에 통일된 다크 컬러
         }
       })
       .attr("text-anchor", "middle")
@@ -623,20 +705,24 @@ export default function NetworkGraph() {
     // 호버 시 크기 변화 효과
     node
       .on("mouseenter", function () {
-        const circle = d3.select(this).select("circle");
-        const currentRadius = parseFloat(circle.attr("r"));
-        circle
+        const circles = d3.select(this).selectAll("circle");
+        circles
           .transition()
           .duration(200)
-          .attr("r", currentRadius * 1.05); // 현재 크기에서 5% 증가
+          .attr("r", function() {
+            const currentRadius = parseFloat(d3.select(this).attr("r"));
+            return currentRadius * 1.08; // 현재 크기에서 8% 증가
+          });
       })
       .on("mouseleave", function () {
-        const circle = d3.select(this).select("circle");
-        const currentRadius = parseFloat(circle.attr("r"));
-        circle
+        const circles = d3.select(this).selectAll("circle");
+        circles
           .transition()
           .duration(200)
-          .attr("r", currentRadius / 1.05); // 5% 증가된 크기에서 원래 크기로 복원
+          .attr("r", function() {
+            const currentRadius = parseFloat(d3.select(this).attr("r"));
+            return currentRadius / 1.08; // 8% 증가된 크기에서 원래 크기로 복원
+          });
       });
 
     // 중앙 WITH 노드 고정 해제 (GSAP 애니메이션 허용)
@@ -713,7 +799,7 @@ export default function NetworkGraph() {
             <motion.span
               key={index}
               className="inline-block text-5xl sm:text-6xl lg:text-7xl font-bold text-black leading-tight"
-              style={{ fontFamily: "Istok Web" }}
+              style={{ fontFamily: "'Istok Web', sans-serif" }}
               initial={{
                 opacity: 0,
                 y: 20,
@@ -750,7 +836,7 @@ export default function NetworkGraph() {
         >
           <motion.p
             className="text-base sm:text-lg lg:text-xl text-black font-bold"
-            style={{ fontFamily: "Istok Web" }}
+            style={{ fontFamily: "'Istok Web', sans-serif" }}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.3 }}
@@ -779,7 +865,7 @@ export default function NetworkGraph() {
           width="100%"
           height="100%"
           className="max-w-full max-h-[70vh]"
-          style={{ minHeight: "600px" }}
+          style={{ minHeight: "650px" }}
         />
       </motion.div>
     </div>

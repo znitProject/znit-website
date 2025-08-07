@@ -9,10 +9,10 @@ export default function RecruitPage() {
   return (
     <div className="min-h-screen bg-white transition-colors duration-300">
       {/* Work with us 타이틀 애니메이션 - 풀스크린 */}
-      {/*<TitleAnimation />*/}
+      <TitleAnimation />
 
       {/* 기술 스택 네트워크 그래프 섹션 */}
-      <NetworkGraph />
+      {/*<NetworkGraph />*/}
 
       {/* 풀스크린 섹션 */}
       <div className="w-full bg-white transition-colors duration-300">
