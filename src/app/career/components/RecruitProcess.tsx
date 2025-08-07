@@ -85,8 +85,10 @@ const ProcessStep = ({
               : index === 1
                 ? "#4376AB" // 중간 하늘색
                 : index === 2
-                  ? "#00224E" // 진한 남색
-                  : "#02050A", // 검은색
+                  ? "#DC143C" // 크림슨 레드 (1차 면접)
+                  : index === 3
+                    ? "#1E3A8A" // 밝은 남색 (2차 면접)
+                    : "#02050A", // 검은색 (최종 합격)
           color: "#ffffff",
           boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
         }}
@@ -148,12 +150,18 @@ const RecruitProcess = () => {
     },
     {
       number: "03",
-      title: "면접 진행",
+      title: "1차 면접",
       description:
-        "실무진과의 면접을 통해\n서로의 가치관과 역량을\n확인합니다.",
+        "실무진과의 1차 면접을 통해\n기본적인 역량과\n가치관을 확인합니다.",
     },
     {
       number: "04",
+      title: "2차 면접",
+      description:
+        "최종 면접을 통해\n서로의 비전과\n문화적 적합성을 확인합니다.",
+    },
+    {
+      number: "05",
       title: "최종 합격",
       description: "모든 과정을 통과하시면\nZNIT의 새로운 멤버가\n됩니다!",
     },
@@ -167,19 +175,19 @@ const RecruitProcess = () => {
     >
       <div className="py-32">
         <div className="w-full px-4 sm:px-6 lg:px-8">
-                     {/* 전체 배경색 영역 */}
-           <div 
-             className="rounded-2xl p-12 relative overflow-hidden"
-             style={{
-               background: `
+          {/* 전체 배경색 영역 */}
+          <div
+            className="rounded-2xl p-12 relative overflow-hidden"
+            style={{
+              background: `
                  linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%),
                  radial-gradient(circle at 30% 30%, rgba(67, 118, 171, 0.05) 0%, transparent 50%),
                  radial-gradient(circle at 70% 70%, rgba(246, 191, 65, 0.05) 0%, transparent 50%)
                `,
-               backdropFilter: 'blur(10px)',
-               border: '1px solid rgba(67, 118, 171, 0.1)'
-             }}
-           >
+              backdropFilter: "blur(10px)",
+              border: "1px solid rgba(67, 118, 171, 0.1)",
+            }}
+          >
             {/* 타이틀 */}
             <div className="mb-20">
               <TypingTitle text="Process." />

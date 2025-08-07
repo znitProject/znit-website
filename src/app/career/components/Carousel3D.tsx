@@ -246,7 +246,7 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
               left: "50%",
               top: "50%",
               transform: "translate(-50%, -50%)",
-              opacity: 0.6 - index * 0.08,
+              opacity: 1 - index * 0.08,
             }}
           />
         ))}
@@ -413,79 +413,96 @@ const BlackHole = ({ parentRotationY, parentRotationX }: BlackHoleProps) => {
       <style jsx>{`
         @keyframes particleOrbit {
           0% {
-            transform: translate(-50%, -50%) rotate(0deg) translateX(40px) scale(1);
+            transform: translate(-50%, -50%) rotate(0deg) translateX(40px)
+              scale(1);
           }
           25% {
-            transform: translate(-50%, -50%) rotate(90deg) translateX(45px) scale(1.2);
+            transform: translate(-50%, -50%) rotate(90deg) translateX(45px)
+              scale(1.2);
           }
           50% {
-            transform: translate(-50%, -50%) rotate(180deg) translateX(40px) scale(0.8);
+            transform: translate(-50%, -50%) rotate(180deg) translateX(40px)
+              scale(0.8);
           }
           75% {
-            transform: translate(-50%, -50%) rotate(270deg) translateX(35px) scale(1.1);
+            transform: translate(-50%, -50%) rotate(270deg) translateX(35px)
+              scale(1.1);
           }
           100% {
-            transform: translate(-50%, -50%) rotate(360deg) translateX(40px) scale(1);
+            transform: translate(-50%, -50%) rotate(360deg) translateX(40px)
+              scale(1);
           }
         }
 
         @keyframes spiralOrbit {
           0% {
-            transform: translate(-50%, -50%) rotate(0deg) translateX(60px) scale(1);
+            transform: translate(-50%, -50%) rotate(0deg) translateX(60px)
+              scale(1);
           }
           33% {
-            transform: translate(-50%, -50%) rotate(120deg) translateX(65px) scale(1.3);
+            transform: translate(-50%, -50%) rotate(120deg) translateX(65px)
+              scale(1.3);
           }
           66% {
-            transform: translate(-50%, -50%) rotate(240deg) translateX(55px) scale(0.7);
+            transform: translate(-50%, -50%) rotate(240deg) translateX(55px)
+              scale(0.7);
           }
           100% {
-            transform: translate(-50%, -50%) rotate(360deg) translateX(60px) scale(1);
+            transform: translate(-50%, -50%) rotate(360deg) translateX(60px)
+              scale(1);
           }
         }
 
-                 @keyframes particlePulse {
-           0%, 100% {
-             opacity: 0.8;ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-             transform: scale(1);
-           }
-           50% {
-             opacity: 1;
-             transform: scale(1.5);
-           }
-         }
+        @keyframes particlePulse {
+          0%,
+          100% {
+            opacity: 0.8;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.5);
+          }
+        }
 
-         @keyframes crossFloat {
-           0% {
-             transform: translate(-50%, -50%) translate(0px, 0px) rotate(0deg) scale(1);
-             opacity: 1;
-           }
-           16.66% {
-             transform: translate(-50%, -50%) translate(20px, -20px) rotate(60deg) scale(1.4);
-             opacity: 1;
-           }
-           33.33% {
-             transform: translate(-50%, -50%) translate(-15px, 25px) rotate(120deg) scale(0.6);
-             opacity: 0.8;
-           }
-           50% {
-             transform: translate(-50%, -50%) translate(-25px, -15px) rotate(180deg) scale(1.3);
-             opacity: 1;
-           }
-           66.66% {
-             transform: translate(-50%, -50%) translate(10px, 30px) rotate(240deg) scale(0.8);
-             opacity: 0.9;
-           }
-           83.33% {
-             transform: translate(-50%, -50%) translate(30px, 10px) rotate(300deg) scale(1.2);
-             opacity: 1;
-           }
-           100% {
-             transform: translate(-50%, -50%) translate(0px, 0px) rotate(360deg) scale(1);
-             opacity: 1;
-           }
-         }
-       `}</style>
+        @keyframes crossFloat {
+          0% {
+            transform: translate(-50%, -50%) translate(0px, 0px) rotate(0deg)
+              scale(1);
+            opacity: 1;
+          }
+          16.66% {
+            transform: translate(-50%, -50%) translate(20px, -20px)
+              rotate(60deg) scale(1.4);
+            opacity: 1;
+          }
+          33.33% {
+            transform: translate(-50%, -50%) translate(-15px, 25px)
+              rotate(120deg) scale(0.6);
+            opacity: 0.8;
+          }
+          50% {
+            transform: translate(-50%, -50%) translate(-25px, -15px)
+              rotate(180deg) scale(1.3);
+            opacity: 1;
+          }
+          66.66% {
+            transform: translate(-50%, -50%) translate(10px, 30px)
+              rotate(240deg) scale(0.8);
+            opacity: 0.9;
+          }
+          83.33% {
+            transform: translate(-50%, -50%) translate(30px, 10px)
+              rotate(300deg) scale(1.2);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(-50%, -50%) translate(0px, 0px) rotate(360deg)
+              scale(1);
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 };
