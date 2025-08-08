@@ -78,10 +78,7 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
-        <Script
-          src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"
-          strategy="lazyOnload"
-        />
+        {/* p5.js는 npm 패키지로 로드하므로 CDN 제거 */}
       </body>
     </html>
   );
