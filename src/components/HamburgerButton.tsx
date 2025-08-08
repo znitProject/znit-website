@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
+"use client";
+
+import { useEffect, useState } from "react";
 
 interface HamburgerButtonProps {
   toggleMenu: () => void;
@@ -13,14 +13,7 @@ const HamburgerButton: React.FC<HamburgerButtonProps> = ({
   isMenuOpen,
   isScrolled = false,
 }) => {
-  const pathname = usePathname();
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [buttonColor, setButtonColor] = useState("#000");
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const updateButtonColor = () => {

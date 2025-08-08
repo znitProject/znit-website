@@ -1,42 +1,9 @@
 import type { Metadata } from "next";
-import {
-  Red_Hat_Display,
-  Montserrat,
-  Roboto_Flex,
-  Stylish,
-} from "next/font/google";
-import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
-
-const redHatDisplay = Red_Hat_Display({
-  subsets: ["latin"],
-  variable: "--font-red-hat-display",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["900"],
-  variable: "--font-montserrat",
-});
-
-const robotoFlex = Roboto_Flex({
-  subsets: ["latin"],
-  variable: "--font-roboto-flex",
-});
-
-const nanumSquareNeo = localFont({
-  src: "../../public/fonts/NanumSquareNeo-Variable.ttf",
-  variable: "--font-nanum-square-neo",
-  display: "swap",
-});
-
-const stylish = Stylish({
-  weight: ["400"],
-  variable: "--font-stylish",
-});
 
 export const metadata: Metadata = {
   title: "ZNIT - 혁신적인 솔루션으로 미래를 만들어갑니다",
@@ -101,22 +68,20 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Song+Myung&family=Zen+Kurenaido&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Zen+Kurenaido&family=Righteous&family=Song+Myung&display=swap"
           rel="stylesheet"
         />
-        <script
-          src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"
-          async
-        />
       </head>
-      <body
-        className={`${redHatDisplay.variable} ${montserrat.variable} ${robotoFlex.variable} ${nanumSquareNeo.variable} ${stylish.variable} antialiased`}
-      >
+      <body className="antialiased">
         <Providers>
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
         </Providers>
+        <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

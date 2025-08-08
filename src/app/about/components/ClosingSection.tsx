@@ -92,7 +92,7 @@ export default function ClosingSection() {
           >
             <span
               className="m-flip_item"
-              style={{ fontFamily: "'Pacifico', cursive" }}
+              style={{ fontFamily: "var(--font-righteous), cursive" }}
             >
               We believe.
             </span>
@@ -126,7 +126,7 @@ export default function ClosingSection() {
             <span
               className="m-flip_item"
               style={{
-                fontFamily: "var(--font-zen-kurenaido)",
+                fontFamily: "var(--font-zen-kurenaido), sans-serif",
                 fontWeight: "400",
                 fontSize: "clamp(24px, 5vw, 40px)",
               }}
@@ -146,7 +146,7 @@ export default function ClosingSection() {
           >
             <span
               className="m-flip_item"
-              style={{ fontFamily: "'Song Myung', serif" }}
+              style={{ fontFamily: "var(--font-roboto-flex), sans-serif" }}
             >
               세상을 더 아름답고 편안하게 만들기 위해 움직입니다.
             </span>
