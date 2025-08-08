@@ -355,7 +355,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "10px",
+        fontSize: "12px",
         fontWeight: "700",
         color: getCardMainColor(index),
         position: "absolute" as const,
@@ -373,7 +373,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "10px",
+        fontSize: "12px",
         fontWeight: "700",
         color: getCardMainColor(index),
         position: "absolute" as const,
@@ -428,7 +428,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "9px",
+        fontSize: "12px",
         fontWeight: "700",
         color: getCardMainColor(index),
         position: "absolute" as const,
@@ -768,13 +768,13 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                         style={{
                           color: "#000000",
                           letterSpacing: "0.05em",
-                          fontWeight: "900",
+                          fontWeight: "600",
                           textTransform: "uppercase",
                           fontFamily: "Kanit, sans-serif",
                           lineHeight: "0.75",
                           // 사선 텍스트는 작은 크기
                           ...(index === 0 && {
-                            fontSize: "1.3rem",
+                            fontSize: "2rem",
                             top: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -784,7 +784,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 2 && {
-                            fontSize: "1.4rem",
+                            fontSize: "2rem",
                             top: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -794,7 +794,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 4 && {
-                            fontSize: "1.3rem",
+                            fontSize: "1.5rem",
                             top: "50%",
                             left: "50%",
                             textAlign: "center",
@@ -805,7 +805,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                           }),
                           // 일반 텍스트는 새로로 긴 폰트
                           ...(index === 1 && {
-                            fontSize: "1.4rem",
+                            fontSize: "1.6rem",
                             bottom: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -815,7 +815,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 3 && {
-                            fontSize: "1.4rem",
+                            fontSize: "1.6rem",
                             bottom: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -825,7 +825,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 5 && {
-                            fontSize: "1.3rem",
+                            fontSize: "1.5rem",
                             top: "50%",
                             left: "1rem",
                             transform: "translateY(-50%)",
@@ -836,7 +836,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 6 && {
-                            fontSize: "1.7rem",
+                            fontSize: "1.9rem",
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
@@ -847,7 +847,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 7 && {
-                            fontSize: "1.4rem",
+                            fontSize: "1.6rem",
                             top: "50%",
                             right: "1rem",
                             transform: "translateY(-50%)",

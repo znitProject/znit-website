@@ -433,7 +433,7 @@ export default function TitleAnimation() {
 
       {/* 3D 캐러셀 - 타이틀 바로 아래 */}
       <motion.div
-        className="mt-32 sm:mt-36 lg:mt-40 mb-4 sm:mb-8 lg:mb-12"
+        className="mt-18 sm:mt-10 lg:mt-14 mb-4 sm:mb-8 lg:mb-12"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.3 }}
