@@ -67,15 +67,36 @@ export default function ParticleBackground() {
           this.update = function () {
             this.velocity.add(this.acceleration);
             this.pos.add(this.velocity);
-            this.pos.add(
-              p.createVector(
-                10 * (p.noise(this.offset.x) - 0.5),
-                10 * (p.noise(this.offset.y) - 0.5)
-              )
-            );
-            this.offset.x = this.offset.x + 0.01;
-            this.offset.y = this.offset.y + 0.01;
-            this.size = this.size * 0.95;
+
+            // 마우스가 움직이고 있는지 확인
+            const isMouseMoving =
+              p.mouseX !== p.pmouseX || p.mouseY !== p.pmouseY;
+
+            if (isMouseMoving) {
+              // 마우스 움직일 때는 원래 속도
+              this.pos.add(
+                p.createVector(
+                  10 * (p.noise(this.offset.x) - 0.5),
+                  10 * (p.noise(this.offset.y) - 0.5)
+                )
+              );
+              this.offset.x = this.offset.x + 0.01;
+              this.offset.y = this.offset.y + 0.01;
+              // 마우스 움직일 때는 원래 속도로 크기 감소
+              this.size = this.size * 0.95;
+            } else {
+              // 가만히 있을 때는 더 천천히
+              this.pos.add(
+                p.createVector(
+                  5 * (p.noise(this.offset.x) - 0.5),
+                  5 * (p.noise(this.offset.y) - 0.5)
+                )
+              );
+              this.offset.x = this.offset.x + 0.005;
+              this.offset.y = this.offset.y + 0.005;
+              // 가만히 있을 때는 더 천천히 크기 감소
+              this.size = this.size * 0.99;
+            }
             this.acceleration.mult(0);
             if (this.velocity.mag() > 1) this.velocity.mult(0.95);
           };
@@ -101,7 +122,14 @@ export default function ParticleBackground() {
           this.particles = [];
 
           this.addParticle = function (pos: p5.Vector, ppos: p5.Vector) {
-            this.particles.push(new Particle(pos, ppos));
+            // 가만히 있을 때는 파티클 갯수를 제한
+            const isMouseMoving =
+              p.mouseX !== p.pmouseX || p.mouseY !== p.pmouseY;
+            const maxParticles = isMouseMoving ? 50 : 20; // 마우스 움직일 때 50개, 가만히 있을 때 20개
+
+            if (this.particles.length < maxParticles) {
+              this.particles.push(new Particle(pos, ppos));
+            }
           };
 
           this.run = function () {
@@ -133,23 +161,32 @@ export default function ParticleBackground() {
 
           if (
             p.mouseX == p.pmouseX &&
-            p.mouseY == p.pmouseY &&
-            p.millis() - ptime > 800
+            p.mouseY == p.mouseY &&
+            p.millis() - ptime > 1000
           ) {
+            // 가만히 있을 때는 조금씩 천천히 터지도록
+            const randomX = p.random(p.width * 0.1, p.width * 0.9);
+            const randomY = p.random(p.height * 0.1, p.height * 0.9);
+            const pos = p.createVector(randomX, randomY);
+
+            // 노이즈 기반 움직임 (작게)
             const step = p.createVector(
               p.noise(offset.x) - 0.5,
               p.noise(offset.y) - 0.5
             );
-            step.mult(10);
-            const pos = p5.Vector.add(origin, step);
-            if (pos.x > p.width) pos.x -= p.width;
-            if (pos.x < 0) pos.x += p.width;
-            if (pos.y > p.height) pos.y -= p.height;
-            if (pos.y < 0) pos.y += p.height;
-            ps.addParticle(pos, origin);
-            origin = pos;
-            offset.x += 0.01;
-            offset.y += 0.01;
+            step.mult(10); // 작은 움직임
+            const noisePos = p5.Vector.add(pos, step);
+
+            // 화면 경계 처리
+            if (noisePos.x > p.width) noisePos.x -= p.width;
+            if (noisePos.x < 0) noisePos.x += p.width;
+            if (noisePos.y > p.height) noisePos.y -= p.height;
+            if (noisePos.y < 0) noisePos.y += p.height;
+
+            ps.addParticle(noisePos, pos);
+            origin = noisePos;
+            offset.x += 0.005; // 더 천천히
+            offset.y += 0.005; // 더 천천히
           }
 
           ps.run();
