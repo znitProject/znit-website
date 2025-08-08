@@ -4,6 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 import React from "react";
+import {
+  ChatBubbleLeftRightIcon,
+  RocketLaunchIcon,
+  SparklesIcon,
+  ChartBarIcon,
+  LightBulbIcon,
+  FireIcon,
+  EyeIcon,
+} from "@heroicons/react/24/outline";
 
 interface CarouselItem {
   id: number;
@@ -690,21 +699,11 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                   >
                     {/* Content */}
                     <div className="relative z-10 w-full h-full flex flex-col px-4 sm:px-5 lg:px-6 py-3">
-                      {/* 인덱스 번호 */}
-                      <div style={getIndexNumberStyle(index)}>
-                        {index === 6 ? (
-                          <div style={{ transform: "rotate(-45deg)" }}>
-                            {index + 1}
-                          </div>
-                        ) : (
-                          index + 1
-                        )}
-                      </div>
                       {/* 한글 제목 - 작고 깔끔하게 다양한 위치 */}
                       <div
-                        className="text-xs sm:text-sm lg:text-base font-medium leading-tight absolute"
+                        className="text-xs sm:text-sm lg:text-base font-bold leading-tight absolute flex items-center gap-2"
                         style={{
-                          fontFamily: "Gowun Batang, serif",
+                          fontFamily: "SUIT Variable, SUIT, Pretendard Variable, Pretendard, sans-serif",
                           color: getKoreanTextColor(index),
                           letterSpacing: "0.02em",
                           maxWidth: "70%",
@@ -720,7 +719,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             textAlign: "left",
                           }),
                           ...(index === 2 && {
-                            top: "0.5rem",
+                            bottom: "0.5rem",
                             right: "0.5rem",
                             textAlign: "right",
                           }),
@@ -751,6 +750,17 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                           }),
                         }}
                       >
+                        {/* Heroicons 아이콘 */}
+                        <span className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: getKoreanTextColor(index) }}>
+                          {index === 0 ? <ChatBubbleLeftRightIcon /> : // 소통하는 연결
+                           index === 1 ? <RocketLaunchIcon /> : // 변화를 향한 도전
+                           index === 2 ? <SparklesIcon /> : // 긍정의 힘
+                           index === 3 ? <ChartBarIcon /> : // 끊임없는 성장
+                           index === 4 ? <LightBulbIcon /> : // 창의력 있는 사고
+                           index === 5 ? <FireIcon /> : // 끈기와 몰입
+                           index === 6 ? <FireIcon /> : // 열정과 책임
+                           index === 7 ? <EyeIcon /> : <SparklesIcon />} {/* 섬세한 관찰력 */}
+                        </span>
                         {item.title}
                       </div>
 
@@ -760,13 +770,13 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                         style={{
                           color: "#000000",
                           letterSpacing: "0.05em",
-                          fontWeight: "400",
+                          fontWeight: "900",
                           textTransform: "uppercase",
                           fontFamily: "Kanit, sans-serif",
                           lineHeight: "0.75",
                           // 사선 텍스트는 작은 크기
                           ...(index === 0 && {
-                            fontSize: "1.1rem",
+                            fontSize: "1.3rem",
                             top: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -776,7 +786,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 2 && {
-                            fontSize: "1.2rem",
+                            fontSize: "1.4rem",
                             top: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -786,7 +796,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 4 && {
-                            fontSize: "1.1rem",
+                            fontSize: "1.3rem",
                             top: "50%",
                             left: "50%",
                             textAlign: "center",
@@ -797,7 +807,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                           }),
                           // 일반 텍스트는 새로로 긴 폰트
                           ...(index === 1 && {
-                            fontSize: "1.2rem",
+                            fontSize: "1.4rem",
                             bottom: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -807,7 +817,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 3 && {
-                            fontSize: "1.2rem",
+                            fontSize: "1.4rem",
                             bottom: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -817,7 +827,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 5 && {
-                            fontSize: "1.1rem",
+                            fontSize: "1.3rem",
                             top: "50%",
                             left: "1rem",
                             transform: "translateY(-50%)",
@@ -828,7 +838,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 6 && {
-                            fontSize: "1.5rem",
+                            fontSize: "1.7rem",
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
@@ -839,7 +849,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 7 && {
-                            fontSize: "1.2rem",
+                            fontSize: "1.4rem",
                             top: "50%",
                             right: "1rem",
                             transform: "translateY(-50%)",
@@ -963,9 +973,9 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
                       {/* 타이핑 애니메이션 텍스트 */}
                       <div
-                        className="text-sm sm:text-base lg:text-lg text-white leading-relaxed min-h-[2rem] flex items-center"
+                        className="text-base sm:text-lg lg:text-xl text-white leading-relaxed min-h-[2rem] flex items-center"
                         style={{
-                          fontFamily: "Gowun Batang, serif",
+                          fontFamily: "SUIT Variable, SUIT, Pretendard Variable, Pretendard, sans-serif",
                           textShadow: `0 2px 8px rgba(0,0,0,0.4)`,
                           lineHeight: "1.6",
                           letterSpacing: "0.01em",

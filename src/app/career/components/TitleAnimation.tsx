@@ -9,32 +9,36 @@ const carouselItems = [
     id: 1,
     title: "함께 나누는 유대감",
     titleEn: "Shared Connections",
-
- 
+    description: "소통으로 만들어가는 따뜻한 연결고리",
+    color: "bg-blue-500",
   },
   {
     id: 2,
     title: "변화를 향한 도전",
     titleEn: "Embracing Change",
- 
+    description: "새로운 가능성을 향한 용기 있는 첫걸음",
+    color: "bg-green-500",
   },
   {
     id: 3,
     title: "긍정의 힘",
     titleEn: "Power of Positivity",
-
+    description: "어떤 상황에서도 희망을 잃지 않는 마음",
+    color: "bg-yellow-500",
   },
   {
     id: 4,
     title: "끊임없는 성장",
     titleEn: "Continuous Growth",
- 
+    description: "매일 발전하는 나를 만들어가는 여정",
+    color: "bg-purple-500",
   },
   {
     id: 5,
     title: "창의력 있는 사고",
     titleEn: "Creative Thinking",
-  
+    description: "틀에 갇히지 않는 자유로운 아이디어",
+    color: "bg-indigo-500",
   },
   {
     id: 6,
@@ -47,13 +51,15 @@ const carouselItems = [
     id: 7,
     title: "열정과 책임",
     titleEn: "Passion and Responsibility",
- 
+    description: "맡은 일에 대한 진심어린 헌신",
+    color: "bg-red-500",
   },
   {
     id: 8,
     title: "섬세한 관찰력",
     titleEn: "Attention to Detail",
-
+    description: "작은 것도 놓치지 않는 정확한 시선",
+    color: "bg-teal-500",
   },
 ];
 

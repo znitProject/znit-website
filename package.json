@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@sendgrid/mail": "^8.1.5",
     "@types/d3": "^7.4.3",
     "@types/p5": "^1.7.6",
@@ -16,6 +17,7 @@
     "d3": "^7.9.0",
     "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",
+    "heroicons": "^2.2.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
     "leaflet": "^1.9.4",
