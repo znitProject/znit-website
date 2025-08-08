@@ -122,7 +122,7 @@ export default function ParticleBackground() {
             canvas.parent(canvasRef.current);
           }
           ps = new ParticleSystem();
-          p.background(0, 0, 0);
+          p.background(0, 0, 0); // 파티클 배경만 검정색
           offset = p.createVector(p.random(1000), p.random(1000));
           origin = p.createVector(p.width / 2, p.height / 2);
         };

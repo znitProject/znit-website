@@ -278,7 +278,7 @@ export default function ValuesSection() {
   const selectedValue = values.find((v) => v.id === hoveredId);
 
   return (
-    <section className="min-h-screen py-20 bg-[#1F1F1F] relative">
+    <section className="min-h-screen py-20 relative">
 
       {/* 타이틀 섹션을 완전히 고정 */}
       <div className="container mx-auto px-4">

@@ -8,7 +8,7 @@ import ParticleBackground from "./components/ParticleBackground";
 
 export default function SloganPage() {
   return (
-    <div className="bg-black min-h-screen transition-colors duration-300">
+    <div className="bg-gray-300 min-h-screen transition-colors duration-300">
       {/* 파티클 배경 */}
       <ParticleBackground />
 

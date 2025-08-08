@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 import React from "react";
 
+
 interface CarouselItem {
   id: number;
   title: string;
@@ -28,9 +29,18 @@ export default function Carousel3D({ items }: Carousel3DProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
+  
+  // 3D tilt 효과를 위한 상태 추가
+  const [tiltX, setTiltX] = useState(0);
+  const [tiltY, setTiltY] = useState(0);
+  
+  // 타이핑 애니메이션을 위한 상태
+  const [typingTexts, setTypingTexts] = useState<{[key: number]: string}>({});
+  const [isTyping, setIsTyping] = useState<{[key: number]: boolean}>({});
 
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+  
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -48,23 +58,72 @@ export default function Carousel3D({ items }: Carousel3DProps) {
   const [perspective, setPerspective] = useState(900);
   const angleStep = 360 / items.length;
 
-  // Enhanced GSAP 3D orbital animation
+
+  // 타이핑 애니메이션 함수
+  const startTypingAnimation = (itemId: number, text: string) => {
+    if (isTyping[itemId]) return;
+    
+    setIsTyping(prev => ({ ...prev, [itemId]: true }));
+    setTypingTexts(prev => ({ ...prev, [itemId]: '' }));
+    
+    let index = 0;
+    const typeInterval = setInterval(() => {
+      if (index <= text.length) {
+        setTypingTexts(prev => ({ 
+          ...prev, 
+          [itemId]: text.slice(0, index) + (index < text.length ? '|' : '')
+        }));
+        index++;
+      } else {
+        clearInterval(typeInterval);
+        setTypingTexts(prev => ({ ...prev, [itemId]: text }));
+        setIsTyping(prev => ({ ...prev, [itemId]: false }));
+      }
+    }, 80);
+  };
+
+  const stopTypingAnimation = (itemId: number) => {
+    setTypingTexts(prev => ({ ...prev, [itemId]: '' }));
+    setIsTyping(prev => ({ ...prev, [itemId]: false }));
+  };
+
+  // Enhanced GSAP 3D orbital animation with smoother motion
   useEffect(() => {
     if (!carouselRef.current || !isVisible) return;
 
     const tl = gsap.timeline({ repeat: -1 });
     
-    // Create smooth orbital motion
+    // Create ultra-smooth orbital motion with advanced easing
     tl.to(carouselRef.current, {
       rotationY: "+=360",
-      duration: 20,
-      ease: "none",
+      duration: 25,
+      ease: "power1.inOut",
+    });
+
+    // Add subtle floating animation
+    gsap.to(carouselRef.current, {
+      y: "+=8",
+      duration: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+
+    // Add gentle scale pulsing
+    gsap.to(carouselRef.current, {
+      scale: 1.02,
+      duration: 6,
+      repeat: -1,
+      yoyo: true,
+      ease: "power2.inOut",
     });
 
     return () => {
       tl.kill();
+      gsap.killTweensOf(carouselRef.current);
     };
   }, [isVisible]);
+
 
   // Responsive and visibility setup
   useEffect(() => {
@@ -106,7 +165,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     };
   }, []);
 
-  // Enhanced mouse tracking
+  // Enhanced mouse tracking with tilt effect
   useEffect(() => {
     const handleMouseMove = (e: Event) => {
       const mouseEvent = e as MouseEvent;
@@ -119,6 +178,10 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
         setMouseX((prev) => prev * 0.8 + normalizedX * 0.2);
         setMouseY((prev) => prev * 0.8 + normalizedY * 0.2);
+        
+        // 3D tilt 효과를 위한 값 설정
+        setTiltX((prev) => prev * 0.9 + normalizedY * 5);
+        setTiltY((prev) => prev * 0.9 + normalizedX * 5);
       }
     };
 
@@ -126,24 +189,38 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     return () => document.removeEventListener("mousemove", handleMouseMove);
   }, [isDragging]);
 
-  // Enhanced interaction handlers
+  // Enhanced interaction handlers with GSAP smoothing
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setLastMouseX(e.clientX);
     setLastMouseY(e.clientY);
     document.body.style.cursor = "grabbing";
+    
+    // Pause automatic rotation when dragging
+    if (carouselRef.current) {
+      gsap.killTweensOf(carouselRef.current);
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
+    if (!isDragging || !carouselRef.current) return;
 
     const deltaX = e.clientX - lastMouseX;
     const deltaY = e.clientY - lastMouseY;
 
-    setRotationY((prev: number) => prev + deltaX * 0.6);
-    setRotationX((prev: number) => {
-      const newRotation = prev - deltaY * 0.4;
-      return Math.max(-60, Math.min(60, newRotation));
+    // Use GSAP for smoother drag rotation
+    const newRotationY = rotationY + deltaX * 0.4;
+    const newRotationX = Math.max(-45, Math.min(45, rotationX - deltaY * 0.3));
+    
+    setRotationY(newRotationY);
+    setRotationX(newRotationX);
+
+    // Apply smooth GSAP transform
+    gsap.to(carouselRef.current, {
+      rotationY: newRotationY + mouseX * 8,
+      rotationX: newRotationX + mouseY * 10,
+      duration: 0.3,
+      ease: "power2.out",
     });
 
     setLastMouseX(e.clientX);
@@ -152,8 +229,44 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    setRotationX(0);
     document.body.style.cursor = "grab";
+    
+    // Smoothly return to center and resume automatic rotation
+    if (carouselRef.current) {
+      gsap.to(carouselRef.current, {
+        rotationX: 0,
+        duration: 1,
+        ease: "power2.out",
+        onComplete: () => {
+          setRotationX(0);
+          // Resume automatic animations
+          if (isVisible) {
+            const tl = gsap.timeline({ repeat: -1 });
+            tl.to(carouselRef.current, {
+              rotationY: "+=360",
+              duration: 25,
+              ease: "power1.inOut",
+            });
+            
+            gsap.to(carouselRef.current, {
+              y: "+=8",
+              duration: 4,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+            });
+            
+            gsap.to(carouselRef.current, {
+              scale: 1.02,
+              duration: 6,
+              repeat: -1,
+              yoyo: true,
+              ease: "power2.inOut",
+            });
+          }
+        }
+      });
+    }
   };
 
   // Hopeful and modern card styles for career page
@@ -232,7 +345,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
   return (
     <motion.div
       ref={containerRef}
-      className="flex flex-col items-center select-none carousel-container min-h-screen"
+      className="flex flex-col items-center select-none carousel-container min-h-screen relative"
       style={{ 
         opacity, 
         scale,
@@ -259,8 +372,9 @@ export default function Carousel3D({ items }: Carousel3DProps) {
           className="relative w-full h-full"
           style={{
             transformStyle: "preserve-3d",
-            transform: `rotateY(${rotationY + mouseX * 10}deg) rotateX(${rotationX + mouseY * 15}deg)`,
-            transition: isDragging ? "none" : "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+            transform: isDragging 
+              ? `rotateY(${rotationY + mouseX * 8}deg) rotateX(${rotationX + mouseY * 10}deg)`
+              : `rotateY(${rotationY + mouseX * 8}deg) rotateX(${rotationX + mouseY * 10}deg)`,
           }}
         >
 
@@ -272,7 +386,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
             return (
               <div
                 key={item.id}
-                className="absolute w-56 sm:w-64 lg:w-72 h-40 sm:h-48 lg:h-56 z-0 group cursor-pointer transition-all duration-700 hover:scale-105 hover:-translate-y-2"
+                className="absolute w-56 sm:w-64 lg:w-72 h-40 sm:h-48 lg:h-56 z-0 group cursor-pointer"
                 style={{
                   position: "absolute",
                   left: "50%",
@@ -281,114 +395,156 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                   height: `${cardHeight}px`,
                   transform: `translate(-50%, -50%) rotateY(${rotateY}deg) translateZ(${radius}px)`,
                   transformOrigin: "center center",
-                  background: `linear-gradient(145deg, rgba(248,250,252,0.1), rgba(241,245,249,0.05))`,
-                  clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
-                  boxShadow: `
-                    12px 12px 24px ${cardStyle.shadow},
-                    -12px -12px 24px ${cardStyle.neumorphism.light},
-                    inset 4px 4px 8px ${cardStyle.neumorphism.dark},
-                    inset -4px -4px 8px ${cardStyle.neumorphism.light},
-                    0 0 20px ${cardStyle.shadow}
-                  `,
-                  backdropFilter: "blur(25px) saturate(200%)",
+                  transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                }}
+                onMouseEnter={(e) => {
+                  // GSAP를 사용한 부드러운 hover 애니메이션
+                  gsap.to(e.currentTarget, {
+                    rotationX: -tiltX * 0.2,
+                    scale: 1.08,
+                    duration: 0.6,
+                    ease: "power2.out",
+                    transformOrigin: "center center",
+                  });
+                  
+                  // 타이핑 애니메이션 시작
+                  setTimeout(() => {
+                    startTypingAnimation(item.id, item.description);
+                  }, 300);
+                }}
+                onMouseLeave={(e) => {
+                  // GSAP를 사용한 부드러운 hover 해제 애니메이션
+                  gsap.to(e.currentTarget, {
+                    rotationX: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    transformOrigin: "center center",
+                  });
+                  
+                  // 타이핑 애니메이션 정지
+                  stopTypingAnimation(item.id);
                 }}
                 onClick={() => {}}
               >
-                {/* Gradient Border Effect */}
+                {/* 내부 flip 컨테이너 */}
                 <div 
-                  className="absolute inset-0 rounded-none"
+                  className="relative w-full h-full flip-container group-hover:flip-card"
                   style={{
-                    background: `linear-gradient(45deg, ${cardStyle.accent}20, transparent 30%, transparent 70%, ${cardStyle.accent}20)`,
-                    clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
-                    zIndex: 1,
-                    filter: `blur(1px)`,
-                  }}
-                />
-                <div 
-                  className="absolute inset-0.5 rounded-none"
-                  style={{
-                    background: `linear-gradient(145deg, rgba(248,250,252,0.1), rgba(241,245,249,0.05))`,
-                    clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
-                    zIndex: 2,
-                  }}
-                />
-                {/* Enhanced Front Face */}
-                <div className="w-full h-full flex flex-col justify-center items-center group-hover:opacity-0 transition-opacity duration-700 relative overflow-hidden z-10">
-                  {/* Modern glass overlay */}
-                  <div
-                    className="absolute inset-0 opacity-10"
-                    style={{
-                      background: `linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%)`,
-                      clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
-                    }}
-                  />
-                  
-                  
-                  {/* Content */}
-                  <div className="relative z-10 flex flex-col items-center px-6 sm:px-7 lg:px-8 py-4">
-                    <div
-                      className="text-base sm:text-lg lg:text-xl font-bold text-center leading-tight mb-2"
-                      style={{ 
-                        fontFamily: "var(--font-stylish)",
-                        textShadow: `0 2px 8px rgba(0,0,0,0.3)`,
-                        letterSpacing: "0.02em",
-                        color: cardStyle.accent,
-                      }}
-                    >
-                      {item.title}
-                    </div>
-                    <div
-                      className="text-sm sm:text-base font-medium text-center leading-tight"
-                      style={{ 
-                        fontFamily: "var(--font-red-hat-display)",
-                        color: cardStyle.accent,
-                        letterSpacing: "0.01em",
-                        opacity: 0.9,
-                      }}
-                    >
-                      {item.titleEn}
-                    </div>
-                  </div>
-                  
-                  {/* Bottom geometric accent */}
-                  <div
-                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-8 h-1 opacity-50"
-                    style={{
-                      background: `linear-gradient(90deg, transparent, ${cardStyle.accent}, transparent)`,
-                      clipPath: `polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)`,
-                    }}
-                  />
-                </div>
-
-                {/* Enhanced Back Face */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 z-10"
-                  style={{
-                    background: `linear-gradient(145deg, rgba(30,30,35,0.98) 0%, rgba(40,40,45,0.95) 100%)`,
-                    backdropFilter: "blur(30px) saturate(180%)",
-                    border: `2px solid ${cardStyle.border}`,
-                    clipPath: `polygon(15px 0%, calc(100% - 15px) 0%, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0% calc(100% - 15px), 0% 15px)`,
-                    boxShadow: `
-                      inset 0 0 30px rgba(0,0,0,0.3),
-                      0 0 40px ${cardStyle.glow},
-                      inset 0 1px 2px rgba(255,255,255,0.03)
-                    `,
+                    transformStyle: "preserve-3d",
+                    transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 >
-                  {/* Content wrapper with geometric elements */}
-                  <div className="text-center px-6 sm:px-7 py-4 relative">
+                  {/* 카드 앞면 (Front Face) */}
+                  <div 
+                    className="absolute inset-0 w-full h-full flex flex-col justify-center items-center backface-hidden z-10 rounded-2xl"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      background: "white",
+                      borderRadius: "1rem",
+                      boxShadow: `
+                        0 25px 45px rgba(0,0,0,0.15),
+                        0 15px 30px rgba(0,0,0,0.1)
+                      `,
+                      border: `2px solid ${cardStyle.border}`,
+                    }}
+                  >
                     
-                    <p
-                      className="text-sm sm:text-base lg:text-lg text-white leading-relaxed pt-6"
-                      style={{ 
-                        fontFamily: "var(--font-stylish)",
-                        textShadow: `0 2px 8px rgba(0,0,0,0.4)`,
-                        lineHeight: "1.6",
-                        letterSpacing: "0.01em",
+                    {/* Content */}
+                    <div className="relative z-10 flex flex-col items-center px-6 sm:px-7 lg:px-8 py-4">
+                      <div
+                        className="text-base sm:text-lg lg:text-xl font-bold text-center leading-tight mb-2"
+                        style={{ 
+                          fontFamily: "var(--font-stylish)",
+                          textShadow: `0 2px 8px rgba(0,0,0,0.3)`,
+                          letterSpacing: "0.02em",
+                          color: cardStyle.accent,
+                        }}
+                      >
+                        {item.title}
+                      </div>
+                      <div
+                        className="text-sm sm:text-base font-medium text-center leading-tight"
+                        style={{ 
+                          fontFamily: "var(--font-red-hat-display)",
+                          color: cardStyle.accent,
+                          letterSpacing: "0.01em",
+                          opacity: 0.9,
+                        }}
+                      >
+                        {item.titleEn}
+                      </div>
+                    </div>
+                    
+                    {/* Bottom geometric accent */}
+                    <div
+                      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-8 h-1 opacity-50 rounded-full"
+                      style={{
+                        background: `linear-gradient(90deg, transparent, ${cardStyle.accent}, transparent)`,
                       }}
-                    >
-                      {item.description}
-                    </p>
-                    
+                    />
+                  </div>
+
+                  {/* 카드 뒷면 (Back Face) */}
+                  <div 
+                    className="absolute inset-0 w-full h-full flex items-center justify-center backface-hidden z-10 rounded-2xl"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      transform: "rotateY(180deg)",
+                      background: `linear-gradient(145deg, rgba(15,23,42,0.98) 0%, rgba(30,41,59,0.95) 100%)`,
+                      backdropFilter: "blur(40px) saturate(200%)",
+                      border: `2px solid ${cardStyle.border}`,
+                      borderRadius: "1rem",
+                      boxShadow: `
+                        inset 0 0 40px rgba(0,0,0,0.4),
+                        0 0 50px ${cardStyle.glow},
+                        inset 0 2px 4px rgba(255,255,255,0.05)
+                      `,
+                    }}
+                  >
+                    {/* 뒷면 콘텐츠 */}
+                    <div className="text-center px-6 py-4 relative w-full h-full flex flex-col justify-center items-center">
+                      {/* 아이콘 영역 */}
+                      <div 
+                        className="w-12 h-12 mb-4 rounded-full flex items-center justify-center"
+                        style={{
+                          background: `linear-gradient(135deg, ${cardStyle.accent}40, ${cardStyle.glow}20)`,
+                          boxShadow: `0 0 20px ${cardStyle.glow}30`,
+                        }}
+                      >
+                        <div 
+                          className="w-6 h-6 rounded-full"
+                          style={{ background: cardStyle.accent }}
+                        />
+                      </div>
+                      
+                      {/* 타이핑 애니메이션 텍스트 */}
+                      <div
+                        className="text-sm sm:text-base lg:text-lg text-white leading-relaxed min-h-[2rem] flex items-center"
+                        style={{ 
+                          fontFamily: "var(--font-stylish)",
+                          textShadow: `0 2px 8px rgba(0,0,0,0.4)`,
+                          lineHeight: "1.6",
+                          letterSpacing: "0.01em",
+                          color: cardStyle.accent,
+                        }}
+                      >
+                        {typingTexts[item.id] || ''}
+                      </div>
+                      
+                      {/* 버튼 */}
+                      <button
+                        className="mt-4 px-4 py-2 rounded-lg text-xs font-medium transition-all duration-300 hover:scale-105"
+                        style={{
+                          background: `linear-gradient(135deg, ${cardStyle.accent}80, ${cardStyle.glow}60)`,
+                          color: 'white',
+                          boxShadow: `0 4px 15px ${cardStyle.glow}40`,
+                          border: `1px solid ${cardStyle.accent}40`,
+                        }}
+                      >
+                        자세히 보기
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -413,6 +569,53 @@ export default function Carousel3D({ items }: Carousel3DProps) {
       </div>
 
       <style jsx>{`
+        /* Gradient Sweep Animation */
+        @keyframes gradientSweep {
+          0% {
+            background-position: -300% -300%;
+          }
+          50% {
+            background-position: 0% 0%;
+          }
+          100% {
+            background-position: 300% 300%;
+          }
+        }
+
+        /* SF 홀로그래픽 효과 */
+        @keyframes holographicSweep {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        /* 스캔라인 애니메이션 */
+        @keyframes scanlines {
+          0% {
+            background-position: 0 0;
+          }
+          100% {
+            background-position: 20px 0;
+          }
+        }
+
+        /* 3D Flip 애니메이션을 위한 backface-visibility */
+        .backface-hidden {
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+
+        /* Flip 애니메이션 */
+        .flip-container {
+          perspective: 1000px;
+        }
+        
+        .flip-card {
+          transform: rotateY(180deg);
+        }
 
         .carousel-container {
           background: linear-gradient(180deg, #0f172a 0%, #1e293b 30%, #0f172a 100%);

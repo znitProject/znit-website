@@ -151,7 +151,7 @@ export default function WaveMaskText() {
 
   return (
     <div
-      className="relative w-full h-screen bg-[#1F1F1F] overflow-hidden"
+      className="relative w-full h-screen overflow-hidden"
       ref={containerRef}
     >
       {/* 스크롤 거리 (원본과 동일) */}

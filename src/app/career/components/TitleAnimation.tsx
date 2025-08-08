@@ -42,9 +42,9 @@ const carouselItems = [
   },
   {
     id: 6,
-    title: "협업의 시너지",
-    titleEn: "Synergy of Teamwork",
-    description: "성장을 함께 만들어가는 협력의 힘",
+    title: "끈기와 몰입",
+    titleEn: "Perserverance & Focus",
+    description: "끝까지 해내는 힘과 깊이 있는 집중",
     color: "bg-pink-500", // 유지 (구분감 충분)
   },
   {
@@ -399,31 +399,33 @@ export default function TitleAnimation() {
 
         {/* 서브 타이틀 */}
         <motion.div
-          className="mt-6 sm:mt-8 lg:mt-10"
+          className="mt-4 sm:mt-6 lg:mt-8"
           initial={{ opacity: 0, y: 20, scale: 0.9 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <motion.p
-            className="text-base sm:text-lg lg:text-xl text-black font-bold"
-            style={{ fontFamily: "Istok Web" }}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            className="text-base sm:text-lg lg:text-xl text-gray-700 font-medium"
+            style={{ fontFamily: "Pretendard Variable" }}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8, delay: 0.8 }}
             whileHover={{
-              scale: 1.05,
-              color: "#3B82F6",
+              scale: 1.02,
+              color: "#374151",
               transition: { duration: 0.3 },
             }}
-          ></motion.p>
+          >
+            znit와 함께 하실 분을 구합니다
+          </motion.p>
         </motion.div>
       </motion.div>
 
       {/* 3D 캐러셀 - 타이틀 바로 아래 */}
       <motion.div
-        className="mt-32 sm:mt-40 lg:mt-48 mb-10 sm:mb-30 lg:mb-38"
+        className="mt-20 sm:mt-24 lg:mt-28 mb-10 sm:mb-20 lg:mb-24"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.3 }}
