@@ -8,7 +8,6 @@ import {
   Smartphone,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import Image from "next/image";
 
 interface Card {
   id: number;
@@ -107,7 +106,7 @@ const UICraftCards: React.FC = () => {
     // Initialize with first card active
     handleCardInteraction(0);
     handleMobileCardInteraction(0);
-  }, [handleCardInteraction, handleMobileCardInteraction]);
+  }, []);
 
   if (!mounted) return null;
 
@@ -173,10 +172,9 @@ const UICraftCards: React.FC = () => {
           >
             <article className="absolute inset-0 flex flex-col justify-end p-4 font-mono">
               {/* Background Image */}
-              <Image
+              <img
                 src={card.image}
                 alt=""
-                fill
                 className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-700 ${
                   mobileActiveIndex === index
                     ? "grayscale-0 brightness-100 scale-100"
@@ -251,10 +249,9 @@ const UICraftCards: React.FC = () => {
           >
             <article className="absolute inset-0 flex flex-col justify-end p-4 font-mono">
               {/* Background Image */}
-              <Image
+              <img
                 src={card.image}
                 alt=""
-                fill
                 className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-700 ${
                   activeIndex === index
                     ? "grayscale-0 brightness-100 scale-100"
