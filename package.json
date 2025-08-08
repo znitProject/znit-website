@@ -31,6 +31,7 @@
     "react-leaflet": "^5.0.0",
     "redis": "^4.6.13",
     "resend": "^4.7.0",
+    "styled-components": "^6.1.19",
     "turbopack": "^0.0.1"
   },
   "devDependencies": {
@@ -41,6 +42,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/styled-components": "^5.1.34",
     "eslint": "^9",
     "eslint-config-next": "15.4.2",
     "tailwindcss": "^4",

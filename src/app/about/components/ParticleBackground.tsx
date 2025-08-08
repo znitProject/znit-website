@@ -129,7 +129,7 @@ export default function ParticleBackground() {
 
         p.draw = () => {
           if (bg % 2 == 0) p.background(0, 0, 0);
-          else p.background(0, 0, 0, 20);
+          else p.background(31, 31, 31, 20);
 
           if (
             p.mouseX == p.pmouseX &&

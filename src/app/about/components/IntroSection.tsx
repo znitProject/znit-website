@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./IntroSection.css";
 
+
 export default function IntroSection() {
   const toSplitRef = useRef<HTMLDivElement>(null);
 
@@ -155,7 +156,8 @@ export default function IntroSection() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      
       {/* 타이틀 섹션 */}
       <div
         className="flex items-start justify-center pt-10 pb-10 relative"
