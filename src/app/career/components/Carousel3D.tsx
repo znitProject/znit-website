@@ -38,7 +38,6 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
   // 3D tilt 효과를 위한 상태 추가
   const [tiltX, setTiltX] = useState(0);
-  const [tiltY, setTiltY] = useState(0);
 
   // 타이핑 애니메이션을 위한 상태
   const [typingTexts, setTypingTexts] = useState<{ [key: number]: string }>({});
@@ -188,7 +187,6 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
         // 3D tilt 효과를 위한 값 설정
         setTiltX((prev) => prev * 0.9 + normalizedY * 5);
-        setTiltY((prev) => prev * 0.9 + normalizedX * 5);
       }
     };
 

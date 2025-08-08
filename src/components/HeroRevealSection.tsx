@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import GeometricGlobe from './HeroGeometric';
-import { useTheme } from 'next-themes';
+import React, { useEffect, useRef, useState } from "react";
+import GeometricGlobe from "./HeroGeometric";
+import { useTheme } from "next-themes";
 
 // Web Animations API 사용
 interface Mouse {
@@ -38,7 +38,6 @@ const MadAnimation: React.FC = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
-  
 
   const [mouse] = useState<Mouse>({
     x: 0,
@@ -142,7 +141,7 @@ const MadAnimation: React.FC = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [onMouseMove, onResize, render]);
 
   if (!mounted) {
     return null;
@@ -153,11 +152,11 @@ const MadAnimation: React.FC = () => {
       {/* Hero Section */}
       <div
         className="absolute top-0 left-0 w-full h-full xl:block hidden"
-        style={{ 
-          background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
-          cursor: 'none',
-          color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
-          fontFamily: '"Fira Sans", sans-serif'
+        style={{
+          background: theme === "dark" ? "#1F1F1F" : "#ffffff",
+          cursor: "none",
+          color: theme === "dark" ? "#ffffff" : "#0c0b0e",
+          fontFamily: '"Fira Sans", sans-serif',
         }}
       >
         {/* Title */}
@@ -181,10 +180,10 @@ const MadAnimation: React.FC = () => {
       {/* Mobile/Tablet - 간단한 레이아웃 */}
       <div
         className="block xl:hidden py-4 md:py-8 lg:py-12 px-4"
-        style={{ 
-          background: theme === 'dark' ? '#1F1F1F' : '#ffffff',
-          color: theme === 'dark' ? '#ffffff' : '#0c0b0e',
-          fontFamily: '"Fira Sans", sans-serif'
+        style={{
+          background: theme === "dark" ? "#1F1F1F" : "#ffffff",
+          color: theme === "dark" ? "#ffffff" : "#0c0b0e",
+          fontFamily: '"Fira Sans", sans-serif',
         }}
       >
         {/* Geometric Globe */}
@@ -245,11 +244,9 @@ const MadAnimation: React.FC = () => {
             {/* 하위 2줄 - 우측 정렬 */}
             <div className="text-right">
               <div className="mb-2 sm:mb-3">
-                IT<span style={{color: '#4376AB'}}>&</span>DESIGN
+                IT<span style={{ color: "#4376AB" }}>&</span>DESIGN
               </div>
-              <div style={{color: '#F6BF41'}}>
-                ZNIT
-              </div>
+              <div style={{ color: "#F6BF41" }}>ZNIT</div>
             </div>
           </div>
         </div>

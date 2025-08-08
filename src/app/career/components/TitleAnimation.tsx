@@ -80,12 +80,12 @@ const CrossStar = ({
 }) => {
   // 황금색 통일 색상 조합
   const colors = {
-    primary: "rgba(246,191,65,1)",      // #F6BF41 - 밝은 황금색
-    secondary: "rgba(246,191,65,0.8)",   // 황금색 (투명도 낮춤)
-    tertiary: "rgba(246,191,65,0.6)",    // 황금색 (투명도 더 낮춤)
-    dark: "rgba(246,191,65,0.4)",        // 황금색 (가장 투명)
-    glow: "rgba(246,191,65,0.3)",        // 황금색 빛 (약하게)
-    outerGlow: "rgba(246,191,65,0.1)",   // 황금색 빛무리 (매우 약하게)
+    primary: "rgba(246,191,65,1)", // #F6BF41 - 밝은 황금색
+    secondary: "rgba(246,191,65,0.8)", // 황금색 (투명도 낮춤)
+    tertiary: "rgba(246,191,65,0.6)", // 황금색 (투명도 더 낮춤)
+    dark: "rgba(246,191,65,0.4)", // 황금색 (가장 투명)
+    glow: "rgba(246,191,65,0.3)", // 황금색 빛 (약하게)
+    outerGlow: "rgba(246,191,65,0.1)", // 황금색 빛무리 (매우 약하게)
   };
 
   return (
@@ -168,8 +168,8 @@ const CrossStar = ({
              0 0 6px ${colors.glow},
              0 0 8px ${colors.outerGlow}
            `,
-         }}
-       />
+        }}
+      />
 
       {/* 별 모양 십자 효과 - 8방향 빛 */}
       {/* 상단 */}
@@ -183,7 +183,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%)",
           background: `linear-gradient(180deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
           boxShadow: `0 0 4px ${colors.glow}`,
-          clipPath: "polygon(50% 0%, 0% 20%, 0% 80%, 50% 100%, 100% 80%, 100% 20%)",
+          clipPath:
+            "polygon(50% 0%, 0% 20%, 0% 80%, 50% 100%, 100% 80%, 100% 20%)",
         }}
       />
       {/* 하단 */}
@@ -197,7 +198,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%) rotate(180deg)",
           background: `linear-gradient(180deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
           boxShadow: `0 0 4px ${colors.glow}`,
-          clipPath: "polygon(50% 0%, 0% 20%, 0% 80%, 50% 100%, 100% 80%, 100% 20%)",
+          clipPath:
+            "polygon(50% 0%, 0% 20%, 0% 80%, 50% 100%, 100% 80%, 100% 20%)",
         }}
       />
       {/* 좌측 */}
@@ -211,7 +213,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%)",
           background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
           boxShadow: `0 0 4px ${colors.glow}`,
-          clipPath: "polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%)",
+          clipPath:
+            "polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%)",
         }}
       />
       {/* 우측 */}
@@ -225,7 +228,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%)",
           background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 10%, ${colors.secondary} 30%, ${colors.primary} 50%, ${colors.secondary} 70%, ${colors.tertiary} 90%, transparent 100%)`,
           boxShadow: `0 0 4px ${colors.glow}`,
-          clipPath: "polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%)",
+          clipPath:
+            "polygon(0% 50%, 20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%)",
         }}
       />
 
@@ -241,7 +245,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%) rotate(-45deg)",
           background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
           boxShadow: `0 0 3px ${colors.glow}`,
-          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+          clipPath:
+            "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
         }}
       />
       {/* 우상단 */}
@@ -255,7 +260,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%) rotate(45deg)",
           background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
           boxShadow: `0 0 3px ${colors.glow}`,
-          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+          clipPath:
+            "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
         }}
       />
       {/* 좌하단 */}
@@ -269,7 +275,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%) rotate(-135deg)",
           background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
           boxShadow: `0 0 3px ${colors.glow}`,
-          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+          clipPath:
+            "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
         }}
       />
       {/* 우하단 */}
@@ -283,7 +290,8 @@ const CrossStar = ({
           transform: "translate(-50%, -50%) rotate(135deg)",
           background: `linear-gradient(90deg, transparent 0%, ${colors.tertiary} 15%, ${colors.secondary} 40%, ${colors.primary} 50%, ${colors.secondary} 60%, ${colors.tertiary} 85%, transparent 100%)`,
           boxShadow: `0 0 3px ${colors.glow}`,
-          clipPath: "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
+          clipPath:
+            "polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)",
         }}
       />
     </motion.div>
@@ -418,14 +426,14 @@ export default function TitleAnimation() {
               transition: { duration: 0.3 },
             }}
           >
-            znit와 함께 하실 분을 구합니다
+            znit와 함께 하실 인재를 구합니다.
           </motion.p>
         </motion.div>
       </motion.div>
 
       {/* 3D 캐러셀 - 타이틀 바로 아래 */}
       <motion.div
-        className="mt-20 sm:mt-24 lg:mt-28 mb-10 sm:mb-20 lg:mb-24"
+        className="mt-32 sm:mt-36 lg:mt-40 mb-4 sm:mb-8 lg:mb-12"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.3 }}
