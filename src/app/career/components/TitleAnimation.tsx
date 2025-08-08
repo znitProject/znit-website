@@ -8,58 +8,58 @@ const carouselItems = [
   {
     id: 1,
     title: "함께 나누는 유대감",
-    titleEn: "Shared Bonding",
+    titleEn: "Shared Connections",
     description: "소통과 참여로 연결되는 깊은 관계",
     color: "bg-blue-500",
   },
   {
     id: 2,
     title: "변화를 향한 도전",
-    titleEn: "Challenge Toward Change",
+    titleEn: "Embracing Change",
     description: "두려움을 넘어 과감히 시도하는 태도",
-    color: "bg-violet-500", // 기존 purple → violet로 조정
+    color: "bg-violet-500",
   },
   {
     id: 3,
     title: "긍정의 힘",
-    titleEn: "The Power of Positivity",
+    titleEn: "Power of Positivity",
     description: "재능보다 빛나는 건강한 마인드셋",
-    color: "bg-emerald-500", // green보다 산뜻한 emerald로
+    color: "bg-emerald-500",
   },
   {
     id: 4,
     title: "끊임없는 성장",
-    titleEn: "Ongoing Growth",
+    titleEn: "Continuous Growth",
     description: "함께 나아가며 변화의 계기가 되는",
-    color: "bg-amber-500", // orange → 더 밝은 amber
+    color: "bg-amber-500",
   },
   {
     id: 5,
     title: "창의력 있는 사고",
-    titleEn: "Inventive Thinking",
+    titleEn: "Creative Thinking",
     description: "틀을 깨고 새로운 방식으로 접근하는",
-    color: "bg-rose-500", // red보다 따뜻하고 부드러운 rose
+    color: "bg-rose-500",
   },
   {
     id: 6,
     title: "끈기와 몰입",
-    titleEn: "Perserverance & Focus",
+    titleEn: "Perseverance & Focus",
     description: "끝까지 해내는 힘과 깊이 있는 집중",
-    color: "bg-pink-500", // 유지 (구분감 충분)
+    color: "bg-pink-500",
   },
   {
     id: 7,
     title: "열정과 책임",
-    titleEn: "Passion with Responsibility",
+    titleEn: "Passion and Responsibility",
     description: "역할을 넘어 스스로를 다하는 자세",
-    color: "bg-indigo-500", // 유지
+    color: "bg-indigo-500",
   },
   {
     id: 8,
     title: "섬세한 관찰력",
     titleEn: "Attention to Detail",
     description: "작은 부분까지 놓치지 않는 집중력과 꼼꼼함",
-    color: "bg-cyan-500", // teal → cyan으로 시각적 분리
+    color: "bg-cyan-500",
   },
 ];
 
