@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -70,6 +69,7 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Zen+Kurenaido&family=Righteous&family=Secular+One&family=Kanit:wght@100;200;300;400;500;600;700;800;900&family=Gowun+Batang:wght@400;700&family=Song+Myung&display=swap"
           rel="stylesheet"
+          crossOrigin="anonymous"
         />
       </head>
       <body className="antialiased">

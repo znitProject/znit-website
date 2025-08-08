@@ -46,7 +46,6 @@ export default function ParticleBackground() {
       let ps: ParticleSystem;
       let ptime = 0;
       let offset: p5.Vector;
-      let origin: p5.Vector;
       let bg = 0;
 
       const sketch = (p: p5) => {
