@@ -768,13 +768,13 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                         style={{
                           color: "#000000",
                           letterSpacing: "0.05em",
-                          fontWeight: "600",
+                          fontWeight: "500",
                           textTransform: "uppercase",
                           fontFamily: "Kanit, sans-serif",
                           lineHeight: "0.75",
                           // 사선 텍스트는 작은 크기
                           ...(index === 0 && {
-                            fontSize: "2rem",
+                            fontSize: "2.2rem",
                             top: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -784,7 +784,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 2 && {
-                            fontSize: "2rem",
+                            fontSize: "2.2rem",
                             top: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -794,7 +794,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 4 && {
-                            fontSize: "1.5rem",
+                            fontSize: "1.7rem",
                             top: "50%",
                             left: "50%",
                             textAlign: "center",
@@ -805,7 +805,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                           }),
                           // 일반 텍스트는 새로로 긴 폰트
                           ...(index === 1 && {
-                            fontSize: "1.6rem",
+                            fontSize: "1.8rem",
                             bottom: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -815,7 +815,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 3 && {
-                            fontSize: "1.6rem",
+                            fontSize: "1.8rem",
                             bottom: "1rem",
                             left: "1rem",
                             textAlign: "left",
@@ -825,7 +825,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 5 && {
-                            fontSize: "1.5rem",
+                            fontSize: "1.7rem",
                             top: "50%",
                             left: "1rem",
                             transform: "translateY(-50%)",
@@ -836,7 +836,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 6 && {
-                            fontSize: "1.9rem",
+                            fontSize: "2.1rem",
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
@@ -847,7 +847,7 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                             lineHeight: "1.1",
                           }),
                           ...(index === 7 && {
-                            fontSize: "1.6rem",
+                            fontSize: "1.8rem",
                             top: "50%",
                             right: "1rem",
                             transform: "translateY(-50%)",
@@ -874,33 +874,33 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                                 fontSize:
                                   index === 6
                                     ? word.length > 10
-                                      ? "1.9rem"
+                                      ? "2.1rem"
                                       : wordIndex === 0
-                                        ? "2.3rem"
+                                        ? "2.5rem"
                                         : wordIndex === 1
-                                          ? "1.7rem"
-                                          : "2.1rem"
+                                          ? "1.9rem"
+                                          : "2.3rem"
                                     : index === 3
                                       ? word.length > 10
-                                        ? "1.9rem"
+                                        ? "2.1rem"
                                         : wordIndex === 0
-                                          ? "2.2rem"
+                                          ? "2.4rem"
                                           : wordIndex === 1
-                                            ? "1.6rem"
-                                            : "2rem"
+                                            ? "1.8rem"
+                                            : "2.2rem"
                                       : word.length > 10
-                                        ? "2.0rem"
+                                        ? "2.2rem"
                                         : wordIndex === 0
-                                          ? "2.3rem"
+                                          ? "2.5rem"
                                           : wordIndex === 1
-                                            ? "1.7rem"
-                                            : "2.1rem",
+                                            ? "1.9rem"
+                                            : "2.3rem",
                                 fontWeight:
                                   wordIndex === 0
-                                    ? "900"
+                                    ? "700"
                                     : wordIndex === 1
-                                      ? "700"
-                                      : "800",
+                                      ? "500"
+                                      : "600",
                                 opacity: wordIndex === 1 ? "0.8" : "1",
                                 display: "block",
                                 margin: "0",
