@@ -3,19 +3,21 @@
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import WeOwnItCard from "../components/WeOwnItCard";
-import WorkWithUsCard from "../components/WorkWithUsCard";
-import DarkModeCard from "../components/DarkModeCard";
-import ContactCard from "../components/ContactCard";
-import KeywordCard from "../components/KeywordCard";
-import WorkCard from "../components/WorkCard";
+import WeOwnItCard from "../components/gridSection/WeOwnItCard";
+import WorkWithUsCard from "../components/gridSection/WorkWithUsCard";
+import DarkModeCard from "../components/gridSection/DarkModeCard";
+import ContactCard from "../components/gridSection/ContactCard";
+import KeywordCard from "../components/gridSection/KeywordCard";
+import WorkCard from "../components/gridSection/WorkCard";
 
-import WorkList from "../components/WorkList";
 import HeroRevealSection from "../components/HeroRevealSection";
-import StrokeFillTextSection from "../components/StrokeFillTextSection";
+import ITSection from "../components/ITSection";
+import DesignSection from "../components/DesignSection";
+import CultureSection from "../components/CultureSection";
+import ClosingSection from "../components/ClosingSection";
 
-const MapCard = dynamic(() => import("../components/MapCard"), { ssr: false });
-import NixieClock from "../components/nixieClock";
+const MapCard = dynamic(() => import("../components/gridSection/MapCard"), { ssr: false });
+import NixieClock from "../components/gridSection/nixieClock";
 
 export default function HomePage() {
   const { theme } = useTheme();
@@ -126,18 +128,14 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* CTA Section - 노트북/데스크톱에서만 출력 */}
-      <div
-        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor} hidden xl:block`}
-      >
-        <StrokeFillTextSection />
-      </div>
-
-      {/* Work Showcase - 모바일 최적화된 그리드 */}
+      {/* IT, Design, Culture Sections */}
       <div
         className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
       >
-        <WorkList />
+        <ITSection />
+        <DesignSection />
+        <CultureSection />
+        <ClosingSection />
       </div>
     </div>
   );
