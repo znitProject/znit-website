@@ -213,11 +213,13 @@ const CulturePage: React.FC = () => {
   };
 
   const renderPuzzleBox = (box: BoxData, index: number) => {
+    const isRightSide = box.position === 'top-right' || box.position === 'bottom-right';
+    
     const content = (
       <div className="h-full flex flex-col justify-between">
         {/* 제목 영역 */}
         <div className="flex-shrink-0">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4 text-left leading-tight">
+          <h3 className={`text-2xl font-bold text-gray-800 mb-4 leading-tight ${isRightSide ? 'text-right' : 'text-left'}`}>
             {box.title}
           </h3>
         </div>
@@ -225,7 +227,7 @@ const CulturePage: React.FC = () => {
         {/* 내용 영역 */}
         <div className="flex-1 min-h-0">
           <div className="h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-            <p className="text-sm text-gray-600 leading-relaxed line-clamp-none">
+            <p className={`text-sm text-gray-600 leading-relaxed line-clamp-none ${isRightSide ? 'text-right' : 'text-left'}`}>
               {box.content}
             </p>
           </div>
