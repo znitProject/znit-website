@@ -37,7 +37,7 @@ ol.even:last-child {
   width: 8em; /* 12em에서 8em으로 되돌림 */
   height: 13.6em; /* 8em * 1.7 = 13.6em으로 되돌림 */
   border-radius: 1.3em/0.7em; /* 비례적으로 되돌림 */
-  background: #ccc;
+  background: #000000; /* 블랙 색상 */
   transform: rotate(-90deg);
   display: inline-block;
   margin-right: 8em; /* 헥사곤 크기에 맞춰 간격 조정 */
@@ -63,7 +63,7 @@ ol.even:last-child {
 }
 
 .it-hex:hover {
-  background: #f58787;
+  background: #333333; /* 호버 시 약간 밝은 블랙 */
   cursor: pointer;
 }
 
@@ -74,9 +74,9 @@ ol.even:last-child {
   top: 50%;
   transform: translate(-50%, -50%) rotate(90deg);
   white-space: nowrap;
-  font-size: 1.1em;
-  font-weight: 600;
-  color: #333;
+  font-size: 1.3em; /* 글씨 크기 증가 */
+  font-weight: 700; /* 글씨 굵기 증가 */
+  color: #ffffff; /* 흰색 글씨로 대비 향상 */
   z-index: 20;
   text-align: center;
 }
@@ -115,23 +115,115 @@ ol.even:last-child {
   }
 }
 
-/* 1번째: 그냥 등장 */
-.first .it-hex {
-  animation: appear var(--dur-appear) ease-out forwards 0s;
+/* 새로운 헥사곤 애니메이션 - 부드럽게 등장 */
+@keyframes hexagonElegant {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-90deg);
+    filter: blur(5px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.8) rotate(-90deg);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-90deg);
+    filter: blur(0px);
+  }
 }
 
-/* 2·3번째: 왼쪽 힌지로 촤르륵 (왼쪽 중앙을 축으로) */
+/* 고급스러운 설명 글자 애니메이션 */
+@keyframes descriptionElegant {
+  0% {
+    opacity: 0;
+    transform: translateX(-150px) scale(0.8);
+    filter: blur(4px);
+  }
+  30% {
+    opacity: 0.3;
+    transform: translateX(-100px) scale(0.9);
+    filter: blur(2px);
+  }
+  70% {
+    opacity: 0.8;
+    transform: translateX(10px) scale(1.05);
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* 초기 상태 - 모든 헥사곤 숨김 */
+.it-hex {
+  opacity: 0;
+  transform: scale(0.3) rotate(-90deg);
+}
+
+/* 새로운 헥사곤 애니메이션 */
+.first .it-hex {
+  animation: hexagonElegant 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards
+    0s;
+}
+
+.second .it-hex {
+  animation: hexagonElegant 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards
+    0.5s;
+}
+
+.third .it-hex {
+  animation: hexagonElegant 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards
+    1s;
+}
+
+/* 헥사곤 안 글씨는 고정 - 애니메이션 제거 */
+.first .hex-text,
+.second .hex-text,
+.third .hex-text {
+  opacity: 1; /* 항상 보이도록 */
+}
+
+/* 고급스러운 설명 글자 애니메이션 */
+.description-first p {
+  animation: descriptionElegant 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    forwards 2s;
+}
+
+.description-second p {
+  animation: descriptionElegant 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    forwards 2.3s;
+}
+
+.description-third p {
+  animation: descriptionElegant 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    forwards 2.6s;
+}
+
+/* 애니메이션 완료 후 호버 효과 활성화 */
+.first .it-hex,
 .second .it-hex,
 .third .it-hex {
-  transform-origin: 0% 50%;
-  animation: hingeOpen var(--dur-hinge) cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
+  animation-fill-mode: forwards;
 }
-.second .it-hex {
-  animation-delay: 0.2s;
-} /* 살짝 뒤에 시작 */
-.third .it-hex {
-  animation-delay: 0.5s;
-} /* 그 다음에 시작 */
+
+/* 오른쪽 설명 글자 초기 상태 */
+.description-first p,
+.description-second p,
+.description-third p {
+  opacity: 0;
+}
+
+/* 호버 효과 개선 */
+.it-hex:hover {
+  background: #333333; /* 호버 시 약간 밝은 블랙 */
+  cursor: pointer;
+  transform: rotate(-90deg) scale(1.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
 /* 접근성(포커스) — 선택 사항 */
 .it-hex:focus-visible {
