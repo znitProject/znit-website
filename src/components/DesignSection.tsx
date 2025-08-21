@@ -45,7 +45,7 @@ const UICraftCards: React.FC = () => {
         "스케치 기반 원화부터 AI·합성 기술을 활용한 컨셉 아트까지, 비주얼의 시작을 함께 그립니다.",
       icon: <Brush className="w-4 h-4" />,
       image: "/works/3_4/conceptArtImg34.jpeg",
-      tags: ["스케치", "AI 합성성"],
+      tags: ["스케치", "AI 합성"],
     },
     {
       id: 3,
