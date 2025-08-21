@@ -29,7 +29,6 @@ const UICraftCards: React.FC = () => {
   }, []);
 
   const cards: Card[] = [
-    
     {
       id: 1,
       title: "공공 디자인",
@@ -106,7 +105,7 @@ const UICraftCards: React.FC = () => {
           className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 ${
             theme === "dark" ? "text-white" : "text-gray-900"
           }`}
-          style={{ fontFamily: 'Red Hat Display, sans-serif' }}
+          style={{ fontFamily: "Red Hat Display, sans-serif" }}
         >
           Design with ZNIT
         </h1>
@@ -122,8 +121,8 @@ const UICraftCards: React.FC = () => {
                 ? "bg-zinc-800 border-zinc-600"
                 : "bg-white border-gray-300"
             } ${
-              expandedIndex === index 
-                ? "h-56 sm:h-72 md:h-96 lg:h-112 xl:h-128 2xl:h-144" 
+              expandedIndex === index
+                ? "h-56 sm:h-72 md:h-96 lg:h-112 xl:h-128 2xl:h-144"
                 : "h-8 sm:h-10 md:h-12 lg:h-14 xl:h-16"
             }`}
             onClick={() => handleCardClick(index)}
@@ -144,38 +143,40 @@ const UICraftCards: React.FC = () => {
               />
 
               {/* Header Content */}
-              <div className={`relative z-10 flex items-center justify-between ${
-                expandedIndex === index ? "" : "h-full"
-              }`}>
+              <div
+                className={`relative z-10 flex items-center justify-between ${
+                  expandedIndex === index ? "" : "h-full"
+                }`}
+              >
                 <div className="relative flex items-center gap-4">
-        {/* 블러 오버레이 */}
-        <div
-            className="absolute inset-0 rounded-md pointer-events-none
+                  {/* 블러 오버레이 */}
+                  <div
+                    className="absolute inset-0 rounded-md pointer-events-none
                     backdrop-blur-[3px] backdrop-brightness-95"
-        />
+                  />
 
-        {/* 실제 아이콘 + 타이틀 */}
-        <div className="relative flex items-center gap-4">
-            <div
-            className={`transition-opacity duration-700 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-            }`}
-            >
-            {card.icon}
-            </div>
+                  {/* 실제 아이콘 + 타이틀 */}
+                  <div className="relative flex items-center gap-4">
+                    <div
+                      className={`transition-opacity duration-700 ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      {card.icon}
+                    </div>
 
-            <h3
-            className={`
+                    <h3
+                      className={`
                 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl
                 font-extrabold uppercase
                 transition-opacity duration-700
                 ${theme === "dark" ? "text-white" : "text-gray-900"}
             `}
-            >
-            {card.title}
-            </h3>
-        </div>
-        </div>
+                    >
+                      {card.title}
+                    </h3>
+                  </div>
+                </div>
 
                 {/* Expand/Collapse Indicator */}
                 <div
@@ -183,7 +184,12 @@ const UICraftCards: React.FC = () => {
                     expandedIndex === index ? "rotate-180" : "rotate-0"
                   } ${theme === "dark" ? "text-white" : "text-gray-900"}`}
                 >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                  >
                     <path d="M8 11L3 6h10L8 11z" />
                   </svg>
                 </div>
@@ -204,7 +210,7 @@ const UICraftCards: React.FC = () => {
                 >
                   {card.description}
                 </p>
-                
+
                 {/* Tags */}
                 <div className="flex gap-2 flex-wrap">
                   {card.tags.map((tag, tagIndex) => (

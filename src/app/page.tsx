@@ -16,7 +16,9 @@ import DesignSection from "../components/DesignSection";
 import CultureSection from "../components/CultureSection";
 import ClosingSection from "../components/ClosingSection";
 
-const MapCard = dynamic(() => import("../components/gridSection/MapCard"), { ssr: false });
+const MapCard = dynamic(() => import("../components/gridSection/MapCard"), {
+  ssr: false,
+});
 import NixieClock from "../components/gridSection/nixieClock";
 
 export default function HomePage() {
