@@ -47,23 +47,38 @@ export default function ITSection() {
       {/* Hexagon Grid Container */}
       <div className="it-hex-container">
         <ol className={`even ${isVisible ? "first" : ""}`}>
-          <li className="it-hex">
+          <li className="it-hex hex-1">
             <div className="stars"></div>
             <div className="stars2"></div>
+            <img
+              src="/work_image.jpg"
+              alt="통합 개발 서비스"
+              className="hex-hover-image"
+            />
             <span className="hex-text">통합 개발 서비스</span>
           </li>
         </ol>
         <ol className={`odd ${isVisible ? "second" : ""}`}>
-          <li className="it-hex">
+          <li className="it-hex hex-2">
             <div className="stars"></div>
             <div className="stars2"></div>
+            <img
+              src="/works/conceptArtImg.jpeg"
+              alt="분야별 맞춤 아키텍처"
+              className="hex-hover-image"
+            />
             <span className="hex-text">분야별 맞춤 아키텍처</span>
           </li>
         </ol>
         <ol className={`even ${isVisible ? "third" : ""}`}>
-          <li className="it-hex">
+          <li className="it-hex hex-3">
             <div className="stars"></div>
             <div className="stars2"></div>
+            <img
+              src="/culture/strategicThinking.png"
+              alt="미래 대응 설계"
+              className="hex-hover-image"
+            />
             <span className="hex-text">미래 대응 설계</span>
           </li>
         </ol>
