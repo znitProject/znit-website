@@ -51,7 +51,7 @@ export default function ITSection() {
             <div className="stars"></div>
             <div className="stars2"></div>
             <img
-              src="/work_image.jpg"
+              src="/itsection/it4.jpg"
               alt="통합 개발 서비스"
               className="hex-hover-image"
             />
@@ -63,7 +63,7 @@ export default function ITSection() {
             <div className="stars"></div>
             <div className="stars2"></div>
             <img
-              src="/works/conceptArtImg.jpeg"
+              src="/itsection/it2.jpg"
               alt="분야별 맞춤 아키텍처"
               className="hex-hover-image"
             />
@@ -75,7 +75,7 @@ export default function ITSection() {
             <div className="stars"></div>
             <div className="stars2"></div>
             <img
-              src="/culture/strategicThinking.png"
+              src="/itsection/it6.jpg"
               alt="미래 대응 설계"
               className="hex-hover-image"
             />
