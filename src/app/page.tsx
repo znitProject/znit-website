@@ -130,13 +130,21 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* IT, Design, Culture Sections */}
+      {/* IT, Design Sections */}
       <div
         className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
       >
         <ITSection />
         <DesignSection />
-        <CultureSection />
+      </div>
+      
+      {/* Culture Section - Full Width Background */}
+      <CultureSection />
+      
+      {/* Closing Section */}
+      <div
+        className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
+      >
         <ClosingSection />
       </div>
     </div>
