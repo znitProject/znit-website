@@ -13,50 +13,65 @@ interface BoxData {
 
 type Notch = { dx: number; dy: number };
 
-/** 퍼즐 카드: 중앙 원을 기준으로 ‘동심원’ 파임(각 카드 방향 다름) */
+const ACCENT: Record<
+  BoxData["position"],
+  { from: string; to: string; side: "left" | "right" }
+> = {
+  "top-left": { from: "#818cf8", to: "#38bdf8", side: "left" },
+  "top-right": { from: "#a78bfa", to: "#f472b6", side: "right" },
+  "bottom-left": { from: "#34d399", to: "#22d3ee", side: "left" },
+  "bottom-right": { from: "#f59e0b", to: "#fb7185", side: "right" },
+};
+
 function PuzzleCard({
   children,
   className = "",
   notchDx,
   notchDy,
   notchRadius,
+  accent,
+  accentSide = "left",
 }: {
   children: React.ReactNode;
   className?: string;
-  notchDx: number; // 카드가 중심에서 이동한 x (px) → 파임 중심 보정
-  notchDy: number; // 카드가 중심에서 이동한 y (px)
-  notchRadius: number; // 파임 반경(= 중앙 원 반경 + 여유)
+  notchDx: number;
+  notchDy: number;
+  notchRadius: number;
+  accent: { from: string; to: string };
+  accentSide?: "left" | "right";
 }) {
   const RADIUS = notchRadius;
-  const STROKE = 2;
+  const STROKE = 1.5;
 
-  // 카드 컷아웃 마스크: 중앙(전역) 기준 동심원으로 파임
   const cardMask = `radial-gradient(${RADIUS}px ${RADIUS}px at calc(50% - ${notchDx}px) calc(50% - ${notchDy}px),
-                      transparent 0 ${RADIUS}px, #000 ${RADIUS + 0.5}px)`;
+    transparent 0 ${RADIUS}px, #000 ${RADIUS + 0.5}px)`;
 
   return (
-    <div className="relative">
-      {/* 베이스(그림자) */}
+    <div className="relative group will-change-transform">
+      {/* 베이스 그림자 (마스크에 적용) */}
       <div
-        className={
-          "absolute inset-0 w-84 h-60 md:w-[420px] md:h-64 lg:w-[550px] lg:h-80 " +
-          "rounded-[32px] shadow-[0_8px_32px_rgba(2,12,27,0.08)]"
-        }
-        style={{ WebkitMaskImage: cardMask, maskImage: cardMask }}
+        className="absolute inset-0 w-84 h-60 md:w-[440px] md:h-64 lg:w-[580px] lg:h-80 rounded-[32px]"
+        style={{
+          WebkitMaskImage: cardMask,
+          maskImage: cardMask,
+          transform: "translateZ(0)",
+          boxShadow:
+            "0 20px 56px rgba(2,12,27,0.12), 0 8px 22px rgba(2,12,27,0.07)",
+        }}
       />
 
-      {/* 외곽 테두리 */}
+      {/* 외곽 라인 */}
       <div
-        className={
-          "absolute inset-0 w-84 h-60 md:w-[420px] md:h-64 lg:w-[550px] lg:h-80 " +
-          "rounded-[32px] border-2 border-black/20 pointer-events-none"
-        }
-        style={{ WebkitMaskImage: cardMask, maskImage: cardMask }}
+        className="absolute inset-0 w-84 h-60 md:w-[440px] md:h-64 lg:w-[580px] lg:h-80 rounded-[32px] pointer-events-none"
+        style={{
+          WebkitMaskImage: cardMask,
+          maskImage: cardMask,
+          transform: "translateZ(0)",
+          boxShadow: "0 0 0 2px rgba(0,0,0,0.15) inset",
+        }}
       />
 
-      {/* 동심원 파임 부분 테두리(오버레이) 
-          - 카드 모서리 둥글기에 맞춰 잘리도록 rounded + overflow-hidden으로 감쌈
-          - 콘텐츠 마스크와 별개 레이어라, '절단면'에만 선이 보임 */}
+      {/* 동심원 절단면 테두리 */}
       <div className="absolute inset-0 pointer-events-none rounded-[32px] overflow-hidden">
         <div
           style={{
@@ -65,30 +80,55 @@ function PuzzleCard({
             top: `calc(50% - ${notchDy}px - ${RADIUS}px)`,
             width: `${RADIUS * 2}px`,
             height: `${RADIUS * 2}px`,
-            border: `${STROKE}px solid rgba(0,0,0,0.2)`,
+            border: `${STROKE}px solid rgba(0,0,0,0.22)`,
             borderRadius: "50%",
             boxSizing: "border-box",
+            transform: "translateZ(0)",
           }}
           aria-hidden
         />
       </div>
 
-      {/* 콘텐츠 */}
+      {/* 콘텐츠 카드 (hover 시 섀도우 업) */}
       <div
         className={
-          "relative w-84 h-60 md:w-[420px] md:h-64 lg:w-[550px] lg:h-80 " +
-          "rounded-[32px] shadow-lg focus-within:ring-1 focus-within:ring-blue-400/40 " +
+          "relative w-84 h-60 md:w-[440px] md:h-64 lg:w-[580px] lg:h-80 rounded-[32px] bg-white " +
+          "transition-shadow duration-300 border-2 border-gray-200/80 " +
           className
         }
-        style={{ WebkitMaskImage: cardMask, maskImage: cardMask }}
+        style={{
+          WebkitMaskImage: cardMask,
+          maskImage: cardMask,
+          transform: "translateZ(0)",
+          boxShadow:
+            "0 12px 28px rgba(2,12,27,0.15), 0 5px 12px rgba(2,12,27,0.10), 0 0 0 1px rgba(0,0,0,0.05) inset",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLDivElement).style.boxShadow =
+            "0 26px 68px rgba(2,12,27,0.18), 0 12px 26px rgba(2,12,27,0.13), 0 0 0 1px rgba(0,0,0,0.08) inset";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLDivElement).style.boxShadow =
+            "0 12px 28px rgba(2,12,27,0.15), 0 5px 12px rgba(2,12,27,0.10), 0 0 0 1px rgba(0,0,0,0.05) inset";
+        }}
       >
+        {/* Accent gradient bar */}
+        <div
+          className="absolute top-4 bottom-4 w-[2px] rounded-full"
+          style={
+            {
+              [accentSide]: "10px",
+              background: `linear-gradient(to bottom, ${accent.from}, ${accent.to})`,
+              opacity: 0.9,
+            } as React.CSSProperties
+          }
+        />
         {children}
       </div>
     </div>
   );
 }
 
-/** 중앙 원 클릭 유도(절제된 버전) */
 function useCenterCircleCues(
   ref: React.RefObject<HTMLDivElement | null>,
   { disabled = false }: { disabled?: boolean } = {}
@@ -96,12 +136,10 @@ function useCenterCircleCues(
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     if (disabled || reduce) return;
 
     const breath = gsap.to(el, {
@@ -111,7 +149,6 @@ function useCenterCircleCues(
       repeat: -1,
       ease: "sine.inOut",
     });
-
     const glow = gsap.to(el, {
       boxShadow:
         "0 0 25px 6px rgba(196, 181, 253, 0.3), 0 12px 40px rgba(0,0,0,0.15)",
@@ -127,18 +164,15 @@ function useCenterCircleCues(
       "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,231,243,0.8) 50%, rgba(249,168,212,0.7) 100%)",
       "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(220,252,231,0.8) 50%, rgba(134,239,172,0.7) 100%)",
     ];
-
-    let currentGradient = 0;
-    const changeGradient = () => {
-      currentGradient = (currentGradient + 1) % gradients.length;
+    let i = 0;
+    const gradientTimer = window.setInterval(() => {
+      i = (i + 1) % gradients.length;
       gsap.to(el, {
-        "--center-gradient": gradients[currentGradient],
+        "--center-gradient": gradients[i],
         duration: 3,
         ease: "power2.inOut",
       });
-    };
-
-    const gradientTimer = window.setInterval(changeGradient, 4000);
+    }, 4000);
 
     let timer: number | null = null;
     const makePulse = () => {
@@ -170,10 +204,8 @@ function useCenterCircleCues(
     const MAG = 8;
     const onPointerMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      moveX(((e.clientX - cx) / r.width) * MAG);
-      moveY(((e.clientY - cy) / r.height) * MAG);
+      moveX(((e.clientX - (r.left + r.width / 2)) / r.width) * MAG);
+      moveY(((e.clientY - (r.top + r.height / 2)) / r.height) * MAG);
     };
     const onEnter = () => window.addEventListener("pointermove", onPointerMove);
     const onLeave = () => {
@@ -222,9 +254,7 @@ function useCenterCircleCues(
   }, [ref, disabled]);
 }
 
-/* ──────────────────────────────────────────────────────────
-   레이아웃/타이포 유틸
-   ────────────────────────────────────────────────────────── */
+/* ───────────── 유틸 ───────────── */
 
 function alignFor(pos: BoxData["position"]) {
   const isRight = pos.includes("right");
@@ -269,6 +299,41 @@ function outerPull(pos: BoxData["position"]) {
   }
 }
 
+const BOXES: BoxData[] = [
+  {
+    id: 1,
+    title: "주도성",
+    subtitle: "Initiative",
+    content:
+      "멈춰 서 있지 않고 스스로 움직입니다. 필요할 때는 방향을 제시하며, 끝까지 책임져 결과로 이끕니다.",
+    position: "top-left",
+  },
+  {
+    id: 2,
+    title: "몰입",
+    subtitle: "Focus",
+    content:
+      "복잡함에 흔들리지 않고 본질에 몰두합니다. 깊이 파고들어 세밀함을 놓치지 않으며, 결국 성과를 이룹니다.",
+    position: "top-right",
+  },
+  {
+    id: 3,
+    title: "관찰력",
+    subtitle: "Observation",
+    content:
+      "작은 흔적 속에서도 가치를 발견합니다. 눈에 잘 띄지 않는 변화에서 단서를 찾아내어 새로운 길을 만듭니다.",
+    position: "bottom-left",
+  },
+  {
+    id: 4,
+    title: "전략적 사고",
+    subtitle: "Strategic Thinking",
+    content:
+      "다양한 시선과 의견을 연결해 더 넓게 봅니다. 단기 성과를 넘어 장기적 그림까지 고려하며 길을 설계합니다.",
+    position: "bottom-right",
+  },
+];
+
 const CulturePage: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const centerCircleRef = useRef<HTMLDivElement>(null);
@@ -276,56 +341,19 @@ const CulturePage: React.FC = () => {
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   const [centerRadius, setCenterRadius] = useState(64);
+  const [notches, setNotches] = useState<Record<number, Notch>>({});
   const NOTCH_MARGIN = 60;
 
-  const getImageForBox = (id: number) => {
-    const imageMap = {
+  const getImageForBox = (id: number) =>
+    ({
       1: "/culture/initiative.png",
       2: "/culture/focus.png",
       3: "/culture/observation.png",
       4: "/culture/strategicThinking.png",
-    };
-    return imageMap[id as keyof typeof imageMap] || "";
-  };
+    })[id as 1 | 2 | 3 | 4] || "";
 
-  const getCardBackground = () => "transparent";
-
-  const boxData: BoxData[] = [
-    {
-      id: 1,
-      title: "주도성",
-      subtitle: "Initiative",
-      content:
-        "가만히 기다리지 않고 먼저 움직입니다. 필요할 땐 방향을 잡아주고, 끝까지 책임을 다해 결과로 이어갑니다.",
-      position: "top-left",
-    },
-    {
-      id: 2,
-      title: "몰입",
-      subtitle: "Focus",
-      content:
-        "복잡함에 휘둘리지 않고 본질에 집중합니다. 깊게 파고들며 세밀한 부분까지 놓치지 않고, 결국 성과로 이어갑니다.",
-      position: "top-right",
-    },
-    {
-      id: 3,
-      title: "관찰력",
-      subtitle: "Observation",
-      content:
-        "작은 단서 속에서도 의미를 발견합니다. 눈에 잘 안 띄는 변화에서 실마리를 찾아내어 새로운 길을 열어갑니다.",
-      position: "bottom-left",
-    },
-    {
-      id: 4,
-      title: "전략적 사고",
-      subtitle: "Strategic Thinking",
-      content:
-        "다양한 의견과 관점을 연결해 더 넓게 바라봅니다. 단기 성과를 넘어 장기적인 그림까지 고려하며 길을 설계합니다.",
-      position: "bottom-right",
-    },
-  ];
-
-  const [notches, setNotches] = useState<Record<number, Notch>>({});
+  const getCardBackground = () =>
+    "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.92))";
 
   useEffect(() => {
     const measure = () => {
@@ -342,7 +370,7 @@ const CulturePage: React.FC = () => {
     if (!itemsRef.current.length) return;
 
     tlRef.current?.kill();
-    tlRef.current = gsap.timeline();
+    tlRef.current = gsap.timeline({ defaults: { overwrite: "auto" } });
 
     const w = window.innerWidth;
     const isSm = w < 768;
@@ -358,18 +386,20 @@ const CulturePage: React.FC = () => {
       "bottom-right": { x: OFFSET_X, y: OFFSET_Y },
     };
 
-    const nextNotches: Record<number, Notch> = {};
-    boxData.forEach((b) => {
+    const next: Record<number, Notch> = {};
+    for (const b of BOXES) {
       const t = targets[b.position];
-      nextNotches[b.id] = { dx: t.x, dy: t.y };
-    });
-    setNotches(nextNotches);
+      next[b.id] = { dx: t.x, dy: t.y };
+    }
+    setNotches(next);
 
     if (expand) {
-      itemsRef.current.forEach((el) => el && gsap.set(el, { pointerEvents: "auto" }));
+      itemsRef.current.forEach(
+        (el) => el && gsap.set(el, { pointerEvents: "auto" })
+      );
       itemsRef.current.forEach((el, i) => {
         if (!el) return;
-        const { x, y } = targets[boxData[i].position];
+        const { x, y } = targets[BOXES[i].position];
         tlRef.current!.to(
           el,
           { opacity: 1, scale: 1, x, y, duration: 0.8, ease: "expo.out" },
@@ -388,9 +418,7 @@ const CulturePage: React.FC = () => {
             y: 0,
             duration: 0.4,
             ease: "power2.in",
-            onComplete: () => {
-              gsap.set(el, { pointerEvents: "none" });
-            },
+            onComplete: () => gsap.set(el, { pointerEvents: "none" }),
           },
           0
         );
@@ -407,7 +435,6 @@ const CulturePage: React.FC = () => {
   }, [isExpanded]);
 
   const handleCenterClick = () => setIsExpanded((v) => !v);
-
   const notchRadius = centerRadius + NOTCH_MARGIN;
 
   useCenterCircleCues(centerCircleRef, { disabled: isExpanded });
@@ -441,14 +468,18 @@ const CulturePage: React.FC = () => {
             </span>
           </div>
 
-          {/* Click Me 안내 */}
+          {/* click me 안내 */}
           {!isExpanded && (
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-20 md:translate-y-24 lg:translate-y-28 
-                         flex flex-col items-center gap-2 z-5 pointer-events-none">
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-20 md:translate-y-24 lg:translate-y-28 
+                            flex flex-col items-center gap-2 z-5 pointer-events-none"
+            >
               <div className="text-gray-400 animate-bounce">
-                <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-b-[12px] 
-                             border-l-transparent border-r-transparent border-b-gray-400
-                             md:border-l-[10px] md:border-r-[10px] md:border-b-[14px] md:border-b-gray-400" />
+                <div
+                  className="w-0 h-0 border-l-[8px] border-r-[8px] border-b-[12px] 
+                                border-l-transparent border-r-transparent border-b-gray-400
+                                md:border-l-[10px] md:border-r-[10px] md:border-b-[14px] md:border-b-gray-400"
+                />
               </div>
               <span className="text-xs md:text-sm text-gray-400 font-medium tracking-wide">
                 click me!
@@ -457,17 +488,16 @@ const CulturePage: React.FC = () => {
           )}
 
           {/* 카드들 */}
-          {boxData.map((box, i) => {
-            const notch = notches[box.id] ?? { dx: 0, dy: 0 };
+          {BOXES.map((box, i) => {
             const A = alignFor(box.position);
             const pad = cornerSafePadding(box.position);
+            const accent = ACCENT[box.position];
+            const notch = notches[box.id] ?? { dx: 0, dy: 0 };
 
             return (
               <div
                 key={box.id}
-                ref={(el: HTMLDivElement | null) => {
-                  itemsRef.current[i] = el;
-                }}
+                ref={(el) => (itemsRef.current[i] = el)}
                 className="absolute left-1/2 top-1/2 opacity-0"
                 style={{ transform: "translate(-50%, -50%)" }}
               >
@@ -476,6 +506,8 @@ const CulturePage: React.FC = () => {
                   notchDy={notch.dy}
                   notchRadius={notchRadius}
                   className="overflow-hidden"
+                  accent={{ from: accent.from, to: accent.to }}
+                  accentSide={accent.side}
                 >
                   <div
                     className={[
@@ -511,9 +543,9 @@ const CulturePage: React.FC = () => {
                         >
                           <h3
                             className={[
-                              "text-[clamp(24px,2.6vw,32px)] lg:text-[clamp(26px,2.2vw,36px)]",
-                              "font-bold tracking-[-0.02em] text-slate-900",
-                              "leading-[0.95]",
+                              "text-[clamp(24px,2.4vw,32px)] lg:text-[clamp(26px,2.1vw,36px)]",
+                              "font-semibold tracking-[-0.01em] text-slate-900",
+                              "leading-[1.05]",
                               A.titleAlign,
                             ].join(" ")}
                             style={{ textWrap: "balance" as any }}
@@ -540,48 +572,38 @@ const CulturePage: React.FC = () => {
                               : "",
                           ].join(" ")}
                         >
-                          <p
-                            className={[
-                              "text-[10px] md:text-[11px] uppercase tracking-[0.15em]",
-                              "text-slate-500 font-medium",
-                            ].join(" ")}
-                          >
+                          <p className="text-[10px] md:text-[11px] uppercase tracking-[0.14em] text-slate-500 font-medium">
                             {box.subtitle}
                           </p>
                           <div className="flex-1 h-px bg-gradient-to-r from-slate-200 to-transparent max-w-8" />
                         </div>
-                        
+
                         {/* 구분선 */}
                         <div className="mt-3 mb-2">
-                          <div 
+                          <div
                             className={[
-                              "h-px bg-gradient-to-r from-slate-300/50 to-transparent w-full max-w-[200px]",
-                              A.titleAlign === "text-right" ? "ml-auto" : ""
+                              "h-px bg-gradient-to-r from-slate-300/60 to-transparent w-full max-w-[200px]",
+                              A.titleAlign === "text-right" ? "ml-auto" : "",
                             ].join(" ")}
                           />
                         </div>
                       </div>
                     </div>
 
-                    {/* Content */}
-                    <div className="mt-5 md:mt-6">
+                    {/* Content (2줄 고정) */}
+                    <div className="mt-4 md:mt-5">
                       <p
                         className={[
-                          "text-[14px] md:text-[15.5px] lg:text-[16px]",
+                          "text-[14.5px] md:text-[15.5px] lg:text-[16px]",
                           "leading-[1.7] text-slate-700",
-                          "max-w-[43ch]",
+                          "max-w-[58ch]", // ← 가로폭 살짝 넓힘
+                          "line-clamp-2", // ← 2줄 고정
                           "relative",
                           A.paragraphAlign,
                         ].join(" ")}
                         style={{ textWrap: "balance" as any }}
                       >
-                        <span className="absolute -left-3 top-0 text-slate-300 text-lg select-none pointer-events-none">
-                          "
-                        </span>
                         {box.content}
-                        <span className="absolute -right-2 bottom-0 text-slate-300 text-lg select-none pointer-events-none">
-                          "
-                        </span>
                       </p>
                     </div>
 
