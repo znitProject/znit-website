@@ -89,7 +89,7 @@ function PuzzleCard({
         />
       </div>
 
-      {/* 콘텐츠 카드 (hover 시 섀도우 업) */}
+      {/* 콘텐츠 카드 */}
       <div
         className={
           "relative w-84 h-60 md:w-[440px] md:h-64 lg:w-[580px] lg:h-80 rounded-[32px] bg-white " +
@@ -129,6 +129,7 @@ function PuzzleCard({
   );
 }
 
+/** 중앙 원 인터랙션: transform 대신 CSS 변수 --tx/--ty만 변경 */
 function useCenterCircleCues(
   ref: React.RefObject<HTMLDivElement | null>,
   { disabled = false }: { disabled?: boolean } = {}
@@ -136,19 +137,20 @@ function useCenterCircleCues(
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // 접근성: reduce motion
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (disabled || reduce) return;
+    if (disabled || reduce) {
+      // 비활성/축소모션: 위치값도 깔끔히 0
+      el.style.setProperty("--tx", "0px");
+      el.style.setProperty("--ty", "0px");
+      return;
+    }
 
-    const breath = gsap.to(el, {
-      scale: 1.015,
-      duration: 4,
-      yoyo: true,
-      repeat: -1,
-      ease: "sine.inOut",
-    });
+    // 🔒 transform은 건드리지 않음. boxShadow만 애니메이션.
     const glow = gsap.to(el, {
       boxShadow:
         "0 0 25px 6px rgba(196, 181, 253, 0.3), 0 12px 40px rgba(0,0,0,0.15)",
@@ -158,64 +160,51 @@ function useCenterCircleCues(
       ease: "sine.inOut",
     });
 
+    // 배경 그라데이션(변수만 갱신) — 변수명 네임스페이스화
     const gradients = [
       "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%)",
-      "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(254,240,138,0.7) 50%, rgba(253,224,71,0.6) 100%)",
-      "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(252,231,243,0.8) 50%, rgba(249,168,212,0.7) 100%)",
-      "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(220,252,231,0.8) 50%, rgba(134,239,172,0.7) 100%)",
     ];
     let i = 0;
     const gradientTimer = window.setInterval(() => {
       i = (i + 1) % gradients.length;
       gsap.to(el, {
-        "--center-gradient": gradients[i],
+        // 변수만 업데이트. clearProps로 지우지 않음!
+        "--culture-center-bg": gradients[i],
         duration: 3,
         ease: "power2.inOut",
-      });
+      } as any);
     }, 4000);
 
-    let timer: number | null = null;
-    const makePulse = () => {
-      const ring = document.createElement("span");
-      Object.assign(ring.style, {
-        position: "absolute",
-        inset: "0",
-        borderRadius: "50%",
-        pointerEvents: "none",
-        boxShadow: "0 0 0 0 rgba(59,130,246,0.45)",
-      });
-      el.appendChild(ring);
-      gsap.fromTo(
-        ring,
-        { opacity: 0.6, scale: 1 },
-        {
-          opacity: 0,
-          scale: 1.6,
-          duration: 1.0,
-          ease: "power2.out",
-          onComplete: () => ring.remove(),
-        }
-      );
-    };
-    timer = window.setInterval(makePulse, 2400);
+    // 🔧 빠른 세터로 CSS 변수만 갱신
+    const setTx = gsap.quickSetter(el, "--tx", "px");
+    const setTy = gsap.quickSetter(el, "--ty", "px");
 
-    const moveX = gsap.quickTo(el, "x", { duration: 0.18, ease: "power3.out" });
-    const moveY = gsap.quickTo(el, "y", { duration: 0.18, ease: "power3.out" });
-    const MAG = 8;
+    const MAG = 4; // 움직임 크기
     const onPointerMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
-      moveX(((e.clientX - (r.left + r.width / 2)) / r.width) * MAG);
-      moveY(((e.clientY - (r.top + r.height / 2)) / r.height) * MAG);
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      if (Math.hypot(dx, dy) <= r.width / 2) {
+        setTx((dx / r.width) * MAG);
+        setTy((dy / r.height) * MAG);
+      }
     };
-    const onEnter = () => window.addEventListener("pointermove", onPointerMove);
+    const onEnter = () => el.addEventListener("pointermove", onPointerMove);
     const onLeave = () => {
-      window.removeEventListener("pointermove", onPointerMove);
-      gsap.to(el, { x: 0, y: 0, duration: 0.25, ease: "power3.out" });
+      el.removeEventListener("pointermove", onPointerMove);
+      setTx(0);
+      setTy(0);
     };
+
     el.addEventListener("pointerenter", onEnter);
     el.addEventListener("pointerleave", onLeave);
 
+    // 클릭 펄스 + 위치 즉시 리셋(변수만 0)
     const onClick = () => {
+      setTx(0);
+      setTy(0);
       const ring = document.createElement("span");
       Object.assign(ring.style, {
         position: "absolute",
@@ -224,7 +213,7 @@ function useCenterCircleCues(
         pointerEvents: "none",
         boxShadow: "0 0 0 0 rgba(59,130,246,0.55)",
         zIndex: "1",
-      });
+      } as CSSStyleDeclaration);
       el.appendChild(ring);
       gsap.fromTo(
         ring,
@@ -240,16 +229,44 @@ function useCenterCircleCues(
     };
     el.addEventListener("click", onClick);
 
+    // 주기적 링
+    const pulse = () => {
+      const ring = document.createElement("span");
+      Object.assign(ring.style, {
+        position: "absolute",
+        inset: "0",
+        borderRadius: "50%",
+        pointerEvents: "none",
+        boxShadow: "0 0 0 0 rgba(59,130,246,0.45)",
+      } as CSSStyleDeclaration);
+      el.appendChild(ring);
+      gsap.fromTo(
+        ring,
+        { opacity: 0.6, scale: 1 },
+        {
+          opacity: 0,
+          scale: 1.6,
+          duration: 1.0,
+          ease: "power2.out",
+          onComplete: () => ring.remove(),
+        }
+      );
+    };
+    const timer = window.setInterval(pulse, 2400);
+
     return () => {
-      breath.kill();
       glow.kill();
-      if (timer) window.clearInterval(timer);
-      if (gradientTimer) window.clearInterval(gradientTimer);
+      window.clearInterval(timer);
+      window.clearInterval(gradientTimer);
       el.removeEventListener("pointerenter", onEnter);
       el.removeEventListener("pointerleave", onLeave);
-      window.removeEventListener("pointermove", onPointerMove);
+      el.removeEventListener("pointermove", onPointerMove);
       el.removeEventListener("click", onClick);
-      gsap.set(el, { clearProps: "x,y,scale,boxShadow,--center-gradient" });
+      // transform은 건드리지 않는다. 변수/박스섀도우만 정리
+      gsap.set(el, { clearProps: "boxShadow" });
+      el.style.setProperty("--tx", "0px");
+      el.style.setProperty("--ty", "0px");
+      // --culture-center-bg 는 유지 (충돌 방지)
     };
   }, [ref, disabled]);
 }
@@ -336,7 +353,10 @@ const BOXES: BoxData[] = [
 
 const CulturePage: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const centerCircleRef = useRef<HTMLDivElement>(null);
+
+  // 🔄 중앙 원: 바깥 래퍼(절대 중앙 고정) + 안쪽 실제 원(이동/펄스)
+  const centerCircleRef = useRef<HTMLDivElement>(null); // 안쪽 실제 원(ref 대상)
+
   const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
@@ -418,7 +438,9 @@ const CulturePage: React.FC = () => {
             y: 0,
             duration: 0.4,
             ease: "power2.in",
-            onComplete: () => gsap.set(el, { pointerEvents: "none" }),
+            onComplete: () => {
+              gsap.set(el, { pointerEvents: "none" });
+            },
           },
           0
         );
@@ -434,38 +456,60 @@ const CulturePage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
-  const handleCenterClick = () => setIsExpanded((v) => !v);
+  const handleCenterClick = () => {
+    // 닫을 때는 변수 기반 위치를 확실히 0으로 리셋
+    if (isExpanded && centerCircleRef.current) {
+      centerCircleRef.current.style.setProperty("--tx", "0px");
+      centerCircleRef.current.style.setProperty("--ty", "0px");
+    }
+    setIsExpanded((v) => !v);
+  };
+
   const notchRadius = centerRadius + NOTCH_MARGIN;
 
+  // 펼쳐진 동안(=디스에이블)에는 인터랙션 완전 정지 + 변수 0 고정
   useCenterCircleCues(centerCircleRef, { disabled: isExpanded });
 
   return (
-    <div className="w-full min-h-screen bg-sky-50/60">
+    <div id="culture-section" className="w-full min-h-screen bg-sky-50/60">
       <div className="w-full h-full flex items-center justify-center">
         <div className="relative w-full max-w-[1600px] h-[720px] md:h-[900px] lg:h-[1100px] px-6">
-          {/* 중앙 원 */}
+          {/* 중앙 원 - 바깥 래퍼: 절대 중앙 고정(변환 고정, GSAP 미개입) */}
           <div
-            ref={centerCircleRef}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
             onClick={handleCenterClick}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-                     w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full
-                     border-2 border-violet-200/80
-                     text-gray-700 grid place-items-center cursor-pointer select-none
-                     shadow-[0_0_15px_2px_rgba(196,181,253,0.2),0_12px_40px_rgba(0,0,0,0.25)]
-                     z-10"
-            style={{
-              background:
-                "var(--center-gradient, linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%))",
-              outline: "none",
-              // @ts-ignore
-              "--center-gradient":
-                "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%)",
-            }}
             onMouseDown={(e) => e.preventDefault()}
+            aria-hidden={false}
           >
-            <span className="font-bold text-2xl md:text-3xl lg:text-[34px]">
-              Culture
-            </span>
+            {/* 안쪽 실제 원 - CSS 변수로만 이동/펄스 */}
+            <div
+              ref={centerCircleRef}
+              className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full
+                         border-2 border-violet-200/80 text-gray-700 grid place-items-center cursor-pointer select-none
+                         shadow-[0_0_15px_2px_rgba(196,181,253,0.2),0_12px_40px_rgba(0,0,0,0.25)]"
+              style={
+                {
+                  // 미세 이동(변수만 변경)
+                  transform: "translate3d(var(--tx, 0px), var(--ty, 0px), 0)",
+                  willChange: "transform, box-shadow",
+                  backgroundImage:
+                    "var(--culture-center-bg, linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%))",
+                  // 기본값을 안전하게 인라인 지정(충돌 방지)
+                  // @ts-ignore
+                  "--culture-center-bg":
+                    "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%)",
+                  // 위치 변수 초기값
+                  // @ts-ignore
+                  "--tx": "0px",
+                  // @ts-ignore
+                  "--ty": "0px",
+                } as React.CSSProperties
+              }
+            >
+              <span className="font-bold text-2xl md:text-3xl lg:text-[34px]">
+                Culture
+              </span>
+            </div>
           </div>
 
           {/* click me 안내 */}
@@ -497,7 +541,9 @@ const CulturePage: React.FC = () => {
             return (
               <div
                 key={box.id}
-                ref={(el) => (itemsRef.current[i] = el)}
+                ref={(el) => {
+                  itemsRef.current[i] = el;
+                }}
                 className="absolute left-1/2 top-1/2 opacity-0"
                 style={{ transform: "translate(-50%, -50%)" }}
               >
@@ -596,8 +642,8 @@ const CulturePage: React.FC = () => {
                         className={[
                           "text-[14.5px] md:text-[15.5px] lg:text-[16px]",
                           "leading-[1.7] text-slate-700",
-                          "max-w-[58ch]", // ← 가로폭 살짝 넓힘
-                          "line-clamp-2", // ← 2줄 고정
+                          "max-w-[58ch]",
+                          "line-clamp-2",
                           "relative",
                           A.paragraphAlign,
                         ].join(" ")}

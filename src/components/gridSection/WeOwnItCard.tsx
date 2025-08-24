@@ -4,11 +4,9 @@ import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-export default function WeOwnItCard({
+const WorkWithUsCard: React.FC<{ style?: React.CSSProperties }> = ({
   style,
-}: {
-  style?: React.CSSProperties;
-}) {
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
 
@@ -66,8 +64,7 @@ export default function WeOwnItCard({
 
   return (
     <Link
-      href="/about"
-      passHref
+      href="/career"
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -90,7 +87,7 @@ export default function WeOwnItCard({
         {/* Main Content */}
         <div className="z-10 text-center w-full h-full flex flex-col justify-center items-center px-2">
           <h1
-            className="line font-extrabold leading-tight tracking-tight text-white text-xl sm:text-2xl md:text-xl lg:text-4xl xl:text-7xl"
+            className="line font-extrabold leading-tight tracking-tight text-white text-xl sm:text-2xl md:text-xl lg:text-4xl xl:text-5xl"
             style={{
               fontFamily: "Playfair Display, serif",
               marginBottom: "clamp(0.25rem, 1.5vw, 1rem)",
@@ -98,11 +95,11 @@ export default function WeOwnItCard({
               wordWrap: "break-word",
             }}
           >
-            We Own It.
+            We Own IT
           </h1>
 
           <p
-            className="line font-light text-white leading-relaxed text-center text-sm sm:text-base md:text-sm lg:text-xl xl:text-2xl"
+            className="line font-light text-white leading-relaxed text-center text-xs sm:text-sm md:text-xs lg:text-lg xl:text-lg"
             style={{
               fontFamily: "Inter, sans-serif",
               marginBottom: "clamp(0.25rem, 1vw, 0.75rem)",
@@ -110,7 +107,7 @@ export default function WeOwnItCard({
               lineHeight: "1.4",
             }}
           >
-            기술로 설계하고,{" "}
+            기술로 설계하고{" "}
             <span className="font-medium text-white">
               디자인으로 설득합니다.
             </span>
@@ -120,16 +117,18 @@ export default function WeOwnItCard({
           </p>
 
           <p
-            className="line text-gray-500 italic text-center text-xs sm:text-sm md:text-xs lg:text-lg xl:text-xl"
+            className="line text-gray-500 italic text-center text-xs sm:text-xs md:text-xs lg:text-base xl:text-lg"
             style={{
               maxWidth: "100%",
               lineHeight: "1.3",
             }}
           >
-            이 과정이 우리가 자부하는 방식입니다.
+            그리고 그 모든 것을 우리 안에 담아냅니다.
           </p>
         </div>
       </div>
     </Link>
   );
-}
+};
+
+export default WorkWithUsCard;

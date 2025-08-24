@@ -37,29 +37,12 @@ const MapCard: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleMouseEnter = () => {
-    gsap.to(cardRef.current, {
-      scale: 1.05,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  };
-
-  const handleMouseLeave = () => {
-    gsap.to(cardRef.current, {
-      scale: 1,
-      duration: 0.3,
-      ease: "power2.inOut",
-    });
-  };
 
   return (
     <div
       ref={cardRef}
       className="card bg-gray-200 h-full"
       style={{ padding: 0, overflow: "hidden", ...style }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       {!isClient || !isMounted ? (
         <div className="h-full flex items-center justify-center">

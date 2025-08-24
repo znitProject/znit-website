@@ -31,6 +31,7 @@ export default function ITSection() {
 
   return (
     <div
+      id="it-section"
       ref={sectionRef}
       className={`w-full h-screen relative overflow-hidden bg-white ${isVisible ? "animate-hexagons" : ""}`}
     >

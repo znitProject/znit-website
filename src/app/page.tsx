@@ -3,12 +3,12 @@
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import CultureCard from "../components/gridSection/CultureCard";
 import WeOwnItCard from "../components/gridSection/WeOwnItCard";
-import WorkWithUsCard from "../components/gridSection/WorkWithUsCard";
 import DarkModeCard from "../components/gridSection/DarkModeCard";
-import ContactCard from "../components/gridSection/ContactCard";
+import ITCard from "../components/gridSection/ITCard";
 import KeywordCard from "../components/gridSection/KeywordCard";
-import WorkCard from "../components/gridSection/WorkCard";
+import DesignCard from "../components/gridSection/DesignCard";
 
 import HeroRevealSection from "../components/HeroRevealSection";
 import ITSection from "../components/ITSection";
@@ -61,12 +61,12 @@ export default function HomePage() {
           }}
         >
           <KeywordCard style={{ gridArea: "keyword" }} />
-          <WorkCard style={{ gridArea: "work" }} />
+          <DesignCard style={{ gridArea: "work" }} />
           <NixieClock style={{ gridArea: "clock" }} />
-          <WorkWithUsCard style={{ gridArea: "workus" }} />
-          <ContactCard style={{ gridArea: "contact" }} />
+          <WeOwnItCard style={{ gridArea: "workus" }} />
+          <ITCard style={{ gridArea: "contact" }} />
           {mounted && <MapCard style={{ gridArea: "map" }} />}
-          <WeOwnItCard style={{ gridArea: "weownit" }} />
+          <CultureCard style={{ gridArea: "weownit" }} />
           <DarkModeCard style={{ gridArea: "darkmode" }} />
         </section>
 
@@ -74,17 +74,17 @@ export default function HomePage() {
         <section className="w-full max-w-full hidden md:grid xl:hidden gap-6 grid-cols-2">
           {/* 핵심 CTA 카드들 (큰 크기, 터치 친화적) */}
           <div className="h-[200px]">
-            <WorkCard />
+            <DesignCard />
           </div>
           <div className="h-[200px]">
-            <ContactCard />
+            <ITCard />
           </div>
 
           <div className="h-[200px]">
-            <WorkWithUsCard />
+            <WeOwnItCard />
           </div>
           <div className="h-[200px]">
-            <WeOwnItCard style={{}} />
+            <CultureCard style={{}} />
           </div>
 
           {/* 보조 정보 카드들 - 동일한 높이로 통일 */}
@@ -99,22 +99,22 @@ export default function HomePage() {
           <div className="flex flex-col space-y-6">
             {/* 가장 중요한 CTA - 작업물 보기 */}
             <div className="w-full h-[220px] sm:h-[240px]">
-              <WorkCard />
+              <DesignCard />
             </div>
 
             {/* 연락하기 - 두 번째로 중요한 CTA */}
             <div className="w-full h-[220px] sm:h-[240px]">
-              <ContactCard />
+              <ITCard />
             </div>
 
             {/* 채용 정보 */}
             <div className="w-full h-[220px] sm:h-[240px]">
-              <WorkWithUsCard />
+              <WeOwnItCard />
             </div>
 
             {/* 브랜드 스토리 - 겹침 방지를 위한 명확한 컨테이너 */}
             <div className="w-full h-[220px] sm:h-[240px] relative z-10">
-              <WeOwnItCard style={{}} />
+              <CultureCard style={{}} />
             </div>
 
             {/* 지도 - 동일한 높이로 통일 */}

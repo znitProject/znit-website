@@ -1,264 +1,207 @@
 'use client';
-/*designed and coded by https://codepen.io/RAFA3L/pen/PoVYoPN*/
-import React, { useState, useEffect } from 'react';
-import './nixieClock.css';
 
-interface NixieClockProps {
+import React, { useState, useEffect } from 'react';
+
+interface ProgressClockProps {
   style?: React.CSSProperties;
 }
 
-const NixieClock: React.FC<NixieClockProps> = ({ style }) => {
-  const [isOn, setIsOn] = useState(false);
-  const [displayStr, setDisplayStr] = useState('000000000000');
+const ProgressClock: React.FC<ProgressClockProps> = ({ style }) => {
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    const updateTimeAndDate = () => {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const amPm = hours >= 12 ? 'PM' : 'AM';
-      
-      if (hours > 12) {
-        hours -= 12;
-      } else if (hours === 0) {
-        hours = 12;
-      }
-      
-      let timeStr = hours.toString().padStart(2, '0') + minutes;
-      if (timeStr.startsWith('0')) {
-        timeStr = ' ' + timeStr.slice(1);
-      }
-      
-      let month = (now.getMonth() + 1).toString().padStart(2, '0');
-      let day = now.getDate().toString().padStart(2, '0');
-      const year = now.getFullYear().toString().slice(-2);
-      
-      if (month.startsWith('0')) {
-        month = ' ' + month.slice(1);
-      }
-      if (day.startsWith('0')) {
-        day = ' ' + day.slice(1);
-      }
-      
-      const newDisplayStr = timeStr + amPm + month + day + year;
-      setDisplayStr(newDisplayStr);
+    const updateTime = () => {
+      setTime(new Date());
     };
 
-    updateTimeAndDate();
-    const interval = setInterval(updateTimeAndDate, 60000);
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const togglePower = () => {
-    setIsOn(!isOn);
+  // Calculate progress percentages
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+
+  // Progress calculations
+  const dayProgress = ((hours * 3600 + minutes * 60 + seconds) / (24 * 3600)) * 100;
+  const hourProgress = ((minutes * 60 + seconds) / 3600) * 100;
+  const minuteProgress = (seconds / 60) * 100;
+
+  // Create circular progress using stroke-dasharray (much simpler)
+  const getStrokeDashArray = (progress: number, radius: number) => {
+    const circumference = 2 * Math.PI * radius;
+    const strokeLength = (progress / 100) * circumference;
+    return `${strokeLength} ${circumference}`;
   };
+
+  const formatTime = (num: number) => num.toString().padStart(2, '0');
 
   return (
     <div
-      className="nixie-container card w-full h-full flex items-center justify-center bg-gradient-to-br from-[#535a79] to-[#46315c] rounded-2xl p-8"
+      className="progress-clock-container relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 overflow-hidden"
       style={{
         width: '100%',
         height: '100%',
-        maxWidth: '100%',
-        maxHeight: '100%',
         gridArea: 'clock',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.05)',
+        boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.05), 0 10px 30px rgba(0,0,0,0.1)',
         ...style,
       }}
     >
-      {/* Noise SVG Filter */}
-      <svg id="noise-svg" className="noise-svg">
-        <filter id="noiseFilter">
-          <feTurbulence 
-            type="fractalNoise" 
-            baseFrequency="1.5" 
-            numOctaves={3} 
-            stitchTiles="stitch" 
+      {/* Main Progress Circles */}
+      <div className="relative flex items-center justify-center">
+        <svg width="220" height="220" className="transform -rotate-90">
+          {/* Day Progress Circle (Outer) - Background */}
+          <circle
+            cx="110"
+            cy="110"
+            r="95"
+            fill="none"
+            stroke="#e5e7eb"
+            strokeWidth="8"
           />
-        </filter>
-        <rect id="noise-rect" className="noise-rect" filter="url(#noiseFilter)" />
-      </svg>
+          {/* Day Progress Circle (Outer) - Progress */}
+          <circle
+            cx="110"
+            cy="110"
+            r="95"
+            fill="none"
+            stroke="#3b82f6"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray={getStrokeDashArray(dayProgress, 95)}
+            className="transition-all duration-1000 ease-out"
+            style={{ transformOrigin: 'center' }}
+          />
+          
+          {/* Hour Progress Circle (Middle) - Background */}
+          <circle
+            cx="110"
+            cy="110"
+            r="75"
+            fill="none"
+            stroke="#f3f4f6"
+            strokeWidth="6"
+          />
+          {/* Hour Progress Circle (Middle) - Progress */}
+          <circle
+            cx="110"
+            cy="110"
+            r="75"
+            fill="none"
+            stroke="#10b981"
+            strokeWidth="6"
+            strokeLinecap="round"
+            strokeDasharray={getStrokeDashArray(hourProgress, 75)}
+            className="transition-all duration-1000 ease-out"
+            style={{ transformOrigin: 'center' }}
+          />
+          
+          {/* Minute Progress Circle (Inner) - Background */}
+          <circle
+            cx="110"
+            cy="110"
+            r="55"
+            fill="none"
+            stroke="#f9fafb"
+            strokeWidth="4"
+          />
+          {/* Minute Progress Circle (Inner) - Progress */}
+          <circle
+            cx="110"
+            cy="110"
+            r="55"
+            fill="none"
+            stroke="#f59e0b"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeDasharray={getStrokeDashArray(minuteProgress, 55)}
+            className="transition-all duration-1000 ease-out"
+            style={{ transformOrigin: 'center' }}
+          />
+        </svg>
 
-      <div
-        className={`clock ${!isOn ? 'off' : ''}`}
-        style={{
-          width: '100%',
-          height: '100%',
-          maxWidth: '100%',
-          maxHeight: '100%',
-          aspectRatio: '1/1',
-          margin: '0 auto',
-          transform: 'scale(0.7)', // 시계 축소
-          transformOrigin: 'center',
-        }}
-      >
-        <div className="shadow"></div>
-
-        {/* Base */}
-        <div className="base-container">
-          <div className="base">
-            <div></div>
-          </div>
-        </div>
-
-        {/* Small Outer Pipe */}
-        <div className="small-outer-pipe">
-          <div className="small-inner-pipe"></div>
-        </div>
-
-        {/* Main Outer Pipe */}
-        <div className="outer-pipe">
-          <div className="inner-pipe"></div>
-        </div>
-
-        {/* Pipe Accents */}
-        <div className="pipe-accents">
-          <div className="top-tube"></div>
-          <div className="tube-holders">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          <div className="top"></div>
-          <div className="topinset"></div>
-          <div className="left">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          <div className="right">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          <div className="bottom-left"></div>
-          <div className="bottom-right"></div>
-        </div>
-
-        {/* Display */}
-        <div className="display">
-          <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[0] || '0'}</div>
-              <div>{displayStr[0] || '0'}</div>
+        {/* Center Time Display */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-gray-800 font-mono tracking-tight">
+              {formatTime(hours)}:{formatTime(minutes)}
             </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[1] || '0'}</div>
-              <div>{displayStr[1] || '0'}</div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[2] || '0'}</div>
-              <div>{displayStr[2] || '0'}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[3] || '0'}</div>
-              <div>{displayStr[3] || '0'}</div>
-            </div>
-          </div>
-          <div style={{ height: '0.2em' }}></div>
-          <div className="small-row">
-            <div className="row">
-              <div className="col">
-                <div>8</div>
-                <div>{displayStr[4] || '0'}</div>
-                <div>{displayStr[4] || '0'}</div>
-              </div>
-              <div className="col">
-                <div>8</div>
-                <div>{displayStr[5] || '0'}</div>
-                <div>{displayStr[5] || '0'}</div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[6] || '0'}</div>
-              <div>{displayStr[6] || '0'}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[7] || '0'}</div>
-              <div>{displayStr[7] || '0'}</div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[8] || '0'}</div>
-              <div>{displayStr[8] || '0'}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[9] || '0'}</div>
-              <div>{displayStr[9] || '0'}</div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[10] || '0'}</div>
-              <div>{displayStr[10] || '0'}</div>
-            </div>
-            <div className="col">
-              <div>8</div>
-              <div>{displayStr[11] || '0'}</div>
-              <div>{displayStr[11] || '0'}</div>
+            <div className="text-sm text-gray-500 font-mono mt-1">
+              {formatTime(seconds)}
             </div>
           </div>
         </div>
-
-        {/* Glass Tube */}
-        <div className="glass-tube"></div>
-        
-        {/* Hex Pattern */}
-        <div className="hex">
-          <div className="overlay"></div>
-        </div>
-
-        {/* Tube Base Container */}
-        <div className="tube-base-container">
-          <div className="wires">
-            <div></div>
-            <div></div>
-          </div>
-          <div className="tube-base"></div>
-          <div className="rods">
-            <div className="left-rod"></div>
-            <div className="center-rod"></div>
-            <div className="right-rod"></div>
-          </div>
-          <div className="tube-btm"></div>
-        </div>
-
-        {/* Power Cord */}
-        <div className="power-cord">
-          <div></div>
-          <div></div>
-        </div>
-
-        {/* Power Button */}
-        <button 
-          className="button" 
-          onClick={togglePower}
-          type="button"
-          aria-label="Toggle clock power"
-        >
-          <div></div>
-        </button>
       </div>
+
+      {/* Progress Labels */}
+      <div className="flex justify-between items-center w-full max-w-xs mt-6">
+        <div className="flex flex-col items-center">
+          <div className="w-4 h-4 bg-blue-500 rounded-full mb-1"></div>
+          <div className="text-xs text-gray-600 font-medium">DAY</div>
+          <div className="text-xs text-gray-500">{dayProgress.toFixed(1)}%</div>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="w-4 h-4 bg-emerald-500 rounded-full mb-1"></div>
+          <div className="text-xs text-gray-600 font-medium">HOUR</div>
+          <div className="text-xs text-gray-500">{hourProgress.toFixed(1)}%</div>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="w-4 h-4 bg-amber-500 rounded-full mb-1"></div>
+          <div className="text-xs text-gray-600 font-medium">MIN</div>
+          <div className="text-xs text-gray-500">{minuteProgress.toFixed(0)}%</div>
+        </div>
+      </div>
+
+      {/* Time Flow Message */}
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-center">
+        <div className="text-xs text-gray-400 font-medium tracking-wider">TIME FLOWS</div>
+      </div>
+
+      {/* Current Phase */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
+        <div className="text-xs text-gray-500 font-mono">
+          {hours < 6 ? '🌙 NIGHT' : 
+           hours < 12 ? '🌅 MORNING' : 
+           hours < 18 ? '☀️ AFTERNOON' : 
+           '🌆 EVENING'}
+        </div>
+      </div>
+
+      {/* Floating progress indicators */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(8)].map((_, i) => {
+          const angle = (i * 45) + (dayProgress * 1.5); // Rotate based on day progress
+          const radius = 110;
+          const x = Math.cos((angle * Math.PI) / 180) * radius + 50;
+          const y = Math.sin((angle * Math.PI) / 180) * radius + 50;
+          
+          return (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-gray-300 rounded-full opacity-60"
+              style={{
+                left: `${x}%`,
+                top: `${y}%`,
+                transform: 'translate(-50%, -50%)',
+                animation: `float ${3 + i * 0.2}s infinite ease-in-out`,
+                animationDelay: `${i * 0.1}s`,
+              }}
+            />
+          );
+        })}
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translate(-50%, -50%) translateY(0px); opacity: 0.6; }
+          50% { transform: translate(-50%, -50%) translateY(-4px); opacity: 0.3; }
+        }
+      `}</style>
     </div>
   );
 };
 
-export default NixieClock;
+export default ProgressClock;
