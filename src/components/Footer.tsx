@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const footerRef = useRef(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -13,6 +14,20 @@ export default function Footer() {
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (footerRef.current) {
+        const rect = footerRef.current.getBoundingClientRect();
+        setIsFooterVisible(rect.top < window.innerHeight);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // 초기 상태 확인
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     gsap.fromTo(

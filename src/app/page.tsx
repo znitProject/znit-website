@@ -24,9 +24,32 @@ import NixieClock from "../components/gridSection/nixieClock";
 export default function HomePage() {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const footer = document.querySelector("footer");
+      if (footer) {
+        const rect = footer.getBoundingClientRect();
+        setIsFooterVisible(rect.top < window.innerHeight);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // 초기 상태 확인
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // 다크모드 여부에 따른 배경색 결정
@@ -137,16 +160,45 @@ export default function HomePage() {
         <ITSection />
         <DesignSection />
       </div>
-      
+
       {/* Culture Section - Full Width Background */}
       <CultureSection />
-      
+
       {/* Closing Section */}
       <div
         className={`w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 ${backgroundColor}`}
       >
         <ClosingSection />
       </div>
+
+      {/* Floating Back to Top Button - 화면을 따라다니는 동그란 화살표 */}
+      {!isFooterVisible && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-transparent border-2 border-black dark:border-white text-gray-900 dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center group"
+          aria-label="맨 위로 이동"
+        >
+          <svg
+            className="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            style={{
+              stroke: mounted && theme === "dark" ? "#ffffff" : "#000000",
+            }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 10l7-7m0 0l7 7m-7-7v18"
+              style={{
+                stroke: mounted && theme === "dark" ? "#ffffff" : "#000000",
+              }}
+            />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }
