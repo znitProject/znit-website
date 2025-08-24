@@ -33,12 +33,12 @@ export default function ITSection() {
     <div
       id="it-section"
       ref={sectionRef}
-      className={`w-full h-screen relative overflow-hidden bg-white ${isVisible ? "animate-hexagons" : ""}`}
+      className={`w-full h-[120vh] relative overflow-hidden bg-white ${isVisible ? "animate-hexagons" : ""}`}
     >
-      {/* Main Title */}
-      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-8 z-20">
+      {/* Main Title - 중앙 정렬 */}
+      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-20">
         <h1
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-gray-900"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-gray-900 text-center"
           style={{ fontFamily: "Red Hat Display, sans-serif" }}
         >
           Develop with ZNIT
@@ -85,34 +85,34 @@ export default function ITSection() {
         </ol>
       </div>
 
-      {/* Right Column - Descriptions with Adjusted Positions */}
-      {/* Description 1 - 첫 번째 헥사곤과 수평 정렬 */}
+      {/* Right Column - Descriptions with Precise Hexagon Alignment */}
+      {/* Description 1 - 첫 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-3/5 transform -translate-x-1/2 top-1/5 z-10 max-w-none ml-15 ${isVisible ? "description-first" : ""}`}
+        className={`absolute left-3/5 transform -translate-x-1/2 top-[28%] z-10 max-w-none ml-15 ${isVisible ? "description-first" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed text-2xl sm:text-3xl md:text-4xl lg:text-3xl">
+        <p className="text-gray-700 leading-relaxed">
           "웹, 앱, 플랫폼, IoT까지 기획부터
           <br />
           디자인, 개발, 배포까지 한 흐름으로 완성합니다."
         </p>
       </div>
 
-      {/* Description 2 - 두 번째 헥사곤과 수평 정렬 (그대로) */}
+      {/* Description 2 - 두 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-3/5 transform -translate-x-1/2 top-1/2 -translate-y-1/2 z-10 max-w-none ml-15 ${isVisible ? "description-second" : ""}`}
+        className={`absolute left-3/5 transform -translate-x-1/2 top-[50%] -translate-y-1/2 z-10 max-w-none ml-15 ${isVisible ? "description-second" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed text-2xl sm:text-3xl md:text-4xl lg:text-3xl">
+        <p className="text-gray-700 leading-relaxed">
           "분야별 비즈니스와 사용자 특성을 깊이 이해하고
           <br />
           그에 최적화된 IT 서비스를 구현합니다."
         </p>
       </div>
 
-      {/* Description 3 - 세 번째 헥사곤과 수평 정렬 */}
+      {/* Description 3 - 세 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-3/5 transform -translate-x-1/2 bottom-1/5 z-10 max-w-none ml-15 ${isVisible ? "description-third" : ""}`}
+        className={`absolute left-3/5 transform -translate-x-1/2 top-[72%] z-10 max-w-none ml-15 ${isVisible ? "description-third" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed text-2xl sm:text-3xl md:text-4xl lg:text-3xl">
+        <p className="text-gray-700 leading-relaxed">
           "변화하는 시장과 기술에 유연하게 적응하는 구조로
           <br />
           서비스의 지속적 성장과 확장을 지원합니다."
