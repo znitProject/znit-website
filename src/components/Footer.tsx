@@ -1,12 +1,23 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 import gsap from "gsap";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const footerRef = useRef<HTMLDivElement>(null);
-  const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 다크모드 여부에 따른 텍스트 색상 결정
+  const textColor = mounted && theme === "dark" ? "#ffffff" : "#6b7280";
+  const hoverTextColor = mounted && theme === "dark" ? "#d1d5db" : "#111827";
+  const iconColor = mounted && theme === "dark" ? "#ffffff" : "#4b5563";
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -14,20 +25,6 @@ export default function Footer() {
       behavior: "smooth",
     });
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (footerRef.current) {
-        const rect = footerRef.current.getBoundingClientRect();
-        setIsFooterVisible(rect.top < window.innerHeight);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // 초기 상태 확인
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     gsap.fromTo(
@@ -97,7 +94,10 @@ export default function Footer() {
               </svg>
             </div>
             {/* Text */}
-            <div className="text-sm font-medium text-center leading-tight text-zinc-500 dark:text-white">
+            <div
+              className="text-sm font-medium text-center leading-tight"
+              style={{ color: textColor }}
+            >
               <span className="block">BACK TO</span>
               <span className="block">THE TOP</span>
             </div>
@@ -115,13 +115,16 @@ export default function Footer() {
             {/* 회사 정보 */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-2">
               <div className="mb-3 sm:mb-4">
-                <img 
-                  src="/logo/ZNLogo.png" 
-                  alt="ZNIT" 
+                <img
+                  src="/logo/ZNLogo.png"
+                  alt="ZNIT"
                   className="h-8 sm:h-10"
                 />
               </div>
-              <p className="text-zinc-500 dark:text-white mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
+              <p
+                className="mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight"
+                style={{ color: textColor }}
+              >
                 기술과 디자인으로 사람을 잇고,
                 <br />
                 세상에 편안함과 아름다움을 더합니다.
@@ -129,7 +132,8 @@ export default function Footer() {
               <div className="flex space-x-4">
                 <a
                   href="mailto:contact@znit.com"
-                  className="text-zinc-600 dark:text-white hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors footer-icon p-2"
+                  className="hover:scale-110 transition-all footer-icon p-2"
+                  style={{ color: iconColor }}
                   aria-label="이메일"
                 >
                   <svg
@@ -143,7 +147,8 @@ export default function Footer() {
                 </a>
                 <a
                   href="tel:031-1234-5678"
-                  className="text-zinc-600 dark:text-white hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors footer-icon p-2"
+                  className="hover:scale-110 transition-all footer-icon p-2"
+                  style={{ color: iconColor }}
                   aria-label="전화번호"
                 >
                   <svg
@@ -159,17 +164,25 @@ export default function Footer() {
 
             {/* 사업자 정보 */}
             <div className="col-span-2 flex flex-col justify-end -mt-4">
-              <div className="text-zinc-600 dark:text-white text-sm space-y-2 text-right">
+              <div
+                className="text-sm space-y-2 text-right"
+                style={{ color: textColor }}
+              >
                 <p>ZNIT | 대표자: 정지호 | 사업자등록번호: 176-81-00290</p>
                 <p>경기 김포시 고촌읍 장차로5번길 20 2층 | 031-996-4823</p>
                 <div className="flex justify-end space-x-4 mt-4">
-                  <a href="#" className="text-inherit hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors">
+                  <a
+                    href="#"
+                    className="hover:scale-105 transition-all"
+                    style={{ color: textColor }}
+                  >
                     이용약관
                   </a>
-                  <span>|</span>
+                  <span style={{ color: textColor }}>|</span>
                   <Link
                     href="/credits"
-                    className="text-inherit hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors"
+                    className="hover:scale-105 transition-all"
+                    style={{ color: textColor }}
                   >
                     Credits
                   </Link>
@@ -181,7 +194,10 @@ export default function Footer() {
           {/* 하단 구분선 */}
           <div className="border-t border-zinc-700 dark:border-white mt-6 sm:mt-8 pt-6 sm:pt-8">
             <div className="flex justify-end">
-              <p className="text-zinc-500 dark:text-white text-xs sm:text-sm tracking-tight">
+              <p
+                className="text-xs sm:text-sm tracking-tight"
+                style={{ color: textColor }}
+              >
                 © {currentYear} ZNIT. All rights reserved.
               </p>
             </div>
@@ -191,3 +207,5 @@ export default function Footer() {
     </div>
   );
 }
+
+//변경용 주석

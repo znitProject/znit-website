@@ -139,6 +139,24 @@ ol.even:last-child {
 .it-hex {
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
+/* 둥근 헥사곤: 지원 브라우저에서만 polygon 위를 덮어씀 */
+@supports (clip-path: path("M 0 0")) {
+  .it-hex {
+    /* 살짝 둥글게(추천) */
+    clip-path: path(
+      "M 53.5777% 1.7889% L 96.4223% 23.2111% Q 100% 25% 100% 29% \
+L 100% 71% Q 100% 75% 96.4223% 76.7889% \
+L 53.5777% 98.2111% Q 50% 100% 46.4223% 98.2111% \
+L 3.5777% 76.7889% Q 0% 75% 0% 71% \
+L 0% 29% Q 0% 25% 3.5777% 23.2111% \
+L 46.4223% 1.7889% Q 50% 0% 53.5777% 1.7889% Z"
+    );
+  }
+  /* 이미지는 헥사곤과 동일 마스크 사용 */
+  .hex-hover-image {
+    clip-path: inherit;
+  }
+}
 
 /* 호버 효과: 회전 없이 스케일만 */
 .it-hex:hover {
@@ -172,13 +190,17 @@ ol.even:last-child {
   white-space: nowrap;
   font-size: 1.3em;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff !important; /* 강제 흰색 적용 */
   z-index: 2;
   text-align: center;
   text-shadow: none; /* 그림자 제거 */
   transition:
     transform 0.3s,
     opacity 0.3s;
+  /* 브라우저 호환성을 위한 추가 속성 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
 }
 
 /* 헥사곤 텍스트 반응형 */
@@ -229,6 +251,12 @@ ol.even:last-child {
 .hex-2:hover .hex-text,
 .hex-3:hover .hex-text {
   transform: translate(-50%, -50%) scale(1.08);
+  color: #ffffff !important; /* 호버 상태에서도 강제 흰색 */
+  text-shadow: none; /* 호버 상태에서도 그림자 없음 */
+  /* 호버 시에도 중앙 정렬 유지 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 포커스 접근성 */
@@ -289,6 +317,8 @@ ol.even:last-child {
   border-left: 8px solid #3b82f6;
   margin-bottom: 24px;
   box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1);
+  /* 설명 텍스트 중앙 정렬 */
+  text-align: center;
 }
 
 /* 따옴표 스타일 */
@@ -369,6 +399,8 @@ ol.even:last-child {
   filter: blur(1px);
   animation: descriptionElegant 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     forwards 1.8s;
+  /* 설명 텍스트 중앙 정렬 */
+  text-align: center;
 }
 .description-second p {
   opacity: 0;
@@ -376,6 +408,8 @@ ol.even:last-child {
   filter: blur(1px);
   animation: descriptionElegant 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     forwards 2.1s;
+  /* 설명 텍스트 중앙 정렬 */
+  text-align: center;
 }
 .description-third p {
   opacity: 0;
@@ -383,6 +417,8 @@ ol.even:last-child {
   filter: blur(1px);
   animation: descriptionElegant 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     forwards 2.4s;
+  /* 설명 텍스트 중앙 정렬 */
+  text-align: center;
 }
 
 /* =========================
@@ -1035,4 +1071,23 @@ ol.even:last-child .hex-connector::before {
     height: 2px;
     left: -6px;
   }
+}
+
+/* 설명 텍스트 색상 강화 */
+.description-first p,
+.description-second p,
+.description-third p {
+  color: #374151 !important; /* 라이트모드 기본 색상 */
+  font-weight: 500;
+  /* 브라우저 호환성 개선 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+}
+
+/* 다크모드일 때 설명 텍스트 색상 */
+.dark .description-first p,
+.dark .description-second p,
+.dark .description-third p {
+  color: #ffffff !important; /* 다크모드 흰색 */
 }

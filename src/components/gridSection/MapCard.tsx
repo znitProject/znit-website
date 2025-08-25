@@ -4,7 +4,6 @@ import { MapContainer, TileLayer, Marker, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L, { LatLngExpression } from "leaflet";
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
 
 const position: LatLngExpression = [37.6034, 126.7694];
 

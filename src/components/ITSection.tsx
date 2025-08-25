@@ -3,17 +3,32 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTheme } from "next-themes";
 import "./ITSection.css";
+
+// CSS 변수 타입 정의
+interface CSSPropertiesWithVars extends React.CSSProperties {
+  "--conn-len"?: string;
+}
 
 export default function ITSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 다크모드 여부에 따른 배경색과 텍스트 색상 결정
+  const backgroundColor =
+    mounted && theme === "dark" ? "bg-[#1F1F1F]" : "bg-white";
+  const textColor =
+    mounted && theme === "dark" ? "text-white" : "text-gray-700";
+  const descriptionTextColor =
+    mounted && theme === "dark" ? "#e5e7eb" : "#e5e7eb"; // 연한 회색으로 설정
 
   useEffect(() => {
     if (!mounted) return;
@@ -79,7 +94,7 @@ export default function ITSection() {
     return () => {
       observer.disconnect();
       // GSAP 애니메이션 정리
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [mounted]);
 
@@ -87,13 +102,21 @@ export default function ITSection() {
     <div
       id="it-section"
       ref={sectionRef}
+<<<<<<< HEAD
       className={`w-full h-[120vh] relative overflow-hidden bg-white dark:bg-slate-900 ${isVisible ? "animate-hexagons" : ""}`}
+=======
+      className={`w-full h-[120vh] relative overflow-hidden ${backgroundColor} transition-colors duration-300 ${isVisible ? "animate-hexagons" : ""}`}
+>>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
     >
       {/* Main Title - DesignSection과 동일한 스타일 */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:top-6 md:top-8 z-20">
         <h1
           ref={titleRef}
+<<<<<<< HEAD
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-gray-900 dark:text-slate-100 text-center"
+=======
+          className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-center ${textColor}`}
+>>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           style={{ fontFamily: "Red Hat Display, sans-serif" }}
         >
           Develop with ZNIT
@@ -117,7 +140,7 @@ export default function ITSection() {
           {/* 헥사곤과 설명을 잇는 선 */}
           <span
             className="hex-connector"
-            style={{ ["--conn-len" as any]: "12vw" }} // 필요하면 수치만 바꿔!
+            style={{ "--conn-len": "12vw" } as CSSPropertiesWithVars}
             aria-hidden="true"
           />
         </ol>
@@ -136,7 +159,7 @@ export default function ITSection() {
           </li>
           <span
             className="hex-connector"
-            style={{ ["--conn-len" as any]: "10vw" }}
+            style={{ "--conn-len": "10vw" } as CSSPropertiesWithVars}
             aria-hidden="true"
           />
         </ol>
@@ -155,7 +178,7 @@ export default function ITSection() {
           </li>
           <span
             className="hex-connector"
-            style={{ ["--conn-len" as any]: "12vw" }}
+            style={{ "--conn-len": "12vw" } as CSSPropertiesWithVars}
             aria-hidden="true"
           />
         </ol>
@@ -164,18 +187,40 @@ export default function ITSection() {
       {/* Right Column - Descriptions with Precise Hexagon Alignment */}
       {/* Description 1 - 첫 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-[830px] top-[230px] z-10 max-w-none ${isVisible ? "description-first" : ""}`}
+        className={`absolute left-[830px] top-[230px] z-10 max-w-none description-container ${
+          isVisible ? "description-first" : ""
+        }`}
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+        }}
       >
+<<<<<<< HEAD
         <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
+=======
+        <p
+          className="text-gray-700 leading-relaxed relative"
+          style={{ color: descriptionTextColor }}
+        >
+>>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           <img
-            src="/itsection/icons8-quote-left-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-quotation-mark-100_white-left.png"
+                : "/itsection/icons8-quote-left-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-open"
           />
-          웹, 앱, 플랫폼, IoT까지 <br />
-          기획부터 디자인, 개발, 배포까지 한 흐름으로 완성합니다
+          웹, 앱, 플랫폼, IoT까지 기획부터 디자인, 개발, 배포까지 <br />한
+          흐름으로 완성합니다
           <img
-            src="/itsection/icons8-quote-right-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-get-quote-100_white-right.png"
+                : "/itsection/icons8-quote-right-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-close"
           />
@@ -184,18 +229,40 @@ export default function ITSection() {
 
       {/* Description 2 - 두 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-[930px] top-[460px] z-10 max-w-none ${isVisible ? "description-second" : ""}`}
+        className={`absolute left-[930px] top-[460px] z-10 max-w-none description-container ${
+          isVisible ? "description-second" : ""
+        }`}
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+        }}
       >
+<<<<<<< HEAD
         <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
+=======
+        <p
+          className="text-gray-700 leading-relaxed relative"
+          style={{ color: descriptionTextColor }}
+        >
+>>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           <img
-            src="/itsection/icons8-quote-left-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-quotation-mark-100_white-left.png"
+                : "/itsection/icons8-quote-left-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-open"
           />
           분야별 비즈니스와 사용자 특성을 깊이 이해하고 <br />
           그에 최적화된 IT 서비스를 구현합니다
           <img
-            src="/itsection/icons8-quote-right-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-get-quote-100_white-right.png"
+                : "/itsection/icons8-quote-right-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-close"
           />
@@ -204,18 +271,40 @@ export default function ITSection() {
 
       {/* Description 3 - 세 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-[830px] top-[680px] z-10 max-w-none ${isVisible ? "description-third" : ""}`}
+        className={`absolute left-[830px] top-[680px] z-10 max-w-none description-container ${
+          isVisible ? "description-third" : ""
+        }`}
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+        }}
       >
+<<<<<<< HEAD
         <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
+=======
+        <p
+          className="text-gray-700 leading-relaxed relative"
+          style={{ color: descriptionTextColor }}
+        >
+>>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           <img
-            src="/itsection/icons8-quote-left-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-quotation-mark-100_white-left.png"
+                : "/itsection/icons8-quote-left-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-open"
           />
           변화하는 시장과 기술에 유연하게 적응하는 구조로 <br />
           서비스의 지속적 성장과 확장을 지원합니다
           <img
-            src="/itsection/icons8-quote-right-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-get-quote-100_white-right.png"
+                : "/itsection/icons8-quote-right-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-close"
           />

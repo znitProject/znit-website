@@ -46,7 +46,6 @@ export default function ParticleBackground() {
       let ps: ParticleSystem;
       let ptime = 0;
       let offset: p5.Vector;
-      let origin: p5.Vector;
       let bg = 0;
 
       const sketch = (p: p5) => {
@@ -152,7 +151,6 @@ export default function ParticleBackground() {
           ps = new ParticleSystem();
           p.background(0, 0, 0); // 파티클 배경만 검정색
           offset = p.createVector(p.random(1000), p.random(1000));
-          origin = p.createVector(p.width / 2, p.height / 2);
         };
 
         p.draw = () => {
@@ -183,10 +181,9 @@ export default function ParticleBackground() {
             if (noisePos.y > p.height) noisePos.y -= p.height;
             if (noisePos.y < 0) noisePos.y += p.height;
 
-            ps.addParticle(noisePos, pos);
-            origin = noisePos;
-            offset.x += 0.005; // 더 천천히
-            offset.y += 0.005; // 더 천천히
+                      ps.addParticle(noisePos, pos);
+          offset.x += 0.005; // 더 천천히
+          offset.y += 0.005; // 더 천천히
           }
 
           ps.run();
@@ -205,7 +202,6 @@ export default function ParticleBackground() {
           const ppos = p.createVector(p.pmouseX, p.pmouseY);
           ps.addParticle(pos, ppos);
           ptime = p.millis();
-          origin = p.createVector(p.width / 2, p.height / 2);
         };
       };
 
