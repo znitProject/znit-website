@@ -8,10 +8,37 @@
   --font-roboto-flex: "Roboto Flex", sans-serif;
   --font-righteous: "Righteous", cursive;
   --font-song-myung: "Song Myung", serif;
+  --font-sejong-geulggot: "SejongGeulggot", serif;
+  --font-chosun-centennial: "ChosunCentennial", serif;
+  --font-pf-stardust: "PFStardust", serif;
 }
 
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+
+@font-face {
+  font-family: "SejongGeulggot";
+  src: url("/fonts/SejongGeulggot.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ChosunCentennial";
+  src: url("/fonts/ChosunCentennial_ttf.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PFStardust";
+  src: url("/fonts/PF스타더스트 3.0 Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
 
 body {
   font-family: "LCD", sans-serif;
@@ -85,6 +112,48 @@ body {
 
 .font-roboto-flex {
   font-family: var(--font-roboto-flex), system-ui, sans-serif;
+}
+
+.black-han-sans-regular {
+  font-family: "Black Han Sans", sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+.sejong-geulggot-regular {
+  font-family: "SejongGeulggot", serif !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+}
+
+.chosun-centennial-regular {
+  font-family: "ChosunCentennial", serif !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+}
+
+.pf-stardust-regular {
+  font-family: "PFStardust", serif !important;
+  font-weight: bold !important;
+  font-style: normal !important;
+  -webkit-font-smoothing: none !important;
+  -moz-osx-font-smoothing: unset !important;
+  font-display: swap !important;
+  font-variant: normal !important;
+  text-rendering: optimizeSpeed !important;
+  image-rendering: pixelated !important;
+  image-rendering: -moz-crisp-edges !important;
+  image-rendering: crisp-edges !important;
+}
+
+/* 더 구체적인 선택자로 폰트 강제 적용 */
+span.pf-stardust-regular,
+.m-flip_item.pf-stardust-regular {
+  font-family: "PFStardust", serif !important;
+  font-weight: bold !important;
+  font-style: normal !important;
+  -webkit-font-smoothing: none !important;
+  -moz-osx-font-smoothing: unset !important;
 }
 
 .card {
