@@ -96,7 +96,16 @@ export default function ClosingSection() {
             >
               We believe.
             </span>
-            <span className="m-flip_item">우리는 믿습니다.</span>
+            <span
+              className="m-flip_item black-han-sans-regular"
+              style={{
+                fontFamily: '"Black Han Sans", sans-serif',
+                fontWeight: "400",
+                fontStyle: "normal",
+              }}
+            >
+              우리는 믿습니다.
+            </span>
           </p>
 
           <p
@@ -107,10 +116,10 @@ export default function ClosingSection() {
               fontWeight: "bold",
             }}
           >
-            <span className="m-flip_item">
+            <span className="m-flip_item chosun-centennial-regular">
               기술과 디자인이 사람을 위한 것이어야 한다는 것을.
             </span>
-            <span className="m-flip_item">
+            <span className="m-flip_item chosun-centennial-regular">
               Que la technologie et le design doivent servir les gens.
             </span>
           </p>
@@ -133,7 +142,9 @@ export default function ClosingSection() {
             >
               ZNITは 今日も、
             </span>
-            <span className="m-flip_item">ZNIT는 오늘도,</span>
+            <span className="m-flip_item sejong-geulggot-regular">
+              ZNIT는 오늘도,
+            </span>
           </p>
 
           <p
@@ -153,7 +164,9 @@ export default function ClosingSection() {
             >
               हम जुनून के साथ आगे बढ़ते हैं।
             </span>
-            <span className="m-flip_item">열정을 가지고 앞으로 나아갑니다.</span>
+            <span className="m-flip_item">
+              열정을 가지고 앞으로 나아갑니다.
+            </span>
           </p>
 
           <p
@@ -165,12 +178,14 @@ export default function ClosingSection() {
             }}
           >
             <span
-              className="m-flip_item"
+              className="m-flip_item pf-stardust-regular"
               style={{ fontFamily: "var(--font-roboto-flex), sans-serif" }}
             >
               Por un mundo mejor y más tranquilo.
             </span>
-            <span className="m-flip_item">더 나은 그리고 더 평화로운 세상을 위해.</span>
+            <span className="m-flip_item pf-stardust-regular">
+              더 나은 그리고 더 평화로운 세상을 위해.
+            </span>
           </p>
         </div>
       </div>
