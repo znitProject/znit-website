@@ -102,21 +102,13 @@ export default function ITSection() {
     <div
       id="it-section"
       ref={sectionRef}
-<<<<<<< HEAD
-      className={`w-full h-[120vh] relative overflow-hidden bg-white dark:bg-slate-900 ${isVisible ? "animate-hexagons" : ""}`}
-=======
       className={`w-full h-[120vh] relative overflow-hidden ${backgroundColor} transition-colors duration-300 ${isVisible ? "animate-hexagons" : ""}`}
->>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
     >
       {/* Main Title - DesignSection과 동일한 스타일 */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:top-6 md:top-8 z-20">
         <h1
           ref={titleRef}
-<<<<<<< HEAD
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-gray-900 dark:text-slate-100 text-center"
-=======
           className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-center ${textColor}`}
->>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           style={{ fontFamily: "Red Hat Display, sans-serif" }}
         >
           Develop with ZNIT
@@ -196,14 +188,10 @@ export default function ITSection() {
           transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
         }}
       >
-<<<<<<< HEAD
-        <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
-=======
         <p
           className="text-gray-700 leading-relaxed relative"
           style={{ color: descriptionTextColor }}
         >
->>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           <img
             src={
               mounted && theme === "dark"
@@ -238,14 +226,10 @@ export default function ITSection() {
           transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
         }}
       >
-<<<<<<< HEAD
-        <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
-=======
         <p
           className="text-gray-700 leading-relaxed relative"
           style={{ color: descriptionTextColor }}
         >
->>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           <img
             src={
               mounted && theme === "dark"
@@ -280,14 +264,10 @@ export default function ITSection() {
           transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
         }}
       >
-<<<<<<< HEAD
-        <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
-=======
         <p
           className="text-gray-700 leading-relaxed relative"
           style={{ color: descriptionTextColor }}
         >
->>>>>>> 078b8228b9cd347f93f75de38cf17f284ced711e
           <img
             src={
               mounted && theme === "dark"
