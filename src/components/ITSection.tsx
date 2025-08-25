@@ -179,7 +179,14 @@ export default function ITSection() {
       {/* Right Column - Descriptions with Precise Hexagon Alignment */}
       {/* Description 1 - 첫 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-[830px] top-[230px] z-10 max-w-none ${isVisible ? "description-first" : ""}`}
+        className={`absolute left-[830px] top-[230px] z-10 max-w-none description-container ${
+          isVisible ? "description-first" : ""
+        }`}
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+        }}
       >
         <p
           className="text-gray-700 leading-relaxed relative"
@@ -210,7 +217,14 @@ export default function ITSection() {
 
       {/* Description 2 - 두 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-[930px] top-[460px] z-10 max-w-none ${isVisible ? "description-second" : ""}`}
+        className={`absolute left-[930px] top-[460px] z-10 max-w-none description-container ${
+          isVisible ? "description-second" : ""
+        }`}
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+        }}
       >
         <p
           className="text-gray-700 leading-relaxed relative"
@@ -241,7 +255,14 @@ export default function ITSection() {
 
       {/* Description 3 - 세 번째 육각형과 정확히 수평 정렬 */}
       <div
-        className={`absolute left-[830px] top-[680px] z-10 max-w-none ${isVisible ? "description-third" : ""}`}
+        className={`absolute left-[830px] top-[680px] z-10 max-w-none description-container ${
+          isVisible ? "description-third" : ""
+        }`}
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+        }}
       >
         <p
           className="text-gray-700 leading-relaxed relative"
