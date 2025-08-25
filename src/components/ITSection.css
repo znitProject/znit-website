@@ -190,19 +190,17 @@ L 46.4223% 1.7889% Q 50% 0% 53.5777% 1.7889% Z"
   white-space: nowrap;
   font-size: 1.3em;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff !important; /* 강제 흰색 적용 */
   z-index: 2;
   text-align: center;
   text-shadow: none; /* 그림자 제거 */
-  /* 더 정확한 중앙 정렬을 위한 추가 속성 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
   transition:
     transform 0.3s,
     opacity 0.3s;
+  /* 브라우저 호환성을 위한 추가 속성 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
 }
 
 /* 헥사곤 텍스트 반응형 */
@@ -253,6 +251,8 @@ L 46.4223% 1.7889% Q 50% 0% 53.5777% 1.7889% Z"
 .hex-2:hover .hex-text,
 .hex-3:hover .hex-text {
   transform: translate(-50%, -50%) scale(1.08);
+  color: #ffffff !important; /* 호버 상태에서도 강제 흰색 */
+  text-shadow: none; /* 호버 상태에서도 그림자 없음 */
   /* 호버 시에도 중앙 정렬 유지 */
   display: flex;
   align-items: center;
@@ -1008,4 +1008,23 @@ ol.even:last-child .hex-connector::before {
     height: 2px;
     left: -6px;
   }
+}
+
+/* 설명 텍스트 색상 강화 */
+.description-first p,
+.description-second p,
+.description-third p {
+  color: #374151 !important; /* 라이트모드 기본 색상 */
+  font-weight: 500;
+  /* 브라우저 호환성 개선 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+}
+
+/* 다크모드일 때 설명 텍스트 색상 */
+.dark .description-first p,
+.dark .description-second p,
+.dark .description-third p {
+  color: #ffffff !important; /* 다크모드 흰색 */
 }

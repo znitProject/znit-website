@@ -1,0 +1,56 @@
+/* Culture Section 다크모드 호환성 CSS */
+
+/* 제목 텍스트 색상 강제 적용 */
+.culture-title {
+  color: #1e293b !important; /* 라이트모드 기본 색상 */
+  -webkit-text-fill-color: #1e293b !important;
+}
+
+.dark .culture-title {
+  color: #ffffff !important; /* 다크모드 흰색 */
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* 부제목 텍스트 색상 강제 적용 */
+.culture-subtitle {
+  color: #64748b !important; /* 라이트모드 기본 색상 */
+  -webkit-text-fill-color: #64748b !important;
+}
+
+.dark .culture-subtitle {
+  color: #d1d5db !important; /* 다크모드 밝은 회색 */
+  -webkit-text-fill-color: #d1d5db !important;
+}
+
+/* 내용 텍스트 색상 강제 적용 */
+.culture-content {
+  color: #334155 !important; /* 라이트모드 기본 색상 */
+  -webkit-text-fill-color: #334155 !important;
+}
+
+.dark .culture-content {
+  color: #e5e7eb !important; /* 다크모드 밝은 회색 */
+  -webkit-text-fill-color: #e5e7eb !important;
+}
+
+/* 중앙 원 텍스트 색상 강제 적용 */
+.culture-center-text {
+  color: #374151 !important; /* 라이트모드 기본 색상 */
+  -webkit-text-fill-color: #374151 !important;
+}
+
+.dark .culture-center-text {
+  color: #ffffff !important; /* 다크모드 흰색 */
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* click me 안내 텍스트 색상 강제 적용 */
+.culture-click-text {
+  color: #9ca3af !important; /* 라이트모드 기본 색상 */
+  -webkit-text-fill-color: #9ca3af !important;
+}
+
+.dark .culture-click-text {
+  color: #9ca3af !important; /* 다크모드에서도 동일하게 유지 */
+  -webkit-text-fill-color: #9ca3af !important;
+}

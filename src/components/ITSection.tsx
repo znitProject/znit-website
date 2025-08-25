@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTheme } from "next-themes";
 import "./ITSection.css";
 
 // CSS 변수 타입 정의
@@ -15,10 +16,19 @@ export default function ITSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 다크모드 여부에 따른 배경색과 텍스트 색상 결정
+  const backgroundColor =
+    mounted && theme === "dark" ? "bg-[#1F1F1F]" : "bg-white";
+  const textColor =
+    mounted && theme === "dark" ? "text-white" : "text-gray-700";
+  const descriptionTextColor =
+    mounted && theme === "dark" ? "#e5e7eb" : "#e5e7eb"; // 연한 회색으로 설정
 
   useEffect(() => {
     if (!mounted) return;
@@ -92,13 +102,13 @@ export default function ITSection() {
     <div
       id="it-section"
       ref={sectionRef}
-      className={`w-full h-[120vh] relative overflow-hidden bg-white ${isVisible ? "animate-hexagons" : ""}`}
+      className={`w-full h-[120vh] relative overflow-hidden ${backgroundColor} transition-colors duration-300 ${isVisible ? "animate-hexagons" : ""}`}
     >
       {/* Main Title - DesignSection과 동일한 스타일 */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:top-6 md:top-8 z-20">
         <h1
           ref={titleRef}
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-gray-900 text-center"
+          className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-center ${textColor}`}
           style={{ fontFamily: "Red Hat Display, sans-serif" }}
         >
           Develop with ZNIT
@@ -171,16 +181,27 @@ export default function ITSection() {
       <div
         className={`absolute left-[830px] top-[230px] z-10 max-w-none ${isVisible ? "description-first" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed relative">
+        <p
+          className="text-gray-700 leading-relaxed relative"
+          style={{ color: descriptionTextColor }}
+        >
           <img
-            src="/itsection/icons8-quote-left-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-quotation-mark-100_white-left.png"
+                : "/itsection/icons8-quote-left-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-open"
           />
           웹, 앱, 플랫폼, IoT까지 기획부터 디자인, 개발, 배포까지 <br />한
           흐름으로 완성합니다
           <img
-            src="/itsection/icons8-quote-right-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-get-quote-100_white-right.png"
+                : "/itsection/icons8-quote-right-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-close"
           />
@@ -191,16 +212,27 @@ export default function ITSection() {
       <div
         className={`absolute left-[930px] top-[460px] z-10 max-w-none ${isVisible ? "description-second" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed relative">
+        <p
+          className="text-gray-700 leading-relaxed relative"
+          style={{ color: descriptionTextColor }}
+        >
           <img
-            src="/itsection/icons8-quote-left-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-quotation-mark-100_white-left.png"
+                : "/itsection/icons8-quote-left-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-open"
           />
           분야별 비즈니스와 사용자 특성을 깊이 이해하고 <br />
           그에 최적화된 IT 서비스를 구현합니다
           <img
-            src="/itsection/icons8-quote-right-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-get-quote-100_white-right.png"
+                : "/itsection/icons8-quote-right-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-close"
           />
@@ -211,16 +243,27 @@ export default function ITSection() {
       <div
         className={`absolute left-[830px] top-[680px] z-10 max-w-none ${isVisible ? "description-third" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed relative">
+        <p
+          className="text-gray-700 leading-relaxed relative"
+          style={{ color: descriptionTextColor }}
+        >
           <img
-            src="/itsection/icons8-quote-left-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-quotation-mark-100_white-left.png"
+                : "/itsection/icons8-quote-left-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-open"
           />
           변화하는 시장과 기술에 유연하게 적응하는 구조로 <br />
           서비스의 지속적 성장과 확장을 지원합니다
           <img
-            src="/itsection/icons8-quote-right-100-fill.png"
+            src={
+              mounted && theme === "dark"
+                ? "/itsection/icons8-get-quote-100_white-right.png"
+                : "/itsection/icons8-quote-right-100-fill.png"
+            }
             alt="따옴표"
             className="quote-mark quote-close"
           />
