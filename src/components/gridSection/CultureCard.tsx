@@ -93,6 +93,14 @@ export default function WeOwnItCard({
           backgroundRepeat: "no-repeat",
         }}
       >
+        {/* Background Overlay */}
+        <div 
+          className="absolute inset-0 z-5 rounded-2xl sm:rounded-[24px] md:rounded-[30px]"
+          style={{
+            background: "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 40%, transparent 70%)"
+          }}
+        />
+        
         {/* Glow Layer */}
         <div
           ref={glowRef}
