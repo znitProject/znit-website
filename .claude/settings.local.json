@@ -9,7 +9,8 @@
       "Read(/d:\\ZNIT\\znit-website\\src\\app/**)",
       "Read(/d:\\ZNIT\\znit-website\\src\\components\\gridSection/**)",
       "Read(/d:\\ZNIT\\znit-website\\src\\components\\gridSection/**)",
-      "Read(/d:\\ZNIT\\znit-website\\src\\components/**)"
+      "Read(/d:\\ZNIT\\znit-website\\src\\components/**)",
+      "Read(/d:\\ZNIT\\znit-website\\src\\app/**)"
     ],
     "deny": [],
     "ask": []

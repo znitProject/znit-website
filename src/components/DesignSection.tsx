@@ -255,18 +255,13 @@ const UICraftCards: React.FC = () => {
                       </div>
 
                       <h3
-                        className={`
-          text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl
-          font-extrabold uppercase leading-none  /* 👈 라인하이트 착시 제거 */
-          ${theme === "dark" ? "text-white" : "text-gray-900"}
-        `}
+                        className={`text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold uppercase leading-none ${
+                          isOpen ? "text-gray-900" : "text-white"
+                        }`}
                         style={
                           isOpen
                             ? {
-                                textShadow:
-                                  theme === "dark"
-                                    ? "1px 1px 2px rgba(0,0,0,0.8)"
-                                    : "1px 1px 2px rgba(255,255,255,0.8)",
+                                textShadow: "1px 1px 2px rgba(255,255,255,0.8)",
                               }
                             : {}
                         }
@@ -299,11 +294,7 @@ const UICraftCards: React.FC = () => {
                       {card.tags.map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
-                          className={`px-3 py-1.5 text-xs sm:text-sm rounded-full border backdrop-blur-sm shadow-sm transition-colors duration-300 ${
-                            theme === "dark"
-                              ? "bg-zinc-800/80 border-zinc-600/60 text-gray-200"
-                              : "bg-blue-100 border-gray-300 text-gray-700"
-                          }`}
+                          className="px-3 py-1.5 text-xs sm:text-sm rounded-full border backdrop-blur-sm shadow-sm transition-colors duration-300 bg-blue-100 border-gray-300 text-gray-700"
                         >
                           {tag}
                         </span>
@@ -316,16 +307,9 @@ const UICraftCards: React.FC = () => {
                 {isOpen && (
                   <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 md:bottom-6 md:left-6 z-10 transition-all duration-500 opacity-100 translate-y-0 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
                     <p
-                      className={`text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed whitespace-pre-line backdrop-blur-sm bg-white/80 p-3 rounded-lg ${
-                        theme === "dark"
-                          ? "text-white shadow-lg"
-                          : "text-gray-900 shadow-md"
-                      }`}
+                      className="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed whitespace-pre-line backdrop-blur-sm bg-white/80 p-3 rounded-lg text-gray-900 shadow-md"
                       style={{
-                        textShadow:
-                          theme === "dark"
-                            ? "1px 1px 2px rgba(0,0,0,0.8)"
-                            : "1px 1px 2px rgba(255,255,255,0.8)",
+                        textShadow: "1px 1px 2px rgba(255,255,255,0.8)",
                       }}
                     >
                       {card.description}
