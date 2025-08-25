@@ -177,7 +177,10 @@ export default function HomePage() {
       {!isFooterVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-transparent border-2 border-black dark:border-white text-gray-900 dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center group"
+          className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-transparent text-gray-900 dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center group"
+          style={{
+            border: `2px solid ${mounted && theme === "dark" ? "#ffffff" : "#000000"}`,
+          }}
           aria-label="맨 위로 이동"
         >
           <svg

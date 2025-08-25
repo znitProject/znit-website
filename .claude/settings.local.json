@@ -14,7 +14,10 @@
       "Read(/d:\\ZNIT\\znit-website\\src\\app/**)",
       "Read(/d:\\ZNIT\\znit-website\\src\\app/**)",
       "Read(/d:\\ZNIT\\znit-website\\src\\app/**)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Read(/d:\\ZNIT\\znit-website\\src\\components/**)",
+      "Read(/d:\\ZNIT\\znit-website\\src\\components/**)",
+      "Read(/d:\\ZNIT\\znit-website\\src\\app/**)"
     ],
     "deny": [],
     "ask": [],
