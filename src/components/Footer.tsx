@@ -111,15 +111,20 @@ export default function Footer() {
         style={{ width: "calc(100% - 140px)" }}
       >
         <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-10">
             {/* 회사 정보 */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-2">
-              <div className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 tracking-tight">
-                ZNIT
+              <div className="mb-3 sm:mb-4">
+                <img 
+                  src="/logo/ZNLogo.png" 
+                  alt="ZNIT" 
+                  className="h-8 sm:h-10"
+                />
               </div>
               <p className="text-zinc-500 mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
-                혁신적인 솔루션으로 미래를 만들어갑니다. 우리는 우리가 하는 모든
-                일에 책임을 지고, 최고의 결과물을 만들어내는 것을 약속합니다.
+                기술과 디자인으로 사람을 잇고,
+                <br />
+                세상에 편안함과 아름다움을 더합니다.
               </p>
               <div className="flex space-x-4">
                 <a
@@ -152,64 +157,22 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* 빠른 링크 */}
-            <div className="hidden sm:block">
-              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-600">
-                빠른 링크
-              </h3>
-              <div className="flex flex-wrap gap-2 sm:block sm:space-y-1">
-                <Link
-                  href="/"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/work"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
-                >
-                  Work
-                </Link>
-                <Link
-                  href="/recruit"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
-                >
-                  Recruit
-                </Link>
-                <Link
-                  href="/slogan"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block sm:block"
-                >
-                  We Own It
-                </Link>
-              </div>
-            </div>
-
-            {/* 연락처 */}
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 tracking-tight text-zinc-600">
-                연락처
-              </h3>
-              <div className="space-y-0.5 sm:space-y-1 text-zinc-500">
-                <a
-                  href="mailto:contact@znit.com"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  contact@znit.com
-                </a>
-                <a
-                  href="tel:02-1234-5678"
-                  className="text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-1 py-0.5 transition-all duration-200 footer-link text-sm sm:text-base block"
-                >
-                  031-1234-5678
-                </a>
-                <div className="text-sm sm:text-base py-0.5 text-zinc-600 dark:text-zinc-500">
-                  <span className="block flex flex-col items-center sm:block">
-                    경기 김포시 고촌읍
-                  </span>
-                  <span className="block flex flex-col items-center sm:block">
-                    장차로5번길 20
-                  </span>
+            {/* 사업자 정보 */}
+            <div className="col-span-2 flex flex-col justify-end -mt-4">
+              <div className="text-zinc-600 dark:text-zinc-400 text-sm space-y-2 text-right">
+                <p>ZNIT | 대표자: 정지호 | 사업자등록번호: 176-81-00290</p>
+                <p>경기 김포시 고촌읍 장차로5번길 20 2층 | 031-996-4823</p>
+                <div className="flex justify-end space-x-4 mt-4">
+                  <a href="#" className="hover:text-zinc-900 dark:hover:text-white transition-colors">
+                    이용약관
+                  </a>
+                  <span>|</span>
+                  <Link
+                    href="/credits"
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Credits
+                  </Link>
                 </div>
               </div>
             </div>
@@ -217,24 +180,10 @@ export default function Footer() {
 
           {/* 하단 구분선 */}
           <div className="border-t border-zinc-700 mt-6 sm:mt-8 pt-6 sm:pt-8">
-            <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-              <p className="text-zinc-500 text-xs sm:text-sm text-center sm:text-left tracking-tight">
+            <div className="flex justify-end">
+              <p className="text-zinc-500 text-xs sm:text-sm tracking-tight">
                 © {currentYear} ZNIT. All rights reserved.
               </p>
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
-                <Link
-                  href="/credits"
-                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
-                >
-                  코드 출처
-                </Link>
-                <Link
-                  href="/terms"
-                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded px-2 py-1 text-xs sm:text-sm transition-all duration-200 footer-link text-center"
-                >
-                  이용약관
-                </Link>
-              </div>
             </div>
           </div>
         </div>
