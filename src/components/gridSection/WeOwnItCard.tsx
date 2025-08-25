@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
@@ -28,31 +27,17 @@ const WorkWithUsCard: React.FC<{ style?: React.CSSProperties }> = ({ style }) =>
   };
 
   const handleMouseEnter = () => {
-    if (containerRef.current) {
-      gsap.to(containerRef.current, {
-        scale: 1.03,
-        boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.2)",
-        duration: 0.35,
-        ease: "power3.out",
-      });
-    }
+    // Scale effect removed - no scaling on hover
   };
 
   const handleMouseLeave = () => {
-    if (containerRef.current && glowRef.current) {
-      gsap.to(containerRef.current, {
-        scale: 1,
-        boxShadow: "0 0 0 rgba(0,0,0,0)",
-        duration: 0.35,
-        ease: "power3.out",
-      });
+    if (glowRef.current) {
       glowRef.current.style.background = "transparent";
     }
   };
 
   return (
-    <Link
-      href="/career"
+    <div
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -61,7 +46,7 @@ const WorkWithUsCard: React.FC<{ style?: React.CSSProperties }> = ({ style }) =>
     >
       <div
         ref={containerRef}
-        className="relative w-full h-full flex justify-center items-center px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 lg:py-12 xl:py-16 bg-black overflow-hidden rounded-2xl sm:rounded-[24px] md:rounded-[30px] border border-gray-200/20 cursor-pointer group"
+        className="relative w-full h-full flex justify-center items-center px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 lg:py-12 xl:py-16 bg-black overflow-hidden rounded-2xl sm:rounded-[24px] md:rounded-[30px] border border-gray-200/20 group"
       >
         {/* Glow */}
         <div
@@ -156,7 +141,7 @@ const WorkWithUsCard: React.FC<{ style?: React.CSSProperties }> = ({ style }) =>
           }
         `}</style>
       </div>
-    </Link>
+    </div>
   );
 };
 
