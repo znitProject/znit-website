@@ -2,6 +2,32 @@
    ITSection.css (Pointy-top)
    ========================= */
 
+/* 제목 애니메이션 스타일 */
+.char-0,
+.char-1,
+.char-2,
+.char-3,
+.char-4,
+.char-5,
+.char-6,
+.char-7,
+.char-8,
+.char-9,
+.char-10,
+.char-11,
+.char-12,
+.char-13,
+.char-14,
+.char-15,
+.char-16,
+.char-17,
+.char-18,
+.char-19,
+.char-20 {
+  display: inline-block;
+  transform-origin: 50% 50% -50px;
+}
+
 /* 정육각형 사이즈/비율 */
 :root {
   --hex-size: 14.5em; /* 14em에서 14.5em으로 아주 조금 확대 */
@@ -17,6 +43,49 @@
   top: 45%; /* 55%에서 45%로 조정하여 제목과의 간격 축소 */
   transform: translateY(-50%);
   z-index: 10;
+}
+
+/* 반응형 헥사곤 컨테이너 위치 조정 */
+@media (max-width: 1440px) {
+  .it-hex-container {
+    left: 12%;
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .it-hex-container {
+    left: 10%;
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .it-hex-container {
+    left: 8%;
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 900px) {
+  .it-hex-container {
+    left: 5%;
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 768px) {
+  .it-hex-container {
+    left: 2%;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 640px) {
+  .it-hex-container {
+    left: 0;
+    max-width: 500px;
+  }
 }
 
 /* 열 배치 (기존 even/odd 유지) */
@@ -106,16 +175,59 @@ ol.even:last-child {
   color: #fff;
   z-index: 2;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: none; /* 그림자 제거 */
   transition:
     transform 0.3s,
-    text-shadow 0.3s,
     opacity 0.3s;
 }
+
+/* 헥사곤 텍스트 반응형 */
+@media (max-width: 1440px) {
+  .hex-text {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 1200px) {
+  .hex-text {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hex-text {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 900px) {
+  .hex-text {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 768px) {
+  .hex-text {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 640px) {
+  .hex-text {
+    font-size: 0.7em;
+  }
+}
+
+@media (max-width: 480px) {
+  .hex-text {
+    font-size: 0.6em;
+  }
+}
+
+/* 헥사곤 텍스트 호버 효과 */
 .hex-1:hover .hex-text,
 .hex-2:hover .hex-text,
 .hex-3:hover .hex-text {
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
   transform: translate(-50%, -50%) scale(1.08);
 }
 
@@ -160,6 +272,13 @@ ol.even:last-child {
     0.6s;
 }
 
+/* 애니메이션이 끝난 후 상태 유지 */
+.first .it-hex,
+.second .it-hex,
+.third .it-hex {
+  animation-fill-mode: forwards;
+}
+
 /* =========================
    설명 텍스트 (TSX: description-* 클래스와 연동)
    ========================= */
@@ -170,6 +289,64 @@ ol.even:last-child {
   border-left: 8px solid #3b82f6;
   margin-bottom: 24px;
   box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* 따옴표 스타일 */
+.quote-mark {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 30%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+.quote-open {
+  left: -50px;
+}
+
+.quote-close {
+  right: -50px;
+}
+
+/* 따옴표 반응형 */
+@media (max-width: 1024px) {
+  .quote-mark {
+    width: 25px;
+    height: 25px;
+  }
+  .quote-open {
+    left: -40px;
+  }
+  .quote-close {
+    right: -40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-mark {
+    width: 20px;
+    height: 20px;
+  }
+  .quote-open {
+    left: -35px;
+  }
+  .quote-close {
+    right: -35px;
+  }
+}
+
+@media (max-width: 640px) {
+  .quote-mark {
+    width: 18px;
+    height: 18px;
+  }
+  .quote-open {
+    left: -30px;
+  }
+  .quote-close {
+    right: -30px;
+  }
 }
 
 @keyframes descriptionElegant {
@@ -461,6 +638,154 @@ ol.even:last-child {
   }
 }
 
+/* 설명 텍스트 반응형 위치 조정 */
+@media (max-width: 1200px) {
+  .description-first {
+    left: 55% !important; /* 60%에서 55%로 가까이 */
+    top: 200px !important;
+  }
+  .description-second {
+    left: 65% !important; /* 75%에서 65%로 가까이 */
+    top: 430px !important;
+  }
+  .description-third {
+    left: 60% !important; /* 70%에서 60%로 가까이 */
+    top: 650px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .description-first {
+    left: 60% !important; /* 65%에서 60%로 가까이 */
+    top: 180px !important;
+  }
+  .description-second {
+    left: 65% !important; /* 70%에서 65%로 가까이 */
+    top: 400px !important;
+  }
+  .description-third {
+    left: 60% !important; /* 65%에서 60%로 가까이 */
+    top: 600px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .description-first {
+    left: 50% !important; /* 55%에서 50%로 가까이 */
+    top: 230px !important;
+    max-width: 280px !important;
+  }
+  .description-second {
+    left: 58% !important; /* 63%에서 58%로 가까이 */
+    top: 430px !important;
+    max-width: 280px !important;
+  }
+  .description-third {
+    left: 50% !important; /* 55%에서 50%로 가까이 */
+    top: 650px !important;
+    max-width: 280px !important;
+  }
+
+  /* 900px 이하에서 설명 텍스트 줄바꿈 개선 */
+  .description-first p,
+  .description-second p,
+  .description-third p {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .description-first {
+    left: 50% !important; /* 55%에서 50%로 가까이 */
+    top: 140px !important;
+    max-width: 250px !important;
+  }
+  .description-second {
+    left: 55% !important; /* 60%에서 55%로 가까이 */
+    top: 340px !important;
+    max-width: 250px !important;
+  }
+  .description-third {
+    left: 50% !important; /* 55%에서 50%로 가까이 */
+    top: 540px !important;
+    max-width: 250px !important;
+  }
+
+  /* 768px 이하에서 설명 텍스트 줄바꿈 개선 */
+  .description-first p,
+  .description-second p,
+  .description-third p {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .description-first {
+    left: 45% !important; /* 50%에서 45%로 가까이 */
+    top: 120px !important;
+  }
+  .description-second {
+    left: 50% !important; /* 55%에서 50%로 가까이 */
+    top: 310px !important;
+  }
+  .description-third {
+    left: 45% !important; /* 50%에서 45%로 가까이 */
+    top: 510px !important;
+  }
+}
+
+/* 모바일에서 세로 배치로 변경 */
+@media (max-width: 480px) {
+  /* 헥사곤 컨테이너를 중앙 정렬 */
+  .it-hex-container {
+    left: 50% !important;
+    transform: translateX(-50%) translateY(-50%) !important;
+    max-width: 90vw !important;
+  }
+
+  /* 헥사곤들을 세로로 정렬 */
+  ol.even,
+  ol.odd {
+    left: 0 !important;
+    margin: 0.5em 0 !important;
+    text-align: center;
+  }
+
+  /* 설명 텍스트를 헥사곤 아래에 배치 */
+  .description-first,
+  .description-second,
+  .description-third {
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: auto !important;
+    margin-top: 20px !important;
+    margin-bottom: 30px !important;
+    max-width: 85vw !important;
+    text-align: center;
+  }
+
+  /* 설명 텍스트 패딩 조정 */
+  .it-description-item {
+    padding: 20px 16px !important;
+    margin: 0 10px 20px 10px !important;
+  }
+
+  /* 따옴표 위치 조정 */
+  .quote-open {
+    left: -30px !important;
+  }
+  .quote-close {
+    right: -30px !important;
+  }
+}
+
 /* 다크 모드 대비 */
 @media (prefers-color-scheme: dark) {
   .hex-text {
@@ -485,7 +810,7 @@ ol {
   transform: translateY(-50%);
 
   /* 선 모양 */
-  width: var(--conn-len, 240px);
+  width: var(--conn-len, 200px); /* 240px에서 200px로 단축 */
   height: 6px;
   background: var(--conn-color);
   border-radius: 4px 8px 8px 4px;
@@ -500,37 +825,40 @@ ol {
 .hex-1 {
   background: #f5b415 !important; /* 밝은 노란색/주황색 */
 }
-.hex-1 .hex-connector {
+/* 첫 번째 ol의 연결선 */
+ol.even:first-child .hex-connector {
   background: #f5b415 !important;
 }
 
 .hex-2 {
   background: #223f4e !important; /* 어두운 남색 */
 }
-.hex-2 .hex-connector {
+/* 두 번째 ol의 연결선 */
+ol.odd .hex-connector {
   background: #223f4e !important;
 }
 
 .hex-3 {
   background: #356687 !important; /* 중간 파란색 */
 }
-.hex-3 .hex-connector {
+/* 세 번째 ol의 연결선 */
+ol.even:last-child .hex-connector {
   background: #356687 !important;
 }
 
 /* 연결선 끝점 동그라미도 각각의 색상으로 */
-.hex-1 .hex-connector::after,
-.hex-1 .hex-connector::before {
+ol.even:first-child .hex-connector::after,
+ol.even:first-child .hex-connector::before {
   background: #f5b415 !important;
 }
 
-.hex-2 .hex-connector::after,
-.hex-2 .hex-connector::before {
+ol.odd .hex-connector::after,
+ol.odd .hex-connector::before {
   background: #223f4e !important;
 }
 
-.hex-3 .hex-connector::after,
-.hex-3 .hex-connector::before {
+ol.even:last-child .hex-connector::after,
+ol.even:last-child .hex-connector::before {
   background: #356687 !important;
 }
 
@@ -585,5 +913,63 @@ ol {
 @media (max-width: 720px) {
   .hex-connector {
     display: none;
+  }
+}
+
+/* 연결선 반응형 개선 */
+@media (max-width: 1024px) {
+  .hex-connector {
+    height: 4px;
+    width: 180px !important; /* 1024px 이하에서 연결선 길이 단축 */
+  }
+  .hex-connector::after {
+    width: 10px;
+    height: 10px;
+    right: -7px;
+  }
+  .hex-connector::before {
+    width: 12px;
+    height: 4px;
+    left: -10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hex-connector {
+    width: 160px !important; /* 900px 이하에서 연결선 길이 더 단축 */
+  }
+}
+
+@media (max-width: 768px) {
+  .hex-connector {
+    height: 3px;
+    width: 140px !important; /* 768px 이하에서 연결선 길이 더 단축 */
+  }
+  .hex-connector::after {
+    width: 8px;
+    height: 8px;
+    right: -6px;
+  }
+  .hex-connector::before {
+    width: 10px;
+    height: 3px;
+    left: -8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hex-connector {
+    height: 2px;
+    width: 120px !important; /* 640px 이하에서 연결선 길이 더 단축 */
+  }
+  .hex-connector::after {
+    width: 6px;
+    height: 6px;
+    right: -4px;
+  }
+  .hex-connector::before {
+    width: 8px;
+    height: 2px;
+    left: -6px;
   }
 }
