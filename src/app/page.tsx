@@ -162,7 +162,9 @@ export default function HomePage() {
       </div>
 
       {/* Culture Section - Full Width Background */}
-      <CultureSection />
+      <div className={`w-full ${backgroundColor}`}>
+        <CultureSection />
+      </div>
 
       {/* Closing Section */}
       <div

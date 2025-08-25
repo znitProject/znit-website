@@ -471,7 +471,7 @@ const CulturePage: React.FC = () => {
   useCenterCircleCues(centerCircleRef, { disabled: isExpanded });
 
   return (
-    <div id="culture-section" className="w-full min-h-screen bg-sky-50/60 dark:bg-zinc-800">
+    <div id="culture-section" className="w-full min-h-screen bg-transparent">
       <div className="w-full h-full flex items-center justify-center">
         <div className="relative w-full max-w-[1600px] h-[720px] md:h-[900px] lg:h-[1100px] px-6">
           {/* 중앙 원 - 바깥 래퍼: 절대 중앙 고정(변환 고정, GSAP 미개입) */}
