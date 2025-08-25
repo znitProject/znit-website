@@ -11,6 +11,20 @@ interface BoxData {
   position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
 }
 
+// CSS 변수 타입 정의
+interface CSSPropertiesWithVars extends React.CSSProperties {
+  "--culture-center-bg"?: string;
+  "--tx"?: string;
+  "--ty"?: string;
+}
+
+// GSAP 애니메이션 타입 정의
+interface GSAPAnimationVars {
+  "--culture-center-bg"?: string;
+  duration?: number;
+  ease?: string;
+}
+
 type Notch = { dx: number; dy: number };
 
 const ACCENT: Record<
@@ -172,7 +186,7 @@ function useCenterCircleCues(
         "--culture-center-bg": gradients[i],
         duration: 3,
         ease: "power2.inOut",
-      } as any);
+      } as GSAPAnimationVars);
     }, 4000);
 
     // 🔧 빠른 세터로 CSS 변수만 갱신
@@ -453,7 +467,6 @@ const CulturePage: React.FC = () => {
     const onResize = () => animateLayout(isExpanded);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
   const handleCenterClick = () => {
@@ -495,15 +508,12 @@ const CulturePage: React.FC = () => {
                   backgroundImage:
                     "var(--culture-center-bg, linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%))",
                   // 기본값을 안전하게 인라인 지정(충돌 방지)
-                  // @ts-ignore
                   "--culture-center-bg":
                     "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%)",
                   // 위치 변수 초기값
-                  // @ts-ignore
                   "--tx": "0px",
-                  // @ts-ignore
                   "--ty": "0px",
-                } as React.CSSProperties
+                } as CSSPropertiesWithVars
               }
             >
               <span className="font-bold text-2xl md:text-3xl lg:text-[34px]">
@@ -594,7 +604,10 @@ const CulturePage: React.FC = () => {
                               "leading-[1.05]",
                               A.titleAlign,
                             ].join(" ")}
-                            style={{ textWrap: "balance" as any }}
+                            style={{
+                              textWrap:
+                                "balance" as React.CSSProperties["textWrap"],
+                            }}
                           >
                             {box.title}
                           </h3>
@@ -647,7 +660,10 @@ const CulturePage: React.FC = () => {
                           "relative",
                           A.paragraphAlign,
                         ].join(" ")}
-                        style={{ textWrap: "balance" as any }}
+                        style={{
+                          textWrap:
+                            "balance" as React.CSSProperties["textWrap"],
+                        }}
                       >
                         {box.content}
                       </p>

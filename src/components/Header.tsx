@@ -4,45 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import HamburgerButton from "./HamburgerButton";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
 
   const menuRef = useRef<HTMLDivElement>(null);
-
-  const menuItems = [
-    { name: "HOME", path: "/" },
-    { name: "WORKS", path: "/work" },
-    { name: "ABOUT", path: "/about" },
-    { name: "CAREERS", path: "/career" },
-    // { name: "CONTACT US", path: "/contact" },
-  ];
-
-  // 스크롤 위치 감지 (about 페이지에서만)
-  useEffect(() => {
-    const handleScroll = () => {
-      if (pathname === "/about") {
-        const scrollPosition = window.scrollY;
-        // about 페이지에서 800px 이상 스크롤되면 색상 변경 (검정 배경 구간)
-        setIsScrolled(scrollPosition > 800);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    // 초기 상태 설정
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const closeMenu = () => {
     setIsMenuOpen(false);

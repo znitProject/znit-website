@@ -127,7 +127,10 @@ export default function Carousel3D({ items }: Carousel3DProps) {
 
     return () => {
       tl.kill();
-      gsap.killTweensOf(carouselRef.current);
+      const currentRef = carouselRef.current;
+      if (currentRef) {
+        gsap.killTweensOf(currentRef);
+      }
     };
   }, [isVisible]);
 
@@ -341,161 +344,6 @@ export default function Carousel3D({ items }: Carousel3DProps) {
     return pattern.filter((index) => index < word.length);
   };
 
-  // 인덱스 번호 디자인 스타일 정의
-  const getIndexNumberStyle = (index: number) => {
-    const styles = [
-      // Index 0: 원형 테두리
-      {
-        shape: "circle",
-        background: "transparent",
-        border: `1px solid ${getCardMainColor(index)}`,
-        borderRadius: "50%",
-        width: "22px",
-        height: "22px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "12px",
-        fontWeight: "700",
-        color: getCardMainColor(index),
-        position: "absolute" as const,
-        top: "0.75rem",
-        right: "0.75rem",
-      },
-      // Index 1: 사각형 테두리
-      {
-        shape: "square",
-        background: "transparent",
-        border: `1px solid ${getCardMainColor(index)}`,
-        borderRadius: "3px",
-        width: "22px",
-        height: "22px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "12px",
-        fontWeight: "700",
-        color: getCardMainColor(index),
-        position: "absolute" as const,
-        bottom: "0.75rem",
-        right: "0.75rem",
-      },
-      // Index 2: 테두리 없는 원형 배경 (가운데 아래)
-      {
-        shape: "filled-circle",
-        background: getCardMainColor(index),
-        border: "none",
-        borderRadius: "50%",
-        width: "20px",
-        height: "20px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "9px",
-        fontWeight: "700",
-        color: "white",
-        position: "absolute" as const,
-        bottom: "0.75rem",
-        left: "50%",
-        transform: "translateX(-50%)",
-      },
-      // Index 3: 둥근 사각형 배경
-      {
-        shape: "filled-rounded",
-        background: getCardMainColor(index),
-        border: "none",
-        borderRadius: "4px",
-        width: "22px",
-        height: "16px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "9px",
-        fontWeight: "700",
-        color: "white",
-        position: "absolute" as const,
-        top: "0.75rem",
-        left: "0.75rem",
-      },
-      // Index 4: 원형 테두리 (다른 위치)
-      {
-        shape: "circle",
-        background: "transparent",
-        border: `1px solid ${getCardMainColor(index)}`,
-        borderRadius: "50%",
-        width: "20px",
-        height: "20px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "12px",
-        fontWeight: "700",
-        color: getCardMainColor(index),
-        position: "absolute" as const,
-        top: "0.75rem",
-        right: "0.75rem",
-      },
-      // Index 5: 테두리 없는 사각형 배경 (가운데 위)
-      {
-        shape: "filled-square",
-        background: getCardMainColor(index),
-        border: "none",
-        borderRadius: "3px",
-        width: "20px",
-        height: "20px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "9px",
-        fontWeight: "700",
-        color: "white",
-        position: "absolute" as const,
-        top: "0.75rem",
-        left: "50%",
-        transform: "translateX(-50%)",
-      },
-      // Index 6: 다이아몬드 모양
-      {
-        shape: "diamond",
-        background: getCardMainColor(index),
-        border: "none",
-        borderRadius: "3px",
-        width: "18px",
-        height: "18px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "8px",
-        fontWeight: "700",
-        color: "white",
-        position: "absolute" as const,
-        top: "0.75rem",
-        right: "0.75rem",
-        transform: "rotate(45deg)",
-      },
-      // Index 7: 원형 테두리 (투명 배경, 가운데 위)
-      {
-        shape: "circle-outline",
-        background: "rgba(255, 255, 255, 0.9)",
-        border: `1px solid ${getCardMainColor(index)}`,
-        borderRadius: "50%",
-        width: "22px",
-        height: "22px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "9px",
-        fontWeight: "700",
-        color: getCardMainColor(index),
-        position: "absolute" as const,
-        top: "0.75rem",
-        left: "50%",
-        transform: "translateX(-50%)",
-      },
-    ];
-    return styles[index % styles.length];
-  };
-
   // Black and white card styles
   const getBlackWhiteCardStyle = (index: number) => {
     const styles = [
@@ -701,7 +549,8 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                       <div
                         className="text-xs sm:text-sm lg:text-base font-bold leading-tight absolute flex items-center gap-2"
                         style={{
-                          fontFamily: "SUIT Variable, SUIT, Pretendard Variable, Pretendard, sans-serif",
+                          fontFamily:
+                            "SUIT Variable, SUIT, Pretendard Variable, Pretendard, sans-serif",
                           color: getKoreanTextColor(index),
                           letterSpacing: "0.02em",
                           maxWidth: "70%",
@@ -749,15 +598,30 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                         }}
                       >
                         {/* Heroicons 아이콘 */}
-                        <span className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: getKoreanTextColor(index) }}>
-                          {index === 0 ? <ChatBubbleLeftRightIcon /> : // 소통하는 연결
-                           index === 1 ? <RocketLaunchIcon /> : // 변화를 향한 도전
-                           index === 2 ? <SparklesIcon /> : // 긍정의 힘
-                           index === 3 ? <ChartBarIcon /> : // 끊임없는 성장
-                           index === 4 ? <LightBulbIcon /> : // 창의력 있는 사고
-                           index === 5 ? <FireIcon /> : // 끈기와 몰입
-                           index === 6 ? <FireIcon /> : // 열정과 책임
-                           index === 7 ? <EyeIcon /> : <SparklesIcon />} {/* 섬세한 관찰력 */}
+                        <span
+                          className="w-4 h-4 mr-2 flex-shrink-0"
+                          style={{ color: getKoreanTextColor(index) }}
+                        >
+                          {index === 0 ? (
+                            <ChatBubbleLeftRightIcon /> // 소통하는 연결
+                          ) : index === 1 ? (
+                            <RocketLaunchIcon /> // 변화를 향한 도전
+                          ) : index === 2 ? (
+                            <SparklesIcon /> // 긍정의 힘
+                          ) : index === 3 ? (
+                            <ChartBarIcon /> // 끊임없는 성장
+                          ) : index === 4 ? (
+                            <LightBulbIcon /> // 창의력 있는 사고
+                          ) : index === 5 ? (
+                            <FireIcon /> // 끈기와 몰입
+                          ) : index === 6 ? (
+                            <FireIcon /> // 열정과 책임
+                          ) : index === 7 ? (
+                            <EyeIcon />
+                          ) : (
+                            <SparklesIcon />
+                          )}{" "}
+                          {/* 섬세한 관찰력 */}
                         </span>
                         {item.title}
                       </div>
@@ -973,7 +837,8 @@ export default function Carousel3D({ items }: Carousel3DProps) {
                       <div
                         className="text-base sm:text-lg lg:text-xl text-white leading-relaxed min-h-[2rem] flex items-center"
                         style={{
-                          fontFamily: "SUIT Variable, SUIT, Pretendard Variable, Pretendard, sans-serif",
+                          fontFamily:
+                            "SUIT Variable, SUIT, Pretendard Variable, Pretendard, sans-serif",
                           textShadow: `0 2px 8px rgba(0,0,0,0.4)`,
                           lineHeight: "1.6",
                           letterSpacing: "0.01em",

@@ -6,7 +6,6 @@ import gsap from "gsap";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const footerRef = useRef<HTMLDivElement>(null);
-  const [isFooterVisible, setIsFooterVisible] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -14,20 +13,6 @@ export default function Footer() {
       behavior: "smooth",
     });
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (footerRef.current) {
-        const rect = footerRef.current.getBoundingClientRect();
-        setIsFooterVisible(rect.top < window.innerHeight);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // 초기 상태 확인
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     gsap.fromTo(
@@ -115,9 +100,9 @@ export default function Footer() {
             {/* 회사 정보 */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-2">
               <div className="mb-3 sm:mb-4">
-                <img 
-                  src="/logo/ZNLogo.png" 
-                  alt="ZNIT" 
+                <img
+                  src="/logo/ZNLogo.png"
+                  alt="ZNIT"
                   className="h-8 sm:h-10"
                 />
               </div>
@@ -163,7 +148,10 @@ export default function Footer() {
                 <p>ZNIT | 대표자: 정지호 | 사업자등록번호: 176-81-00290</p>
                 <p>경기 김포시 고촌읍 장차로5번길 20 2층 | 031-996-4823</p>
                 <div className="flex justify-end space-x-4 mt-4">
-                  <a href="#" className="text-inherit hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors">
+                  <a
+                    href="#"
+                    className="text-inherit hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors"
+                  >
                     이용약관
                   </a>
                   <span>|</span>

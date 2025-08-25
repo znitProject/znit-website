@@ -5,6 +5,11 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./ITSection.css";
 
+// CSS 변수 타입 정의
+interface CSSPropertiesWithVars extends React.CSSProperties {
+  "--conn-len"?: string;
+}
+
 export default function ITSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -79,7 +84,7 @@ export default function ITSection() {
     return () => {
       observer.disconnect();
       // GSAP 애니메이션 정리
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [mounted]);
 
@@ -117,7 +122,7 @@ export default function ITSection() {
           {/* 헥사곤과 설명을 잇는 선 */}
           <span
             className="hex-connector"
-            style={{ ["--conn-len" as any]: "12vw" }} // 필요하면 수치만 바꿔!
+            style={{ "--conn-len": "12vw" } as CSSPropertiesWithVars}
             aria-hidden="true"
           />
         </ol>
@@ -136,7 +141,7 @@ export default function ITSection() {
           </li>
           <span
             className="hex-connector"
-            style={{ ["--conn-len" as any]: "10vw" }}
+            style={{ "--conn-len": "10vw" } as CSSPropertiesWithVars}
             aria-hidden="true"
           />
         </ol>
@@ -155,7 +160,7 @@ export default function ITSection() {
           </li>
           <span
             className="hex-connector"
-            style={{ ["--conn-len" as any]: "12vw" }}
+            style={{ "--conn-len": "12vw" } as CSSPropertiesWithVars}
             aria-hidden="true"
           />
         </ol>
@@ -172,8 +177,8 @@ export default function ITSection() {
             alt="따옴표"
             className="quote-mark quote-open"
           />
-          웹, 앱, 플랫폼, IoT까지 <br />
-          기획부터 디자인, 개발, 배포까지 한 흐름으로 완성합니다
+          웹, 앱, 플랫폼, IoT까지 기획부터 디자인, 개발, 배포까지 <br />한
+          흐름으로 완성합니다
           <img
             src="/itsection/icons8-quote-right-100-fill.png"
             alt="따옴표"
