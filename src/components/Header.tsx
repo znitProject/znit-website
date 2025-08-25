@@ -85,14 +85,13 @@ export default function Header() {
           </Link>
 
           {/* 햄버거 메뉴 버튼 - 오른쪽 */}
-          <div className="relative" ref={menuRef}>
+          {/* <div className="relative" ref={menuRef}>
             <HamburgerButton
               toggleMenu={toggleMenu}
               isMenuOpen={isMenuOpen}
               isScrolled={pathname === "/about" ? isScrolled : false}
             />
 
-            {/* 촤라락 메뉴 드롭다운 */}
             <div
               className="absolute top-full right-0 mt-2 bg-transparent"
               style={{
@@ -126,7 +125,7 @@ export default function Header() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </header>
