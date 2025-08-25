@@ -11,6 +11,11 @@
   --font-sejong-geulggot: "SejongGeulggot", serif;
   --font-chosun-centennial: "ChosunCentennial", serif;
   --font-pf-stardust: "PFStardust", serif;
+
+  /* 색상 변수 추가 */
+  --color-white: #ffffff;
+  --color-gray-700: #374151;
+  --foreground: #171717;
 }
 
 @import "tailwindcss";
@@ -404,4 +409,49 @@ span.pf-stardust-regular,
 
 .loading-mobile {
   animation: mobile-spin 1s linear infinite;
+}
+
+/* CultureSection 중앙 원형 요소 텍스트 색상 강제 적용 */
+.culture-center-text {
+  color: #374151 !important;
+  -webkit-text-fill-color: #374151 !important;
+}
+
+/* 다크모드에서도 강제로 회색 유지 */
+.dark .culture-center-text {
+  color: #374151 !important;
+  -webkit-text-fill-color: #374151 !important;
+}
+
+/* CultureSection 모든 제목 텍스트 강제 적용 */
+.culture-title {
+  color: #1e293b !important; /* text-slate-900 */
+  -webkit-text-fill-color: #1e293b !important;
+}
+
+.dark .culture-title {
+  color: #ffffff !important; /* dark:text-white */
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* CultureSection 설명 텍스트 강제 적용 */
+.culture-description {
+  color: #334155 !important; /* text-slate-700 */
+  -webkit-text-fill-color: #334155 !important;
+}
+
+.dark .culture-description {
+  color: #e2e8f0 !important; /* dark:text-zinc-200 */
+  -webkit-text-fill-color: #e2e8f0 !important;
+}
+
+/* CultureSection 부제목 텍스트 강제 적용 */
+.culture-subtitle {
+  color: #64748b !important; /* text-slate-500 */
+  -webkit-text-fill-color: #64748b !important;
+}
+
+.dark .culture-subtitle {
+  color: #d1d5db !important; /* dark:text-zinc-300 */
+  -webkit-text-fill-color: #d1d5db !important;
 }
