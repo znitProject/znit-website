@@ -41,7 +41,7 @@ const MapCard: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
     <div
       ref={cardRef}
       className="card bg-gray-200 h-full"
-      style={{ padding: 0, overflow: "hidden", ...style }}
+      style={{ padding: 0, overflow: "hidden", zIndex: 10, ...style }}
     >
       {!isClient || !isMounted ? (
         <div className="h-full flex items-center justify-center">
