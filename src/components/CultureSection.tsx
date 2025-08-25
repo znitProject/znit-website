@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { useTheme } from "next-themes";
-import "./CultureSection.css";
 
 interface BoxData {
   id: number;
@@ -11,20 +9,6 @@ interface BoxData {
   subtitle: string;
   content: string;
   position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
-}
-
-// CSS 변수 타입 정의
-interface CSSPropertiesWithVars extends React.CSSProperties {
-  "--culture-center-bg"?: string;
-  "--tx"?: string;
-  "--ty"?: string;
-}
-
-// GSAP 애니메이션 타입 정의
-interface GSAPAnimationVars {
-  "--culture-center-bg"?: string;
-  duration?: number;
-  ease?: string;
 }
 
 type Notch = { dx: number; dy: number };
@@ -188,7 +172,7 @@ function useCenterCircleCues(
         "--culture-center-bg": gradients[i],
         duration: 3,
         ease: "power2.inOut",
-      } as GSAPAnimationVars);
+      } as any);
     }, 4000);
 
     // 🔧 빠른 세터로 CSS 변수만 갱신
@@ -369,8 +353,6 @@ const BOXES: BoxData[] = [
 
 const CulturePage: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
 
   // 🔄 중앙 원: 바깥 래퍼(절대 중앙 고정) + 안쪽 실제 원(이동/펄스)
   const centerCircleRef = useRef<HTMLDivElement>(null); // 안쪽 실제 원(ref 대상)
@@ -381,10 +363,6 @@ const CulturePage: React.FC = () => {
   const [centerRadius, setCenterRadius] = useState(64);
   const [notches, setNotches] = useState<Record<number, Notch>>({});
   const NOTCH_MARGIN = 60;
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const getImageForBox = (id: number) =>
     ({
@@ -475,6 +453,7 @@ const CulturePage: React.FC = () => {
     const onResize = () => animateLayout(isExpanded);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
   const handleCenterClick = () => {
@@ -516,15 +495,18 @@ const CulturePage: React.FC = () => {
                   backgroundImage:
                     "var(--culture-center-bg, linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%))",
                   // 기본값을 안전하게 인라인 지정(충돌 방지)
+                  // @ts-ignore
                   "--culture-center-bg":
                     "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%)",
                   // 위치 변수 초기값
+                  // @ts-ignore
                   "--tx": "0px",
+                  // @ts-ignore
                   "--ty": "0px",
-                } as CSSPropertiesWithVars
+                } as React.CSSProperties
               }
             >
-              <span className="font-bold text-2xl md:text-3xl lg:text-[34px] culture-center-text">
+              <span className="font-bold text-2xl md:text-3xl lg:text-[34px]">
                 Culture
               </span>
             </div>
@@ -543,7 +525,7 @@ const CulturePage: React.FC = () => {
                                 md:border-l-[10px] md:border-r-[10px] md:border-b-[14px] md:border-b-gray-400"
                 />
               </div>
-              <span className="text-xs md:text-sm font-medium tracking-wide culture-click-text">
+              <span className="text-xs md:text-sm text-gray-400 dark:text-zinc-400 font-medium tracking-wide">
                 click me!
               </span>
             </div>
@@ -555,16 +537,6 @@ const CulturePage: React.FC = () => {
             const pad = cornerSafePadding(box.position);
             const accent = ACCENT[box.position];
             const notch = notches[box.id] ?? { dx: 0, dy: 0 };
-
-            const titleColor = box.position.includes("left")
-              ? "#1e293b"
-              : "#f9fafb";
-            const subtitleColor = box.position.includes("left")
-              ? "#6b7280"
-              : "#d1d5db";
-            const contentColor = box.position.includes("left")
-              ? "#4b5563"
-              : "#f3f4f6";
 
             return (
               <div
@@ -618,11 +590,11 @@ const CulturePage: React.FC = () => {
                           <h3
                             className={[
                               "text-[clamp(24px,2.4vw,32px)] lg:text-[clamp(26px,2.1vw,36px)]",
-                              "font-semibold tracking-[-0.01em]",
+                              "font-semibold tracking-[-0.01em] text-slate-900 dark:text-white",
                               "leading-[1.05]",
                               A.titleAlign,
-                              "culture-title",
                             ].join(" ")}
+                            style={{ textWrap: "balance" as any }}
                           >
                             {box.title}
                           </h3>
@@ -646,12 +618,7 @@ const CulturePage: React.FC = () => {
                               : "",
                           ].join(" ")}
                         >
-                          <p
-                            className={[
-                              "text-[10px] md:text-[11px] uppercase tracking-[0.14em] font-medium",
-                              "culture-subtitle",
-                            ].join(" ")}
-                          >
+                          <p className="text-[10px] md:text-[11px] uppercase tracking-[0.14em] text-slate-500 dark:text-zinc-300 font-medium">
                             {box.subtitle}
                           </p>
                           <div className="flex-1 h-px bg-gradient-to-r from-slate-200 dark:from-zinc-500 to-transparent max-w-8" />
@@ -674,13 +641,13 @@ const CulturePage: React.FC = () => {
                       <p
                         className={[
                           "text-[14.5px] md:text-[15.5px] lg:text-[16px]",
-                          "leading-[1.7]",
+                          "leading-[1.7] text-slate-700 dark:text-zinc-200",
                           "max-w-[58ch]",
                           "line-clamp-2",
                           "relative",
                           A.paragraphAlign,
-                          "culture-content",
                         ].join(" ")}
+                        style={{ textWrap: "balance" as any }}
                       >
                         {box.content}
                       </p>
