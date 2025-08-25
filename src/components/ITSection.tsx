@@ -87,13 +87,13 @@ export default function ITSection() {
     <div
       id="it-section"
       ref={sectionRef}
-      className={`w-full h-[120vh] relative overflow-hidden bg-white ${isVisible ? "animate-hexagons" : ""}`}
+      className={`w-full h-[120vh] relative overflow-hidden bg-white dark:bg-slate-900 ${isVisible ? "animate-hexagons" : ""}`}
     >
       {/* Main Title - DesignSection과 동일한 스타일 */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:top-6 md:top-8 z-20">
         <h1
           ref={titleRef}
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-gray-900 text-center"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-colors duration-300 text-gray-900 dark:text-slate-100 text-center"
           style={{ fontFamily: "Red Hat Display, sans-serif" }}
         >
           Develop with ZNIT
@@ -166,7 +166,7 @@ export default function ITSection() {
       <div
         className={`absolute left-[830px] top-[230px] z-10 max-w-none ${isVisible ? "description-first" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed relative">
+        <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
           <img
             src="/itsection/icons8-quote-left-100-fill.png"
             alt="따옴표"
@@ -186,7 +186,7 @@ export default function ITSection() {
       <div
         className={`absolute left-[930px] top-[460px] z-10 max-w-none ${isVisible ? "description-second" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed relative">
+        <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
           <img
             src="/itsection/icons8-quote-left-100-fill.png"
             alt="따옴표"
@@ -206,7 +206,7 @@ export default function ITSection() {
       <div
         className={`absolute left-[830px] top-[680px] z-10 max-w-none ${isVisible ? "description-third" : ""}`}
       >
-        <p className="text-gray-700 leading-relaxed relative">
+        <p className="text-gray-700 dark:text-slate-300 leading-relaxed relative">
           <img
             src="/itsection/icons8-quote-left-100-fill.png"
             alt="따옴표"

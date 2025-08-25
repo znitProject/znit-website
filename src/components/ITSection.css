@@ -786,11 +786,74 @@ ol.even:last-child {
   }
 }
 
-/* 다크 모드 대비 */
-@media (prefers-color-scheme: dark) {
-  .hex-text {
-    color: #fff;
-  }
+/* =========================
+   다크 모드 스타일 (next-themes 호환)
+   ========================= */
+
+/* 다크 모드 헥사곤 호버 효과 */
+.dark .it-hex:hover {
+  background: #475569 !important;
+}
+
+/* 다크 모드 헥사곤 텍스트 */
+.dark .hex-text {
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* 다크 모드 따옴표 투명도 조정 */
+.dark .quote-mark {
+  opacity: 0.6;
+  filter: brightness(1.2);
+}
+
+/* 다크 모드 별 효과 밝기 조정 */
+.dark .stars,
+.dark .stars2 {
+  opacity: 0.4;
+}
+
+/* 다크 모드 접근성 포커스 */
+.dark .it-hex:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* 다크 모드 연결선 색상 조정 */
+.dark .it-hex-container {
+  --conn-color: #64748b;
+}
+
+/* 다크 모드에서 각 헥사곤 연결선 색상 미세 조정 */
+.dark ol.even:first-child .hex-connector,
+.dark ol.even:first-child .hex-connector::after,
+.dark ol.even:first-child .hex-connector::before {
+  background: #fbbf24 !important; /* 다크 모드에서 더 밝은 노란색 */
+}
+
+.dark ol.odd .hex-connector,
+.dark ol.odd .hex-connector::after,
+.dark ol.odd .hex-connector::before {
+  background: #3b82f6 !important; /* 다크 모드에서 더 밝은 파란색 */
+}
+
+.dark ol.even:last-child .hex-connector,
+.dark ol.even:last-child .hex-connector::after,
+.dark ol.even:last-child .hex-connector::before {
+  background: #06b6d4 !important; /* 다크 모드에서 더 밝은 청록색 */
+}
+
+/* 다크 모드에서 헥사곤 배경색도 조정 */
+.dark .hex-1 {
+  background: #f59e0b !important; /* 다크 모드에서 더 진한 노란색 */
+}
+
+.dark .hex-2 {
+  background: #1e40af !important; /* 다크 모드에서 더 진한 파란색 */
+}
+
+.dark .hex-3 {
+  background: #0891b2 !important; /* 다크 모드에서 더 진한 청록색 */
 }
 
 /* ===== 연결선 (헥사곤을 건드리지 않기 위해 ol 안에 그린다) ===== */
