@@ -79,8 +79,8 @@ const MadAnimation: React.FC = () => {
   };
 
   const onMouseMove = (e: MouseEvent) => {
-    mouse.x = e.pageX;
-    mouse.y = e.pageY;
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
   };
 
   const onResize = () => {
@@ -104,9 +104,9 @@ const MadAnimation: React.FC = () => {
   };
 
   const render = () => {
-    // Smooth mouse
-    mouse.smoothX += (mouse.x - mouse.smoothX) * 0.1;
-    mouse.smoothY += (mouse.y - mouse.smoothY) * 0.1;
+    // Smooth mouse with faster interpolation for more natural movement
+    mouse.smoothX += (mouse.x - mouse.smoothX) * 0.15;
+    mouse.smoothY += (mouse.y - mouse.smoothY) * 0.15;
 
     mouse.diff = Math.hypot(mouse.x - mouse.smoothX, mouse.y - mouse.smoothY);
 
@@ -169,7 +169,7 @@ const MadAnimation: React.FC = () => {
           className="absolute left-0 bottom-0 w-full text-center whitespace-nowrap"
           style={{
             fontWeight: 700,
-            fontSize: "clamp(48px, 13vw, 200px)",
+            fontSize: "clamp(48px, 11vw, 200px)",
             letterSpacing: "-0.025em",
           }}
         >
@@ -222,7 +222,7 @@ const MadAnimation: React.FC = () => {
       >
         {/* Scene Title */}
         <div
-          className="absolute top-[4vw] sm:top-[0.5vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[11rem] 2xl:text-[12rem]"
+          className="absolute top-[4vw] sm:top-[0.5vw] right-[2vw] left-[2vw] flex flex-wrap justify-between items-baseline text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] 2xl:text-[12rem]"
           style={{
             fontWeight: 700,
             letterSpacing: "-0.025em",
@@ -255,15 +255,16 @@ const MadAnimation: React.FC = () => {
       {/* Cursor - Desktop only */}
       <div
         ref={cursorRef}
-        className="absolute rounded-full pointer-events-none hidden xl:block"
+        className="fixed rounded-full pointer-events-none hidden xl:block"
         style={{
           top: "-1.5vw",
           left: "-1.5vw",
-          zIndex: 2,
+          zIndex: 9999,
           width: "3vw",
           height: "3vw",
           background: "#88f901",
           transform: "translate3d(var(--x), var(--y), 0)",
+          transition: "transform 0.1s ease-out",
         }}
       />
 

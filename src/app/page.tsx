@@ -184,22 +184,21 @@ export default function HomePage() {
           aria-label="맨 위로 이동"
         >
           <svg
-            className="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300"
+            className="w-6 h-6 group-hover:-translate-y-1 transition-all duration-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            style={{
-              stroke: mounted && theme === "dark" ? "#ffffff" : "#000000",
-            }}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
               d="M5 10l7-7m0 0l7 7m-7-7v18"
-              style={{
-                stroke: mounted && theme === "dark" ? "#ffffff" : "#000000",
-              }}
+              className={`transition-all duration-300 ${
+                mounted && theme === "dark" 
+                  ? "stroke-white group-hover:stroke-white" 
+                  : "stroke-gray-900 group-hover:stroke-white"
+              }`}
             />
           </svg>
         </button>
