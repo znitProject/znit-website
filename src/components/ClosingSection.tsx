@@ -111,7 +111,7 @@ export default function ClosingSection() {
               기술과 디자인이 사람을 위한 것이어야 한다는 것을.
             </span>
             <span className="m-flip_item">
-              기술과 디자인이 사람을 위한 것이어야 한다는 것을.
+              Que la technologie et le design doivent servir les gens.
             </span>
           </p>
 
@@ -139,6 +139,26 @@ export default function ClosingSection() {
           <p
             className="m-flip js-flip"
             style={{
+              fontSize: "clamp(20px, 4vw, 32px)",
+              fontFamily: "var(--font-red-hat-display), sans-serif",
+              fontWeight: "bold",
+            }}
+          >
+            <span
+              className="m-flip_item"
+              style={{
+                fontFamily: "var(--font-devanagari), sans-serif",
+                fontSize: "clamp(22px, 4.5vw, 35px)",
+              }}
+            >
+              हम जुनून के साथ आगे बढ़ते हैं।
+            </span>
+            <span className="m-flip_item">열정을 가지고 앞으로 나아갑니다.</span>
+          </p>
+
+          <p
+            className="m-flip js-flip"
+            style={{
               fontSize: "clamp(24px, 5vw, 40px)",
               fontFamily: "var(--font-red-hat-display), sans-serif",
               fontWeight: "bold",
@@ -148,11 +168,9 @@ export default function ClosingSection() {
               className="m-flip_item"
               style={{ fontFamily: "var(--font-roboto-flex), sans-serif" }}
             >
-              세상을 더 아름답고 편안하게 만들기 위해 움직입니다.
+              Por un mundo mejor y más tranquilo.
             </span>
-            <span className="m-flip_item">
-              to make the world more beautiful and comfortable.
-            </span>
+            <span className="m-flip_item">더 나은 그리고 더 평화로운 세상을 위해.</span>
           </p>
         </div>
       </div>
@@ -171,7 +189,7 @@ export default function ClosingSection() {
           color: #666;
         }
         .m-flip_item:nth-child(2) {
-          color: #ffffff;
+          color: #666;
         }
       `}</style>
     </section>
