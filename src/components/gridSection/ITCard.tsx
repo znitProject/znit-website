@@ -46,14 +46,16 @@ export default function ITCard({ style }: { style?: React.CSSProperties }) {
       onMouseLeave={handleMouseLeave}
       onClick={scrollToITSection}
     >
-      <div className="absolute top-0 right-0 p-4 z-10">
+      {/* 제목을 좌측 상단으로 이동 + 크기 확대 */}
+      <div className="absolute top-0 left-0 p-4 z-10">
         <span
-          className="text-3xl font-semibold text-white"
+          className="text-4xl lg:text-5xl font-semibold text-white"
           style={{ fontFamily: "Red Hat Display" }}
         >
           IT Services
         </span>
       </div>
+
       <Image
         src="/ITCardImage.png"
         alt="IT Background"

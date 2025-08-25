@@ -97,7 +97,7 @@ export default function WeOwnItCard({
         <div 
           className="absolute inset-0 z-5 rounded-2xl sm:rounded-[24px] md:rounded-[30px]"
           style={{
-            background: "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 40%, transparent 70%)"
+            background: "radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 50%, transparent 80%)"
           }}
         />
         
@@ -112,7 +112,7 @@ export default function WeOwnItCard({
           <h1
             className="line leading-tight tracking-tight text-black text-xl sm:text-2xl md:text-xl lg:text-4xl xl:text-7xl"
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: "var(--font-red-hat-display), sans-serif",
               maxWidth: "100%",
               wordWrap: "break-word",
               WebkitTextStroke: "1px white",
