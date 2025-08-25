@@ -172,7 +172,7 @@ function useCenterCircleCues(
         "--culture-center-bg": gradients[i],
         duration: 3,
         ease: "power2.inOut",
-      } as any);
+      } as gsap.TweenVars);
     }, 4000);
 
     // 🔧 빠른 세터로 CSS 변수만 갱신
@@ -213,7 +213,7 @@ function useCenterCircleCues(
         pointerEvents: "none",
         boxShadow: "0 0 0 0 rgba(59,130,246,0.55)",
         zIndex: "1",
-      } as CSSStyleDeclaration);
+      });
       el.appendChild(ring);
       gsap.fromTo(
         ring,
@@ -238,7 +238,7 @@ function useCenterCircleCues(
         borderRadius: "50%",
         pointerEvents: "none",
         boxShadow: "0 0 0 0 rgba(59,130,246,0.45)",
-      } as CSSStyleDeclaration);
+      });
       el.appendChild(ring);
       gsap.fromTo(
         ring,
@@ -453,7 +453,6 @@ const CulturePage: React.FC = () => {
     const onResize = () => animateLayout(isExpanded);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
   const handleCenterClick = () => {
@@ -495,13 +494,10 @@ const CulturePage: React.FC = () => {
                   backgroundImage:
                     "var(--culture-center-bg, linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%))",
                   // 기본값을 안전하게 인라인 지정(충돌 방지)
-                  // @ts-ignore
                   "--culture-center-bg":
                     "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(219,234,254,0.9) 50%, rgba(191,219,254,0.85) 100%)",
                   // 위치 변수 초기값
-                  // @ts-ignore
                   "--tx": "0px",
-                  // @ts-ignore
                   "--ty": "0px",
                 } as React.CSSProperties
               }
@@ -594,7 +590,7 @@ const CulturePage: React.FC = () => {
                               "leading-[1.05]",
                               A.titleAlign,
                             ].join(" ")}
-                            style={{ textWrap: "balance" as any }}
+                            style={{ textWrap: "balance" as const }}
                           >
                             {box.title}
                           </h3>
@@ -647,7 +643,7 @@ const CulturePage: React.FC = () => {
                           "relative",
                           A.paragraphAlign,
                         ].join(" ")}
-                        style={{ textWrap: "balance" as any }}
+                        style={{ textWrap: "balance" as const }}
                       >
                         {box.content}
                       </p>
