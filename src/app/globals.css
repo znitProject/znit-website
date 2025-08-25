@@ -18,6 +18,7 @@ body {
   font-family: "LCD2", sans-serif;
   font-family: "LCDMono2", sans-serif;
   font-family: "LCDMono", sans-serif;
+  overflow-x: hidden;
   font-family: "Digitalism", sans-serif;
 }
 
@@ -40,6 +41,37 @@ body {
 html.dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+}
+
+/* Footer 다크모드 강제 적용 */
+.dark footer {
+  color: white !important;
+}
+
+.dark footer * {
+  color: white !important;
+}
+
+.dark footer a:hover {
+  color: #d4d4d8 !important;
+}
+
+/* Footer 구분선 다크모드 */
+.dark footer .border-zinc-700 {
+  border-color: white !important;
+}
+
+/* Back to Top 버튼 다크모드 - 더 구체적인 선택자 사용 */
+.dark button[aria-label="맨 위로 이동"] {
+  color: white !important;
+}
+
+.dark button[aria-label="맨 위로 이동"] * {
+  color: white !important;
+}
+
+.dark button[aria-label="맨 위로 이동"] .text-zinc-500 {
+  color: white !important;
 }
 
 body {

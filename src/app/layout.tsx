@@ -72,7 +72,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased overflow-x-hidden">
         <Providers>
           <Header />
           <main className="min-h-screen">{children}</main>

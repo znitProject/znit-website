@@ -8,8 +8,10 @@ interface ProgressClockProps {
 
 const ProgressClock: React.FC<ProgressClockProps> = ({ style }) => {
   const [time, setTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const updateTime = () => {
       setTime(new Date());
     };
@@ -19,6 +21,43 @@ const ProgressClock: React.FC<ProgressClockProps> = ({ style }) => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Prevent hydration mismatch by not rendering time-dependent content on server
+  if (!mounted) {
+    return (
+      <div
+        className="progress-clock-container relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 overflow-hidden"
+        style={{
+          width: '100%',
+          height: '100%',
+          gridArea: 'clock',
+          boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.05), 0 10px 30px rgba(0,0,0,0.1)',
+          ...style,
+        }}
+      >
+        <div className="relative flex items-center justify-center">
+          <svg width="220" height="220" className="transform -rotate-90">
+            <circle cx="110" cy="110" r="95" fill="none" stroke="#e5e7eb" strokeWidth="8" />
+            <circle cx="110" cy="110" r="75" fill="none" stroke="#f3f4f6" strokeWidth="6" />
+            <circle cx="110" cy="110" r="55" fill="none" stroke="#f9fafb" strokeWidth="4" />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gray-800 font-mono tracking-tight">
+                00:00
+              </div>
+              <div className="text-sm text-gray-500 font-mono mt-1">
+                00
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-center">
+          <div className="text-xs text-gray-400 font-medium tracking-wider">TIME FLOWS</div>
+        </div>
+      </div>
+    );
+  }
 
   // Calculate progress percentages
   const hours = time.getHours();

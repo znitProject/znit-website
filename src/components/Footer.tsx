@@ -76,7 +76,7 @@ export default function Footer() {
       <div className="absolute top-0 right-0 z-10 h-full">
         <button
           onClick={scrollToTop}
-          className="bg-white dark:bg-zinc-900 text-zinc-500 rounded-[20px] p-6 border border-zinc-700 shadow-xl backdrop-glass transition-all duration-300 hover:scale-105 hover:shadow-2xl group h-full flex flex-col justify-center"
+          className="bg-white dark:bg-zinc-900 text-zinc-500 dark:text-white rounded-[20px] p-6 border border-zinc-700 shadow-xl backdrop-glass transition-all duration-300 hover:scale-105 hover:shadow-2xl group h-full flex flex-col justify-center"
           aria-label="맨 위로 이동"
         >
           <div className="flex flex-col items-center space-y-4">
@@ -97,7 +97,7 @@ export default function Footer() {
               </svg>
             </div>
             {/* Text */}
-            <div className="text-sm font-medium text-center leading-tight">
+            <div className="text-sm font-medium text-center leading-tight text-zinc-500 dark:text-white">
               <span className="block">BACK TO</span>
               <span className="block">THE TOP</span>
             </div>
@@ -107,7 +107,7 @@ export default function Footer() {
 
       <footer
         ref={footerRef}
-        className="bg-white dark:bg-zinc-900 text-zinc-500 rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass transition-colors duration-300"
+        className="bg-white dark:bg-zinc-900 text-zinc-500 dark:text-white rounded-[20px] mx-2 sm:mx-4 my-4 border border-zinc-700 shadow-xl backdrop-glass transition-colors duration-300"
         style={{ width: "calc(100% - 140px)" }}
       >
         <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -121,7 +121,7 @@ export default function Footer() {
                   className="h-8 sm:h-10"
                 />
               </div>
-              <p className="text-zinc-500 mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
+              <p className="text-zinc-500 dark:text-white mb-4 max-w-md text-sm sm:text-base leading-relaxed tracking-tight">
                 기술과 디자인으로 사람을 잇고,
                 <br />
                 세상에 편안함과 아름다움을 더합니다.
@@ -129,7 +129,7 @@ export default function Footer() {
               <div className="flex space-x-4">
                 <a
                   href="mailto:contact@znit.com"
-                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors footer-icon p-2"
+                  className="text-zinc-600 dark:text-white hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors footer-icon p-2"
                   aria-label="이메일"
                 >
                   <svg
@@ -143,7 +143,7 @@ export default function Footer() {
                 </a>
                 <a
                   href="tel:031-1234-5678"
-                  className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors footer-icon p-2"
+                  className="text-zinc-600 dark:text-white hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors footer-icon p-2"
                   aria-label="전화번호"
                 >
                   <svg
@@ -159,17 +159,17 @@ export default function Footer() {
 
             {/* 사업자 정보 */}
             <div className="col-span-2 flex flex-col justify-end -mt-4">
-              <div className="text-zinc-600 dark:text-zinc-400 text-sm space-y-2 text-right">
+              <div className="text-zinc-600 dark:text-white text-sm space-y-2 text-right">
                 <p>ZNIT | 대표자: 정지호 | 사업자등록번호: 176-81-00290</p>
                 <p>경기 김포시 고촌읍 장차로5번길 20 2층 | 031-996-4823</p>
                 <div className="flex justify-end space-x-4 mt-4">
-                  <a href="#" className="hover:text-zinc-900 dark:hover:text-white transition-colors">
+                  <a href="#" className="text-inherit hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors">
                     이용약관
                   </a>
                   <span>|</span>
                   <Link
                     href="/credits"
-                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                    className="text-inherit hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors"
                   >
                     Credits
                   </Link>
@@ -179,9 +179,9 @@ export default function Footer() {
           </div>
 
           {/* 하단 구분선 */}
-          <div className="border-t border-zinc-700 mt-6 sm:mt-8 pt-6 sm:pt-8">
+          <div className="border-t border-zinc-700 dark:border-white mt-6 sm:mt-8 pt-6 sm:pt-8">
             <div className="flex justify-end">
-              <p className="text-zinc-500 text-xs sm:text-sm tracking-tight">
+              <p className="text-zinc-500 dark:text-white text-xs sm:text-sm tracking-tight">
                 © {currentYear} ZNIT. All rights reserved.
               </p>
             </div>

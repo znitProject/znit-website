@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import { Building2, Brush, BarChart3, Play, Smartphone } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -135,7 +137,8 @@ const UICraftCards: React.FC = () => {
       description:
         "웹사이트와 모바일 앱 모두에 최적화된 UI/UX 설계로\n 사용성과 디자인을 모두 잡습니다.",
       icon: <Smartphone className="w-4 h-4" />,
-      image: "/works/3_4/KakaoTalk_Photo_2025-07-28-10-00-50 005.jpeg",
+      image:
+        "/works/3_4/KakaoTalk_Photo_2025-07-28-10-00-50 005.jpeg",
       tags: ["WEB", "APP"],
     },
   ];
@@ -177,7 +180,7 @@ const UICraftCards: React.FC = () => {
         </h1>
       </div>
 
-      {/* Accordion Cards Container */}
+      {/* Accordion Cards */}
       <div className="flex flex-col w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-8xl gap-2 sm:gap-3 pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-8">
         {cards.map((card, index) => {
           const isOpen = expandedIndex === index;
@@ -203,7 +206,7 @@ const UICraftCards: React.FC = () => {
                   isOpen ? "p-3 sm:p-4 md:p-6 lg:p-8 xl:p-9" : ""
                 }`}
               >
-                {/* Background Image/Video - Only visible when expanded */}
+                {/* Background Image/Video */}
                 {isOpen && (
                   <>
                     {card.isVideo ? (
@@ -214,9 +217,7 @@ const UICraftCards: React.FC = () => {
                         muted
                         playsInline
                         className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-700"
-                        style={{
-                          pointerEvents: "none",
-                        }}
+                        style={{ pointerEvents: "none" }}
                         onContextMenu={(e) => e.preventDefault()}
                       />
                     ) : (
@@ -229,17 +230,20 @@ const UICraftCards: React.FC = () => {
                   </>
                 )}
 
-                {/* Header Content (icon + title + chevron) */}
+                {/* Header Content */}
                 <div
                   className={`z-10 ${
                     isOpen
                       ? "relative flex items-start justify-between flex-col gap-2"
-                      : // 닫힘: 상하 완전 중앙 정렬
-                        "absolute inset-0 flex items-center justify-between px-3 sm:px-4 md:px-6"
+                      : "absolute inset-0 flex items-center justify-between px-3 sm:px-4 md:px-6"
                   }`}
                 >
                   <div
-                    className={`${isOpen ? "w-full flex items-center justify-between" : "relative flex items-center gap-4"}`}
+                    className={`${
+                      isOpen
+                        ? "w-full flex items-center justify-between"
+                        : "relative flex items-center gap-4"
+                    }`}
                   >
                     <div
                       className={`flex items-center gap-4 ${
@@ -249,20 +253,25 @@ const UICraftCards: React.FC = () => {
                       }`}
                     >
                       <div
-                        className={`transition-all duration-700 ${getIconColor(theme)}`}
+                        className={`transition-all duration-700 ${getIconColor(
+                          theme
+                        )}`}
                       >
                         {card.icon}
                       </div>
 
                       <h3
-                        className={`text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold uppercase leading-none ${
-                          isOpen ? "text-gray-900" : "text-white"
-                        }`}
+                        className={`text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-extrabold uppercase leading-none
+                          ${
+                            theme === "light"
+                              ? "text-gray-900" // 라이트 모드 → 항상 검정
+                              : isOpen
+                              ? "text-gray-900" // 다크 모드 + 펼침 → 검정
+                              : "text-white" // 다크 모드 + 닫힘 → 흰색
+                          }`}
                         style={
                           isOpen
-                            ? {
-                                textShadow: "1px 1px 2px rgba(255,255,255,0.8)",
-                              }
+                            ? { textShadow: "1px 1px 2px rgba(255,255,255,0.8)" }
                             : {}
                         }
                       >
@@ -288,7 +297,7 @@ const UICraftCards: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Tags - Right below title when expanded */}
+                  {/* Tags */}
                   {isOpen && (
                     <div className="flex gap-2 flex-wrap mt-1">
                       {card.tags.map((tag, tagIndex) => (
@@ -303,7 +312,7 @@ const UICraftCards: React.FC = () => {
                   )}
                 </div>
 
-                {/* Expanded Content - Description only */}
+                {/* Expanded Content */}
                 {isOpen && (
                   <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 md:bottom-6 md:left-6 z-10 transition-all duration-500 opacity-100 translate-y-0 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
                     <p

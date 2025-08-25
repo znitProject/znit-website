@@ -92,8 +92,8 @@ function PuzzleCard({
       {/* 콘텐츠 카드 */}
       <div
         className={
-          "relative w-84 h-60 md:w-[440px] md:h-64 lg:w-[580px] lg:h-80 rounded-[32px] bg-white dark:bg-gray-800 " +
-          "transition-shadow duration-300 border-2 border-gray-200/80 dark:border-gray-600/60 " +
+          "relative w-84 h-60 md:w-[440px] md:h-64 lg:w-[580px] lg:h-80 rounded-[32px] bg-white dark:bg-zinc-900/80 " +
+          "transition-shadow duration-300 border-2 border-gray-200/80 dark:border-zinc-700/50 " +
           className
         }
         style={{
@@ -471,7 +471,7 @@ const CulturePage: React.FC = () => {
   useCenterCircleCues(centerCircleRef, { disabled: isExpanded });
 
   return (
-    <div id="culture-section" className="w-full min-h-screen bg-sky-50/60 dark:bg-gray-900">
+    <div id="culture-section" className="w-full min-h-screen bg-sky-50/60 dark:bg-zinc-800">
       <div className="w-full h-full flex items-center justify-center">
         <div className="relative w-full max-w-[1600px] h-[720px] md:h-[900px] lg:h-[1100px] px-6">
           {/* 중앙 원 - 바깥 래퍼: 절대 중앙 고정(변환 고정, GSAP 미개입) */}
@@ -485,8 +485,8 @@ const CulturePage: React.FC = () => {
             <div
               ref={centerCircleRef}
               className="relative w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full
-                         border-2 border-violet-200/80 dark:border-violet-400/60 text-gray-700 dark:text-gray-200 grid place-items-center cursor-pointer select-none
-                         shadow-[0_0_15px_2px_rgba(196,181,253,0.2),0_12px_40px_rgba(0,0,0,0.25)] dark:shadow-[0_0_15px_2px_rgba(196,181,253,0.3),0_12px_40px_rgba(255,255,255,0.1)]"
+                         border-2 border-violet-200/80 dark:border-zinc-700/70 text-gray-700 dark:text-white grid place-items-center cursor-pointer select-none
+                         shadow-[0_0_15px_2px_rgba(196,181,253,0.2),0_12px_40px_rgba(0,0,0,0.25)] dark:shadow-[0_0_20px_4px_rgba(59,130,246,0.15),0_0_40px_rgba(0,0,0,0.8)]"
               style={
                 {
                   // 미세 이동(변수만 변경)
@@ -525,7 +525,7 @@ const CulturePage: React.FC = () => {
                                 md:border-l-[10px] md:border-r-[10px] md:border-b-[14px] md:border-b-gray-400"
                 />
               </div>
-              <span className="text-xs md:text-sm text-gray-400 dark:text-gray-500 font-medium tracking-wide">
+              <span className="text-xs md:text-sm text-gray-400 dark:text-zinc-400 font-medium tracking-wide">
                 click me!
               </span>
             </div>
@@ -590,7 +590,7 @@ const CulturePage: React.FC = () => {
                           <h3
                             className={[
                               "text-[clamp(24px,2.4vw,32px)] lg:text-[clamp(26px,2.1vw,36px)]",
-                              "font-semibold tracking-[-0.01em] text-slate-900 dark:text-gray-100",
+                              "font-semibold tracking-[-0.01em] text-slate-900 dark:text-white",
                               "leading-[1.05]",
                               A.titleAlign,
                             ].join(" ")}
@@ -618,17 +618,17 @@ const CulturePage: React.FC = () => {
                               : "",
                           ].join(" ")}
                         >
-                          <p className="text-[10px] md:text-[11px] uppercase tracking-[0.14em] text-slate-500 dark:text-gray-400 font-medium">
+                          <p className="text-[10px] md:text-[11px] uppercase tracking-[0.14em] text-slate-500 dark:text-zinc-300 font-medium">
                             {box.subtitle}
                           </p>
-                          <div className="flex-1 h-px bg-gradient-to-r from-slate-200 dark:from-gray-600 to-transparent max-w-8" />
+                          <div className="flex-1 h-px bg-gradient-to-r from-slate-200 dark:from-zinc-500 to-transparent max-w-8" />
                         </div>
 
                         {/* 구분선 */}
                         <div className="mt-3 mb-2">
                           <div
                             className={[
-                              "h-px bg-gradient-to-r from-slate-300/60 dark:from-gray-500/60 to-transparent w-full max-w-[200px]",
+                              "h-px bg-gradient-to-r from-slate-300/60 dark:from-zinc-400/60 to-transparent w-full max-w-[200px]",
                               A.titleAlign === "text-right" ? "ml-auto" : "",
                             ].join(" ")}
                           />
@@ -641,7 +641,7 @@ const CulturePage: React.FC = () => {
                       <p
                         className={[
                           "text-[14.5px] md:text-[15.5px] lg:text-[16px]",
-                          "leading-[1.7] text-slate-700 dark:text-gray-300",
+                          "leading-[1.7] text-slate-700 dark:text-zinc-200",
                           "max-w-[58ch]",
                           "line-clamp-2",
                           "relative",

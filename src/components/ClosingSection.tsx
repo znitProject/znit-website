@@ -191,6 +191,12 @@ export default function ClosingSection() {
         .m-flip_item:nth-child(2) {
           color: #666;
         }
+        .dark .m-flip_item:nth-child(1) {
+          color: white;
+        }
+        .dark .m-flip_item:nth-child(2) {
+          color: white;
+        }
       `}</style>
     </section>
   );
